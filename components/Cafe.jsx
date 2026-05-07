@@ -324,7 +324,7 @@ const ProductCard = ({ p }) => {
           <div style={{
             fontFamily: 'JetBrains Mono, monospace', fontSize: 10,
             letterSpacing: '0.18em', color: '#533b22', marginTop: 6,
-          }}>50% al caficultor · S/ {(price * qty * 0.5).toFixed(0)}</div>
+          }}>42% al caficultor · S/ {(price * qty * 0.421).toFixed(0)}</div>
         </div>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 0,
@@ -372,7 +372,7 @@ const ProductCard = ({ p }) => {
         transition: 'all .35s ease',
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
       }}>
-        <span>Reservar — entrega 7 mayo</span>
+        <span>Reservar — entrega agosto</span>
         <span>→</span>
       </button>
 

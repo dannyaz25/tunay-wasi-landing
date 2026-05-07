@@ -28,7 +28,25 @@ const Nav = () => {
         transition: 'padding .35s ease',
       }}>
         <a href="#top" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
-          <Hummingbird size={42} />
+          <div className="tw-logo-hover" style={{ width: 52, height: 52, position: 'relative' }}>
+            <style>{`
+              @keyframes tw-logo-hover {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-4px); }
+              }
+              @keyframes tw-logo-breathe {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+              }
+              .tw-logo-hover {
+                animation: tw-logo-hover 4.2s ease-in-out infinite;
+              }
+              .tw-logo-hover img {
+                animation: tw-logo-breathe 2.4s ease-in-out infinite;
+              }
+            `}</style>
+            <img src="brand/logo.png" alt="Tunay Wasi" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          </div>
           <div style={{ lineHeight: 1 }}>
             <div style={{ fontFamily: 'Mulish, sans-serif', fontWeight: 700, letterSpacing: '0.005em', color: '#1f3028', fontSize: 20 }}>
               Tunay Wasi

@@ -1,6 +1,17 @@
 // CartDrawer — sliding panel from the right with items, qty controls, subtotal, CTA.
 // Optimistic UI: qty changes hit the store immediately; no debouncing.
 
+<style>{`
+  @keyframes tw-logo-hover {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  @keyframes tw-logo-breathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+`}</style>
+
 const CartItemRow = ({ item }) => {
   const dec = window.cartStore.getState().dec;
   const inc = window.cartStore.getState().inc;
@@ -84,7 +95,7 @@ const CartItemRow = ({ item }) => {
       <div style={{
         fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
         color: '#533b22',
-      }}>MÁX. {item.maxQty} unid. · 50% al caficultor: {formatPEN(Math.round(item.unitCents * item.qty * 0.5))}</div>
+      }}>MÁX. {item.maxQty} unid. · 42% al caficultor: {formatPEN(Math.round(item.unitCents * item.qty * 0.421))}</div>
     </div>
   );
 };
@@ -99,7 +110,9 @@ const EmptyCart = () => (
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       border: '1px solid #1f302833',
     }}>
-      <Hummingbird size={64} />
+      <div style={{ width: 64, height: 64, animation: 'tw-logo-hover 4.2s ease-in-out infinite' }}>
+              <img src="brand/logo.png" alt="Tunay Wasi" style={{ width: '100%', height: '100%', objectFit: 'contain', animation: 'tw-logo-breathe 2.4s ease-in-out infinite' }} />
+            </div>
     </div>
     <h3 style={{
       fontFamily: 'Cormorant Garamond, serif', fontWeight: 600,
@@ -176,7 +189,9 @@ const CartDrawer = () => {
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-              <Hummingbird size={28} />
+              <div style={{ width: 28, height: 28, animation: 'tw-logo-hover 4.2s ease-in-out infinite' }}>
+                  <img src="brand/logo.png" alt="Tunay Wasi" style={{ width: '100%', height: '100%', objectFit: 'contain', animation: 'tw-logo-breathe 2.4s ease-in-out infinite' }} />
+                </div>
               <span style={{
                 fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 28,
                 color: '#f2e0cc',
@@ -252,7 +267,7 @@ const CartDrawer = () => {
               fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
               color: '#8faf8a',
             }}>
-              50% al caficultor: {formatPEN(Math.round(subtotalCents * 0.5))}
+              42% al caficultor: {formatPEN(Math.round(subtotalCents * 0.421))}
             </div>
 
             <button onClick={openCheckout} style={{

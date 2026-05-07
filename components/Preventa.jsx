@@ -21,14 +21,8 @@ const useCountdown = (target) => {
 };
 
 const Preventa = () => {
-  // Cut-off: next Wednesday 23:59 Lima time (UTC-5). For demo, use a fixed +1d 16h offset.
-  const cutoff = React.useMemo(() => {
-    const now = new Date();
-    const target = new Date(now);
-    target.setDate(now.getDate() + 1);
-    target.setHours(23, 59, 0, 0);
-    return target.getTime();
-  }, []);
+  // Cierre preventa: 31 mayo 2026 23:59:59 Lima (UTC-5)
+  const cutoff = new Date('2026-06-01T04:59:59Z').getTime();
   const t = useCountdown(cutoff);
 
   return (
@@ -118,8 +112,8 @@ const Preventa = () => {
                 color: '#c4b297', marginTop: 28, maxWidth: 520,
               }}>
                 Reservas hoy. Cerramos pedidos, calculamos el tueste exacto y arrancamos
-                el tambor. Entrega <strong style={{ color: '#f2e0cc' }}>Lima 7 mayo</strong> ·
-                Provincia <strong style={{ color: '#f2e0cc' }}>desde 8 mayo</strong>.
+                el tambor. Entrega <strong style={{ color: '#f2e0cc' }}>Lima primera semana de agosto</strong> ·
+                Provincia <strong style={{ color: '#f2e0cc' }}>desde segunda semana de agosto</strong>.
               </p>
 
               {/* countdown */}
@@ -167,7 +161,7 @@ const Preventa = () => {
                   fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#c4b29799',
                   marginTop: 14, lineHeight: 1.5,
                 }}>
-                  Pedidos después del corte entran al siguiente ciclo · entrega Lima 14 mayo · Prov. desde 15 mayo.
+                  Pedidos después del corte entran al siguiente ciclo · entrega Lima segunda semana de agosto · Prov. desde mediados de agosto.
                 </p>
               </div>
 
@@ -216,7 +210,7 @@ const Preventa = () => {
                   fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic',
                   fontSize: 18, color: '#c4b297',
                 }}>
-                  desde <strong style={{ color: '#f2e0cc', fontStyle: 'normal', fontFamily: 'Cormorant Garamond, serif', fontWeight: 600 }}>S/ 24.43</strong> · 250 g
+                  desde <strong style={{ color: '#f2e0cc', fontStyle: 'normal', fontFamily: 'Cormorant Garamond, serif', fontWeight: 600 }}>S/ 49.88</strong> · 250 g
                 </span>
               </div>
             </div>

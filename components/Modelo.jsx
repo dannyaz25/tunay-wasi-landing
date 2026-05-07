@@ -11,11 +11,11 @@ const Modelo = () => {
   }, []);
 
   const slices = [
-    { pct: 50, label: 'Caficultor', color: '#c96e4b', detail: 'Pago directo a la finca, antes de que el grano viaje.' },
-    { pct: 18, label: 'Tueste & empaque', color: '#8faf8a', detail: 'Maestros tostadores en Lima, lotes de 8 kg.' },
-    { pct: 12, label: 'Logística', color: '#c4b297', detail: 'De los Andes a tu puerta, en menos de 14 días.' },
-    { pct: 14, label: 'Operación Tunay Wasi', color: '#533b22', detail: 'Equipo, calidad, control y trazabilidad.' },
-    { pct: 6,  label: 'Reinversión en finca', color: '#1f3028', detail: 'Fondos de mejora — secadores, viveros, baños.' },
+    { pct: 42, label: 'Caficultor',             color: '#c96e4b', detail: 'Pago directo a la finca, antes de que el grano viaje.' },
+    { pct: 15, label: 'Tueste + Cata Q-Grader', color: '#8faf8a', detail: 'Tostado artesanal y certificación de calidad SCA.' },
+    { pct:  6, label: 'Flete y Empaque',         color: '#c4b297', detail: 'Transporte desde origen y embalaje kraft reciclado.' },
+    { pct: 15, label: 'IGV (18%)',               color: '#533b22', detail: 'Impuesto al consumo incluido en el precio final.' },
+    { pct: 21, label: 'Tunay Wasi',              color: '#1f3028', detail: 'Plataforma, tecnología y operación del marketplace.' },
   ];
 
   return (
@@ -30,6 +30,10 @@ const Modelo = () => {
             fontFamily: 'Bowlby One SC, sans-serif', fontSize: 11, letterSpacing: '0.32em',
             color: '#c96e4b', textTransform: 'uppercase',
           }}>04 — Modelo 50 / 50</span>
+          <p style={{
+            fontFamily: 'Montserrat, sans-serif', fontSize: 12, letterSpacing: '0.08em',
+            color: '#533b22', margin: '8px 0 0',
+          }}>Desglose verificado del precio al consumidor</p>
           <h2 style={{
             fontFamily: 'Cormorant Garamond, serif', fontWeight: 700,
             fontSize: 'clamp(40px, 5.5vw, 84px)', lineHeight: 1.0,
@@ -44,7 +48,7 @@ const Modelo = () => {
             color: '#533b22', maxWidth: 620, margin: '0 auto',
           }}>
             Auditamos el desglose cada trimestre y lo publicamos en nuestro reporte abierto.
-            Esta es la última cosecha — abril 2026.
+            Esta es la última cosecha — mayo 2026.
           </p>
         </div>
 
@@ -98,7 +102,7 @@ const Modelo = () => {
                 background: '#c96e4b', display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontFamily: 'Cormorant Garamond, serif', fontSize: 32, fontWeight: 700,
                 flexShrink: 0,
-              }}>50%</div>
+              }}>42%</div>
               <div>
                 <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 24, fontStyle: 'italic', lineHeight: 1.2 }}>
                   Es el doble de lo que paga el comercio justo tradicional.

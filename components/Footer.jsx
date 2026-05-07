@@ -11,7 +11,9 @@ const Footer = () => {
         }} className="tw-foot-grid">
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24 }}>
-              <Hummingbird size={48} accent="#c96e4b" stroke="#f2e0cc" />
+              <div style={{ width: 48, height: 48, animation: 'tw-logo-hover 4.2s ease-in-out infinite' }}>
+              <img src="brand/logo.png" alt="Tunay Wasi" style={{ width: '100%', height: '100%', objectFit: 'contain', animation: 'tw-logo-breathe 2.4s ease-in-out infinite' }} />
+            </div>
               <div style={{ fontFamily: 'Mulish, sans-serif', fontWeight: 700, fontSize: 26, color: '#f2e0cc', letterSpacing: '0.005em' }}>
                 Tunay Wasi
               </div>
@@ -61,6 +63,14 @@ const Footer = () => {
         </div>
       </div>
       <style>{`
+        @keyframes tw-logo-hover {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+        @keyframes tw-logo-breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
         @media (max-width: 880px) { .tw-foot-grid { grid-template-columns: 1fr 1fr !important; } }
       `}</style>
     </footer>

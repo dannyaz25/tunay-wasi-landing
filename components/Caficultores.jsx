@@ -64,7 +64,7 @@ const ProducerCard = ({ p, idx }) => {
           fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
           textTransform: 'uppercase',
         }}>
-          № 0{idx + 1} / 12
+          № 0{idx + 1} / 12{/* TODO: total real de Firebase */}
         </div>
         <div style={{
           position: 'absolute', bottom: 14, right: 14,
@@ -147,7 +147,7 @@ const Caficultores = () => {
               fontSize: 'clamp(38px, 5vw, 72px)', lineHeight: 1.02,
               color: '#f2e0cc', margin: '24px 0 0', letterSpacing: '-0.01em', maxWidth: 720,
             }}>
-              Doce familias.
+              Doce familias.{/* TODO: count real de Firebase */}
               <br />
               <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#8faf8a' }}>
                 Una sola palabra dada.
@@ -179,7 +179,7 @@ const Caficultores = () => {
             transition: 'all .3s ease',
           }} onMouseEnter={e => { e.currentTarget.style.background = '#c96e4b'; e.currentTarget.style.borderColor = '#c96e4b'; }}
              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = '#f2e0cc55'; }}>
-            Ver las 12 fincas →
+            Ver las 12 fincas →{/* TODO: count real de Firebase */}
           </a>
         </div>
       </div>

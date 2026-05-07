@@ -221,7 +221,7 @@ const StepPago = ({ data, items, totals, onSubmit, status }) => {
           <div style={{
             fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
             color: '#8faf8a', marginTop: 4,
-          }}>50% al caficultor: {formatPEN(totals.producerShareCents)}</div>
+          }}>42% al caficultor: {formatPEN(totals.producerShareCents)}</div>
         </div>
       </div>
 
@@ -390,7 +390,7 @@ const Checkout = () => {
           }}>
             <strong style={{ color: '#c96e4b' }}>☕ Selección · tostamos solo lo que se vende.</strong>
             <br />
-            <span style={{ color: '#c4b297' }}>Cierre: <strong style={{ color: '#f2e0cc' }}>06 may.</strong> · Entrega Lima desde <strong style={{ color: '#f2e0cc' }}>07 may.</strong> · Nacional desde <strong style={{ color: '#f2e0cc' }}>10 may.</strong></span>
+            <span style={{ color: '#c4b297' }}>Cierre: <strong style={{ color: '#f2e0cc' }}>31 may.</strong> · Entrega Lima desde <strong style={{ color: '#f2e0cc' }}>ago. (1a semana)</strong> · Nacional desde <strong style={{ color: '#f2e0cc' }}>ago. (2a semana)</strong></span>
           </div>
         </div>
 

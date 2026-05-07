@@ -8,6 +8,17 @@ const Hero = () => {
     transition: `all 1s cubic-bezier(.2,.7,.2,1) ${delay}s`,
   });
   return (
+    <React.Fragment>
+      <style>{`
+        @keyframes tw-logo-hover {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+        }
+        @keyframes tw-logo-breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.02); }
+        }
+      `}</style>
     <section id="top" style={{
       position: 'relative',
       minHeight: '100vh',
@@ -114,7 +125,9 @@ const Hero = () => {
           <div style={{ display: 'flex', gap: 48, marginTop: 72, flexWrap: 'wrap', ...fade(0.6) }}>
             {[
               ['50%', 'directo al productor'],
+              // TODO: reemplazar con count real de la colección 'caficultores' en Firebase
               ['12', 'fincas asociadas'],
+              // TODO: confirmar altitud media con datos reales de Firebase
               ['+1,400 m', 'altitud media'],
             ].map(([n, l]) => (
               <div key={l}>
@@ -146,7 +159,9 @@ const Hero = () => {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: '0 24px 60px -20px #533b22aa', zIndex: 3,
           }}>
-            <Hummingbird size={96} />
+            <div style={{ width: 96, height: 96, animation: 'tw-logo-hover 4.2s ease-in-out infinite' }}>
+            <img src="brand/logo.png" alt="Tunay Wasi" style={{ width: '100%', height: '100%', objectFit: 'contain', animation: 'tw-logo-breathe 2.4s ease-in-out infinite' }} />
+          </div>
           </div>
           {/* small stamp */}
           <div style={{
@@ -193,6 +208,7 @@ const Hero = () => {
         }
       `}</style>
     </section>
+    </React.Fragment>
   );
 };
 
