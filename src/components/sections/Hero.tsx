@@ -39,10 +39,9 @@ export default function Hero() {
               <span style={{ width: 48, height: 1, background: '#1f3028' }} />
               <span style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 11, letterSpacing: '0.32em', color: '#533b22', textTransform: 'uppercase' }}>Café · Origen Perú · 2026</span>
             </div>
-            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, color: '#1f3028', fontSize: 'clamp(48px, 7vw, 104px)', lineHeight: 0.95, letterSpacing: '-0.015em', margin: 0, ...fade(0.15) }}>
-              La verdadera<br />
-              <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>casa </span>del café<br />
-              <span style={{ fontStyle: 'italic', fontWeight: 500 }}>peruano.</span>
+            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, color: '#1f3028', fontSize: 'clamp(48px, 5vw, 104px)', lineHeight: 0.95, letterSpacing: '-0.015em', margin: 0, ...fade(0.15) }}>
+              Café de Especialidad<br />
+              con transparencia desde el <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>origen. </span>
             </h1>
             <p style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400, color: '#1f3028', fontSize: 18, lineHeight: 1.6, maxWidth: 520, marginTop: 32, ...fade(0.3, 0.82) }}>
               Conectamos directamente a caficultores de los Andes con tu taza. Sin intermediarios, sin opacidad — hasta el <strong style={{ color: '#1f3028', fontWeight: 600 }}>50&nbsp;% de cada bolsa</strong> regresa a quien sembró el grano.

@@ -21,6 +21,7 @@ export interface Producto {
   tone: ToneOption;
   stockKg: number;
   desc: string;
+  photo?: string;
 }
 
 export interface Caficultor {
@@ -34,6 +35,7 @@ export interface Caficultor {
   score: string;
   color: ToneOption;
   quote: string;
+  photo?: string;
 }
 
 export interface CicloActivo {

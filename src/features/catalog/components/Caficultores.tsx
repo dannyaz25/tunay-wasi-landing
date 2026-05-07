@@ -9,10 +9,18 @@ function ProducerCard({ p, idx, total }: { p: Caficultor; idx: number; total: nu
     <article
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 28, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-8px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -24px #533b22cc, 0 8px 16px -8px #533b2266' : '0 12px 28px -16px #533b2288', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 20 }}
+      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 28, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-8px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -24px #533b22cc, 0 8px 16px -8px #533b2266' : '0 12px 28px -16px #533b2288', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 20, width: '100%', minWidth: 0 }}
     >
       <div style={{ position: 'relative' }}>
-        <ImageSlot label={`retrato · ${(p.name ?? '').split(' ').slice(-1)[0].toLowerCase()}`} tone={p.color ?? 'green'} ratio="4 / 5" />
+        {p.photo ? (
+          <img
+            src={p.photo}
+            alt={p.name}
+            style={{ width: '100%', aspectRatio: '4 / 5', objectFit: 'cover', borderRadius: 16, display: 'block' }}
+          />
+        ) : (
+          <ImageSlot label={`retrato · ${(p.name ?? '').split(' ').slice(-1)[0].toLowerCase()}`} tone={p.color ?? 'green'} ratio="4 / 5" />
+        )}
         <div style={{ position: 'absolute', top: 14, left: 14, background: '#1f3028', color: '#f2e0cc', padding: '6px 12px', borderRadius: 999, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
           № 0{idx + 1} / {total}
         </div>
@@ -39,6 +47,12 @@ function ProducerCard({ p, idx, total }: { p: Caficultor; idx: number; total: nu
       </div>
     </article>
   );
+}
+
+function gridStyle(count: number): React.CSSProperties {
+  if (count === 1) return { display: 'grid', gridTemplateColumns: '1fr', gap: 32, width: '50%', marginLeft: 'auto', marginRight: 'auto' };
+  if (count === 2) return { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 32, width: '100%' };
+  return { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, width: '100%' };
 }
 
 export default function Caficultores() {
@@ -68,13 +82,13 @@ export default function Caficultores() {
         </div>
 
         {isLoading ? (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28 }} className="tw-prod-grid">
+          <div style={gridStyle(3)} className="tw-prod-grid">
             {[0, 1, 2].map((i) => (
               <div key={i} style={{ background: '#2a3d33', borderRadius: 24, height: 480, animation: 'tw-skeleton-pulse 1.6s ease-in-out infinite' }} />
             ))}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28 }} className="tw-prod-grid">
+          <div style={gridStyle(total)} className="tw-prod-grid">
             {(producers ?? []).map((p, i) => <ProducerCard key={p.id} p={p} idx={i} total={total} />)}
           </div>
         )}
@@ -89,8 +103,9 @@ export default function Caficultores() {
       </div>
 
       <style>{`
-        @media (max-width: 1040px) { .tw-prod-grid { grid-template-columns: 1fr 1fr !important; } }
-        @media (max-width: 700px) { .tw-prod-grid { grid-template-columns: 1fr !important; } }
+        .tw-prod-grid { max-width: 1200px; margin-left: auto; margin-right: auto; }
+        @media (max-width: 1040px) { .tw-prod-grid { grid-template-columns: repeat(2, 1fr) !important; width: 100% !important; } }
+        @media (max-width: 640px)  { .tw-prod-grid { grid-template-columns: 1fr !important; gap: 24px !important; } }
         @keyframes tw-skeleton-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
       `}</style>
     </section>

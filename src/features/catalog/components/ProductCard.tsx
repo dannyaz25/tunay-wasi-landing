@@ -44,7 +44,15 @@ export default function ProductCard({ p }: { p: Producto }) {
       style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 24, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-6px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -22px #533b22cc' : '0 14px 32px -22px #533b2288', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 18 }}
     >
       <div style={{ position: 'relative' }}>
-        <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="4 / 3" />
+        {p.photo ? (
+          <img
+            src={p.photo}
+            alt={p.name}
+            style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', borderRadius: 16, display: 'block' }}
+          />
+        ) : (
+          <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="4 / 3" />
+        )}
         <div style={{ position: 'absolute', top: 14, left: 14, background: '#1f3028e0', color: '#f2e0cc', padding: '6px 12px', borderRadius: 999, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>
           № {p.code} · SCA {p.score}
         </div>
