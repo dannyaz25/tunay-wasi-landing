@@ -372,7 +372,7 @@ const ProductCard = ({ p }) => {
         transition: 'all .35s ease',
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
       }}>
-        <span>Reservar — entrega agosto</span>
+        <span>Reservar — entrega junio</span>
         <span>→</span>
       </button>
 
@@ -395,7 +395,7 @@ const Cafe = () => {
   return (
     <section id="cafe" style={{
       background: '#f2e0cc',
-      padding: '140px 36px',
+      padding: '100px 36px',
       position: 'relative',
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>

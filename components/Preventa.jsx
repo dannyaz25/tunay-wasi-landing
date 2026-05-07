@@ -28,7 +28,7 @@ const Preventa = () => {
   return (
     <section id="preventa" style={{
       position: 'relative',
-      padding: '120px 36px 100px',
+      padding: '100px 36px 100px',
       background: '#1f3028',
       color: '#f2e0cc',
       overflow: 'hidden',
@@ -58,7 +58,7 @@ const Preventa = () => {
           background: 'linear-gradient(135deg, #2a3d33 0%, #1f3028 60%)',
           border: '1px solid #c96e4b44',
           borderRadius: 28,
-          padding: 56,
+          padding: 35,
           position: 'relative',
           overflow: 'hidden',
           boxShadow: '0 40px 80px -32px #000000aa',
@@ -77,7 +77,7 @@ const Preventa = () => {
                 display: 'inline-flex', alignItems: 'center', gap: 10,
                 padding: '10px 18px', borderRadius: 999,
                 background: '#c96e4b22', border: '1px solid #c96e4b66',
-                marginBottom: 28,
+                marginBottom: 20,
               }}>
                 <span style={{
                   width: 8, height: 8, borderRadius: '50%', background: '#c96e4b',
@@ -93,7 +93,7 @@ const Preventa = () => {
 
               <h2 style={{
                 fontFamily: 'Cormorant Garamond, serif', fontWeight: 700,
-                fontSize: 'clamp(40px, 5vw, 76px)', lineHeight: 0.95,
+                fontSize: 'clamp(40px, 5vw, 76px)', lineHeight: 0.80,
                 margin: 0, color: '#f2e0cc', letterSpacing: '-0.01em',
               }}>
                 Selección de mayo
@@ -109,15 +109,15 @@ const Preventa = () => {
 
               <p style={{
                 fontFamily: 'Montserrat, sans-serif', fontSize: 16, lineHeight: 1.65,
-                color: '#c4b297', marginTop: 28, maxWidth: 520,
+                color: '#c4b297', marginTop: 20, maxWidth: 620,
               }}>
                 Reservas hoy. Cerramos pedidos, calculamos el tueste exacto y arrancamos
-                el tambor. Entrega <strong style={{ color: '#f2e0cc' }}>Lima primera semana de agosto</strong> ·
-                Provincia <strong style={{ color: '#f2e0cc' }}>desde segunda semana de agosto</strong>.
+                el tambor. Entrega <strong style={{ color: '#f2e0cc' }}>Lima primera semana de junio</strong> ·
+                Provincia <strong style={{ color: '#f2e0cc' }}>desde segunda semana de junio</strong>.
               </p>
 
               {/* countdown */}
-              <div style={{ marginTop: 36 }}>
+              <div style={{ marginTop: 16 }}>
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16,
                 }}>
@@ -161,12 +161,12 @@ const Preventa = () => {
                   fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#c4b29799',
                   marginTop: 14, lineHeight: 1.5,
                 }}>
-                  Pedidos después del corte entran al siguiente ciclo · entrega Lima segunda semana de agosto · Prov. desde mediados de agosto.
+                  Pedidos realizados después del cierre se incluyen en el siguiente ciclo de entrega.
                 </p>
               </div>
 
               {/* shipping pills */}
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 28 }}>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20 }}>
                 <span style={{
                   display: 'inline-flex', gap: 8, alignItems: 'center',
                   padding: '9px 16px', borderRadius: 999,
@@ -176,7 +176,7 @@ const Preventa = () => {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path d="M3 13l3-9h13l3 9v6h-2a2 2 0 11-4 0H9a2 2 0 11-4 0H3z" stroke="#8faf8a" strokeWidth="1.6" />
                   </svg>
-                  Lima gratis desde S/ 100
+                  Envío gratis en Lima por S/ 100 +
                 </span>
                 <span style={{
                   display: 'inline-flex', gap: 8, alignItems: 'center',
@@ -187,12 +187,12 @@ const Preventa = () => {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                     <path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8" stroke="#c4b297" strokeWidth="1.6" strokeLinejoin="round" />
                   </svg>
-                  Provincia gratis desde S/ 150
+                  Envío gratis a Provincia por S/ 150 +
                 </span>
               </div>
 
               {/* CTAs */}
-              <div style={{ display: 'flex', gap: 18, alignItems: 'center', marginTop: 36, flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: 18, alignItems: 'center', marginTop: 20, flexWrap: 'wrap' }}>
                 <a href="#cafe" className="tw-cta-primary" style={{
                   fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 14,
                   letterSpacing: '0.08em', textTransform: 'uppercase',

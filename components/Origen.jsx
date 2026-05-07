@@ -2,7 +2,7 @@
 const Origen = () => {
   return (
     <section id="origen" style={{
-      position: 'relative', padding: '140px 36px 120px',
+      position: 'relative', padding: '100px 36px 120px',
       background: '#f2e0cc',
     }}>
       <div style={{ maxWidth: 1320, margin: '0 auto' }}>

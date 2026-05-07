@@ -20,7 +20,7 @@ const Modelo = () => {
 
   return (
     <section id="modelo" ref={ref} style={{
-      padding: '140px 36px',
+      padding: '100px 36px',
       background: 'linear-gradient(180deg, #f2e0cc 0%, #e8d2b6 100%)',
       position: 'relative',
     }}>

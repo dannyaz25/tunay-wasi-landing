@@ -92,7 +92,7 @@ const Hero = () => {
             ...fade(0.3),
           }}>
             Conectamos directamente a caficultores de los Andes con tu taza.
-            Sin intermediarios, sin opacidad — el <strong style={{ color: '#1f3028', fontWeight: 600 }}>50&nbsp;% de cada bolsa</strong> regresa a quien sembró el grano.
+            Sin intermediarios, sin opacidad — hasta el <strong style={{ color: '#1f3028', fontWeight: 600 }}>50&nbsp;% de cada bolsa</strong> regresa a quien sembró el grano.
           </p>
 
           <div style={{ display: 'flex', gap: 16, marginTop: 44, alignItems: 'center', flexWrap: 'wrap', ...fade(0.45) }}>
@@ -124,7 +124,7 @@ const Hero = () => {
           {/* metrics strip */}
           <div style={{ display: 'flex', gap: 48, marginTop: 72, flexWrap: 'wrap', ...fade(0.6) }}>
             {[
-              ['50%', 'directo al productor'],
+              ['Hasta 50%', 'directo al productor'],
               // TODO: reemplazar con count real de la colección 'caficultores' en Firebase
               ['12', 'fincas asociadas'],
               // TODO: confirmar altitud media con datos reales de Firebase

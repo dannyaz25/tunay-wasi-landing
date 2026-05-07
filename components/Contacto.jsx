@@ -83,7 +83,7 @@ const Contacto = () => {
 
   return (
     <section id="contacto" style={{
-      background: '#f2e0cc', padding: '140px 36px',
+      background: '#f2e0cc', padding: '100px 36px',
       borderTop: '1px solid #1f302822',
     }}>
       <div style={{

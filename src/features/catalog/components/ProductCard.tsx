@@ -1,0 +1,127 @@
+import { useState } from 'react';
+import { Money } from '@/shared/money';
+import type { Producto } from '@/shared/types/catalog';
+import { useCartActions } from '@/features/cart/useCart';
+import ImageSlot from '@/components/decor/ImageSlot';
+
+const TAG_TONES: Record<string, { bg: string; text: string }> = {
+  sage:  { bg: '#8faf8a', text: '#1f3028' },
+  terra: { bg: '#c96e4b', text: '#f2e0cc' },
+  deep:  { bg: '#1f3028', text: '#f2e0cc' },
+};
+
+const GRIND_DEFAULT = 'Grano';
+
+export default function ProductCard({ p }: { p: Producto }) {
+  const [hover, setHover] = useState(false);
+  const [weightIdx, setWeightIdx] = useState(0);
+  const [qty, setQty] = useState(1);
+  const { add, open: openCart } = useCartActions();
+  const tone = TAG_TONES[p.tagTone] ?? TAG_TONES.sage;
+  const [wLabel, unitCents] = p.weights[weightIdx];
+
+  const handleReservar = () => {
+    add({
+      id: `${p.code}-${wLabel}-${GRIND_DEFAULT}`,
+      sku: p.code,
+      name: p.name,
+      weight: wLabel as '250g' | '1kg' | '3kg',
+      grind: GRIND_DEFAULT,
+      unitCents,
+      qty,
+      maxQty: 30,
+      caficultor: p.producer,
+      finca: p.farm,
+      badge: 'Selección',
+    });
+    openCart();
+  };
+
+  return (
+    <article
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 24, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-6px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -22px #533b22cc' : '0 14px 32px -22px #533b2288', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 18 }}
+    >
+      <div style={{ position: 'relative' }}>
+        <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="4 / 3" />
+        <div style={{ position: 'absolute', top: 14, left: 14, background: '#1f3028e0', color: '#f2e0cc', padding: '6px 12px', borderRadius: 999, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>
+          № {p.code} · SCA {p.score}
+        </div>
+        <div style={{ position: 'absolute', top: 14, right: 14, background: tone.bg, color: tone.text, padding: '6px 12px', borderRadius: 999, fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
+          {p.tag}
+        </div>
+        <div style={{ position: 'absolute', bottom: 14, left: 14, background: '#f2e0cce0', color: '#1f3028', padding: '6px 10px', borderRadius: 8, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.12em', backdropFilter: 'blur(6px)' }}>
+          {p.alt} · {p.region.split(' · ').slice(-1)[0]}
+        </div>
+      </div>
+
+      <div>
+        <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, lineHeight: 1.0, margin: 0, letterSpacing: '-0.005em', color: '#1f3028' }}>{p.name}</h3>
+        <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#533b22', marginTop: 6, fontStyle: 'italic' }}>{p.sub}</div>
+      </div>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, padding: '6px 11px', borderRadius: 8, background: '#1f3028', color: '#f2e0cc' }}>
+          Caficultor: <strong style={{ fontWeight: 600 }}>{p.producer}</strong>
+        </span>
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, padding: '6px 11px', borderRadius: 8, background: '#c4b297', color: '#1f3028' }}>{p.farm}</span>
+      </div>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        {p.notes.map((n) => (
+          <span key={n} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, padding: '5px 11px', borderRadius: 999, background: '#8faf8a44', color: '#1f3028', border: '1px solid #8faf8a99' }}>{n}</span>
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#8faf8a22', border: '1px solid #8faf8a66', borderRadius: 12, padding: '10px 14px' }}>
+        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#8faf8a', animation: 'tw-pulse-mini 2s ease-in-out infinite', display: 'inline-block' }} />
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#1f3028' }}>Tostado un día antes del envío — café ultra fresco</span>
+      </div>
+
+      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 16, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0, opacity: 0.85 }}>{p.desc}</p>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', paddingTop: 14, borderTop: '1px solid #1f302822' }}>
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em', color: '#533b22' }}>BIEN PARA</span>
+        {p.brews.map((b) => (
+          <span key={b} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, padding: '3px 9px', borderRadius: 6, background: '#1f302811', color: '#1f3028', border: '1px solid #1f302822' }}>{b}</span>
+        ))}
+      </div>
+
+      <div>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.2em', color: '#533b22', marginBottom: 8 }}>PRESENTACIÓN</div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {p.weights.map(([wl], i) => (
+            <button key={wl} onClick={() => setWeightIdx(i)} style={{ flex: 1, padding: '10px 6px', borderRadius: 10, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, background: weightIdx === i ? '#c96e4b' : '#f2e0cc', color: weightIdx === i ? '#f2e0cc' : '#1f3028', border: `1px solid ${weightIdx === i ? '#c96e4b' : '#1f302833'}`, transition: 'all .25s ease' }}>{wl}</button>
+          ))}
+        </div>
+        <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22', marginTop: 8 }}>
+          Stock verde: {p.stockKg} kg
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'end' }}>
+        <div>
+          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 40, lineHeight: 1, color: '#1f3028' }}>
+            {Money.formatPEN(unitCents * qty)}
+          </div>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22', marginTop: 6 }}>
+            42% al caficultor · {Money.formatPEN(Math.round(unitCents * qty * 0.421))}
+          </div>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #1f302833', borderRadius: 999, overflow: 'hidden', background: '#f2e0cc' }}>
+          <button onClick={() => setQty((q) => Math.max(1, q - 1))} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 16, color: '#1f3028' }}>−</button>
+          <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, minWidth: 28, textAlign: 'center', color: '#1f3028' }}>{qty}</span>
+          <button onClick={() => setQty((q) => q + 1)} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 16, color: '#1f3028' }}>+</button>
+        </div>
+      </div>
+
+      <button onClick={handleReservar} style={{ marginTop: 4, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f2e0cc', background: hover ? '#c96e4b' : '#1f3028', padding: '16px 22px', borderRadius: 999, border: 'none', cursor: 'pointer', boxShadow: '0 14px 28px -16px #533b22aa', transition: 'all .35s ease', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+        <span>Reservar — entrega junio</span>
+        <span>→</span>
+      </button>
+
+      <style>{`@keyframes tw-pulse-mini { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }`}</style>
+    </article>
+  );
+}

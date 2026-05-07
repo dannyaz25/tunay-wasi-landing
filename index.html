@@ -21,55 +21,9 @@
     a { color: inherit; }
     ::selection { background: #c96e4b; color: #f2e0cc; }
   </style>
-
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
 <body>
   <div id="root"></div>
-
-  <script src="lib/money.js"></script>
-  <script src="lib/cartSchema.js"></script>
-  <script type="text/babel" src="components/Hummingbird.jsx"></script>
-  <script type="text/babel" src="components/Decor.jsx"></script>
-  <script type="text/babel" src="lib/cartStore.js"></script>
-  <script type="text/babel" src="lib/useCartTotals.js"></script>
-  <script src="lib/checkout.js"></script>
-  <script type="text/babel" src="components/Nav.jsx"></script>
-  <script type="text/babel" src="components/Hero.jsx"></script>
-  <script type="text/babel" src="components/Origen.jsx"></script>
-  <script type="text/babel" src="components/Preventa.jsx"></script>
-  <script type="text/babel" src="components/Caficultores.jsx"></script>
-  <script type="text/babel" src="components/Cafe.jsx"></script>
-  <script type="text/babel" src="components/Modelo.jsx"></script>
-  <script type="text/babel" src="components/Contacto.jsx"></script>
-  <script type="text/babel" src="components/Footer.jsx"></script>
-  <script type="text/babel" src="components/CartDrawer.jsx"></script>
-  <script type="text/babel" src="components/CartButton.jsx"></script>
-  <script type="text/babel" src="components/Checkout.jsx"></script>
-
-  <script type="text/babel">
-    const App = () => (
-      <React.Fragment>
-        <GrainOverlay />
-        <Nav />
-        <main>
-          <Hero />
-          <Preventa />
-          <Origen />
-          <Caficultores />
-          <Cafe />
-          <Modelo />
-          <Contacto />
-        </main>
-        <Footer />
-        <CartButton />
-        <CartDrawer />
-        <Checkout />
-      </React.Fragment>
-    );
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-  </script>
+  <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
