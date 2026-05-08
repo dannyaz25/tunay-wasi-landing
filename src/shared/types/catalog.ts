@@ -37,6 +37,7 @@ export interface Caficultor {
   score: string;
   color: ToneOption;
   quote: string;
+  summary?: string;      // resumen breve (opcional — mostrado en card)
   photo?: string;
   // extended profile fields (optional — shown in modal)
   photos?: string[];

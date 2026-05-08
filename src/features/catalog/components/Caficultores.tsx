@@ -36,7 +36,7 @@ function ProducerCard({ p, idx, total, onOpenProfile }: { p: Caficultor; idx: nu
         <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#c96e4b', marginTop: 6, fontWeight: 500, fontStyle: 'italic' }}>{p.farm}</div>
       </div>
 
-      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0 }}>"{p.quote}"</p>
+      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0 }}>"{p.summary}"</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4, borderTop: '1px solid #1f302822', paddingTop: 16 }}>
         {([['ALT.', p.alt], ['VAR.', p.variety], ['PROC.', p.process]] as [string, string][]).map(([k, v]) => (

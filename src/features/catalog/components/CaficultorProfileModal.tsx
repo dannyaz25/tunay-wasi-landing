@@ -142,19 +142,19 @@ export default function CaficultorProfileModal({ producer: p, idx, total, onClos
 
           {/* social impact */}
           {p.socialImpact && (
-            <div style={{ marginBottom: 28, padding: '18px 20px', borderRadius: 14, border: '1px solid #8faf8a66', background: '#8faf8a14', position: 'relative' }}>
+            <div style={{ marginBottom: 28, padding: '18px 20px', borderRadius: 14, border: '1px solid #8faf8a55', background: '#8faf8a12' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="#8faf8a" />
-                  <path d="M17 8c0-2.76-2.24-5-5-5S7 5.24 7 8c0 1.86 1.01 3.48 2.5 4.36V18h5v-5.64C15.99 11.48 17 9.86 17 8zm-5 3c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z" fill="#8faf8a" />
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-15 9" stroke="#8faf8a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+                  <path d="M5.71 22c0-5.33 2.67-8 6.29-9" stroke="#8faf8a" strokeWidth="2" strokeLinecap="round" fill="none"/>
                 </svg>
-                <span style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 10, letterSpacing: '0.28em', color: '#1f3028', textTransform: 'uppercase' }}>Impacto Social</span>
+                <span style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 10, letterSpacing: '0.3em', color: '#1f3028', textTransform: 'uppercase' }}>Impacto Social</span>
               </div>
-              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, lineHeight: 1.7, color: '#1f3028', margin: 0 }}>
+              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, lineHeight: 1.75, color: '#1f3028', margin: 0 }}>
                 Con el sobreprecio pagado por este lote,{' '}
                 <strong style={{ fontWeight: 600 }}>{p.name}</strong>{' '}
                 planea{' '}
-                <span style={{ color: '#c96e4b', fontWeight: 600 }}>{p.socialImpact}</span>
+                <span style={{ color: '#1f3028', fontWeight: 700, background: '#c96e4b18', borderBottom: '2px solid #c96e4b', paddingBottom: 1 }}>{p.socialImpact}</span>
               </p>
             </div>
           )}

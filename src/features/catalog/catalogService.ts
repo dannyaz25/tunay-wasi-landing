@@ -9,7 +9,7 @@ const STATIC_PRODUCTS: Producto[] = [
     farm: 'Finca Darlyn Sánchez', producer: 'Darlyn Sánchez Hilario',
     notes: ['Caramelo', 'Naranja sanguina', 'Cacao'],
     body: 'Medio', acidity: 'Cítrica brillante',
-    score: '88', tag: 'Versátil', tagTone: 'sage',
+    score: '87.5+', tag: 'Versátil', tagTone: 'sage',
     brews: ['V60', 'Chemex', 'AeroPress'],
     weights: [['250g', 3900], ['1kg', 15000], ['3kg', 46000]],
     tone: 'green', stockKg: 9.2,
@@ -47,9 +47,13 @@ const STATIC_CAFICULTORES: Caficultor[] = [
   {
     id: 'Darlyn-Sánchez', name: 'Darlyn Sánchez Hilario', farm: 'Finca Darlyn Sánchez',
     region: 'Oxapampa · Pasco', alt: '800 m', variety: 'Geisha',
-    process: 'Honey', score: '88', color: 'green',
-    quote: 'El café se siembra con la mano, pero se cuida con el oído — escuchando la lluvia.',
+    process: 'Honey', score: '87.5+', color: 'green',
+    quote: 'Darlyn ha transformado la finca en un laboratorio de alta gama, enfocándose en micro-lotes de puntajes sobresalientes (87.5+ puntos) en lugar de volumen comercial. Maestría en el Proceso Honey: La familia se ha especializado en el proceso Honey, una técnica que requiere un monitoreo minucioso durante el secado para preservar el mucílago (la "miel") del grano, logrando esas notas características a jalea y caramelo que lo llevaron a ganar la subasta.',
+    summary: 'El café se siembra con la mano, pero se cuida con el oído — escuchando la lluvia.',
     photo: '/imgs/darlynsanchez.jpg',
+    yearsExp: 8,
+    farmHa: 5,
+    socialImpact: "Invertir en camas africanas (secadores elevados) con control de temperatura para perfeccionar sus procesos Honey y evitar que la humedad de la selva afecte los lotes."
   },
   /* {
      id: 'mateo-huaman', name: 'Mateo Huamán', farm: 'Finca Yanapay',
