@@ -67,7 +67,9 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
           fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontWeight: 700,
           letterSpacing: '0.22em', textTransform: 'uppercase',
         }}>
-          {p.label}
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#c96e4b', boxShadow: '0 0 0 0 #c96e4b88', animation: 'tw-pulse 2s ease-in-out infinite', display: 'inline-block' }} />
+          <span style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 11, letterSpacing: '0.18em', color: '#f2e0cc', textTransform: 'uppercase' }}> {p.label}</span>
+
         </div>
       )}
       <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
