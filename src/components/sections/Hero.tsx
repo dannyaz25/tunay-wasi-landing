@@ -22,7 +22,7 @@ export default function Hero() {
         .tw-cta-primary:hover .tw-cta-arrow { transform: translateX(6px); }
         @media (max-width: 960px) { .tw-hero-grid { grid-template-columns: 1fr !important; gap: 60px !important; } }
       `}</style>
-      <section id="top" style={{ position: 'relative', minHeight: '92vh', paddingTop: 80, paddingBottom: 60, overflow: 'hidden' }}>
+      <section id="top" style={{ position: 'relative', minHeight: '92vh', paddingTop: 120, paddingBottom: 60, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'radial-gradient(80% 60% at 75% 30%, #e8c69e 0%, #f2e0cc 55%, #f2e0cc 100%)' }} />
         <div style={{ position: 'absolute', top: '12%', right: '-8%', width: 520, height: 520, borderRadius: '50%', background: 'radial-gradient(circle, #c96e4b88 0%, #c96e4b00 70%)', filter: 'blur(22px)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '-10%', left: '-6%', width: 460, height: 460, borderRadius: '50%', background: 'radial-gradient(circle, #8faf8a55 0%, #8faf8a00 70%)', filter: 'blur(28px)', zIndex: 0 }} />

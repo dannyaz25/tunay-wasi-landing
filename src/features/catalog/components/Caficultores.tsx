@@ -17,7 +17,7 @@ function ProducerCard({ p, idx, total, onOpenProfile }: { p: Caficultor; idx: nu
           <img
             src={p.photo}
             alt={p.name}
-            style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', borderRadius: 16, display: 'block' }}
+            style={{ width: '100%', aspectRatio: '5 / 3', objectFit: 'cover', borderRadius: 16, display: 'block' }}
           />
         ) : (
           <ImageSlot label={`retrato · ${(p.name ?? '').split(' ').slice(-1)[0].toLowerCase()}`} tone={p.color ?? 'green'} ratio="4 / 3" />

@@ -29,3 +29,18 @@ Do not open `index.html` directly via `file://` — scripts won't load due to CO
 
 - No lint/typecheck/test — this is plain HTML + React via CDN, no build system
 - Brand assets: `brand/` contains PNG exports from the PDF brand guide
+
+## Working guidelines
+
+### Git
+- All commit messages must be in **English**.
+- Subject line max **100 characters**; use the `type: short description` format (feat, fix, refactor, chore…).
+
+### Branding compliance
+- Every new component, redesign, or visual change **must follow the design system** above (colors, fonts, spacing tokens). Do not introduce colors, typefaces, or patterns outside the defined tokens.
+- Before creating a new component, check whether an equivalent already exists in `src/components/` or `src/features/`.
+
+### Ambiguity & conflict resolution
+- If a prompt is ambiguous or conflicts with existing design/architecture decisions, **ask before implementing** — do not guess.
+- If two valid approaches exist, present the options with trade-offs and wait for a decision before writing code.
+- When in doubt about branding (copy, color, imagery), pause and ask rather than ship something inconsistent.

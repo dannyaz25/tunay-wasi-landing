@@ -80,7 +80,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
             style={{ width: '100%', aspectRatio: '5 / 3', objectFit: 'cover', borderRadius: 16, display: 'block' }}
           />
         ) : (
-          <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="5 / 3" />
+          <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="7 / 3" />
         )}
         <div style={{ position: 'absolute', top: 14, left: 14, background: '#1f3028e0', color: '#f2e0cc', padding: '6px 12px', borderRadius: 999, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>
           № {p.code} · SCA {p.score}
