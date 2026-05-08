@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useCatalog } from '../useCatalog';
 import FilterPanel, { type FilterState } from './FilterPanel';
 import ProductCard from './ProductCard';
+import CostBreakdownModal from './CostBreakdownModal';
 
 function gridStyle(count: number): React.CSSProperties {
   if (count === 1) return { display: 'grid', gridTemplateColumns: '1fr', gap: 28, width: '50%', marginLeft: 'auto', marginRight: 'auto' };
@@ -16,6 +17,7 @@ export default function Cafe() {
   });
   const { data: products, isLoading } = useCatalog();
   const total = products?.length ?? 0;
+  const [breakdownData, setBreakdownData] = useState<{ unitCents: number; qty: number } | null>(null);
 
   return (
     <section id="cafe" style={{ background: '#f2e0cc', padding: '100px 36px', position: 'relative' }}>
@@ -43,7 +45,13 @@ export default function Cafe() {
           </div>
         ) : (
           <div style={gridStyle(total)} className="tw-cafe-grid">
-            {(products ?? []).map((p) => <ProductCard key={p.id} p={p} />)}
+            {(products ?? []).map((p) => (
+              <ProductCard
+                key={p.id}
+                p={p}
+                onRequestBreakdown={(uc, q) => setBreakdownData({ unitCents: uc, qty: q })}
+              />
+            ))}
           </div>
         )}
       </div>
@@ -54,6 +62,14 @@ export default function Cafe() {
         @media (max-width: 640px)  { .tw-cafe-grid { grid-template-columns: 1fr !important; gap: 20px !important; } }
         @keyframes tw-skeleton-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
       `}</style>
+
+      {breakdownData && (
+        <CostBreakdownModal
+          unitCents={breakdownData.unitCents}
+          qty={breakdownData.qty}
+          onClose={() => setBreakdownData(null)}
+        />
+      )}
     </section>
   );
 }

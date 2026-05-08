@@ -4,6 +4,7 @@ import type { Producto, ProductLabel } from '@/shared/types/catalog';
 import { useCartActions } from '@/features/cart/useCart';
 import ImageSlot from '@/components/decor/ImageSlot';
 
+
 const TAG_TONES: Record<string, { bg: string; text: string }> = {
   sage:  { bg: '#8faf8a', text: '#1f3028' },
   terra: { bg: '#c96e4b', text: '#f2e0cc' },
@@ -27,7 +28,7 @@ const LABEL_STYLES: Record<ProductLabel, React.CSSProperties> = {
 
 const GRIND_DEFAULT = 'Grano';
 
-export default function ProductCard({ p }: { p: Producto }) {
+export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; onRequestBreakdown: (unitCents: number, qty: number) => void }) {
   const [hover, setHover] = useState(false);
   const [weightIdx, setWeightIdx] = useState(0);
   const [qty, setQty] = useState(1);
@@ -139,8 +140,17 @@ export default function ProductCard({ p }: { p: Producto }) {
           <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 40, lineHeight: 1, color: '#1f3028' }}>
             {Money.formatPEN(unitCents * qty)}
           </div>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22', marginTop: 6 }}>
-            42% al caficultor · {Money.formatPEN(Math.round(unitCents * qty * 0.421))}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22' }}>
+              42% al caficultor · {Money.formatPEN(Math.round(unitCents * qty * 0.421))}
+            </span>
+            <button
+              onClick={() => onRequestBreakdown(unitCents, qty)}
+              title="Ver desglose de costos"
+              style={{ background: 'none', border: '1px solid #533b2255', borderRadius: '50%', width: 18, height: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, flexShrink: 0 }}
+            >
+              <span style={{ fontFamily: 'serif', fontSize: 11, color: '#533b22', lineHeight: 1, userSelect: 'none' }}>i</span>
+            </button>
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #1f302833', borderRadius: 999, overflow: 'hidden', background: '#f2e0cc' }}>

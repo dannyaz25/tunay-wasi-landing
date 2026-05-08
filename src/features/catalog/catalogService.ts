@@ -47,7 +47,7 @@ const STATIC_CAFICULTORES: Caficultor[] = [
   {
     id: 'Darlyn-Sánchez', name: 'Darlyn Sánchez Hilario', farm: 'Finca Darlyn Sánchez',
     region: 'Oxapampa · Pasco', alt: '800 m', variety: 'Geisha',
-    process: 'Honey', score: '87.5+', color: 'green',
+    process: 'Honey', score: '88', color: 'green',
     quote: 'El café se siembra con la mano, pero se cuida con el oído — escuchando la lluvia.',
     photo: '/imgs/darlynsanchez.jpg',
   },
