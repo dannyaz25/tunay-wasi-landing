@@ -38,6 +38,13 @@ export interface Caficultor {
   color: ToneOption;
   quote: string;
   photo?: string;
+  // extended profile fields (optional — shown in modal)
+  photos?: string[];
+  bio?: string;
+  socialImpact?: string;
+  yearsExp?: number;
+  farmHa?: number;
+  location?: string;
 }
 
 export interface CicloActivo {

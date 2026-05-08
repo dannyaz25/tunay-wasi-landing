@@ -2,8 +2,9 @@ import { useState } from 'react';
 import type { Caficultor } from '@/shared/types/catalog';
 import { useCaficultores } from '../useCaficultores';
 import ImageSlot from '@/components/decor/ImageSlot';
+import CaficultorProfileModal from './CaficultorProfileModal';
 
-function ProducerCard({ p, idx, total }: { p: Caficultor; idx: number; total: number }) {
+function ProducerCard({ p, idx, total, onOpenProfile }: { p: Caficultor; idx: number; total: number; onOpenProfile: () => void }) {
   const [hover, setHover] = useState(false);
   return (
     <article
@@ -37,7 +38,7 @@ function ProducerCard({ p, idx, total }: { p: Caficultor; idx: number; total: nu
 
       <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0 }}>"{p.quote}"</p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4, borderTop: '1px solid #1f302822', paddingTop: 16, marginTop: 'auto' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4, borderTop: '1px solid #1f302822', paddingTop: 16 }}>
         {([['ALT.', p.alt], ['VAR.', p.variety], ['PROC.', p.process]] as [string, string][]).map(([k, v]) => (
           <div key={k}>
             <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em', color: '#533b22' }}>{k}</div>
@@ -45,6 +46,15 @@ function ProducerCard({ p, idx, total }: { p: Caficultor; idx: number; total: nu
           </div>
         ))}
       </div>
+
+      <button
+        onClick={onOpenProfile}
+        style={{ marginTop: 'auto', width: '100%', padding: '13px 20px', background: 'transparent', border: '1px solid #1f302844', borderRadius: 10, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, letterSpacing: '0.06em', color: '#1f3028', transition: 'all .3s ease', textAlign: 'center' }}
+        onMouseEnter={(e) => { const el = e.currentTarget; el.style.background = '#1f3028'; el.style.color = '#f2e0cc'; el.style.borderColor = '#1f3028'; }}
+        onMouseLeave={(e) => { const el = e.currentTarget; el.style.background = 'transparent'; el.style.color = '#1f3028'; el.style.borderColor = '#1f302844'; }}
+      >
+        Ver perfil completo →
+      </button>
     </article>
   );
 }
@@ -58,6 +68,7 @@ function gridStyle(count: number): React.CSSProperties {
 export default function Caficultores() {
   const { data: producers, isLoading } = useCaficultores();
   const total = producers?.length ?? 0;
+  const [selected, setSelected] = useState<{ producer: Caficultor; idx: number } | null>(null);
 
   return (
     <section id="caficultores" style={{ position: 'relative', padding: '140px 36px', background: '#1f3028', color: '#f2e0cc', overflow: 'hidden' }}>
@@ -89,7 +100,15 @@ export default function Caficultores() {
           </div>
         ) : (
           <div style={gridStyle(total)} className="tw-prod-grid">
-            {(producers ?? []).map((p, i) => <ProducerCard key={p.id} p={p} idx={i} total={total} />)}
+            {(producers ?? []).map((p, i) => (
+              <ProducerCard
+                key={p.id}
+                p={p}
+                idx={i}
+                total={total}
+                onOpenProfile={() => setSelected({ producer: p, idx: i })}
+              />
+            ))}
           </div>
         )}
 
@@ -108,6 +127,15 @@ export default function Caficultores() {
         @media (max-width: 640px)  { .tw-prod-grid { grid-template-columns: 1fr !important; gap: 24px !important; } }
         @keyframes tw-skeleton-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
       `}</style>
+
+      {selected && (
+        <CaficultorProfileModal
+          producer={selected.producer}
+          idx={selected.idx}
+          total={total}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </section>
   );
 }
