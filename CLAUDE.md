@@ -13,7 +13,7 @@ python3 -m http.server 8080
 open index.html   # works on macOS for read-only testing
 ```
 
-> `file://` protocol may block cross-origin script loads on some browsers. Use a local HTTP server.
+> `file://`  protocol may block cross-origin script loads on some browsers. Use a local HTTP server.
 
 ## Architecture
 
@@ -63,3 +63,18 @@ Floating overlays: `CartButton` (bottom-right), `CartDrawer` (slide-in panel), `
 ## Brand assets
 
 Brand guide pages are in `brand/` as PNG exports from the PDF (`page-1-img-0.png`, `page-2-img-1.png`, `page-3-img-2.png`).
+
+## Working guidelines
+
+### Git
+- All commit messages must be in **English**.
+- Subject line max **100 characters**; use the `type: short description` format (feat, fix, refactor, chore…).
+
+### Branding compliance
+- Every new component, redesign, or visual change **must follow the design system** above (colors, fonts, spacing tokens). Do not introduce colors, typefaces, or patterns outside the defined tokens.
+- Before creating a new component, check whether an equivalent already exists in `src/components/` or `src/features/`.
+
+### Ambiguity & conflict resolution
+- If a prompt is ambiguous or conflicts with existing design/architecture decisions, **ask before implementing** — do not guess.
+- If two valid approaches exist, present the options with trade-offs and wait for a decision before writing code.
+- When in doubt about branding (copy, color, imagery), pause and ask rather than ship something inconsistent.
