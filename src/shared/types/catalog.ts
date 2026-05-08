@@ -1,5 +1,6 @@
 export type ToneOption = 'green' | 'tan' | 'terra' | 'cream' | 'deep';
 export type TagTone = 'sage' | 'terra' | 'deep';
+export type ProductLabel = 'PREVENTA' | 'NEW';
 
 export interface Producto {
   id: string;
@@ -22,6 +23,7 @@ export interface Producto {
   stockKg: number;
   desc: string;
   photo?: string;
+  label?: ProductLabel;
 }
 
 export interface Caficultor {

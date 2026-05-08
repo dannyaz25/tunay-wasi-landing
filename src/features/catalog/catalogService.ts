@@ -15,6 +15,7 @@ const STATIC_PRODUCTS: Producto[] = [
     tone: 'green', stockKg: 9.2,
     desc: 'Café de pequeño productor, secado al sol y proceso lavado clásico — el equilibrio andino.',
     photo: '/imgs/geishaBello-HorizonteOxapampa2.png',
+    label: 'PREVENTA' as const,
   },
   /*{
     id: 'yanapay-honey', code: '02', name: 'Yanapay Honey', sub: 'Honey naranja · San Martín',

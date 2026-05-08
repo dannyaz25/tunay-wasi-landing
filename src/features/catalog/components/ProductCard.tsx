@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Money } from '@/shared/money';
-import type { Producto } from '@/shared/types/catalog';
+import type { Producto, ProductLabel } from '@/shared/types/catalog';
 import { useCartActions } from '@/features/cart/useCart';
 import ImageSlot from '@/components/decor/ImageSlot';
 
@@ -8,6 +8,21 @@ const TAG_TONES: Record<string, { bg: string; text: string }> = {
   sage:  { bg: '#8faf8a', text: '#1f3028' },
   terra: { bg: '#c96e4b', text: '#f2e0cc' },
   deep:  { bg: '#1f3028', text: '#f2e0cc' },
+};
+
+const LABEL_STYLES: Record<ProductLabel, React.CSSProperties> = {
+  'PREVENTA': {
+    background: '#1f3028',
+    color: '#f2e0cc',
+    borderTop: '2px solid #c96e4b',
+    boxShadow: '0 8px 24px -6px rgba(83, 59, 34, 0.55), 0 3px 8px rgba(0,0,0,0.22)',
+  },
+  'NEW': {
+    background: '#8faf8a',
+    color: '#1f3028',
+    borderTop: '2px solid #1f3028',
+    boxShadow: '0 8px 20px -6px rgba(83, 59, 34, 0.4), 0 3px 8px rgba(0,0,0,0.15)',
+  },
 };
 
 const GRIND_DEFAULT = 'Grano';
@@ -41,9 +56,20 @@ export default function ProductCard({ p }: { p: Producto }) {
     <article
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 24, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-6px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -22px #533b22cc' : '0 14px 32px -22px #533b2288', position: 'relative', overflow: 'hidden', display: 'flex', flexDirection: 'column', gap: 18 }}
+      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 24, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-6px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -22px #533b22cc' : '0 14px 32px -22px #533b2288', position: 'relative', display: 'flex', flexDirection: 'column', gap: 18 }}
     >
-      <div style={{ position: 'relative' }}>
+      {p.label && (
+        <div style={{
+          position: 'absolute', top: -12, right: -12, zIndex: 10,
+          ...LABEL_STYLES[p.label],
+          padding: '9px 20px', borderRadius: '0 12px 0 12px',
+          fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontWeight: 700,
+          letterSpacing: '0.22em', textTransform: 'uppercase',
+        }}>
+          {p.label}
+        </div>
+      )}
+      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: 16 }}>
         {p.photo ? (
           <img
             src={p.photo}
