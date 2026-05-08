@@ -57,7 +57,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
     <article
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 24, padding: 24, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-6px)' : 'translateY(0)', boxShadow: hover ? '0 32px 60px -22px #533b22cc' : '0 14px 32px -22px #533b2288', position: 'relative', display: 'flex', flexDirection: 'column', gap: 18 }}
+      style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 20, padding: 18, transition: 'all .45s cubic-bezier(.2,.7,.2,1)', transform: hover ? 'translateY(-6px)' : 'translateY(0)', boxShadow: hover ? '0 28px 52px -20px #533b22cc' : '0 12px 28px -20px #533b2288', position: 'relative', display: 'flex', flexDirection: 'column', gap: 14 }}
     >
       {p.label && (
         <div style={{
@@ -77,10 +77,10 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
           <img
             src={p.photo}
             alt={p.name}
-            style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', borderRadius: 16, display: 'block' }}
+            style={{ width: '100%', aspectRatio: '5 / 3', objectFit: 'cover', borderRadius: 16, display: 'block' }}
           />
         ) : (
-          <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="4 / 3" />
+          <ImageSlot label={`bolsa · ${p.name.toLowerCase()}`} tone={p.tone} ratio="5 / 3" />
         )}
         <div style={{ position: 'absolute', top: 14, left: 14, background: '#1f3028e0', color: '#f2e0cc', padding: '6px 12px', borderRadius: 999, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', backdropFilter: 'blur(6px)' }}>
           № {p.code} · SCA {p.score}
@@ -94,7 +94,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
       </div>
 
       <div>
-        <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, lineHeight: 1.0, margin: 0, letterSpacing: '-0.005em', color: '#1f3028' }}>{p.name}</h3>
+        <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 26, lineHeight: 1.0, margin: 0, letterSpacing: '-0.005em', color: '#1f3028' }}>{p.name}</h3>
         <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#533b22', marginTop: 6, fontStyle: 'italic' }}>{p.sub}</div>
       </div>
 
@@ -116,7 +116,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#1f3028' }}>Tostado un día antes del envío — café ultra fresco</span>
       </div>
 
-      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 16, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0, opacity: 0.85 }}>{p.desc}</p>
+      <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 14, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0, opacity: 0.85 }}>{p.desc}</p>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', paddingTop: 14, borderTop: '1px solid #1f302822' }}>
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em', color: '#533b22' }}>BIEN PARA</span>
@@ -129,7 +129,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
         <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.2em', color: '#533b22', marginBottom: 8 }}>PRESENTACIÓN</div>
         <div style={{ display: 'flex', gap: 8 }}>
           {p.weights.map(([wl], i) => (
-            <button key={wl} onClick={() => setWeightIdx(i)} style={{ flex: 1, padding: '10px 6px', borderRadius: 10, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, background: weightIdx === i ? '#c96e4b' : '#f2e0cc', color: weightIdx === i ? '#f2e0cc' : '#1f3028', border: `1px solid ${weightIdx === i ? '#c96e4b' : '#1f302833'}`, transition: 'all .25s ease' }}>{wl}</button>
+            <button key={wl} onClick={() => setWeightIdx(i)} style={{ flex: 1, padding: '8px 6px', borderRadius: 8, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600, background: weightIdx === i ? '#c96e4b' : '#f2e0cc', color: weightIdx === i ? '#f2e0cc' : '#1f3028', border: `1px solid ${weightIdx === i ? '#c96e4b' : '#1f302833'}`, transition: 'all .25s ease' }}>{wl}</button>
           ))}
         </div>
         <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22', marginTop: 8 }}>
@@ -139,7 +139,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'end' }}>
         <div>
-          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 40, lineHeight: 1, color: '#1f3028' }}>
+          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, lineHeight: 1, color: '#1f3028' }}>
             {Money.formatPEN(unitCents * qty)}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
@@ -162,7 +162,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
         </div>
       </div>
 
-      <button onClick={handleReservar} style={{ marginTop: 4, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f2e0cc', background: hover ? '#c96e4b' : '#1f3028', padding: '16px 22px', borderRadius: 999, border: 'none', cursor: 'pointer', boxShadow: '0 14px 28px -16px #533b22aa', transition: 'all .35s ease', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+      <button onClick={handleReservar} style={{ marginTop: 4, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f2e0cc', background: hover ? '#c96e4b' : '#1f3028', padding: '12px 18px', borderRadius: 999, border: 'none', cursor: 'pointer', boxShadow: '0 12px 24px -14px #533b22aa', transition: 'all .35s ease', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
         <span>Reservar — entrega junio</span>
         <span>→</span>
       </button>

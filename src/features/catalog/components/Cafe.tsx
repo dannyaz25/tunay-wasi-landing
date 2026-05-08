@@ -5,9 +5,9 @@ import ProductCard from './ProductCard';
 import CostBreakdownModal from './CostBreakdownModal';
 
 function gridStyle(count: number): React.CSSProperties {
-  if (count === 1) return { display: 'grid', gridTemplateColumns: '1fr', gap: 28, width: '50%', marginLeft: 'auto', marginRight: 'auto' };
-  if (count === 2) return { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28, width: '100%' };
-  return { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28, width: '100%' };
+  if (count === 1) return { display: 'grid', gridTemplateColumns: '1fr', gap: 20, width: '45%', marginLeft: 'auto', marginRight: 'auto' };
+  if (count === 2) return { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 20, width: '100%' };
+  return { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, width: '100%' };
 }
 
 export default function Cafe() {
@@ -40,7 +40,7 @@ export default function Cafe() {
         {isLoading ? (
           <div style={gridStyle(3)} className="tw-cafe-grid">
             {[0, 1, 2].map((i) => (
-              <div key={i} style={{ background: '#e8d2b6', borderRadius: 24, height: 520, animation: 'tw-skeleton-pulse 1.6s ease-in-out infinite' }} />
+              <div key={i} style={{ background: '#e8d2b6', borderRadius: 20, height: 420, animation: 'tw-skeleton-pulse 1.6s ease-in-out infinite' }} />
             ))}
           </div>
         ) : (

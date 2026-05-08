@@ -22,7 +22,7 @@ export default function Hero() {
         .tw-cta-primary:hover .tw-cta-arrow { transform: translateX(6px); }
         @media (max-width: 960px) { .tw-hero-grid { grid-template-columns: 1fr !important; gap: 60px !important; } }
       `}</style>
-      <section id="top" style={{ position: 'relative', minHeight: '100vh', paddingTop: 120, paddingBottom: 80, overflow: 'hidden' }}>
+      <section id="top" style={{ position: 'relative', minHeight: '92vh', paddingTop: 80, paddingBottom: 60, overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 0, background: 'radial-gradient(80% 60% at 75% 30%, #e8c69e 0%, #f2e0cc 55%, #f2e0cc 100%)' }} />
         <div style={{ position: 'absolute', top: '12%', right: '-8%', width: 520, height: 520, borderRadius: '50%', background: 'radial-gradient(circle, #c96e4b88 0%, #c96e4b00 70%)', filter: 'blur(22px)', zIndex: 0 }} />
         <div style={{ position: 'absolute', bottom: '-10%', left: '-6%', width: 460, height: 460, borderRadius: '50%', background: 'radial-gradient(circle, #8faf8a55 0%, #8faf8a00 70%)', filter: 'blur(28px)', zIndex: 0 }} />
@@ -39,14 +39,14 @@ export default function Hero() {
               <span style={{ width: 48, height: 1, background: '#1f3028' }} />
               <span style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 11, letterSpacing: '0.32em', color: '#533b22', textTransform: 'uppercase' }}>Café · Origen Perú · 2026</span>
             </div>
-            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, color: '#1f3028', fontSize: 'clamp(48px, 5vw, 104px)', lineHeight: 0.95, letterSpacing: '-0.015em', margin: 0, ...fade(0.15) }}>
+            <h1 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, color: '#1f3028', fontSize: 'clamp(38px, 4.5vw, 80px)', lineHeight: 0.95, letterSpacing: '-0.015em', margin: 0, ...fade(0.15) }}>
               Café de Especialidad<br />
               con transparencia desde el <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>origen. </span>
             </h1>
-            <p style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400, color: '#1f3028', fontSize: 18, lineHeight: 1.6, maxWidth: 520, marginTop: 32, ...fade(0.3, 0.82) }}>
+            <p style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400, color: '#1f3028', fontSize: 16, lineHeight: 1.6, maxWidth: 520, marginTop: 24, ...fade(0.3, 0.82) }}>
               Conecta directamente con el caficultor. El mayor porcentaje del precio va directo al productor, según su puntaje SCA. Sin intermediarios. Sin secretos. Solo café excepcional.
             </p>
-            <div style={{ display: 'flex', gap: 16, marginTop: 44, alignItems: 'center', flexWrap: 'wrap', ...fade(0.45) }}>
+            <div style={{ display: 'flex', gap: 16, marginTop: 32, alignItems: 'center', flexWrap: 'wrap', ...fade(0.45) }}>
               <a href="#cafe" className="tw-cta-primary" style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 14, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f2e0cc', background: '#c96e4b', padding: '20px 32px', borderRadius: 999, textDecoration: 'none', boxShadow: '0 18px 40px -16px #533b22aa, inset 0 1px 0 #ffffff33', display: 'inline-flex', alignItems: 'center', gap: 12, transition: 'all .35s cubic-bezier(.2,.7,.2,1)', border: '1px solid #533b2244' }}>
                 Descubrir nuestro café
                 <span style={{ display: 'inline-block', transition: 'transform .35s ease' }} className="tw-cta-arrow">→</span>
@@ -57,17 +57,17 @@ export default function Hero() {
                 Conoce a los caficultores
               </a>
             </div>
-            <div style={{ display: 'flex', gap: 48, marginTop: 72, flexWrap: 'wrap', ...fade(0.6) }}>
+            <div style={{ display: 'flex', gap: 36, marginTop: 48, flexWrap: 'wrap', ...fade(0.6) }}>
               {([['Hasta 50%', 'directo al productor'], ['12', 'fincas asociadas'], ['+1,400 m', 'altitud media']] as [string, string][]).map(([n, l]) => (
                 <div key={l}>
-                  <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 44, fontWeight: 600, color: '#1f3028', lineHeight: 1 }}>{n}</div>
+                  <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 36, fontWeight: 600, color: '#1f3028', lineHeight: 1 }}>{n}</div>
                   <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, color: '#533b22', letterSpacing: '0.16em', textTransform: 'uppercase', marginTop: 8 }}>{l}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div style={{ position: 'relative', minHeight: 580, ...fade(0.25) }}>
+          <div style={{ position: 'relative', minHeight: 480, ...fade(0.25) }}>
             <div style={{ position: 'absolute', top: 0, left: 0, width: '70%' }}>
               <ImageSlot label="finca · neblina andina" tone="green" ratio="3 / 4" />
             </div>
