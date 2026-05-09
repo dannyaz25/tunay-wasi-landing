@@ -17,7 +17,7 @@ export default function Cafe() {
   });
   const { data: products, isLoading } = useCatalog();
   const total = products?.length ?? 0;
-  const [breakdownData, setBreakdownData] = useState<{ unitCents: number; qty: number } | null>(null);
+  const [breakdownData, setBreakdownData] = useState<{ unitCents: number; qty: number; producerPct: number } | null>(null);
 
   return (
     <section id="cafe" style={{ background: '#f2e0cc', padding: '100px 36px', position: 'relative' }}>
@@ -49,7 +49,7 @@ export default function Cafe() {
               <ProductCard
                 key={p.id}
                 p={p}
-                onRequestBreakdown={(uc, q) => setBreakdownData({ unitCents: uc, qty: q })}
+                onRequestBreakdown={(uc, q, pct) => setBreakdownData({ unitCents: uc, qty: q, producerPct: pct })}
               />
             ))}
           </div>
@@ -67,6 +67,7 @@ export default function Cafe() {
         <CostBreakdownModal
           unitCents={breakdownData.unitCents}
           qty={breakdownData.qty}
+          producerPct={breakdownData.producerPct}
           onClose={() => setBreakdownData(null)}
         />
       )}

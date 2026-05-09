@@ -12,6 +12,7 @@ const STATIC_PRODUCTS: Producto[] = [
     score: '87.5+', tag: 'Versátil', tagTone: 'sage',
     brews: ['V60', 'Chemex', 'AeroPress'],
     weights: [['250g', 3900], ['1kg', 15000], ['3kg', 46000]],
+    producerPct: 42,
     tone: 'green', stockKg: 9.2,
     desc: 'Café de pequeño productor, secado al sol y proceso lavado clásico — el equilibrio andino.',
     photo: '/imgs/geishaBello-HorizonteOxapampa2.png',

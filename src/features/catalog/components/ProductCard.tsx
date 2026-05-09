@@ -28,13 +28,15 @@ const LABEL_STYLES: Record<ProductLabel, React.CSSProperties> = {
 
 const GRIND_DEFAULT = 'Grano';
 
-export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; onRequestBreakdown: (unitCents: number, qty: number) => void }) {
+export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; onRequestBreakdown: (unitCents: number, qty: number, producerPct: number) => void }) {
   const [hover, setHover] = useState(false);
   const [weightIdx, setWeightIdx] = useState(0);
   const [qty, setQty] = useState(1);
   const { add, open: openCart } = useCartActions();
   const tone = TAG_TONES[p.tagTone] ?? TAG_TONES.sage;
   const [wLabel, unitCents] = p.weights[weightIdx];
+  const netCents = Math.round(unitCents / 1.18);
+  const caficultorCents = Math.round(netCents * qty * p.producerPct / 100);
 
   const handleReservar = () => {
     add({
@@ -139,15 +141,18 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 12, alignItems: 'end' }}>
         <div>
-          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, lineHeight: 1, color: '#1f3028' }}>
-            {Money.formatPEN(unitCents * qty)}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+            <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, lineHeight: 1, color: '#1f3028' }}>
+              {Money.formatPEN(unitCents * qty)}
+            </div>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.14em', color: '#533b2299', textTransform: 'uppercase' }}>inc. IGV</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22' }}>
-              42% al caficultor · {Money.formatPEN(Math.round(unitCents * qty * 0.421))}
+              {p.producerPct}% al caficultor (sin IGV) · {Money.formatPEN(caficultorCents)}
             </span>
             <button
-              onClick={() => onRequestBreakdown(unitCents, qty)}
+              onClick={() => onRequestBreakdown(unitCents, qty, p.producerPct)}
               title="Ver desglose de costos"
               style={{ background: 'none', border: '1px solid #533b2255', borderRadius: '50%', width: 18, height: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, flexShrink: 0 }}
             >

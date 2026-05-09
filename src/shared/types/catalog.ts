@@ -19,6 +19,7 @@ export interface Producto {
   tagTone: TagTone;
   brews: string[];
   weights: [string, number][];
+  producerPct: number;
   tone: ToneOption;
   stockKg: number;
   desc: string;
