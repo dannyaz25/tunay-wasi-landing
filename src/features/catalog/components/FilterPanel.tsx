@@ -28,7 +28,7 @@ function FilterChip({ active, onClick, children }: { active: boolean; onClick: (
   );
 }
 
-export default function FilterPanel({ open, setOpen, selected, setSelected }: Props) {
+export default function FilterPanel({ open, selected, setSelected }: Props) {
   const toggle = (cat: string, val: string) => {
     setSelected((s) => {
       const cur = new Set(s[cat] ?? []);
