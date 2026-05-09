@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 
 export const SLICES = [
-  { pct: 42, label: 'Caficultor',             color: '#c96e4b', detail: 'Pago directo a la finca, antes de que el grano viaje.' },
-  { pct: 15, label: 'Tueste + Cata Q-Grader', color: '#8faf8a', detail: 'Tostado artesanal y certificación de calidad SCA.' },
+  { pct: 50, label: 'Caficultor',             color: '#c96e4b', detail: 'Hasta el 50% del precio neto (sin IGV) directo a la finca, antes de que el grano viaje.' },
+  { pct: 17, label: 'Tueste + Cata Q-Grader', color: '#8faf8a', detail: 'Tostado artesanal y certificación de calidad SCA.' },
   { pct:  6, label: 'Flete y Empaque',         color: '#c4b297', detail: 'Transporte desde origen y embalaje kraft reciclado.' },
-  { pct: 15, label: 'IGV (18%)',               color: '#8faf8a', detail: 'Impuesto al consumo incluido en el precio final.' },
-  { pct: 21, label: 'Tunay Wasi',              color: '#c96e4b', detail: 'Plataforma, tecnología y operación del marketplace.' },
+/*
+  { pct: 15, label: 'IGV (18%)',               color: '#533b22', detail: 'Impuesto al consumo recaudado y transferido íntegro a SUNAT.' },
+*/
+  { pct: 27, label: 'Tunay Wasi',              color: '#c96e4b', detail: 'Plataforma, tecnología y operación del marketplace.' },
 ];
 
 export default function Modelo() {
@@ -57,13 +59,13 @@ export default function Modelo() {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#c4b297' }}>
-              {['S/ 0', 'S/ 25', 'S/ 50', 'S/ 75', 'S/ 100'].map((l) => <span key={l}>{l}</span>)}
+              {['S/ 0', 'S/ 25', 'S/ 50', 'S/ 75', 'S/ 100 sin IGV  '].map((l) => <span key={l}>{l}</span>)}
             </div>
             <div style={{ marginTop: 24, padding: 16, borderRadius: 14, background: 'rgba(201,110,75,0.12)', border: '1px solid #c96e4b44', boxShadow: '0 24px 50px -22px #00000066', display: 'flex', gap: 16, alignItems: 'center' }}>
-              <div style={{ width: 54, height: 54, borderRadius: '50%', background: '#c96e4b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond, serif', fontSize: 20, fontWeight: 700, flexShrink: 0, color: '#f2e0cc' }}>42%</div>
+              <div style={{ width: 54, height: 54, borderRadius: '50%', background: '#c96e4b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond, serif', fontSize: 18, fontWeight: 700, flexShrink: 0, color: '#f2e0cc', textAlign: 'center', lineHeight: 1.1 }}>50%<br /><span style={{ fontSize: 9, fontFamily: 'JetBrains Mono, monospace', letterSpacing: '0.1em' }}>neto</span></div>
               <div>
-                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontStyle: 'italic', lineHeight: 1.2, color: '#f2e0cc' }}>Es el doble de lo que paga el comercio justo tradicional.</div>
-                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, marginTop: 8, color: '#c4b297' }}>Comparativa SCAA Perú 2025 · Ratio FOB / consumidor.</div>
+                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontStyle: 'italic', lineHeight: 1.2, color: '#f2e0cc' }}>Hasta el 50% del precio neto va al caficultor — el doble del comercio justo tradicional.</div>
+                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, marginTop: 8, color: '#c4b297' }}>Base: precio sin IGV · Comparativa SCAA Perú 2025 · Ratio FOB / consumidor.</div>
               </div>
             </div>
           </div>
