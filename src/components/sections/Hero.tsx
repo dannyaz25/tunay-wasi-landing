@@ -83,7 +83,7 @@ export default function Hero() {
               <div style={{ textAlign: 'center', lineHeight: 1.1 }}>
                 <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 10, color: '#c96e4b', letterSpacing: '0.18em' }}>50/50</div>
                 <div style={{ fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', fontSize: 13, color: '#1f3028', marginTop: 3 }}>justo</div>
-                <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, color: '#533b22', marginTop: 3, letterSpacing: '0.18em' }}>EST · 2024</div>
+                <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, color: '#533b22', marginTop: 3, letterSpacing: '0.18em' }}>EST · 2026</div>
               </div>
             </div>
           </div>

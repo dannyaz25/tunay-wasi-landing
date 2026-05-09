@@ -1,7 +1,7 @@
-const COLUMNS: [string, string[]][] = [
-  ['Tienda', ['Café en grano', 'Molido', 'Suscripción', 'Mayorista']],
-  ['Casa', ['Origen', 'Caficultores', 'Modelo 50/50', 'Reportes']],
-  ['Conecta', ['Instagram', 'WhatsApp', 'Email', 'Newsletter']],
+const COLUMNS: [string, [string, string][]][] = [
+  ['Tienda', [['Café en grano', '#cafe']]],
+  ['Casa', [['Origen', '#origen'], ['Caficultores', '#caficultores'], ['Modelo 50/50', '#modelo'], ['Contacto', '#contacto']]],
+  ['Conecta', [['Instagram', 'https://www.instagram.com/tunay_wasi/'], ['WhatsApp', 'https://wa.me/51917959370?text=Hola%2C%20quiero%20mi%20microlote%20de%20caf%C3%A9%20de%20especialidad%20Tunay%20Wasi'], ['Tiktok', 'https://www.tiktok.com/@tunaywasi7']]],
 ];
 
 export default function Footer() {
@@ -26,12 +26,12 @@ export default function Footer() {
             <div key={title}>
               <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 10, letterSpacing: '0.32em', color: '#c96e4b', textTransform: 'uppercase', marginBottom: 20 }}>{title}</div>
               <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {items.map((it) => (
-                  <li key={it}>
-                    <a href="#" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, color: '#f2e0cc', textDecoration: 'none', transition: 'color .25s ease' }}
+                {items.map(([label, href]) => (
+                  <li key={label}>
+                    <a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener noreferrer' : undefined} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, color: '#f2e0cc', textDecoration: 'none', transition: 'color .25s ease' }}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = '#8faf8a'; }}
                       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = '#f2e0cc'; }}>
-                      {it}
+                      {label}
                     </a>
                   </li>
                 ))}
@@ -46,7 +46,7 @@ export default function Footer() {
           color: '#c4b29799', textTransform: 'uppercase',
         }}>
           <span>© 2026 Tunay Wasi · Lima, Perú</span>
-          <span>50% para el caficultor · siempre.</span>
+          <span>Hasta el 50% para el caficultor · siempre.</span>
         </div>
       </div>
       <style>{`
