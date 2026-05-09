@@ -69,12 +69,12 @@ export default function Hero() {
 
           <div style={{ position: 'relative', minHeight: 480, ...fade(0.25) }}>
             <div style={{ position: 'absolute', top: 0, left: 0, width: '70%' }}>
-              <ImageSlot label="finca · neblina andina" tone="green" ratio="3 / 4" />
+              <ImageSlot label="finca · neblina andina" tone="green" ratio="3 / 4" src="/imgs/7regiones.jpg" />
             </div>
             <div style={{ position: 'absolute', bottom: 30, right: 0, width: '60%', transform: 'rotate(2.5deg)' }}>
-              <ImageSlot label="cerezos de café" tone="terra" ratio="4 / 5" />
+              <ImageSlot label="cerezos de café" tone="terra" ratio="4 / 5" src="/imgs/origen_a_tu_taza.jpg" />
             </div>
-            <div style={{ position: 'absolute', top: '38%', right: '32%', width: 130, height: 130, borderRadius: '50%', background: '#f2e0cc', border: '1px solid #533b22', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 24px 60px -20px #533b22aa', zIndex: 3 }}>
+            <div style={{ position: 'absolute', top: '75%', right: '0%', width: 130, height: 130, borderRadius: '50%', background: '#f2e0cc', border: '1px solid #533b22', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 24px 60px -20px #533b22aa', zIndex: 3 }}>
               <div style={{ width: 96, height: 96, animation: 'tw-logo-hover 4.2s ease-in-out infinite' }}>
                 <img src="/brand/logo.png" alt="Tunay Wasi" style={{ width: '100%', height: '100%', objectFit: 'contain', animation: 'tw-logo-breathe 2.4s ease-in-out infinite' }} />
               </div>
