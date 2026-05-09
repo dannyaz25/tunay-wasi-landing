@@ -41,7 +41,7 @@ export default function FilterPanel({ open, selected, setSelected }: Props) {
   const isActive = (cat: string, val: string) => (selected[cat] ?? []).includes(val);
 
   return (
-    <section style={{ background: '#e8d2b6', border: '1px solid #1f302822', borderRadius: 22, marginBottom: 40, overflow: 'hidden', boxShadow: '0 14px 36px -22px #533b22aa' }}>
+    <section className="tw-filter-panel" style={{ background: '#e8d2b6', border: '1px solid #1f302822', borderRadius: 22, marginBottom: 40, overflow: 'hidden', boxShadow: '0 14px 36px -22px #533b22aa' }}>
       {/*<button onClick={() => setOpen((o) => !o)} style={{ width: '100%', padding: '24px 28px', cursor: 'pointer', background: 'transparent', border: 'none', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
           <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 30, color: '#1f3028', letterSpacing: '-0.005em' }}>Elegir mi café</span>
@@ -49,7 +49,7 @@ export default function FilterPanel({ open, selected, setSelected }: Props) {
         </span>
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 14, color: '#1f3028', transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform .35s ease', display: 'inline-block' }}>▾</span>
       </button>*/}
-      <div style={{ width: '100%', padding: '20px 20px', background: 'transparent', border: 'none', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div style={{ width: '100%', padding: '14px 20px', background: 'transparent', border: 'none', textAlign: 'left', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <span style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
           <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 30, color: '#1f3028', letterSpacing: '-0.005em' }}>Elegir mi café</span>
         </span>
@@ -81,6 +81,9 @@ export default function FilterPanel({ open, selected, setSelected }: Props) {
           ))}
         </div>
       </div>
+      <style>{`
+        @media (max-width: 640px) { .tw-filter-panel { display: none !important; } }
+      `}</style>
     </section>
   );
 }

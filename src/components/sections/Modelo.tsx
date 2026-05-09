@@ -46,7 +46,7 @@ export default function Modelo() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'center' }} className="tw-2col">
           <div>
-            <div style={{ display: 'flex', height: 54, borderRadius: 12, overflow: 'hidden', boxShadow: '0 18px 36px -18px #00000077', border: '1px solid #f2e0cc22' }}>
+            <div className="tw-modelo-bar" style={{ display: 'flex', height: 54, borderRadius: 12, overflow: 'hidden', boxShadow: '0 18px 36px -18px #00000077', border: '1px solid #f2e0cc22' }}>
               {SLICES.map((s, i) => (
                 <div key={s.label} style={{
                   width: animated ? `${s.pct}%` : '0%',
@@ -86,6 +86,11 @@ export default function Modelo() {
           </div>
         </div>
       </div>
+      <style>{`
+        @media (max-width: 640px) {
+          .tw-modelo-bar span { font-size: 13px !important; }
+        }
+      `}</style>
     </section>
   );
 }

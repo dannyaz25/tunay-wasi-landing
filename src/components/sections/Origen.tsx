@@ -4,7 +4,7 @@ export default function Origen() {
   return (
     <section id="origen" style={{ position: 'relative', padding: '100px 36px', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', bottom: '-8%', left: '-6%', width: 420, height: 420, borderRadius: '50%', background: 'radial-gradient(circle, #8faf8a55 0%, #8faf8a00 70%)', filter: 'blur(28px)', zIndex: 0 }} />
-      <div style={{ position: 'absolute', right: -10, bottom: 40, width: 160, zIndex: 1, opacity: 0.55 }}>
+      <div className="tw-origen-decor" style={{ position: 'absolute', right: -10, bottom: 40, width: 160, zIndex: 1, opacity: 0.55 }}>
         <CoffeeBranch flip />
       </div>
 
@@ -73,6 +73,11 @@ export default function Origen() {
 
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .tw-origen-decor { display: none !important; }
+        }
+      `}</style>
     </section>
   );
 }
