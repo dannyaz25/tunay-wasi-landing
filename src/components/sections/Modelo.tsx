@@ -4,8 +4,8 @@ export const SLICES = [
   { pct: 42, label: 'Caficultor',             color: '#c96e4b', detail: 'Pago directo a la finca, antes de que el grano viaje.' },
   { pct: 15, label: 'Tueste + Cata Q-Grader', color: '#8faf8a', detail: 'Tostado artesanal y certificación de calidad SCA.' },
   { pct:  6, label: 'Flete y Empaque',         color: '#c4b297', detail: 'Transporte desde origen y embalaje kraft reciclado.' },
-  { pct: 15, label: 'IGV (18%)',               color: '#533b22', detail: 'Impuesto al consumo incluido en el precio final.' },
-  { pct: 21, label: 'Tunay Wasi',              color: '#1f3028', detail: 'Plataforma, tecnología y operación del marketplace.' },
+  { pct: 15, label: 'IGV (18%)',               color: '#8faf8a', detail: 'Impuesto al consumo incluido en el precio final.' },
+  { pct: 21, label: 'Tunay Wasi',              color: '#c96e4b', detail: 'Plataforma, tecnología y operación del marketplace.' },
 ];
 
 export default function Modelo() {
