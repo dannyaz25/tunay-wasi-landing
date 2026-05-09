@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const LINKS: [string, string][] = [
   ['Preventa', '#preventa'],
+  ['Origen', '#origen'],
   ['Caficultores', '#caficultores'],
   ['Café', '#cafe'],
   ['Modelo 50/50', '#modelo'],

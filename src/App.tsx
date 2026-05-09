@@ -2,7 +2,6 @@ import Nav from '@/components/layout/Nav';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
 import Origen from '@/components/sections/Origen';
-import Historia from '@/components/sections/Historia';
 import Modelo from '@/components/sections/Modelo';
 import CartButton from '@/components/cart/CartButton';
 import CartDrawer from '@/components/cart/CartDrawer';
@@ -25,7 +24,6 @@ export default function App() {
         <Caficultores/>
         <Cafe/>
         <Modelo/>
-        <Historia/>
         <Contacto/>
       </main>
       <Footer/>
