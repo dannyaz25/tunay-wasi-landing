@@ -23,6 +23,7 @@ export function useCountdown(targetMs: number): CountdownTick {
   const [tick, setTick] = useState<CountdownTick>(calc);
 
   useEffect(() => {
+    setTick(calc());
     const id = setInterval(() => setTick(calc()), 1000);
     return () => clearInterval(id);
   }, [targetMs]);
