@@ -1,7 +1,7 @@
 import type { CartItem, CartTotals } from './cart';
 
 export type AdapterName = 'niubiz' | 'stripe' | 'yapePlin';
-export type ShippingZone = 'lima' | 'limaExt' | 'provincia' | 'recojo';
+export type ShippingZone = 'lima' | 'provincia';
 
 export interface ShippingData {
   departamento: string;
