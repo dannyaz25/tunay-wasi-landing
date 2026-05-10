@@ -1,6 +1,8 @@
 import { useState, type ChangeEvent } from 'react';
 import { useLandingConfig } from '@/features/catalog/useLandingConfig';
 import { contactoSchema, type ContactoForm } from '@/shared/validation/contactoSchema';
+import { sendMail } from '@/services/mailService';
+import { emailContactoCliente, emailContactoAdmin } from '@/services/emailTemplates';
 
 type Tema = 'cafe' | 'mayorista' | 'caficultor' | 'prensa';
 
@@ -50,8 +52,16 @@ export default function Contacto() {
     setTouched({ nombre: true, email: true, mensaje: true });
     if (!isValid) return;
     setStatus('sending');
-    // TODO: replace with real POST /api/contact
-    await new Promise((r) => setTimeout(r, 900));
+    try {
+      const { subject: subCliente, html: htmlCliente } = emailContactoCliente(values);
+      const { subject: subAdmin, html: htmlAdmin } = emailContactoAdmin(values);
+      await Promise.all([
+        sendMail({ to: values.email, subject: subCliente, html: htmlCliente }),
+        sendMail({ to: 'cbdavid.cloud@gmail.com', subject: subAdmin, html: htmlAdmin }),
+      ]);
+    } catch {
+      // Email failures don't block the success state
+    }
     setStatus('sent');
   };
 
