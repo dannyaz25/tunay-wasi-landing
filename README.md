@@ -118,6 +118,55 @@ Components subscribe with `window.useCart(selector)`.
 - [ ] Add official Hummingbird SVG in `src/components/decor/Hummingbird.tsx`
 - [ ] Update hardcoded May 2026 delivery dates
 
+## Firebase Firestore Schema
+
+### Collections
+
+| Collection | Path | Description |
+|------------|------|-------------|
+| `caficultores` | `/caficultores/{id}` | Coffee producers (onboarding → admin approval → display) |
+| `productos` | `/productos/{id}` | Coffee products linked to caficultores |
+| `pedidos` | `/pedidos/{id}` | Orders created on payment completion |
+
+### Configuration Docs
+
+| Doc | Path | Purpose |
+|-----|------|---------|
+| `ciclo_activo` | `/configuration/ciclo_activo` | Pre-sale cycle control (countdown, delivery dates) |
+| `comisiones` | `/configuration/comisiones` | Price breakdown (caficultor, toaster, logistics, IGV, platform) |
+| `pricing` | `/configuration/pricing` | SCA-tier price matrix and production costs |
+| `shipping` | `/configuration/shipping` | Shipping zones and rates per region |
+| `landing` | `/configuration/landing` | Grind options, contact info, hero metrics |
+| `yapePlin` | `/configuration/yapePlin` | Yape/Plin QR payment configuration |
+| `paymentGateway` | `/configuration/paymentGateway` | Niubiz and Stripe gateway settings |
+
+### Data Flow
+
+```
+CaficultorDoc ←── ProductoDoc ←── PedidoItem
+     └────────────────────────────────────── PedidoDoc
+```
+
+- `ProductoDoc.caficultorId` → `CaficultorDoc.id`
+- `PedidoItem.productoId` → `ProductoDoc.id`
+- `PedidoItem.caficultorId` → `CaficultorDoc.id`
+
+### Integrations
+
+| Integration | Type | Description |
+|-------------|------|-------------|
+| **Yape/Plin** | QR Payment | Manual transfer with voucher upload, admin confirmation |
+| **Niubiz** | Payment Gateway | Card payments via Peruvian payment processor |
+| **Stripe** | Payment Gateway | International card payments |
+| **Firebase Storage** | File Storage | Producer photos, payment vouchers |
+
+### Firebase Storage Paths
+
+- `tunaywasi/caficultores/{id}/` — Producer profile and farm photos
+- `pedidos/vouchers/{id}.jpg` — Yape/Plin payment vouchers
+
+---
+
 ## License
 
 MIT
