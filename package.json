@@ -10,6 +10,7 @@
     "seed:force": "tsx scripts/seed.ts --force"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@tanstack/react-query": "^5.80.5",
     "firebase": "^12.8.0",
     "qrcode.react": "^4.2.0",

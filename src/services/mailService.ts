@@ -1,38 +1,39 @@
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  as string
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  as string
+import emailjs from '@emailjs/browser'
 
-const EMAILJS_API = 'https://api.emailjs.com/api/v1.0/email/send'
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID as string
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string
 
 export async function sendMail(opts: {
   to: string
   subject: string
   html: string
 }): Promise<void> {
+  console.log('[mailService] Enviando email a', opts.to)
+  console.log('[mailService] Config:', {
+    SERVICE_ID: SERVICE_ID,
+    TEMPLATE_ID: TEMPLATE_ID,
+    PUBLIC_KEY: PUBLIC_KEY
+  })
   if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
     console.warn('[mailService] EmailJS no configurado. Agrega VITE_EMAILJS_* al .env.local')
     return
   }
 
-  const res = await fetch(EMAILJS_API, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({
-      service_id:    SERVICE_ID,
-      template_id:   TEMPLATE_ID,
-      user_id:       PUBLIC_KEY,
-      template_params: {
-        to_email:     opts.to,
-        subject:      opts.subject,
+  try {
+    await emailjs.send(
+      SERVICE_ID,
+      TEMPLATE_ID,
+      {
+        to_email: opts.to,
+        subject: opts.subject,
         html_content: opts.html,
       },
-    }),
-  })
-
-  if (!res.ok) {
-    const text = await res.text()
-    console.error('[mailService] Error EmailJS:', text)
-  } else {
+      PUBLIC_KEY
+    )
     console.log('[mailService] Email enviado a', opts.to)
+  } catch (err) {
+    console.error('[mailService] Error EmailJS:', err)
+    throw err
   }
 }

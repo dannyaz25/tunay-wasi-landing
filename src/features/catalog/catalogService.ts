@@ -208,6 +208,7 @@ export interface LandingContact {
   whatsapp: string;
   address: string;
   appUrl?: string;
+  adminEmail: string;
 }
 
 export interface LandingConfigData {
@@ -218,9 +219,11 @@ export interface LandingConfigData {
 
 export const STATIC_LANDING_CONFIG: LandingConfigData = {
   contact: {
-    email: 'hola@tunaywasi.pe',
+    email: 'tunaywasi@gmail.com',
     whatsapp: '+51917959370',
     address: 'Jr. Independencia 240, Barranco, Lima',
+    appUrl: 'https://app.tunaywasi.pe',
+    adminEmail: 'tunaywasi@gmail.com',
   },
 };
 
