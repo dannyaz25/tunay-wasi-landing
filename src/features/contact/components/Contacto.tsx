@@ -1,14 +1,8 @@
-import { useState, useMemo, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { useLandingConfig } from '@/features/catalog/useLandingConfig';
+import { contactoSchema, type ContactoForm } from '@/shared/validation/contactoSchema';
 
 type Tema = 'cafe' | 'mayorista' | 'caficultor' | 'prensa';
-
-interface FormValues {
-  nombre: string;
-  email: string;
-  tema: Tema;
-  mensaje: string;
-}
 
 const TEMAS: [Tema, string][] = [
   ['cafe', 'Comprar café'],
@@ -24,8 +18,8 @@ const STATIC_CONTACTS: [string, string][] = [
 ];
 
 export default function Contacto() {
-  const [values, setValues] = useState<FormValues>({ nombre: '', email: '', tema: 'cafe', mensaje: '' });
-  const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
+  const [values, setValues] = useState<ContactoForm>({ nombre: '', email: '', tema: 'cafe', mensaje: '' });
+  const [touched, setTouched] = useState<Partial<Record<keyof ContactoForm, boolean>>>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const { data: landingConfig } = useLandingConfig();
 
@@ -37,22 +31,19 @@ export default function Contacto() {
       ]
     : STATIC_CONTACTS;
 
-  const errors = useMemo(() => {
-    const e: Partial<Record<keyof FormValues, string>> = {};
-    if (!values.nombre.trim()) e.nombre = 'Cuéntanos cómo te llamas.';
-    else if (values.nombre.trim().length < 2) e.nombre = 'Necesitamos al menos 2 caracteres.';
-    if (!values.email.trim()) e.email = 'Tu correo, por favor.';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) e.email = 'Ese correo no se ve bien.';
-    if (!values.mensaje.trim()) e.mensaje = 'Escríbenos algo, aunque sea breve.';
-    else if (values.mensaje.trim().length < 10) e.mensaje = 'Un poquito más — al menos 10 caracteres.';
-    return e;
-  }, [values]);
+  const result = contactoSchema.safeParse(values);
+  const errors: Partial<Record<keyof ContactoForm, string>> = result.success
+    ? {}
+    : Object.fromEntries(
+        result.error.issues.map((issue) => [issue.path[0], issue.message]),
+      ) as Partial<Record<keyof ContactoForm, string>>;
 
-  const isValid = Object.keys(errors).length === 0;
-  const showErr = (k: keyof FormValues) => touched[k] && errors[k];
-  const setField = (k: keyof FormValues) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+  const isValid = result.success;
+
+  const showErr = (k: keyof ContactoForm) => touched[k] && errors[k];
+  const setField = (k: keyof ContactoForm) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     setValues((v) => ({ ...v, [k]: e.target.value }));
-  const onBlur = (k: keyof FormValues) => () => setTouched((t) => ({ ...t, [k]: true }));
+  const onBlur = (k: keyof ContactoForm) => () => setTouched((t) => ({ ...t, [k]: true }));
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
