@@ -2,6 +2,8 @@ export type ToneOption = 'green' | 'tan' | 'terra' | 'cream' | 'deep';
 export type TagTone = 'sage' | 'terra' | 'deep';
 export type ProductLabel = 'PREVENTA' | 'NEW';
 
+export type { CaficultorDoc } from './firestore';
+
 export interface Producto {
   id: string;
   code: string;
@@ -47,7 +49,9 @@ export interface Caficultor {
   yearsExp?: number;
   farmHa?: number;
   location?: string;
+  status?: string;
 }
+
 
 export interface CicloActivo {
   closeAt: string;

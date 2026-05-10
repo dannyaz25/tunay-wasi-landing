@@ -1,6 +1,29 @@
-import { collection, doc, getDocs, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/shared/firebase';
-import type { Producto, Caficultor, CicloActivo } from '@/shared/types/catalog';
+import type { Caficultor, CaficultorDoc, CicloActivo, Producto } from '@/shared/types/catalog';
+
+function mapCaficultorDoc(id: string, raw: CaficultorDoc): Caficultor {
+  return {
+    id,
+    name: raw.nombreProductor,
+    farm: raw.nombreFinca,
+    region: `${raw.provincia} · ${raw.departamento}`,
+    alt: `${raw.altitud} m`,
+    variety: raw.variedad,
+    process: raw.proceso,
+    score: raw.puntajeSCA,
+    color: 'green',
+    quote: raw.historia ?? '',
+    bio: raw.historia,
+    socialImpact: raw.impactoSocial,
+    yearsExp: raw.experienciaAnos ? Number(raw.experienciaAnos) : undefined,
+    farmHa: raw.hectareas ? Number(raw.hectareas) : undefined,
+    photo: raw.fotoPerfilUrl,
+    photos: raw.fotosUrls,
+    location: `${raw.distrito}, ${raw.provincia}, ${raw.departamento}`,
+    status: raw.status,
+  };
+}
 
 const STATIC_PRODUCTS: Producto[] = [
   {
@@ -54,7 +77,7 @@ const STATIC_CAFICULTORES: Caficultor[] = [
     photo: '/imgs/darlynsanchez.jpg',
     yearsExp: 8,
     farmHa: 5,
-    socialImpact: "Invertir en camas africanas (secadores elevados) con control de temperatura para perfeccionar sus procesos Honey y evitar que la humedad de la selva afecte los lotes."
+    socialImpact: 'Invertir en camas africanas (secadores elevados) con control de temperatura para perfeccionar sus procesos Honey y evitar que la humedad de la selva afecte los lotes.'
   },
   /* {
      id: 'mateo-huaman', name: 'Mateo Huamán', farm: 'Finca Yanapay',
@@ -81,7 +104,7 @@ export async function fetchProductos(): Promise<Producto[]> {
   try {
     const snap = await getDocs(collection(db, 'productos'));
     if (snap.empty) return STATIC_PRODUCTS;
-    const mapped = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Producto));
+    const mapped = snap.docs.map((d) => ({id: d.id, ...d.data()} as Producto));
     const valid = mapped.filter((p) => p.name && p.weights);
     return valid.length > 0 ? valid : STATIC_PRODUCTS;
   } catch {
@@ -93,9 +116,10 @@ export async function fetchCaficultores(): Promise<Caficultor[]> {
   try {
     const snap = await getDocs(collection(db, 'caficultores'));
     if (snap.empty) return STATIC_CAFICULTORES;
-    const mapped = snap.docs.map((d) => ({ id: d.id, ...d.data() } as Caficultor));
-    const valid = mapped.filter((c) => c.name && c.farm);
-    return valid.length > 0 ? valid : STATIC_CAFICULTORES;
+    const mapped = snap.docs
+      .map((d) => mapCaficultorDoc(d.id, d.data() as CaficultorDoc))
+      .filter((c) => c.name && c.farm);
+    return mapped.length > 0 ? mapped : STATIC_CAFICULTORES;
   } catch {
     return STATIC_CAFICULTORES;
   }
