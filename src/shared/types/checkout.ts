@@ -1,10 +1,11 @@
 import type { CartItem, CartTotals } from './cart';
 
 export type AdapterName = 'niubiz' | 'stripe' | 'yapePlin';
-export type ShippingZone = 'lima' | 'provincia';
+export type ShippingZone = 'lima' | 'limaExt' | 'provincia' | 'recojo';
 
 export interface ShippingData {
   departamento: string;
+  provincia: string;
   distrito: string;
   direccion: string;
   referencia: string;
@@ -12,6 +13,9 @@ export interface ShippingData {
   telefono: string;
   zone: ShippingZone;
   acepta: boolean;
+  olvaMode: 'recojo' | 'domicilio';
+  dni: string;
+  ciudad: string;
 }
 
 export interface CheckoutPayload {

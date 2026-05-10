@@ -1,0 +1,31 @@
+[
+  {
+    "id": "5c6892d7-6a4c-46d2-b434-b306ef709878",
+    "caficultorId": "xkEGzoyhhg7HboqImd35",
+    "code": "01",
+    "name": "Bello Horizonte - Geisha",
+    "sub": "Honey · Oxapampa",
+    "region": "Perú · Pasco · Oxapampa",
+    "alt": "1800 m",
+    "farm": "Finca Bello Horizonte",
+    "producer": "Darlyn Sánchez Hilario",
+    "notes": ["Caramelo", "Naranja sanguina", "Cacao"],
+    "body": "Medio",
+    "acidity": "Cítrica brillante",
+    "score": "87.5",
+    "brews": ["V60", "Chemex", "AeroPress"],
+    "weights": [
+      { "label": "250g", "cents": 3900 },
+      { "label": "1kg",  "cents": 15000 },
+      { "label": "3kg",  "cents": 46000 }
+    ],
+    "producerPct": 42,
+    "tag": "Versátil",
+    "tagTone": "sage",
+    "tone": "green",
+    "desc": "Café de pequeño productor, proceso Honey con secado cuidadoso — notas a jalea y caramelo en cada taza.",
+    "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
+    "label": "PREVENTA",
+    "stockKg": 9.2
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "xkEGzoyhhg7HboqImd35",
+    "nombreProductor": "Darlyn Johnn Sánchez Hilario",
+    "email": "dannyzeta25@gmail.com",
+    "telefono": "+51928772157",
+    "nombreFinca": "Bello Horizonte",
+    "departamento": "Pasco",
+    "provincia": "Oxapampa",
+    "distrito": "Puerto Bermúdez",
+    "altitud": "1800",
+    "hectareas": "5",
+    "variedad": "Geisha",
+    "proceso": "Honey",
+    "generacion": "Segunda",
+    "produccionAnual": "200",
+    "experienciaAnos": "8",
+    "puntajeSCA": "87.5",
+    "historia": "Darlyn ha transformado la finca en un laboratorio de alta gama, enfocándose en micro-lotes de puntajes sobresalientes (87.5+ puntos) en lugar de volumen comercial. La familia se ha especializado en el proceso Honey, una técnica que requiere un monitoreo minucioso durante el secado para preservar el mucílago del grano, logrando esas notas características a jalea y caramelo que lo llevaron a ganar la subasta.",
+    "impactoSocial": "Invertir en camas africanas (secadores elevados) con control de temperatura para perfeccionar sus procesos Honey y evitar que la humedad de la selva afecte los lotes.",
+    "fotoPerfilUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1777149888/tunaywasi/caficultores/xkEGzoyhhg7HboqImd35/clla7uzrdsb1jrlow7gu.png",
+    "fotosUrls": [
+      "https://res.cloudinary.com/dtc9meqbc/image/upload/v1777150427/tunaywasi/caficultores/xkEGzoyhhg7HboqImd35/z3l6lpvwyeukgkbmyl7w.jpg",
+      "https://res.cloudinary.com/dtc9meqbc/image/upload/v1777150428/tunaywasi/caficultores/xkEGzoyhhg7HboqImd35/mavbfzdbx0bndowl3bki.jpg",
+      "https://res.cloudinary.com/dtc9meqbc/image/upload/v1777150430/tunaywasi/caficultores/xkEGzoyhhg7HboqImd35/v3ysvgptrk1josds9iye.jpg"
+    ],
+    "fotosCount": 3,
+    "status": "aprobado",
+    "source": "alpaso-landings",
+    "datosCompletadosPorAdmin": true,
+    "createdAt": "2026-02-11T07:22:47.000Z",
+    "aprobadoAt": "2026-04-23T17:34:53.000Z",
+    "fechaCompletado": "2026-04-25T17:55:59.000Z"
+  }
+]

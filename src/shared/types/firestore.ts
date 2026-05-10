@@ -7,7 +7,7 @@
  *   - Raw Firestore shapes use the exact field names stored in Firestore.
  *   - Collections with Spanish field names are mapped to English domain
  *     interfaces in catalog.ts via mapper functions in catalogService.ts.
- *   - Config docs under /config/* use English field names directly.
+ *   - Config docs under /configuration/* use English field names directly.
  *
  * Firestore project: alpaso-app
  * Last updated: May 2026 — Fase 1 active
@@ -22,10 +22,11 @@
 
 export interface CaficultorDoc {
   // ── Identity ──────────────────────────────────────────────────────────
+  id: string;                      // UUID — stored inside doc, mirrors Firestore doc id
   nombreProductor: string;         // "Darlyn Johnn Sánchez Hilario"
   email: string;                   // "dannyzeta25@gmail.com"
   telefono: string;                // "+51928772157"
-  waitlistId: string;              // mirrors the Firestore doc id
+  waitlistId?: string;             // legacy alias for id (kept for backwards compat)
 
   // ── Farm ──────────────────────────────────────────────────────────────
   nombreFinca: string;             // "Bello Horizonte"
@@ -73,15 +74,15 @@ export type ToneOption = 'green' | 'tan' | 'terra' | 'cream' | 'deep';
 export type TagTone = 'sage' | 'terra' | 'deep';
 
 export interface ProductoDoc {
-  // id comes from doc.id — not stored inside the document
+  id: string;                      // UUID — stored inside doc, mirrors Firestore doc id
+  caficultorId: string;            // FK → /caficultores/{id}  (required — every product has a producer)
   code: string;                    // "01" — display order
   name: string;                    // "Bello Horizonte - Geisha"
   sub: string;                     // "Honey · Oxapampa"
   region: string;                  // "Perú · Pasco · Oxapampa"
   alt: string;                     // "1800 m"
   farm: string;                    // "Finca Bello Horizonte"
-  producer: string;                // "Darlyn Sánchez Hilario"
-  caficultorId?: string;           // FK → /caficultores/{id}
+  producer: string;                // "Darlyn Sánchez Hilario" (display snapshot)
 
   // ── Sensory ───────────────────────────────────────────────────────────
   notes: string[];                 // ["Caramelo", "Naranja sanguina", "Cacao"]
@@ -111,8 +112,8 @@ export interface ProductoDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/ciclo_activo
-// Path:  /config/ciclo_activo
+// DOCUMENTO: configuration/ciclo_activo
+// Path:  /configuration/ciclo_activo
 // Controls preventa countdown, cart banner, and checkout delivery dates.
 // Update this doc to open/close a preventa cycle without deploying code.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -130,8 +131,8 @@ export interface CicloActivoDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/comisiones
-// Path:  /config/comisiones
+// DOCUMENTO: configuration/comisiones
+// Path:  /configuration/comisiones
 // Price breakdown displayed in the Modelo section (bar/donut chart).
 //
 // Percentages are calculated over precio FINAL (con IGV) for display.
@@ -175,8 +176,8 @@ export interface ComisionesDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/pricing
-// Path:  /config/pricing
+// DOCUMENTO: configuration/pricing
+// Path:  /configuration/pricing
 // SCA-score-driven price matrix — drives product prices and caficultor pay.
 // All money values are integer centavos (S/1.00 = 100).
 // Source: pricing_rules § 5, § 8, § 12, § 13
@@ -234,8 +235,8 @@ export interface PricingDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/shipping
-// Path:  /config/shipping
+// DOCUMENTO: configuration/shipping
+// Path:  /configuration/shipping
 // Shipping zones and rates charged to the end customer.
 // These values drive useCartTotals — change here to update site-wide.
 // Source: shippingRules.ts (production values as of May 2026)
@@ -261,8 +262,8 @@ export interface ShippingDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/landing
-// Path:  /config/landing
+// DOCUMENTO: configuration/landing
+// Path:  /configuration/landing
 // Misc landing-wide parametrizable values: grind options, contact info,
 // hero metrics, order ID format.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -326,17 +327,20 @@ export type PedidoStatus =
 export type PaymentAdapter = 'yapePlin' | 'niubiz' | 'stripe';
 
 // CartItem snapshot — matches CartItem in cart.ts
-// Stored as-is inside PedidoDoc so the order is self-contained.
+// Stored inside PedidoDoc so the order is self-contained even if source docs change.
+// FKs are preserved alongside display snapshots for traceability.
 export interface PedidoItem {
+  productoId: string;    // FK → /productos/{id}
+  caficultorId: string;  // FK → /caficultores/{id}
   sku: string;           // e.g. "bello-horizonte-geisha-250g-v60"
-  name: string;          // "Bello Horizonte - Geisha"
+  name: string;          // "Bello Horizonte - Geisha"          (snapshot)
   weight: WeightLabel;   // "250g"
-  grind: string;         // display label from GrindOption — "V60 / Chemex"
-  unitCents: number;     // price per unit at purchase time (immutable snapshot)
+  grind: string;         // display label — "V60 / Chemex"
+  unitCents: number;     // price per unit at purchase time     (immutable snapshot)
   qty: number;
-  caficultor: string;    // "Darlyn Sánchez Hilario"
-  finca: string;         // "Bello Horizonte"
-  producerPct: number;   // % of net price to producer (snapshot from ProductoDoc)
+  caficultor: string;    // "Darlyn Sánchez Hilario"            (snapshot)
+  finca: string;         // "Bello Horizonte"                   (snapshot)
+  producerPct: number;   // % of net price to producer          (snapshot)
 }
 
 // ShippingData snapshot — matches ShippingData in checkout.ts
@@ -361,7 +365,8 @@ export interface PedidoTotals {
 }
 
 export interface PedidoDoc {
-  orderId: string;             // "TW-4281" — also the Firestore doc id
+  id: string;                  // UUID — Firestore doc id, stored inside doc
+  orderId: string;             // "TW-4281" — human-readable display reference
   status: PedidoStatus;
   adapter: PaymentAdapter;
 
@@ -389,8 +394,8 @@ export interface PedidoDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/yapePlin
-// Path:  /config/yapePlin
+// DOCUMENTO: configuration/yapePlin
+// Path:  /configuration/yapePlin
 // Controls the Yape/Plin QR payment step in Checkout.tsx.
 // Update phone/QR here without deploying code.
 //
@@ -425,8 +430,8 @@ export interface YapePlinConfigDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// DOCUMENTO: config/paymentGateway
-// Path:  /config/paymentGateway
+// DOCUMENTO: configuration/paymentGateway
+// Path:  /configuration/paymentGateway
 // Non-secret gateway metadata (public). Secret keys → Cloud Functions env vars.
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -446,30 +451,43 @@ export interface PaymentGatewayConfigDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// QUICK REFERENCE — Current Firestore paths
+// QUICK REFERENCE — Firestore paths, IDs & FK relationships
 // ═══════════════════════════════════════════════════════════════════════════
 //
-// Collections (many docs):
-//   /caficultores/{waitlistId}        → CaficultorDoc
-//   /productos/{productoId}           → ProductoDoc
-//   /pedidos/{orderId}                → PedidoDoc
+// Collections (each doc stores its own id: string = Firestore doc id):
 //
-// Config (single docs under /config/*):
-//   /config/ciclo_activo              → CicloActivoDoc
-//   /config/comisiones                → ComisionesDoc
-//   /config/pricing                   → PricingDoc
-//   /config/shipping                  → ShippingDoc
-//   /config/landing                   → LandingConfigDoc
-//   /config/yapePlin                  → YapePlinConfigDoc
-//   /config/paymentGateway            → PaymentGatewayConfigDoc
+//   /caficultores/{id}    → CaficultorDoc        id = UUID (Firestore auto-id)
+//   /productos/{id}       → ProductoDoc           id = UUID (Firestore auto-id)
+//   /pedidos/{id}         → PedidoDoc             id = UUID (Firestore auto-id)
+//                                                  orderId = "TW-4281" (display)
+//
+// Foreign keys (FK):
+//
+//   ProductoDoc.caficultorId      → CaficultorDoc.id       (required)
+//   PedidoItem.productoId         → ProductoDoc.id          (required)
+//   PedidoItem.caficultorId       → CaficultorDoc.id        (required)
+//
+//   Relationship diagram:
+//   CaficultorDoc ←── ProductoDoc ←── PedidoItem ──┐
+//        └─────────────────────────────────────────── PedidoDoc
+//
+// Configurations (single docs — no id field, accessed by fixed path):
+//   /configurations/ciclo_activo          → CicloActivoDoc
+//   /configurations/comisiones            → ComisionesDoc
+//   /configurations/pricing               → PricingDoc
+//   /configurations/shipping              → ShippingDoc
+//   /configurations/landing               → LandingConfigDoc
+//   /configurations/yapePlin              → YapePlinConfigDoc
+//   /configurations/paymentGateway        → PaymentGatewayConfigDoc
 //
 // Firebase Storage paths:
-//   tunaywasi/caficultores/{id}/      → producer profile + farm photos
-//   pedidos/vouchers/{orderId}.jpg    → Yape/Plin payment vouchers
+//   tunaywasi/caficultores/{id}/  → producer profile + farm photos
+//   pedidos/vouchers/{id}.jpg     → Yape/Plin payment vouchers (keyed by pedido id)
 //
-// Fetching pattern for config docs:
-//   const snap = await getDoc(doc(db, 'config', 'ciclo_activo'));
-//   return snap.exists() ? (snap.data() as CicloActivoDoc) : STATIC_FALLBACK;
+// Fetching a collection doc:
+//   const snap = await getDoc(doc(db, 'caficultores', id));
+//   return snap.exists() ? (snap.data() as CaficultorDoc) : null;
 //
 // Writing a pedido:
-//   await setDoc(doc(db, 'pedidos', orderId), pedidoDoc);
+//   const id = crypto.randomUUID();
+//   await setDoc(doc(db, 'pedidos', id), { id, orderId, ...rest });

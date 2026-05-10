@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { useCountdown } from '../useCountdown';
 import { useActiveCycle } from '@/features/catalog/useActiveCycle';
+import { useCatalog } from '@/features/catalog/useCatalog';
+import { Money } from '@/shared/money';
 
 const FALLBACK_CUTOFF = new Date('2026-06-01T04:59:59Z').getTime();
 
@@ -13,10 +15,18 @@ const STEPS = [
 
 export default function Preventa() {
   const { data: cycle } = useActiveCycle();
+  const { data: productos } = useCatalog();
   const cutoffMs = cycle?.cutoffTimestamp ?? FALLBACK_CUTOFF;
   const t = useCountdown(cutoffMs);
   const deliverLima = cycle?.deliverLima ?? 'primera semana de junio';
   const deliverProv = cycle?.deliverProv ?? 'segunda semana de junio';
+
+  // Minimum price across all products — find cheapest weight entry
+  const minEntry = productos?.flatMap(p => p.weights).reduce<[string, number] | null>(
+    (min, w) => (min === null || w[1] < min[1] ? w : min),
+    null,
+  );
+  const minLabel = minEntry ? `${Money.formatPEN(minEntry[1])} · ${minEntry[0]}` : 'S/ 78.00 · 250 g';
 
   return (
     <section id="preventa" style={{ position: 'relative', padding: '100px 36px', background: '#1f3028', color: '#f2e0cc', overflow: 'hidden' }}>
@@ -86,7 +96,7 @@ export default function Preventa() {
                   Reservar mi café →
                 </a>
                 <span style={{ fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic', fontSize: 18, color: '#c4b297' }}>
-                  desde <strong style={{ color: '#f2e0cc', fontStyle: 'normal', fontFamily: 'Cormorant Garamond, serif', fontWeight: 600 }}>S/ 78.00</strong> · 250 g
+                  desde <strong style={{ color: '#f2e0cc', fontStyle: 'normal', fontFamily: 'Cormorant Garamond, serif', fontWeight: 600 }}>{minLabel}</strong>
                 </span>
               </div>
             </div>

@@ -1,0 +1,203 @@
+{
+  "ciclo_activo": {
+    "closeAt": "31 may.",
+    "deliverLima": "ago. (1a semana)",
+    "deliverProv": "ago. (2a semana)",
+    "cutoffTimestamp": 1748757599000
+  },
+
+  "comisiones": {
+    "b2c": [
+      {
+        "key": "caficultor",
+        "pct": 42,
+        "label": "Caficultor",
+        "detail": "Pago directo a la finca, antes de que el grano viaje.",
+        "color": "#c96e4b"
+      },
+      {
+        "key": "tostador",
+        "pct": 15,
+        "label": "Tueste + Cata Q-Grader",
+        "detail": "Tostado artesanal y certificación de calidad SCA.",
+        "color": "#8faf8a"
+      },
+      {
+        "key": "logistica",
+        "pct": 6,
+        "label": "Flete y Empaque",
+        "detail": "Transporte desde origen y embalaje kraft reciclado.",
+        "color": "#c4b297"
+      },
+      {
+        "key": "igv",
+        "pct": 15,
+        "label": "IGV (18%)",
+        "detail": "Impuesto al consumo incluido en el precio final.",
+        "color": "#533b22"
+      },
+      {
+        "key": "plataforma",
+        "pct": 22,
+        "label": "Tunay Wasi",
+        "detail": "Plataforma, tecnología y operación del marketplace.",
+        "color": "#1f3028"
+      }
+    ],
+    "producerShareFactor": 0.421
+  },
+
+  "pricing": {
+    "fase": 1,
+    "twMarginPct": 25,
+    "tuesteYield": 0.83,
+    "greenKgPer250gBag": 0.301,
+    "scaMinQualifying": 82.0,
+    "tiers": [
+      {
+        "tier": "selecto",
+        "label": "Selecto",
+        "scaMin": 82.0,
+        "scaMax": 83.9,
+        "caficultorPerKgCents": 3465,
+        "b2cPer250gCents": 2566,
+        "b2bPerKgCents": 4810
+      },
+      {
+        "tier": "especialidadEstandar",
+        "label": "Especialidad Estándar",
+        "scaMin": 84.0,
+        "scaMax": 85.9,
+        "caficultorPerKgCents": 3844,
+        "b2cPer250gCents": 2746,
+        "b2bPerKgCents": 5336
+      },
+      {
+        "tier": "especialidadAlta",
+        "label": "Especialidad Alta",
+        "scaMin": 86.0,
+        "scaMax": 87.9,
+        "caficultorPerKgCents": 5548,
+        "b2cPer250gCents": 3553,
+        "b2bPerKgCents": 7702
+      },
+      {
+        "tier": "joyaDeFinca",
+        "label": "Joya de Finca",
+        "scaMin": 88.0,
+        "scaMax": 89.9,
+        "caficultorPerKgCents": 6684,
+        "b2cPer250gCents": 3933,
+        "b2bPerKgCents": 9280
+      },
+      {
+        "tier": "exclusivo",
+        "label": "Exclusivo / Geisha",
+        "scaMin": 90.0,
+        "scaMax": null,
+        "caficultorPerKgCents": 8578,
+        "b2cPer250gCents": 4988,
+        "b2bPerKgCents": 11909
+      }
+    ],
+    "fixedCostsPerBagCents": {
+      "tueste": 168,
+      "cata": 251,
+      "flete": 88,
+      "empaque": 81
+    }
+  },
+
+  "shipping": {
+    "zones": [
+      {
+        "key": "lima",
+        "label": "Delivery a domicilio",
+        "flatCents": 800,
+        "freeThresholdCents": 10000
+      },
+      {
+        "key": "limaExt",
+        "label": "Olva Courier · Lima",
+        "carrier": "Olva Courier",
+        "transitDays": "2-3",
+        "flatCents": 1200,
+        "freeThresholdCents": 12000,
+        "recojoFlatCents": 1000,
+        "domicilioFlatCents": 1200
+      },
+      {
+        "key": "provincia",
+        "label": "Olva Courier · Nacional",
+        "carrier": "Olva Courier",
+        "transitDays": "3-5",
+        "flatCents": 1500,
+        "freeThresholdCents": 15000,
+        "recojoFlatCents": 1200,
+        "domicilioFlatCents": 1500
+      },
+      {
+        "key": "recojo",
+        "label": "Recojo en Olva · Barranca",
+        "flatCents": 0,
+        "freeThresholdCents": 0
+      }
+    ]
+  },
+
+  "landing": {
+    "moliendas": [
+      { "key": "grano",    "label": "Grano entero",   "icon": "🫘", "desc": "Máxima frescura. Muele en casa." },
+      { "key": "espresso", "label": "Espresso",        "icon": "⚡", "desc": "Molido fino para máquina a 9 bar." },
+      { "key": "v60",      "label": "V60 / Chemex",    "icon": "🌊", "desc": "Molido medio-grueso para goteo." },
+      { "key": "prensa",   "label": "Prensa francesa", "icon": "🫖", "desc": "Molido grueso para infusión 4 min." },
+      { "key": "moka",     "label": "Moka",            "icon": "🔥", "desc": "Molido medio-fino para cafetera italiana." }
+    ],
+    "contact": {
+      "email": "hola@tunaywasi.pe",
+      "whatsapp": "+51917959370",
+      "address": "Jr. Independencia 240, Barranco, Lima",
+      "appUrl": "https://tunay-wasi.web.app",
+      "adminEmail": "tunaywasi@gmail.com"
+    },
+    "heroMetrics": {
+      "producerPctDisplay": 50,
+      "farmCount": 1,
+      "altitudMedia": "+1,800 m"
+    },
+    "orderIdPrefix": "TW-"
+  },
+
+  "yapePlin": {
+    "enabled": true,
+    "yape": {
+      "phone": "+51917959370",
+      "accountName": "Tunay Wasi",
+      "qrImageUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1777490714/tunaywasi/pagos/yape_qr.jpg"
+    },
+    "plin": {
+      "phone": "+51917959370",
+      "accountName": "Tunay Wasi",
+      "qrImageUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1777489890/tunaywasi/pagos/plin_qr.jpg"
+    },
+    "instructions": [
+      "Abre Yape o tu app bancaria",
+      "Escanea el QR o busca el número",
+      "Confirma el monto exacto",
+      "Sube la captura del comprobante"
+    ],
+    "voucherStoragePath": "pedidos/vouchers"
+  },
+
+  "paymentGateway": {
+    "niubiz": {
+      "enabled": false,
+      "environment": "sandbox",
+      "merchantId": ""
+    },
+    "stripe": {
+      "enabled": false,
+      "publishableKey": ""
+    }
+  }
+}

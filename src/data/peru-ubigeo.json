@@ -1,0 +1,154 @@
+{
+  "Lima Metropolitana": {
+    "Lima": ["Ate","Barranco","Breña","Carabayllo","Chaclacayo","Chorrillos","Cieneguilla","Comas","El Agustino","Independencia","Jesús María","La Molina","La Victoria","Lince","Los Olivos","Lurigancho","Lurín","Magdalena del Mar","Miraflores","Pachacamac","Pueblo Libre","Puente Piedra","Rímac","San Borja","San Isidro","San Juan de Lurigancho","San Juan de Miraflores","San Luis","San Martín de Porres","San Miguel","Santa Anita","Santa María del Mar","Santa Rosa","Santiago de Surco","Surquillo","Villa El Salvador","Villa María del Triunfo","Otro"]
+  },
+  "Lima Provincia": {
+    "Barranca": ["Barranca","Paramonga","Pativilca","Supe","Supe Puerto","Otro"],
+    "Cajatambo": ["Cajatambo","Otro"],
+    "Canta": ["Canta","Otro"],
+    "Cañete": ["San Vicente de Cañete","Asia","Chilca","Lunahuaná","Mala","Pucusana","Punta Hermosa","Punta Negra","San Bartolo","Otro"],
+    "Huaral": ["Huaral","Aucallama","Chancay","Otro"],
+    "Huarochirí": ["Matucana","San Mateo","Ricardo Palma","Chosica","Otro"],
+    "Huaura": ["Huacho","Hualmay","Huaura","Santa María","Carquín","Vegueta","Otro"],
+    "Oyón": ["Oyón","Otro"],
+    "Yauyos": ["Yauyos","Otro"]
+  },
+  "Callao": {
+    "Callao": ["Bellavista","Callao","Carmen de la Legua Reynoso","La Perla","La Punta","Mi Perú","Ventanilla","Otro"]
+  },
+  "Amazonas": {
+    "Chachapoyas": ["Chachapoyas","Otro"],
+    "Bagua": ["Bagua Grande","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Áncash": {
+    "Huaraz": ["Huaraz","Independencia","Otro"],
+    "Santa": ["Chimbote","Nuevo Chimbote","Otro"],
+    "Casma": ["Casma","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Apurímac": {
+    "Abancay": ["Abancay","Tamburco","Otro"],
+    "Andahuaylas": ["Andahuaylas","San Jerónimo","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Arequipa": {
+    "Arequipa": ["Alto Selva Alegre","Arequipa","Cayma","Cerro Colorado","Characato","Jacobo Hunter","José Luis Bustamante y Rivero","La Joya","Mariano Melgar","Miraflores","Mollebaya","Paucarpata","Sachaca","Socabaya","Tiabaya","Uchumayo","Yanahuara","Yura","Otro"],
+    "Camaná": ["Camaná","Otro"],
+    "Islay": ["Mollendo","Matarani","Otro"],
+    "Caravelí": ["Caravelí","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Ayacucho": {
+    "Huamanga": ["Ayacucho","Carmen Alto","Jesús Nazareno","San Juan Bautista","Otro"],
+    "Huanta": ["Huanta","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Cajamarca": {
+    "Cajamarca": ["Cajamarca","Baños del Inca","La Encañada","Otro"],
+    "Jaén": ["Jaén","Bellavista","Otro"],
+    "Chota": ["Chota","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Cusco": {
+    "Cusco": ["Cusco","Ccorca","Poroy","San Jerónimo","San Sebastián","Santiago","Saylla","Wanchaq","Otro"],
+    "La Convención": ["Santa Ana","Echarate","Otro"],
+    "Quispicanchis": ["Urcos","Lucre","Otro"],
+    "Anta": ["Anta","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Huancavelica": {
+    "Huancavelica": ["Huancavelica","Acobambilla","Acoria","Conayca","Cuenca","Huachocolpa","Huayllahuara","Izcuchaca","Laria","Manta","Mariscal Cáceres","Moya","Nuevo Occoro","Palca","Pilchaca","Vilca","Yauli","Ascensión","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Huánuco": {
+    "Huánuco": ["Huánuco","Amarilis","Pillco Marca","Otro"],
+    "Leoncio Prado": ["Tingo María","Rupa-Rupa","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Ica": {
+    "Ica": ["Ica","La Tinguiña","Los Aquijes","Parcona","Pueblo Nuevo","Subtanjalla","Tate","Otro"],
+    "Chincha": ["Chincha Alta","El Carmen","Otro"],
+    "Nazca": ["Nazca","Vista Alegre","Otro"],
+    "Pisco": ["Pisco","Paracas","Tupac Amaru Inca","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Junín": {
+    "Huancayo": ["Huancayo","Chilca","El Tambo","Hualhuas","Huancán","Huayucachi","Pilcomayo","Pucará","San Agustín de Cajas","San Jerónimo de Tunán","Sapallanga","Sicaya","Otro"],
+    "Satipo": ["Satipo","Mazamari","Otro"],
+    "Tarma": ["Tarma","Otro"],
+    "Chanchamayo": ["La Merced","San Ramón","Otro"],
+    "Otro": ["Otro"]
+  },
+  "La Libertad": {
+    "Trujillo": ["Trujillo","El Porvenir","Florencia de Mora","Huanchaco","La Esperanza","Laredo","Moche","Salaverry","Víctor Larco Herrera","Otro"],
+    "Pacasmayo": ["San Pedro de Lloc","Guadalupe","Pacasmayo","Otro"],
+    "Ascope": ["Ascope","Chocope","Magdalena de Cao","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Lambayeque": {
+    "Chiclayo": ["Chiclayo","José Leonardo Ortiz","La Victoria","Monsefú","Pimentel","Reque","Santa Rosa","Tumán","Pomalca","Otro"],
+    "Ferreñafe": ["Ferreñafe","Otro"],
+    "Lambayeque": ["Lambayeque","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Loreto": {
+    "Maynas": ["Iquitos","Punchana","San Juan Bautista","Belén","Otro"],
+    "Requena": ["Requena","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Madre de Dios": {
+    "Tambopata": ["Puerto Maldonado","Las Piedras","Inambari","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Moquegua": {
+    "Mariscal Nieto": ["Moquegua","Samegua","Otro"],
+    "Ilo": ["Ilo","El Algarrobal","Pacocha","Otro"],
+    "General Sánchez Cerro": ["Omate","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Pasco": {
+    "Pasco": ["Chaupimarca","Simón Bolívar","Yanacancha","Otro"],
+    "Oxapampa": ["Oxapampa","Chontabamba","Huancabamba","Palcazú","Villa Rica","Otro"],
+    "Daniel Alcides Carrión": ["Yanahuanca","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Piura": {
+    "Piura": ["Piura","Castilla","Catacaos","La Arena","La Unión","Tambogrande","Veintiséis de Octubre","Otro"],
+    "Sullana": ["Sullana","Bellavista","Marcavelica","Otro"],
+    "Talara": ["Pariñas","La Brea","Lobitos","Los Órganos","Máncora","Otro"],
+    "Paita": ["Paita","Otro"],
+    "Sechura": ["Sechura","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Puno": {
+    "Puno": ["Puno","Acora","Amantaní","Atuncolla","Capachica","Chucuito","Coata","Huata","Mañazo","Paucarcolla","Platería","Tiquillaca","Vilque","Otro"],
+    "San Román": ["Juliaca","Cabana","Cabanillas","Caracoto","San Miguel","Otro"],
+    "Azángaro": ["Azángaro","Otro"],
+    "Melgar": ["Ayaviri","Otro"],
+    "Otro": ["Otro"]
+  },
+  "San Martín": {
+    "San Martín": ["Tarapoto","La Banda de Shilcayo","Morales","Cacatachi","Juan Guerra","Sauce","Otro"],
+    "Lamas": ["Lamas","Otro"],
+    "Moyobamba": ["Moyobamba","Otro"],
+    "Tocache": ["Tocache","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Tacna": {
+    "Tacna": ["Tacna","Alto de la Alianza","Calana","Ciudad Nueva","Inclán","Palca","Pocollay","Coronel Gregorio Albarracín Lanchipa","Otro"],
+    "Tarata": ["Tarata","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Tumbes": {
+    "Tumbes": ["Tumbes","Corrales","La Cruz","Pampas de Hospital","San Jacinto","San Juan de La Virgen","Otro"],
+    "Zarumilla": ["Zarumilla","Aguas Verdes","Otro"],
+    "Otro": ["Otro"]
+  },
+  "Ucayali": {
+    "Coronel Portillo": ["Callería","Campoverde","Iparia","Masisea","Yarinacocha","Nueva Requena","Manantay","Otro"],
+    "Atalaya": ["Raymondi","Otro"],
+    "Padre Abad": ["Padre Abad","Otro"],
+    "Otro": ["Otro"]
+  }
+}

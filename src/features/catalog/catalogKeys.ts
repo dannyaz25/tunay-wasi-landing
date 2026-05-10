@@ -3,4 +3,8 @@ export const catalogKeys = {
   products: () => [...catalogKeys.all, 'products'] as const,
   caficultores: () => [...catalogKeys.all, 'caficultores'] as const,
   activeCycle: () => [...catalogKeys.all, 'activeCycle'] as const,
+  comisiones: () => [...catalogKeys.all, 'comisiones'] as const,
+  shippingZones: () => [...catalogKeys.all, 'shippingZones'] as const,
+  landingConfig: () => [...catalogKeys.all, 'landingConfig'] as const,
+  yapePlin: () => [...catalogKeys.all, 'yapePlin'] as const,
 };

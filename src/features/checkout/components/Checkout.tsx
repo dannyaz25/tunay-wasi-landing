@@ -1,24 +1,46 @@
 import { useEffect, useState, useRef, type ChangeEvent } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Money } from '@/shared/money';
-import type { AdapterName, ShippingData } from '@/shared/types/checkout';
+import type { AdapterName, ShippingData, ShippingZone } from '@/shared/types/checkout';
 import type { CartItem } from '@/shared/types/cart';
 import type { CartTotals } from '@/shared/types/cart';
 import {
   useCartIsCheckoutOpen, useCartCheckoutStep, useCartActions, useCartItems,
 } from '@/features/cart/useCart';
-import { SHIPPING_RULES } from '@/features/cart/shippingRules';
-import { useCheckout } from '../useCheckout';
+import { useCheckout, isValidPeruvianPhone } from '../useCheckout';
 import { useActiveCycle } from '@/features/catalog/useActiveCycle';
+import { useShipping } from '@/features/catalog/useShipping';
+import { useYapePlin } from '@/features/catalog/useYapePlin';
+import type { ShippingZoneRule, YapePlinData } from '@/features/catalog/catalogService';
+import ubigeo from '@/data/peru-ubigeo.json';
 
-const DEPARTAMENTOS = [
-  'Lima Metropolitana', 'Lima provincias', 'Arequipa', 'Cusco',
-  'La Libertad', 'Piura', 'Junín', 'Otro',
-];
-const DISTRITOS = [
-  'Miraflores', 'Barranco', 'San Isidro', 'San Borja', 'Surco',
-  'Magdalena', 'Pueblo Libre', 'Lince', 'Otro',
-];
+// ── Ubigeo helpers ───────────────────────────────────────────────────────────
+
+type Ubigeo = Record<string, Record<string, string[]>>;
+const GEO = ubigeo as Ubigeo;
+const DEPARTAMENTOS = Object.keys(GEO);
+
+function getProvincias(dep: string): string[] {
+  return Object.keys(GEO[dep] ?? {});
+}
+function getDistritos(dep: string, prov: string): string[] {
+  return GEO[dep]?.[prov] ?? ['Otro'];
+}
+
+const LIMA_OLVA_DISTRICTS = new Set([
+  'Carabayllo', 'Chaclacayo', 'Cieneguilla', 'Lurigancho', 'Lurín',
+  'Pachacamac', 'Puente Piedra', 'Santa María del Mar', 'Santa Rosa',
+  'San Juan de Lurigancho',
+]);
+
+function inferZone(dep: string, _prov: string, dist = ''): Exclude<ShippingZone, 'recojo'> {
+  if (dep === 'Callao') return 'limaExt';
+  if (dep === 'Lima Metropolitana') return LIMA_OLVA_DISTRICTS.has(dist) ? 'limaExt' : 'lima';
+  if (dep === 'Lima Provincia') return 'limaExt';
+  return 'provincia';
+}
+
+// ── Styles ───────────────────────────────────────────────────────────────────
 
 const inputStyle: React.CSSProperties = {
   width: '100%', fontFamily: 'Montserrat, sans-serif', fontSize: 13,
@@ -27,6 +49,13 @@ const inputStyle: React.CSSProperties = {
   border: '1px solid #c4b29733', outline: 'none',
   transition: 'all .25s ease', boxSizing: 'border-box',
 };
+
+const inputErrorStyle: React.CSSProperties = {
+  ...inputStyle,
+  border: '1px solid #c96e4b99',
+};
+
+// ── Sub-components ───────────────────────────────────────────────────────────
 
 function StepPill({ active, done, n, label }: { active: boolean; done: boolean; n: string; label: string }) {
   return (
@@ -47,12 +76,15 @@ function StepPill({ active, done, n, label }: { active: boolean; done: boolean; 
   );
 }
 
-function FormField({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
+function FormField({ label, children, hint, error }: { label: string; children: React.ReactNode; hint?: string; error?: string }) {
   return (
     <div>
-      <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c4b297', textTransform: 'uppercase', marginBottom: 5 }}>{label}</div>
+      <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: error ? '#c96e4b' : '#c4b297', textTransform: 'uppercase', marginBottom: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>{label}</span>
+        {error && <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontStyle: 'italic', textTransform: 'none', letterSpacing: 0, color: '#c96e4b', fontWeight: 400 }}>{error}</span>}
+      </div>
       {children}
-      {hint && <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#8faf8a', marginTop: 4 }}>{hint}</div>}
+      {hint && !error && <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#8faf8a', marginTop: 4 }}>{hint}</div>}
     </div>
   );
 }
@@ -69,81 +101,265 @@ function Row({ k, v, accent, strike }: { k: string; v: string; accent?: string |
   );
 }
 
-function StepDatos({ data, setData, totals }: { data: ShippingData; setData: React.Dispatch<React.SetStateAction<ShippingData>>; totals: CartTotals }) {
+// ── Step Datos ───────────────────────────────────────────────────────────────
+
+function ShippingSummaryCard({
+  zone, totals, shippingZones,
+}: {
+  zone: ShippingZone;
+  totals: CartTotals;
+  shippingZones: ShippingZoneRule[];
+}) {
+  const rule = shippingZones.find(z => z.key === zone);
+  const carrier = rule?.carrier;
+  const transitDays = rule?.transitDays;
+  const headerLabel = carrier
+    ? `${carrier}${transitDays ? ` · ${transitDays} días hábiles` : ''}`
+    : 'Delivery a domicilio';
+  const costLabel = zone === 'recojo' || totals.isFreeShipping
+    ? 'Gratis'
+    : Money.formatPEN(totals.shippingCents);
+  return (
+    <div style={{ borderRadius: 10, background: '#0f1a14', border: '1px solid #c4b29733', padding: '10px 14px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
+        <div>
+          <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#c4b297' }}>{headerLabel}</div>
+          {rule && rule.freeThresholdCents > 0 && zone !== 'recojo' && (
+            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b29799', marginTop: 2 }}>
+              Envío gratis desde {Money.formatPEN(rule.freeThresholdCents)}
+            </div>
+          )}
+          {!totals.isFreeShipping && totals.remainingForFreeCents > 0 && zone !== 'recojo' && (
+            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c96e4b', marginTop: 2 }}>
+              Agrega {Money.formatPENShort(totals.remainingForFreeCents)} más y el envío es gratis
+            </div>
+          )}
+          {totals.isFreeShipping && (
+            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a', marginTop: 2 }}>
+              🎉 ¡Envío gratis!
+            </div>
+          )}
+        </div>
+        <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 20, color: totals.isFreeShipping || zone === 'recojo' ? '#8faf8a' : '#f2e0cc', whiteSpace: 'nowrap' }}>
+          {costLabel}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function FreeShippingBanner({ totals }: { totals: CartTotals }) {
+  if (totals.isFreeShipping || totals.remainingForFreeCents <= 0 || totals.freeThresholdCents <= 0) return null;
+  const pct = Math.min(100, (totals.subtotalCents / totals.freeThresholdCents) * 100);
+  return (
+    <div style={{ borderRadius: 10, background: '#0f1a14', border: '1px solid #c4b29733', padding: '10px 14px', overflow: 'hidden' }}>
+      <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc', marginBottom: 8 }}>
+        Agrega <strong>{Money.formatPENShort(totals.remainingForFreeCents)}</strong> más y el envío es{' '}
+        <span style={{ color: '#8faf8a', fontWeight: 600 }}>gratis</span>
+      </div>
+      <div style={{ height: 4, borderRadius: 99, background: '#f2e0cc1a', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${pct}%`, background: 'linear-gradient(90deg, #c96e4b 0%, #8faf8a 100%)', borderRadius: 99, transition: 'width .4s ease' }} />
+      </div>
+    </div>
+  );
+}
+
+function StepDatos({
+  data, setData, totals, shippingZones,
+}: {
+  data: ShippingData;
+  setData: React.Dispatch<React.SetStateAction<ShippingData>>;
+  totals: CartTotals;
+  shippingZones: ShippingZoneRule[];
+}) {
+  const [phoneBlurred, setPhoneBlurred] = useState(false);
+  const [dniBlurred, setDniBlurred] = useState(false);
+  const phoneError = phoneBlurred && !isValidPeruvianPhone(data.telefono);
+  const dniError = dniBlurred && data.dni.replace(/\D/g, '').length < 8;
+
+  const isOlvaZone = data.zone === 'limaExt' || data.zone === 'provincia';
+  const isNationalZone = data.zone === 'provincia';
+
+  const olvaRule = shippingZones.find(z => z.key === data.zone);
+  const recojoPrice = olvaRule?.recojoFlatCents ?? 0;
+  const domicilioPrice = olvaRule?.domicilioFlatCents ?? olvaRule?.flatCents ?? 0;
+
+  const provincias = getProvincias(data.departamento);
+  const distritos = getDistritos(data.departamento, data.provincia);
+
+  const handleDep = (dep: string) => {
+    const firstProv = getProvincias(dep)[0] ?? '';
+    const firstDist = getDistritos(dep, firstProv)[0] ?? 'Otro';
+    const autoZone = inferZone(dep, firstProv, firstDist);
+    setData(d => ({ ...d, departamento: dep, provincia: firstProv, distrito: firstDist, zone: autoZone, olvaMode: 'domicilio' }));
+  };
+
+  const handleProv = (prov: string) => {
+    const firstDist = getDistritos(data.departamento, prov)[0] ?? 'Otro';
+    const autoZone = inferZone(data.departamento, prov, firstDist);
+    setData(d => ({ ...d, provincia: prov, distrito: firstDist, zone: autoZone, olvaMode: 'domicilio' }));
+  };
+
+  const handleDist = (dist: string) => {
+    const autoZone = inferZone(data.departamento, data.provincia, dist);
+    setData(d => ({ ...d, distrito: dist, zone: autoZone, olvaMode: 'domicilio' }));
+  };
+
   const setField = (k: keyof ShippingData) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
-    setData((d) => ({ ...d, [k]: e.target.value }));
+    setData(d => ({ ...d, [k]: e.target.value }));
+
+  const olvaCardStyle = (mode: 'recojo' | 'domicilio'): React.CSSProperties => {
+    const active = data.olvaMode === mode;
+    return {
+      padding: '12px 14px', borderRadius: 10, cursor: 'pointer', textAlign: 'left',
+      background: active ? '#8faf8a18' : '#0f1a14',
+      border: `2px solid ${active ? '#8faf8a' : '#c4b29733'}`,
+      transition: 'all .2s ease', outline: 'none',
+    };
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {/* Location row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-        <FormField label="Departamento">
-          <select value={data.departamento} onChange={setField('departamento')} style={inputStyle}>
-            {DEPARTAMENTOS.map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
-        </FormField>
-        <FormField label="Distrito">
-          <select value={data.distrito} onChange={setField('distrito')} style={inputStyle}>
-            {DISTRITOS.map((d) => <option key={d} value={d}>{d}</option>)}
-          </select>
-        </FormField>
-      </div>
 
-      <FormField label="Dirección">
-        <input value={data.direccion} onChange={setField('direccion')} placeholder="Av. ejemplo 350, piso 2" style={inputStyle} />
+      {/* Departamento */}
+      <FormField label="Departamento">
+        <select value={data.departamento} onChange={e => handleDep(e.target.value)} style={inputStyle}>
+          {DEPARTAMENTOS.map(d => <option key={d} value={d}>{d}</option>)}
+        </select>
       </FormField>
 
-      <FormField label="Referencia (opcional)">
-        <textarea value={data.referencia} onChange={setField('referencia')} placeholder="Punto de referencia / indicaciones" rows={2} style={{ ...inputStyle, resize: 'vertical', minHeight: 52 }} />
+      {/* Lima zones: provincia + distrito cascade */}
+      {!isNationalZone && (
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          <FormField label="Provincia">
+            <select value={data.provincia} onChange={e => handleProv(e.target.value)} style={inputStyle}>
+              {provincias.map(p => <option key={p} value={p}>{p}</option>)}
+            </select>
+          </FormField>
+          <FormField label="Distrito">
+            <select value={data.distrito} onChange={e => handleDist(e.target.value)} style={inputStyle}>
+              {distritos.map(d => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </FormField>
+        </div>
+      )}
+
+      {/* National: free-text city */}
+      {isNationalZone && (
+        <FormField label="Ciudad / Provincia">
+          <input
+            value={data.ciudad}
+            onChange={setField('ciudad')}
+            placeholder="Ej: Ayacucho, Cusco, Trujillo"
+            style={inputStyle}
+          />
+        </FormField>
+      )}
+
+      {/* Olva carrier options */}
+      {isOlvaZone && olvaRule && (
+        <div>
+          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c4b297', textTransform: 'uppercase', marginBottom: 8 }}>
+            {olvaRule.carrier ?? 'Olva Courier'}{olvaRule.transitDays ? ` · ${olvaRule.transitDays} días hábiles` : ''}
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <button
+              type="button"
+              onClick={() => setData(d => ({ ...d, olvaMode: 'recojo' }))}
+              style={olvaCardStyle('recojo')}
+            >
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#f2e0cc', marginBottom: 3 }}>
+                📦 Recojo en agencia
+              </div>
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', marginBottom: 8 }}>
+                Recoges en agencia Olva
+              </div>
+              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 17, color: data.olvaMode === 'recojo' ? '#8faf8a' : '#f2e0cc' }}>
+                {Money.formatPENShort(recojoPrice)}
+              </div>
+            </button>
+            <button
+              type="button"
+              onClick={() => setData(d => ({ ...d, olvaMode: 'domicilio' }))}
+              style={olvaCardStyle('domicilio')}
+            >
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#f2e0cc', marginBottom: 3 }}>
+                🏠 A domicilio
+              </div>
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', marginBottom: 8 }}>
+                Llega a tu puerta
+              </div>
+              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 17, color: data.olvaMode === 'domicilio' ? '#8faf8a' : '#f2e0cc' }}>
+                {Money.formatPENShort(domicilioPrice)}
+              </div>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Direct delivery: address field */}
+      {!isOlvaZone && (
+        <FormField label="Dirección">
+          <input value={data.direccion} onChange={setField('direccion')} placeholder="Av. ejemplo 350, piso 2" style={inputStyle} />
+        </FormField>
+      )}
+
+      {/* Olva: DNI field */}
+      {isOlvaZone && (
+        <FormField label="DNI  (requerido por Olva)" error={dniError ? 'Mínimo 8 dígitos' : undefined}>
+          <input
+            value={data.dni}
+            onChange={setField('dni')}
+            onBlur={() => setDniBlurred(true)}
+            placeholder="12345678"
+            maxLength={9}
+            inputMode="numeric"
+            style={dniError ? inputErrorStyle : inputStyle}
+          />
+        </FormField>
+      )}
+
+      {/* Referencia */}
+      <FormField label={isOlvaZone ? 'Referencia / indicaciones' : 'Referencia (opcional)'}>
+        <textarea
+          value={data.referencia}
+          onChange={setField('referencia')}
+          placeholder={isOlvaZone ? 'Indicaciones para el courier' : 'Punto de referencia / indicaciones'}
+          rows={2}
+          style={{ ...inputStyle, resize: 'vertical', minHeight: 52 }}
+        />
       </FormField>
 
-      {/* Name + phone row */}
+      {/* Nombre + Celular */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
         <FormField label="Nombre">
           <input value={data.nombre} onChange={setField('nombre')} placeholder="Nombre completo" style={inputStyle} />
         </FormField>
-        <FormField label="Teléfono">
-          <input value={data.telefono} onChange={setField('telefono')} placeholder="999 999 999" style={inputStyle} />
+        <FormField
+          label="Celular"
+          error={phoneError ? 'Número inválido' : undefined}
+          hint={!phoneError && phoneBlurred && data.telefono ? undefined : 'Ej: 987 654 321'}
+        >
+          <input
+            type="tel"
+            value={data.telefono}
+            onChange={setField('telefono')}
+            onBlur={() => setPhoneBlurred(true)}
+            placeholder="9XX XXX XXX"
+            maxLength={12}
+            style={phoneError ? inputErrorStyle : inputStyle}
+          />
         </FormField>
       </div>
 
-      {/* Shipping zone */}
-      <FormField label="Zona de envío">
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-          {(Object.entries(SHIPPING_RULES) as [string, typeof SHIPPING_RULES[keyof typeof SHIPPING_RULES]][]).map(([k, r]) => (
-            <label key={k} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 14px', borderRadius: 10, cursor: 'pointer', background: data.zone === k ? '#c96e4b22' : '#0f1a14', border: `1px solid ${data.zone === k ? '#c96e4b' : '#c4b29722'}`, transition: 'all .25s ease' }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <input type="radio" name="zone" value={k} checked={data.zone === k} onChange={() => setData((d) => ({ ...d, zone: k as ShippingData['zone'] }))} style={{ accentColor: '#c96e4b' }} />
-                <span>
-                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, color: '#f2e0cc' }}>{r.label}</div>
-                  {r.freeThresholdCents > 0 && (
-                    <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', marginTop: 1 }}>
-                      Gratis desde {Money.formatPEN(r.freeThresholdCents)}
-                    </div>
-                  )}
-                </span>
-              </span>
-              <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 18, color: '#f2e0cc' }}>
-                {r.flatCents === 0 ? 'Gratis' : Money.formatPEN(r.flatCents)}
-              </span>
-            </label>
-          ))}
-        </div>
-      </FormField>
+      {/* Shipping summary card */}
+      <ShippingSummaryCard zone={data.zone} totals={totals} shippingZones={shippingZones} />
 
-      {totals.isFreeShipping && totals.shippingFlat > 0 && (
-        <div style={{ padding: '10px 14px', borderRadius: 10, background: '#8faf8a22', border: '1px solid #8faf8a66', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc', textAlign: 'center' }}>
-          🎉 Envío gratis — ya pasaste {Money.formatPEN(totals.freeThresholdCents)}
-        </div>
-      )}
-      {!totals.isFreeShipping && totals.remainingForFreeCents > 0 && (
-        <div style={{ padding: '10px 14px', borderRadius: 10, background: '#c4b29722', border: '1px solid #c4b29766', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc', textAlign: 'center' }}>
-          Te faltan <strong>{Money.formatPEN(totals.remainingForFreeCents)}</strong> para envío gratis.
-        </div>
-      )}
+      {/* Free shipping progress banner */}
+      <FreeShippingBanner totals={totals} />
 
       <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 10, background: '#0f1a14', border: '1px solid #c4b29722', cursor: 'pointer' }}>
-        <input type="checkbox" checked={data.acepta} onChange={(e) => setData((d) => ({ ...d, acepta: e.target.checked }))} style={{ accentColor: '#8faf8a', width: 16, height: 16, flexShrink: 0 }} />
+        <input type="checkbox" checked={data.acepta} onChange={e => setData(d => ({ ...d, acepta: e.target.checked }))} style={{ accentColor: '#8faf8a', width: 16, height: 16, flexShrink: 0 }} />
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc' }}>
           Acepto las <a href="#" style={{ color: '#c96e4b', textDecoration: 'underline' }}>políticas de compra, privacidad y entrega</a>.
         </span>
@@ -152,14 +368,21 @@ function StepDatos({ data, setData, totals }: { data: ShippingData; setData: Rea
   );
 }
 
-function HowToPayAccordion({ method, totalFormatted }: { method: 'yape' | 'plin'; totalFormatted: string }) {
+// ── How to pay accordion ─────────────────────────────────────────────────────
+
+function HowToPayAccordion({ method, totalFormatted, yapePlin }: { method: 'yape' | 'plin'; totalFormatted: string; yapePlin: YapePlinData }) {
   const [open, setOpen] = useState(false);
-  const steps = method === 'yape'
-    ? ['Abre la app de Yape', 'Toca el ícono QR (escanear)', 'Apunta la cámara a este código', `Confirma el monto: ${totalFormatted}`]
-    : ['Abre tu app bancaria (BCP, Interbank, BBVA)', 'Ingresa a Plin → Pagar con QR', `Escanea el código o ingresa: 917-959-370`, `Confirma el monto: ${totalFormatted}`];
+  const cfg = yapePlin[method];
+  const phoneDisplay = cfg.phone.replace(/^\+51/, '').replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3');
+  const steps = yapePlin.instructions?.length
+    ? [...yapePlin.instructions.slice(0, -1), `Confirma el monto: ${totalFormatted}`]
+    : method === 'yape'
+      ? ['Abre la app de Yape', 'Toca el ícono QR (escanear)', 'Apunta la cámara a este código', `Confirma el monto: ${totalFormatted}`]
+      : ['Abre tu app bancaria', 'Ingresa a Plin → Pagar con QR', `Escanea o ingresa: ${phoneDisplay}`, `Confirma el monto: ${totalFormatted}`];
+
   return (
     <div style={{ marginTop: 8 }}>
-      <button onClick={() => setOpen((o) => !o)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
         <span style={{ display: 'inline-block', transition: 'transform .2s', transform: open ? 'rotate(90deg)' : 'none', fontSize: 8 }}>▶</span>
         ¿Cómo pago con {method === 'yape' ? 'Yape' : 'Plin'}?
       </button>
@@ -174,16 +397,19 @@ function HowToPayAccordion({ method, totalFormatted }: { method: 'yape' | 'plin'
   );
 }
 
-function ValidationTimer({ totalSeconds = 120 }: { totalSeconds?: number }) {
+// ── Validation timer ─────────────────────────────────────────────────────────
+
+function ValidationTimer({ totalSeconds = 120, whatsappPhone }: { totalSeconds?: number; whatsappPhone: string }) {
   const [remaining, setRemaining] = useState(totalSeconds);
   useEffect(() => {
-    const id = setInterval(() => setRemaining((s) => Math.max(0, s - 1)), 1000);
+    const id = setInterval(() => setRemaining(s => Math.max(0, s - 1)), 1000);
     return () => clearInterval(id);
   }, []);
   const pct = (remaining / totalSeconds) * 100;
   const mins = Math.floor(remaining / 60);
   const secs = remaining % 60;
   const expired = remaining === 0;
+  const waPhone = whatsappPhone.replace('+', '');
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 6 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -198,7 +424,7 @@ function ValidationTimer({ totalSeconds = 120 }: { totalSeconds?: number }) {
       {expired && (
         <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', textAlign: 'center', marginTop: 2 }}>
           ¿Demora más?{' '}
-          <a href="https://api.whatsapp.com/send/?phone=51917959370&text=Hola%2C+realic%C3%A9+un+pago+y+no+recib%C3%AD+confirmaci%C3%B3n" target="_blank" rel="noopener noreferrer" style={{ color: '#8faf8a', textDecoration: 'underline' }}>
+          <a href={`https://api.whatsapp.com/send/?phone=${waPhone}&text=Hola%2C+realic%C3%A9+un+pago+y+no+recib%C3%AD+confirmaci%C3%B3n`} target="_blank" rel="noopener noreferrer" style={{ color: '#8faf8a', textDecoration: 'underline' }}>
             Escríbenos por WhatsApp
           </a>
         </div>
@@ -218,9 +444,19 @@ function SpinnerKeyframes() {
   return null;
 }
 
+// ── Step Pago ────────────────────────────────────────────────────────────────
+
 type PaymentPhase = 'select' | 'qr' | 'validating' | 'failed';
 
-function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; totals: CartTotals; onSubmit: (a: AdapterName) => void; status: string }) {
+function StepPago({
+  items, totals, onSubmit, status, yapePlin,
+}: {
+  items: CartItem[];
+  totals: CartTotals;
+  onSubmit: (a: AdapterName) => void;
+  status: string;
+  yapePlin: YapePlinData;
+}) {
   const [selectedMethod, setSelectedMethod] = useState<'yape' | 'plin' | null>(null);
   const [phase, setPhase] = useState<PaymentPhase>('select');
   const [comprobante, setComprobante] = useState<string | null>(null);
@@ -256,6 +492,9 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
     };
   };
 
+  const activeConfig = selectedMethod ? yapePlin[selectedMethod] : null;
+  const activePhone = activeConfig?.phone.replace(/^\+51/, '').replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3') ?? '';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Order summary */}
@@ -267,7 +506,7 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
           <span style={{ textAlign: 'right' }}>cant.</span>
           <span style={{ textAlign: 'right' }}>total</span>
         </div>
-        {items.map((it) => (
+        {items.map(it => (
           <div key={it.id} style={{ display: 'grid', gridTemplateColumns: '2fr 0.7fr 0.5fr 0.7fr', gap: 8, padding: '9px 0', borderBottom: '1px solid #f2e0cc14', alignItems: 'baseline' }}>
             <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc' }}>
               {it.name} <span style={{ color: '#c4b297', fontSize: 11 }}>({it.weight} · {it.grind})</span>
@@ -286,7 +525,7 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
             <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 28, color: '#c96e4b' }}>{Money.formatPEN(totals.totalCents)}</span>
           </div>
           <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.16em', color: '#8faf8a' }}>
-            42% al caficultor: {Money.formatPEN(totals.producerShareCents)}
+            {totals.subtotalCents > 0 ? Math.round(totals.producerShareCents / totals.subtotalCents * 100) : 42}% al caficultor: {Money.formatPEN(totals.producerShareCents)}
           </div>
         </div>
       </div>
@@ -332,12 +571,16 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
             </div>
           )}
 
-          {phase === 'qr' && selectedMethod && (
+          {phase === 'qr' && selectedMethod && activeConfig && (
             <>
               <div style={{ background: '#0f1a14', borderRadius: 12, padding: 16, display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 12, flexWrap: 'wrap' }}>
                 <div style={{ flexShrink: 0 }}>
-                  <div ref={qrRef} style={{ borderRadius: 6, overflow: 'hidden', lineHeight: 0 }}>
-                    <QRCodeSVG value="917959370" size={120} fgColor="#1f3028" bgColor="#ffffff" level="M" />
+                  <div ref={qrRef} style={{ borderRadius: 6, overflow: 'hidden', lineHeight: 0, width: 120, height: 120 }}>
+                    {activeConfig.qrImageUrl ? (
+                      <img src={activeConfig.qrImageUrl} alt={`QR ${selectedMethod}`} style={{ width: 120, height: 120, objectFit: 'cover', display: 'block' }} />
+                    ) : (
+                      <QRCodeSVG value={activeConfig.phone.replace(/^\+51/, '')} size={120} fgColor="#1f3028" bgColor="#ffffff" level="M" />
+                    )}
                   </div>
                   <button onClick={downloadQR} style={{ marginTop: 8, width: 120, padding: '6px 0', borderRadius: 6, background: 'transparent', border: '1px solid #c4b29744', color: '#c4b297', fontFamily: 'Montserrat, sans-serif', fontSize: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
                     ⬇ Descargar QR
@@ -348,13 +591,13 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
                     Escanea desde <strong style={{ color: selectedMethod === 'yape' ? '#c084fc' : '#38bdf8' }}>{selectedMethod}</strong>
                   </div>
                   <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: '#c4b297', letterSpacing: '0.08em' }}>
-                    📱 917-959-370
+                    📱 {activePhone}
                   </div>
                   <div>
                     <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', marginBottom: 1 }}>Total a pagar</div>
                     <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 22, fontWeight: 700, color: '#c96e4b' }}>{Money.formatPEN(totals.totalCents)}</div>
                   </div>
-                  <HowToPayAccordion method={selectedMethod} totalFormatted={Money.formatPEN(totals.totalCents)} />
+                  <HowToPayAccordion method={selectedMethod} totalFormatted={Money.formatPEN(totals.totalCents)} yapePlin={yapePlin} />
                 </div>
               </div>
               <button onClick={handlePaid} style={{ width: '100%', padding: '13px 16px', background: selectedMethod === 'yape' ? '#742280' : '#0bb4d9', color: '#f2e0cc', border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 10 }}>
@@ -370,7 +613,7 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
                 <strong>Verificando tu pago…</strong><br />
                 <span style={{ fontSize: 11, color: '#c4b297' }}>no cierres esta ventana</span>
               </div>
-              <ValidationTimer totalSeconds={120} />
+              <ValidationTimer totalSeconds={120} whatsappPhone={yapePlin.yape.phone} />
             </div>
           )}
 
@@ -383,6 +626,8 @@ function StepPago({ items, totals, onSubmit, status }: { items: CartItem[]; tota
   );
 }
 
+// ── Main Checkout ────────────────────────────────────────────────────────────
+
 export default function Checkout() {
   const isOpen = useCartIsCheckoutOpen();
   const step = useCartCheckoutStep();
@@ -390,6 +635,11 @@ export default function Checkout() {
   const items = useCartItems();
   const { data, setData, status, orderId, totals, canContinue, submitPayment, reset } = useCheckout();
   const { data: cycle } = useActiveCycle();
+  const { data: shippingZones } = useShipping();
+  const { data: yapePlin } = useYapePlin();
+
+  const activeZones = shippingZones ?? [];
+  const activeYapePlin = yapePlin ?? { enabled: true, yape: { phone: '+51917959370', accountName: 'Tunay Wasi' }, plin: { phone: '+51917959370', accountName: 'Tunay Wasi' } };
 
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';
@@ -404,7 +654,7 @@ export default function Checkout() {
       style={{ position: 'fixed', inset: 0, zIndex: 110, background: '#0a1410cc', backdropFilter: 'blur(6px)', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', overflowY: 'auto', padding: '32px 16px' }}
       onClick={closeCheckout}
     >
-      <div onClick={(e) => e.stopPropagation()} style={{ width: 'min(680px, 100%)', background: '#1f3028', color: '#f2e0cc', borderRadius: 20, border: '1px solid #c96e4b33', boxShadow: '0 60px 120px -40px #000000ee', overflow: 'hidden', position: 'relative' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: 'min(680px, 100%)', background: '#1f3028', color: '#f2e0cc', borderRadius: 20, border: '1px solid #c96e4b33', boxShadow: '0 60px 120px -40px #000000ee', overflow: 'hidden', position: 'relative' }}>
 
         {/* Header */}
         <div style={{ padding: '18px 28px', borderBottom: '1px solid #f2e0cc18', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
@@ -445,9 +695,9 @@ export default function Checkout() {
               <button onClick={reset} style={{ marginTop: 24, padding: '12px 24px', background: '#c96e4b', color: '#1f3028', border: 'none', borderRadius: 999, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Listo</button>
             </div>
           ) : step === 'datos' ? (
-            <StepDatos data={data} setData={setData} totals={totals} />
+            <StepDatos data={data} setData={setData} totals={totals} shippingZones={activeZones} />
           ) : (
-            <StepPago items={items} totals={totals} onSubmit={submitPayment} status={status} />
+            <StepPago items={items} totals={totals} onSubmit={submitPayment} status={status} yapePlin={activeYapePlin} />
           )}
         </div>
 
@@ -455,10 +705,10 @@ export default function Checkout() {
         {status !== 'done' && (
           <div style={{ padding: '16px 28px', borderTop: '1px solid #f2e0cc18', background: '#182520', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <button onClick={() => step === 'pago' ? setCheckoutStep('datos') : closeCheckout()} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#c4b297', background: 'transparent', border: '1px solid #c4b29744', borderRadius: 999, padding: '10px 16px', cursor: 'pointer', letterSpacing: '0.04em' }}>
-              ← {step === 'pago' ? 'Volver' : 'Volver'}
+              ← Volver
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <a href="https://api.whatsapp.com/send/?phone=51917959370&text=Hola%2C+tengo+dudas+sobre+Tunay+Wasi&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a', display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>💬 ¿Dudas?</a>
+              <a href={`https://api.whatsapp.com/send/?phone=${activeYapePlin.yape.phone.replace('+', '')}&text=Hola%2C+tengo+dudas+sobre+Tunay+Wasi&type=phone_number&app_absent=0`} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a', display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>💬 ¿Dudas?</a>
               {step === 'datos' && (
                 <button onClick={() => setCheckoutStep('pago')} disabled={!canContinue} style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#1f3028', background: canContinue ? 'linear-gradient(135deg, #c96e4b 0%, #d68863 100%)' : '#c4b29766', padding: '12px 24px', borderRadius: 999, border: 'none', cursor: canContinue ? 'pointer' : 'not-allowed', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                   Ir a pagar →

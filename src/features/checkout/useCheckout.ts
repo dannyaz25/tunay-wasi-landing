@@ -4,15 +4,25 @@ import { useCartItems, useCartActions } from '@/features/cart/useCart';
 import { useCartTotals } from '@/features/cart/useCartTotals';
 import { startCheckout } from './checkoutService';
 
+export function isValidPeruvianPhone(raw: string): boolean {
+  const digits = raw.replace(/[\s\-+()]/g, '');
+  const local = digits.startsWith('51') && digits.length === 11 ? digits.slice(2) : digits;
+  return /^9\d{8}$/.test(local);
+}
+
 const DEFAULT_DATA: ShippingData = {
   departamento: 'Lima Metropolitana',
-  distrito: 'San Borja',
+  provincia: 'Lima',
+  distrito: 'Miraflores',
   direccion: '',
   referencia: '',
   nombre: '',
   telefono: '',
   zone: 'lima',
   acepta: false,
+  olvaMode: 'domicilio',
+  dni: '',
+  ciudad: '',
 };
 
 export type CheckoutStatus = 'idle' | 'paying' | 'done';
@@ -24,12 +34,17 @@ export function useCheckout() {
 
   const items = useCartItems();
   const { clear, closeCheckout } = useCartActions();
-  const totals = useCartTotals(data.zone);
+  const totals = useCartTotals(data.zone, data.olvaMode);
+
+  const isOlvaZone = data.zone === 'limaExt' || data.zone === 'provincia';
+  const isNationalZone = data.zone === 'provincia';
 
   const canContinue =
-    data.direccion.trim().length > 3 &&
+    (isOlvaZone || data.direccion.trim().length > 3) &&
+    (isOlvaZone ? data.dni.trim().length >= 8 : true) &&
+    (!isNationalZone || data.ciudad.trim().length > 1) &&
     data.nombre.trim().length > 1 &&
-    data.telefono.trim().length >= 7 &&
+    isValidPeruvianPhone(data.telefono) &&
     data.acepta;
 
   const submitPayment = useCallback(

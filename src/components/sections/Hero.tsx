@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import CoffeeBranch from '@/components/decor/CoffeeBranch';
 import ImageSlot from '@/components/decor/ImageSlot';
+import { useCaficultores } from '@/features/catalog/useCaficultores';
+import { useLandingConfig } from '@/features/catalog/useLandingConfig';
 
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => { setLoaded(true); }, []);
+
+  const { data: caficultores } = useCaficultores();
+  const { data: landingConfig } = useLandingConfig();
+
+  const farmCount = caficultores?.length ?? 1;
+  const altitudMedia = landingConfig?.heroMetrics?.altitudMedia ?? '+1,800 m';
+  const producerPctDisplay = landingConfig?.heroMetrics?.producerPctDisplay ?? 50;
 
   const fade = (delay: number, finalOpacity = 1) => ({
     opacity: loaded ? finalOpacity : 0,
@@ -58,7 +67,11 @@ export default function Hero() {
               </a>
             </div>
             <div style={{ display: 'flex', gap: 36, marginTop: 48, flexWrap: 'wrap', ...fade(0.6) }}>
-              {([['Hasta 50%', 'directo al productor'], ['12', 'fincas asociadas'], ['+1,400 m', 'altitud media']] as [string, string][]).map(([n, l]) => (
+              {([
+                [`Hasta ${producerPctDisplay}%`, 'directo al productor'],
+                [`${farmCount}`, 'fincas asociadas'],
+                [altitudMedia, 'altitud media'],
+              ] as [string, string][]).map(([n, l]) => (
                 <div key={l}>
                   <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 36, fontWeight: 600, color: '#1f3028', lineHeight: 1 }}>{n}</div>
                   <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, color: '#533b22', letterSpacing: '0.16em', textTransform: 'uppercase', marginTop: 8 }}>{l}</div>

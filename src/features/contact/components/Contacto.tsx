@@ -1,4 +1,5 @@
 import { useState, useMemo, type ChangeEvent } from 'react';
+import { useLandingConfig } from '@/features/catalog/useLandingConfig';
 
 type Tema = 'cafe' | 'mayorista' | 'caficultor' | 'prensa';
 
@@ -16,7 +17,7 @@ const TEMAS: [Tema, string][] = [
   ['prensa', 'Prensa'],
 ];
 
-const CONTACTS = [
+const STATIC_CONTACTS: [string, string][] = [
   ['Correo', 'hola@tunaywasi.pe'],
   ['Lima', 'Jr. Independencia 240, Barranco'],
   ['Cosecha', 'Acopio en Cusco · San Martín · Puno'],
@@ -26,6 +27,15 @@ export default function Contacto() {
   const [values, setValues] = useState<FormValues>({ nombre: '', email: '', tema: 'cafe', mensaje: '' });
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const { data: landingConfig } = useLandingConfig();
+
+  const contacts: [string, string][] = landingConfig?.contact
+    ? [
+        ['Correo', landingConfig.contact.email],
+        ['Lima', landingConfig.contact.address.replace(', Lima', '')],
+        ['Cosecha', 'Acopio en Cusco · San Martín · Puno'],
+      ]
+    : STATIC_CONTACTS;
 
   const errors = useMemo(() => {
     const e: Partial<Record<keyof FormValues, string>> = {};
@@ -74,7 +84,7 @@ export default function Contacto() {
             ¿Una cafetería que quiere abastecerse directo? ¿Un periodista trabajando una historia del campo? ¿Un caficultor que quiere unirse al modelo? Esta es la puerta.
           </p>
           <div style={{ marginTop: 44, display: 'flex', flexDirection: 'column', gap: 18 }}>
-            {CONTACTS.map(([k, v]) => (
+            {contacts.map(([k, v]) => (
               <div key={k} style={{ display: 'flex', gap: 18, alignItems: 'baseline', paddingBottom: 14, borderBottom: '1px solid #1f302822' }}>
                 <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.22em', color: '#533b22', textTransform: 'uppercase', minWidth: 80 }}>{k}</div>
                 <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 22, color: '#1f3028' }}>{v}</div>

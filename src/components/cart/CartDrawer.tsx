@@ -5,6 +5,18 @@ import {
   useCartItems, useCartIsOpen, useCartTotalQuantity, useCartSubtotalCents, useCartActions,
 } from '@/features/cart/useCart';
 import { useActiveCycle } from '@/features/catalog/useActiveCycle';
+import { useComisiones } from '@/features/catalog/useComisiones';
+
+function ProducerShareLine({ unitCents, qty }: { unitCents: number; qty: number }) {
+  const { data: comisiones } = useComisiones();
+  const factor = comisiones?.producerShareFactor ?? 0.421;
+  const pct = Math.round(factor * 100);
+  return (
+    <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22' }}>
+      MÁX. {qty} unid. · {pct}% al caficultor: {Money.formatPEN(Math.round(unitCents * qty * factor))}
+    </div>
+  );
+}
 
 function CartItemRow({ item }: { item: CartItem }) {
   const { dec, inc, remove, setQty } = useCartActions();
@@ -35,9 +47,7 @@ function CartItemRow({ item }: { item: CartItem }) {
         </div>
         <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 24, color: '#1f3028' }}>{Money.formatPEN(lineTotal)}</div>
       </div>
-      <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22' }}>
-        MÁX. {item.maxQty} unid. · 42% al caficultor: {Money.formatPEN(Math.round(item.unitCents * item.qty * 0.421))}
-      </div>
+      <ProducerShareLine unitCents={item.unitCents} qty={item.qty} />
     </div>
   );
 }
@@ -69,6 +79,9 @@ export default function CartDrawer() {
   const subtotalCents = useCartSubtotalCents();
   const { close, clear, openCheckout } = useCartActions();
   const { data: cycle } = useActiveCycle();
+  const { data: comisiones } = useComisiones();
+  const producerShareFactor = comisiones?.producerShareFactor ?? 0.421;
+  const producerSharePct = Math.round(producerShareFactor * 100);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
@@ -129,7 +142,7 @@ export default function CartDrawer() {
               <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 32, color: '#f2e0cc' }}>{Money.formatPEN(subtotalCents)}</span>
             </div>
             <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#8faf8a' }}>
-              42% al caficultor: {Money.formatPEN(Math.round(subtotalCents * 0.421))}
+              {producerSharePct}% al caficultor: {Money.formatPEN(Math.round(subtotalCents * producerShareFactor))}
             </div>
             <button onClick={openCheckout} style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 14, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#1f3028', background: 'linear-gradient(135deg, #c96e4b 0%, #d68863 100%)', padding: '20px 24px', borderRadius: 999, border: 'none', cursor: 'pointer', boxShadow: '0 18px 40px -16px #c96e4baa, inset 0 1px 0 #ffffff33', transition: 'all .3s ease' }}
               onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}

@@ -100,11 +100,20 @@ const STATIC_CYCLE: CicloActivo = {
   cutoffTimestamp: new Date('2026-05-31T23:59:59-05:00').getTime(),
 };
 
+type WeightEntry = { label: string; cents: number };
+
+function mapProductoDoc(id: string, raw: Record<string, unknown>): Producto {
+  const weights = (raw.weights as WeightEntry[]).map(
+    (w) => [w.label, w.cents] as [string, number],
+  );
+  return { ...(raw as Omit<Producto, 'id' | 'weights'>), id, weights };
+}
+
 export async function fetchProductos(): Promise<Producto[]> {
   try {
     const snap = await getDocs(collection(db, 'productos'));
     if (snap.empty) return STATIC_PRODUCTS;
-    const mapped = snap.docs.map((d) => ({id: d.id, ...d.data()} as Producto));
+    const mapped = snap.docs.map((d) => mapProductoDoc(d.id, d.data()));
     const valid = mapped.filter((p) => p.name && p.weights);
     return valid.length > 0 ? valid : STATIC_PRODUCTS;
   } catch {
@@ -127,10 +136,127 @@ export async function fetchCaficultores(): Promise<Caficultor[]> {
 
 export async function fetchActiveCycle(): Promise<CicloActivo> {
   try {
-    const snap = await getDoc(doc(db, 'config', 'ciclo_activo'));
+    const snap = await getDoc(doc(db, 'configurations', 'ciclo_activo'));
     if (!snap.exists()) return STATIC_CYCLE;
     return snap.data() as CicloActivo;
   } catch {
     return STATIC_CYCLE;
+  }
+}
+
+// ── Comisiones ───────────────────────────────────────────────────────────────
+
+export interface B2CSlice { key: string; pct: number; label: string; detail: string; color: string }
+export interface ComisionesData { b2c: B2CSlice[]; producerShareFactor: number }
+
+export const STATIC_COMISIONES: ComisionesData = {
+  b2c: [
+    { key: 'caficultor',  pct: 42, label: 'Caficultor',             color: '#c96e4b', detail: 'Pago directo a la finca, antes de que el grano viaje.' },
+    { key: 'tostador',   pct: 15, label: 'Tueste + Cata Q-Grader', color: '#8faf8a', detail: 'Tostado artesanal y certificación de calidad SCA.' },
+    { key: 'logistica',  pct:  6, label: 'Flete y Empaque',         color: '#c4b297', detail: 'Transporte desde origen y embalaje kraft reciclado.' },
+    { key: 'igv',        pct: 15, label: 'IGV (18%)',               color: '#533b22', detail: 'Impuesto al consumo incluido en el precio final.' },
+    { key: 'plataforma', pct: 22, label: 'Tunay Wasi',              color: '#1f3028', detail: 'Plataforma, tecnología y operación del marketplace.' },
+  ],
+  producerShareFactor: 0.421,
+};
+
+export async function fetchComisiones(): Promise<ComisionesData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'comisiones'));
+    if (!snap.exists()) return STATIC_COMISIONES;
+    return snap.data() as ComisionesData;
+  } catch {
+    return STATIC_COMISIONES;
+  }
+}
+
+// ── Shipping zones ───────────────────────────────────────────────────────────
+
+export interface ShippingZoneRule {
+  key: string;
+  label: string;
+  flatCents: number;
+  freeThresholdCents: number;
+  carrier?: string;
+  transitDays?: string;
+  recojoFlatCents?: number;
+  domicilioFlatCents?: number;
+}
+
+export const STATIC_SHIPPING_ZONES: ShippingZoneRule[] = [
+  { key: 'lima',      label: 'Delivery a domicilio',        flatCents:  800, freeThresholdCents: 10000 },
+  { key: 'limaExt',  label: 'Olva Courier · Lima',          flatCents: 1200, freeThresholdCents: 12000, carrier: 'Olva Courier', transitDays: '2-3', recojoFlatCents: 1000, domicilioFlatCents: 1200 },
+  { key: 'provincia',label: 'Olva Courier · Nacional',       flatCents: 1500, freeThresholdCents: 15000, carrier: 'Olva Courier', transitDays: '3-5', recojoFlatCents: 1200, domicilioFlatCents: 1500 },
+  { key: 'recojo',   label: 'Recojo en Olva · Barranca',    flatCents:    0, freeThresholdCents:     0 },
+];
+
+export async function fetchShippingZones(): Promise<ShippingZoneRule[]> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'shipping'));
+    if (!snap.exists()) return STATIC_SHIPPING_ZONES;
+    const data = snap.data() as { zones?: ShippingZoneRule[] };
+    return data.zones?.length ? data.zones : STATIC_SHIPPING_ZONES;
+  } catch {
+    return STATIC_SHIPPING_ZONES;
+  }
+}
+
+// ── Landing config ───────────────────────────────────────────────────────────
+
+export interface LandingContact {
+  email: string;
+  whatsapp: string;
+  address: string;
+  appUrl?: string;
+}
+
+export interface LandingConfigData {
+  contact: LandingContact;
+  heroMetrics?: { producerPctDisplay: number; farmCount: number; altitudMedia: string };
+  orderIdPrefix?: string;
+}
+
+export const STATIC_LANDING_CONFIG: LandingConfigData = {
+  contact: {
+    email: 'hola@tunaywasi.pe',
+    whatsapp: '+51917959370',
+    address: 'Jr. Independencia 240, Barranco, Lima',
+  },
+};
+
+export async function fetchLandingConfig(): Promise<LandingConfigData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'landing'));
+    if (!snap.exists()) return STATIC_LANDING_CONFIG;
+    return snap.data() as LandingConfigData;
+  } catch {
+    return STATIC_LANDING_CONFIG;
+  }
+}
+
+// ── Yape / Plin ──────────────────────────────────────────────────────────────
+
+export interface YapeOrPlinConfig { phone: string; accountName: string; qrImageUrl?: string }
+export interface YapePlinData {
+  enabled: boolean;
+  yape: YapeOrPlinConfig;
+  plin: YapeOrPlinConfig;
+  instructions?: string[];
+}
+
+export const STATIC_YAPE_PLIN: YapePlinData = {
+  enabled: true,
+  yape: { phone: '+51917959370', accountName: 'Tunay Wasi' },
+  plin: { phone: '+51917959370', accountName: 'Tunay Wasi' },
+  instructions: ['Abre Yape o tu app bancaria', 'Escanea el QR o busca el número', 'Confirma el monto exacto', 'Sube la captura del comprobante'],
+};
+
+export async function fetchYapePlin(): Promise<YapePlinData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'yapePlin'));
+    if (!snap.exists()) return STATIC_YAPE_PLIN;
+    return snap.data() as YapePlinData;
+  } catch {
+    return STATIC_YAPE_PLIN;
   }
 }
