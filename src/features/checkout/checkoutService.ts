@@ -3,6 +3,7 @@ import type { CartItem } from '@/shared/types/cart';
 import { niubizAdapter } from './adapters/niubizAdapter';
 import { stripeAdapter } from './adapters/stripeAdapter';
 import { yapePlinAdapter } from './adapters/yapePlinAdapter';
+import { saveOrder } from './orderService';
 
 interface StockCheckResult {
   ok: boolean;
@@ -29,5 +30,11 @@ export async function startCheckout(
   if (!stock.ok) return { ok: false, error: 'oversold', oversold: stock.oversold };
   const fn = adapterMap[adapter];
   if (!fn) return { ok: false, error: 'unknown_adapter' };
-  return fn(payload);
+  const result = await fn(payload);
+  if (result.ok && result.orderId) {
+    await saveOrder(result.orderId, adapter, payload).catch((err) => {
+      console.error('[orderService] saveOrder failed:', err);
+    });
+  }
+  return result;
 }

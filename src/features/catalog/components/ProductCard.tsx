@@ -42,6 +42,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
     add({
       id: `${p.code}-${wLabel}-${GRIND_DEFAULT}`,
       sku: p.code,
+      productoId: p.id,
       name: p.name,
       weight: wLabel as '250g' | '1kg' | '3kg',
       grind: GRIND_DEFAULT,
@@ -50,6 +51,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
       maxQty: 30,
       caficultor: p.producer,
       finca: p.farm,
+      producerPct: p.producerPct,
       badge: 'Selección',
     });
     openCart();

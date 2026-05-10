@@ -11,6 +11,7 @@ export type GrindOption =
 export interface CartItem {
   id: string;
   sku: string;
+  productoId: string;
   name: string;
   weight: WeightOption;
   grind: GrindOption;
@@ -19,6 +20,7 @@ export interface CartItem {
   maxQty: number;
   caficultor: string;
   finca: string;
+  producerPct: number;
   badge: string;
 }
 
