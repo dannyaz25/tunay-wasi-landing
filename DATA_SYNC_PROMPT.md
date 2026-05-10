@@ -1,4 +1,4 @@
-# DATA SYNC PROMPT — tunay-wasi-desing
+# DATA SYNC PROMPT — tunay-wasi-landing
 > Pega este documento completo en una nueva sesión de Claude Code para sincronizar los datos del prototipo con producción.
 
 ---
@@ -7,7 +7,7 @@
 
 Actúa como **Senior Frontend Engineer** especializado en React y sistemas de diseño.
 
-Tienes acceso **únicamente** al proyecto `tunay-wasi-desing/` (prototipo de diseño con React + Babel standalone, sin build step). **No intentes leer ni acceder al repo `tunaywasi/`** — todos los valores de producción que necesitas están embebidos en la Sección 6 (Apéndice) de este documento.
+Tienes acceso **únicamente** al proyecto `tunay-wasi-landing/` (prototipo de diseño con React + Babel standalone, sin build step). **No intentes leer ni acceder al repo `tunaywasi/`** — todos los valores de producción que necesitas están embebidos en la Sección 6 (Apéndice) de este documento.
 
 **Objetivo:** Reemplazar datos placeholder en el prototipo con valores reales del negocio. No es un refactor; es una sustitución quirúrgica de valores. Los cambios están organizados por prioridad.
 
