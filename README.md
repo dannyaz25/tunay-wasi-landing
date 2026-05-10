@@ -111,7 +111,10 @@ Components subscribe with `window.useCart(selector)`.
 - [ ] Replace ImageSlot placeholders with real images in `src/components/decor/ImageSlot.tsx`
 - [ ] Connect contact form to `POST /api/contact`
 - [ ] Replace mock stock check in checkout with real API
-- [ ] Integrate Niubiz/Yape payment adapters
+- [x] Integrate Yape/Plin payment support (see `src/features/catalog/useYapePlin.ts`)
+- [x] Add shipping calculation and rules (see `src/features/cart/shippingRules.ts`, `src/features/catalog/useShipping.ts`)
+- [x] Add landing configuration (see `src/features/catalog/useLandingConfig.ts`)
+- [x] Add comisiones calculation (see `src/features/catalog/useComisiones.ts`)
 - [ ] Add official Hummingbird SVG in `src/components/decor/Hummingbird.tsx`
 - [ ] Update hardcoded May 2026 delivery dates
 
