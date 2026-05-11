@@ -33,11 +33,10 @@ function deliverEstimate(zone: string, cycle?: { deliverLima: string; deliverPro
 }
 
 export async function saveOrder(
-  orderId: string,
   adapter: AdapterName,
   payload: CheckoutPayload,
   cycle?: { cicloCloseAt: string; deliverLima: string; deliverProv: string },
-): Promise<void> {
+): Promise<string> {
   const id = crypto.randomUUID();
   const now = new Date().toISOString();
   const { cart, shipping, totals } = payload;
@@ -61,6 +60,10 @@ export async function saveOrder(
     producerShareCents: totals.producerShareCents,
   };
 
+  const timestamp = Date.now().toString(36).toUpperCase();
+  const uuidSuffix = id.replace(/-/g, '').slice(0, 8).toUpperCase();
+  const orderId = `TW-${timestamp}-${uuidSuffix}`;
+
   const pedido: PedidoDoc = {
     id,
     orderId,
@@ -76,4 +79,5 @@ export async function saveOrder(
   };
 
   await setDoc(doc(db, 'pedidos', id), stripUndefined(pedido));
+  return orderId;
 }
