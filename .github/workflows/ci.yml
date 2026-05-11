@@ -1,0 +1,163 @@
+name: CI — Landing (alpaso-app)
+
+on:
+  push:
+    branches: [main, qa]
+  pull_request:
+    branches: [main, qa]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # ─── JOB 1: Build ────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.meta.outputs.branch }}
+      firebase_project: ${{ steps.meta.outputs.firebase_project }}
+    steps:
+      - name: Checkout landing (${{ github.ref_name }})
+        uses: actions/checkout@v4
+
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Subir artefacto dist/
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-landing
+          path: dist/
+          retention-days: 1
+
+      - name: Determinar Firebase project y rama
+        id: meta
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          if [ "$BRANCH" = "main" ]; then
+            echo "firebase_project=tunay-wasi" >> "$GITHUB_OUTPUT"
+          else
+            echo "firebase_project=alpaso-app" >> "$GITHUB_OUTPUT"
+          fi
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+
+  # ─── JOB 2: E2E Tests ────────────────────────────────────────────────────────
+  e2e:
+    name: E2E Tests (Playwright — landing)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout test-automation
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/alpaso-test-automation
+          ref: main
+          token: ${{ secrets.GH_PAT }}
+          path: alpaso-test-automation
+
+      - name: Setup Node ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: alpaso-test-automation/package-lock.json
+
+      - name: Instalar dependencias de tests
+        working-directory: alpaso-test-automation
+        run: npm ci
+
+      - name: Instalar Playwright browsers
+        working-directory: alpaso-test-automation
+        run: npx playwright install chromium --with-deps
+
+      - name: Ejecutar pruebas E2E — proyecto landing
+        working-directory: alpaso-test-automation
+        env:
+          FRONTEND_URL: https://alpaso-app.web.app
+          ADMIN_URL: https://alpaso-app-admin.web.app
+          ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+          CI: true
+        run: npx playwright test --project=landing
+
+      - name: Subir reporte de tests
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-landing
+          path: |
+            alpaso-test-automation/playwright-report/
+            alpaso-test-automation/test-results/results.json
+          retention-days: 7
+
+      - name: Verificar umbral 95% de éxito
+        working-directory: alpaso-test-automation
+        run: |
+          node - <<'EOF'
+          import { readFileSync } from 'fs'
+          const raw = readFileSync('test-results/results.json', 'utf8')
+          const data = JSON.parse(raw)
+          // El JSON de Playwright reporter tiene stats o suites con conteos
+          const stats = data.stats ?? {}
+          const passed  = stats.expected    ?? 0
+          const skipped = stats.skipped     ?? 0
+          const failed  = (stats.unexpected ?? 0) + (stats.flaky ?? 0)
+          const total   = passed + failed
+          if (total === 0) {
+            console.log('⚠️  No se encontraron tests ejecutados.')
+            process.exit(1)
+          }
+          const pct = passed / total
+          console.log(`Rama: ${{ needs.build.outputs.branch }}`)
+          console.log(`Tests: ${passed} pasaron, ${failed} fallaron, ${skipped} skipped`)
+          console.log(`Tasa de éxito: ${(pct * 100).toFixed(1)}%`)
+          if (pct < 0.95) {
+            console.error('❌ Umbral mínimo del 95% no alcanzado — deploy cancelado.')
+            process.exit(1)
+          }
+          console.log('✅ Umbral OK — deploy autorizado.')
+          EOF
+
+  # ─── JOB 3: Deploy ───────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy → Firebase (${{ needs.build.outputs.firebase_project }})
+    needs: [build, e2e]
+    runs-on: ubuntu-latest
+    # Solo despliega en push directo (no en PRs)
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout landing
+        uses: actions/checkout@v4
+
+      - name: Descargar artefacto dist/
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-landing
+          path: dist/
+
+      - name: Deploy a Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: >-
+            ${{
+              needs.build.outputs.firebase_project == 'tunay-wasi'
+              && secrets.FIREBASE_SERVICE_ACCOUNT_TUNAY
+              || secrets.FIREBASE_SERVICE_ACCOUNT_ALPASO
+            }}
+          projectId: ${{ needs.build.outputs.firebase_project }}
+          channelId: live

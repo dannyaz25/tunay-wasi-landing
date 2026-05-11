@@ -56,7 +56,7 @@ export default function Origen() {
               </div>
               <div>
                 <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, fontWeight: 600, color: '#1f3028', marginBottom: 8, letterSpacing: '0.02em' }}>Café de especialidad</div>
-                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, lineHeight: 1.6, color: '#533b22' }}>Lotes con puntaje SCA mayor a 84 — todos cosechados a mano, en altura, en parcelas pequeñas.</div>
+                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, lineHeight: 1.6, color: '#533b22' }}>Lotes con puntaje SCA mayor a 82 — todos cosechados a mano, en altura, en parcelas pequeñas.</div>
               </div>
             </div>
             <br/>

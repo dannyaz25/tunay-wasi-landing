@@ -16,7 +16,7 @@ async function checkStock(_items: CartItem[]): Promise<StockCheckResult> {
   return { ok: true, oversold: [] };
 }
 
-const adapterMap: Record<AdapterName, (p: CheckoutPayload) => Promise<CheckoutResult>> = {
+const adapterMap: Record<AdapterName, (p: CheckoutPayload, orderId: string) => Promise<CheckoutResult>> = {
   niubiz: niubizAdapter,
   stripe: stripeAdapter,
   yapePlin: yapePlinAdapter,
@@ -28,6 +28,7 @@ export async function startCheckout(
 ): Promise<CheckoutResult> {
   const stock = await checkStock(payload.cart.items);
   if (!stock.ok) return { ok: false, error: 'oversold', oversold: stock.oversold };
+
   const fn = adapterMap[adapter];
   if (!fn) return { ok: false, error: 'unknown_adapter' };
   const result = await fn(payload);
