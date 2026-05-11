@@ -64,8 +64,8 @@ jobs:
       - name: Checkout test-automation
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/alpaso-test-automation
-          ref: main
+          repository: dannyaz25/alpaso-test-automation
+          ref: ${{ github.ref_name == 'main' && 'main' || 'qa' }}
           token: ${{ secrets.GH_PAT }}
           path: alpaso-test-automation
 
