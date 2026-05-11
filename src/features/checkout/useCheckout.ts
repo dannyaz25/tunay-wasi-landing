@@ -52,6 +52,7 @@ export function useCheckout() {
       setStatus('paying');
       const res = await startCheckout(adapter, { cart: { items }, shipping: data, totals });
       if (res.ok) {
+        clear();
         setOrderId(res.orderId ?? null);
         setStatus('done');
       } else {
