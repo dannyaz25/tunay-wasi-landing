@@ -1,6 +1,8 @@
-export type ToneOption = 'green' | 'tan' | 'terra' | 'cream' | 'deep';
-export type TagTone = 'sage' | 'terra' | 'deep';
-export type ProductLabel = 'PREVENTA' | 'NEW';
+import { TONE_OPTIONS, TAG_TONE_OPTIONS, PRODUCT_LABELS } from '../constants';
+
+export type ToneOption   = (typeof TONE_OPTIONS)[number];
+export type TagTone      = (typeof TAG_TONE_OPTIONS)[number];
+export type ProductLabel = (typeof PRODUCT_LABELS)[number];
 
 export type { CaficultorDoc } from './firestore';
 

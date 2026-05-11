@@ -7,4 +7,5 @@ export const catalogKeys = {
   shippingZones: () => [...catalogKeys.all, 'shippingZones'] as const,
   landingConfig: () => [...catalogKeys.all, 'landingConfig'] as const,
   yapePlin: () => [...catalogKeys.all, 'yapePlin'] as const,
+  transferencia: () => [...catalogKeys.all, 'transferencia'] as const,
 };

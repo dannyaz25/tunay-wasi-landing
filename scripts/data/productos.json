@@ -13,7 +13,7 @@
     "body": "Medio",
     "acidity": "Cítrica brillante",
     "score": "87.5",
-    "brews": ["V60", "Chemex", "AeroPress"],
+    "brews": ["V60", "Chemex", "French Press"],
     "weights": [
       { "label": "250g", "cents": 3900 },
       { "label": "1kg",  "cents": 15000 },
