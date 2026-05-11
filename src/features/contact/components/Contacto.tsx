@@ -22,7 +22,7 @@ const STATIC_CONTACTS: [string, string][] = [
 export default function Contacto() {
   const [values, setValues] = useState<ContactoForm>({ nombre: '', email: '', tema: 'cafe', mensaje: '' });
   const [touched, setTouched] = useState<Partial<Record<keyof ContactoForm, boolean>>>({});
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
   const { data: landingConfig } = useLandingConfig();
 
   const contacts: [string, string][] = landingConfig?.contact
@@ -47,22 +47,33 @@ export default function Contacto() {
     setValues((v) => ({ ...v, [k]: e.target.value }));
   const onBlur = (k: keyof ContactoForm) => () => setTouched((t) => ({ ...t, [k]: true }));
 
+  const whatsappNumber = landingConfig?.contact?.whatsapp ?? '+51917959370';
+
+  const buildWhatsAppUrl = () => {
+    const temaLabels: Record<string, string> = { cafe: 'Comprar café', mayorista: 'Mayorista', caficultor: 'Soy caficultor', prensa: 'Prensa' };
+    const msg = `Hola, soy ${values.nombre} (${values.email}).\nTema: ${temaLabels[values.tema] ?? values.tema}.\n${values.mensaje}`;
+    return `https://wa.me/${whatsappNumber.replace('+', '')}?text=${encodeURIComponent(msg)}`;
+  };
+
+  const adminEmail = landingConfig?.contact?.adminEmail ?? 'tunaywasi@gmail.com';
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched({ nombre: true, email: true, mensaje: true });
     if (!isValid) return;
     setStatus('sending');
+    let emailError = false;
     try {
       const { subject: subCliente, html: htmlCliente } = emailContactoCliente(values);
       const { subject: subAdmin, html: htmlAdmin } = emailContactoAdmin(values);
       await Promise.all([
         sendMail({ to: values.email, subject: subCliente, html: htmlCliente }),
-        sendMail({ to: 'cbdavid.cloud@gmail.com', subject: subAdmin, html: htmlAdmin }),
+        sendMail({ to: adminEmail, subject: subAdmin, html: htmlAdmin }),
       ]);
     } catch {
-      // Email failures don't block the success state
+      emailError = true;
     }
-    setStatus('sent');
+    setStatus(emailError ? 'failed' : 'sent');
   };
 
   const inputBase: React.CSSProperties = {
@@ -106,6 +117,18 @@ export default function Contacto() {
                 Gracias, {values.nombre.split(' ')[0]}. Te respondemos a {values.email} en menos de un día.
               </p>
             </div>
+          ) : status === 'failed' ? (
+            <div style={{ textAlign: 'center', padding: '40px 0', position: 'relative' }}>
+              <div style={{ width: 88, height: 88, borderRadius: '50%', background: '#c96e4b66', margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond, serif', fontSize: 44, color: '#f2e0cc' }}>!</div>
+              <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 32, fontWeight: 600, margin: 0, color: '#f2e0cc' }}>No pudimos enviar tu correo.</h3>
+              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, color: '#c4b297', marginTop: 14, maxWidth: 360, marginInline: 'auto', lineHeight: 1.6 }}>
+                Contáctanos directamente por WhatsApp y te responderemos igual.
+              </p>
+              <a href={buildWhatsAppUrl()} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-block', marginTop: 24, background: '#25D366', color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 14, padding: '16px 32px', borderRadius: 999, textDecoration: 'none', boxShadow: '0 12px 28px -12px #25D36688' }}>
+                Escribir por WhatsApp →
+              </a>
+            </div>
           ) : (
             <>
               <style>{`.tw-form-dark input, .tw-form-dark textarea { color: #f2e0cc !important; border-bottom-color: #f2e0cc44 !important; } .tw-form-dark input:focus, .tw-form-dark textarea:focus { border-bottom-color: #c96e4b !important; } .tw-form-dark label { color: #c4b297 !important; }`}</style>
@@ -146,9 +169,7 @@ export default function Contacto() {
                 onMouseLeave={(e) => { if (isValid && status !== 'sending') (e.currentTarget as HTMLElement).style.background = '#c96e4b'; }}>
                 {status === 'sending' ? 'Enviando…' : 'Enviar mensaje →'}
               </button>
-              <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#c4b29799', textAlign: 'center', textTransform: 'uppercase' }}>
-                Procesado vía API serverless · /api/contact
-              </div>
+
             </>
           )}
         </form>

@@ -109,7 +109,7 @@ Components subscribe with `window.useCart(selector)`.
 ## Pre-Launch Items
 
 - [ ] Replace ImageSlot placeholders with real images in `src/components/decor/ImageSlot.tsx`
-- [ ] Connect contact form to `POST /api/contact`
+- [x] Connect contact form to EmailJS (with WhatsApp fallback on failure)
 - [ ] Replace mock stock check in checkout with real API
 - [x] Integrate Yape/Plin payment support (see `src/features/catalog/useYapePlin.ts`)
 - [x] Add shipping calculation and rules (see `src/features/cart/shippingRules.ts`, `src/features/catalog/useShipping.ts`)
@@ -117,6 +117,27 @@ Components subscribe with `window.useCart(selector)`.
 - [x] Add comisiones calculation (see `src/features/catalog/useComisiones.ts`)
 - [ ] Add official Hummingbird SVG in `src/components/decor/Hummingbird.tsx`
 - [ ] Update hardcoded May 2026 delivery dates
+
+## Environment Variables
+
+Create a `.env.local` file in the project root with the following variables:
+
+```env
+# Firebase
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+
+# EmailJS
+VITE_EMAILJS_SERVICE_ID=
+VITE_EMAILJS_TEMPLATE_ID=
+VITE_EMAILJS_PUBLIC_KEY=
+```
+
+Get your EmailJS credentials from [dashboard.emailjs.com](https://dashboard.emailjs.com/admin/templates). The contact form uses two dynamic template variables: `to_email`, `subject`, and `html_content`. On failure, it redirects to WhatsApp using the number defined in Firestore `landing.contact.whatsapp`.
 
 ## Firebase Firestore Schema
 
@@ -155,6 +176,7 @@ CaficultorDoc ←── ProductoDoc ←── PedidoItem
 
 | Integration | Type | Description |
 |-------------|------|-------------|
+| **EmailJS** | Transactional Email | Contact form sends confirmation to client + notification to admin |
 | **Yape/Plin** | QR Payment | Manual transfer with voucher upload, admin confirmation |
 | **Niubiz** | Payment Gateway | Card payments via Peruvian payment processor |
 | **Stripe** | Payment Gateway | International card payments |
