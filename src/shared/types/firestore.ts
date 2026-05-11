@@ -46,6 +46,7 @@ export interface CaficultorDoc {
 
   // ── Story & media ─────────────────────────────────────────────────────
   historia?: string;               // long producer bio / story (→ quote & bio)
+  resumen?: string;               // short producer bio (→ card subline)
   impactoSocial?: string;          // investment goal / social mission
   fotoPerfilUrl?: string;          // Cloudinary profile photo URL
   fotosUrls?: string[];            // Cloudinary farm/process photo URLs (max 5)

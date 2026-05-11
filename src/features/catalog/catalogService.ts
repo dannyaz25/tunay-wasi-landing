@@ -14,6 +14,7 @@ function mapCaficultorDoc(id: string, raw: CaficultorDoc): Caficultor {
     score: raw.puntajeSCA,
     color: 'green',
     quote: raw.historia ?? '',
+    summary: raw.resumen ?? '',
     bio: raw.historia,
     socialImpact: raw.impactoSocial,
     yearsExp: raw.experienciaAnos ? Number(raw.experienciaAnos) : undefined,

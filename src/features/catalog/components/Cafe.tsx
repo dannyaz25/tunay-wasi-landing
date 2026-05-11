@@ -73,7 +73,7 @@ export default function Cafe() {
         ) : (
           <>
             {/* Carousel track */}
-            <div style={{ overflow: 'hidden', paddingBottom: 12 }}>
+            <div style={{ overflowX: 'clip' as React.CSSProperties['overflowX'], overflowY: 'visible', paddingTop: 14, marginTop: -14, paddingBottom: 12 }}>
               <div
                 style={{
                   display: 'flex',
