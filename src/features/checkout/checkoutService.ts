@@ -2,7 +2,7 @@ import type { AdapterName, CheckoutPayload, CheckoutResult } from '@/shared/type
 import type { CartItem } from '@/shared/types/cart';
 import { niubizAdapter } from './adapters/niubizAdapter';
 import { stripeAdapter } from './adapters/stripeAdapter';
-import { yapePlinAdapter } from './adapters/yapePlinAdapter';
+import { yapeAdapter, plinAdapter, transferenciaAdapter } from './adapters/yapePlinAdapter';
 import { saveOrder } from './orderService';
 
 interface StockCheckResult {
@@ -19,7 +19,9 @@ async function checkStock(_items: CartItem[]): Promise<StockCheckResult> {
 const adapterMap: Record<AdapterName, (p: CheckoutPayload) => Promise<CheckoutResult>> = {
   niubiz: niubizAdapter,
   stripe: stripeAdapter,
-  yapePlin: yapePlinAdapter,
+  yape: yapeAdapter,
+  plin: plinAdapter,
+  transferencia: transferenciaAdapter,
 };
 
 export async function startCheckout(
@@ -31,10 +33,12 @@ export async function startCheckout(
   const fn = adapterMap[adapter];
   if (!fn) return { ok: false, error: 'unknown_adapter' };
   const result = await fn(payload);
-  if (result.ok && result.orderId) {
-    await saveOrder(result.orderId, adapter, payload).catch((err) => {
+  if (result.ok) {
+    const orderId = await saveOrder(adapter, payload).catch((err) => {
       console.error('[orderService] saveOrder failed:', err);
+      return null;
     });
+    if (orderId) result.orderId = orderId;
   }
   return result;
 }

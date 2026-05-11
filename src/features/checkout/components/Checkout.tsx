@@ -446,20 +446,22 @@ function SpinnerKeyframes() {
 
 // ── Step Pago ────────────────────────────────────────────────────────────────
 
-type PaymentPhase = 'select' | 'qr' | 'validating' | 'failed';
+type PaymentPhase = 'select' | 'qr' | 'validating' | 'failed' | 'transferencia';
 
 function StepPago({
-  items, totals, onSubmit, status, yapePlin,
+  items, totals, onSubmit, status, yapePlin, customerName,
 }: {
   items: CartItem[];
   totals: CartTotals;
   onSubmit: (a: AdapterName) => void;
   status: string;
   yapePlin: YapePlinData;
+  customerName?: string;
 }) {
-  const [selectedMethod, setSelectedMethod] = useState<'yape' | 'plin' | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<'yape' | 'plin' | 'transferencia' | null>(null);
   const [phase, setPhase] = useState<PaymentPhase>('select');
   const [comprobante, setComprobante] = useState<string | null>(null);
+  const [voucherSent, setVoucherSent] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const qrRef = useRef<HTMLDivElement>(null);
 
@@ -467,8 +469,8 @@ function StepPago({
     if (phase === 'validating' && status === 'idle') setPhase('failed');
   }, [status, phase]);
 
-  const selectMethod = (m: 'yape' | 'plin') => { setSelectedMethod(m); setPhase('qr'); };
-  const handlePaid = () => { setPhase('validating'); onSubmit('yapePlin'); };
+  const selectMethod = (m: 'yape' | 'plin' | 'transferencia') => { setSelectedMethod(m); setPhase(m === 'transferencia' ? 'transferencia' : 'qr'); };
+  const handlePaid = () => { setPhase('validating'); onSubmit(selectedMethod ?? 'yape'); };
   const downloadQR = () => {
     const svg = qrRef.current?.querySelector('svg');
     if (!svg) return;
@@ -479,20 +481,27 @@ function StepPago({
     URL.revokeObjectURL(url);
   };
 
-  const methodBtnStyle = (m: 'yape' | 'plin'): React.CSSProperties => {
+  const methodCardStyle = (m: 'yape' | 'plin' | 'transferencia'): React.CSSProperties => {
     const active = selectedMethod === m && phase !== 'select';
     return {
-      background: m === 'yape' ? '#742280' : '#0bb4d9', color: '#f2e0cc',
-      padding: '11px 28px', borderRadius: 10,
-      fontFamily: 'Montserrat, sans-serif', fontSize: 16, fontWeight: 800,
-      border: active ? '2px solid #c4b297' : '2px solid transparent',
-      boxShadow: active ? '0 0 0 3px #c4b29733' : 'none',
+      flex: 1, minWidth: 100, padding: '12px 10px', borderRadius: 10,
+      fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 700,
+      border: '2px solid ' + (active ? '#c96e4b' : '#c4b29733'),
+      boxShadow: active ? '0 0 0 3px #c96e4b33' : 'none',
+      background: active ? '#c96e4b22' : '#0f1a14',
+      color: active ? '#c96e4b' : '#c4b297',
       cursor: phase === 'validating' ? 'default' : 'pointer',
-      outline: 'none', transition: 'all .2s ease',
+      outline: 'none', transition: 'all .2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
     };
   };
 
-  const activeConfig = selectedMethod ? yapePlin[selectedMethod] : null;
+  const methodIcon = (m: 'yape' | 'plin' | 'transferencia') => {
+    if (m === 'yape') return <img src="/imgs/yape-seeklogo.png" alt="Yape" style={{ width: 64, height: 64, objectFit: 'contain' }} />;
+    if (m === 'plin') return <img src="/imgs/plin-seeklogo.png" alt="Plin" style={{ width: 64, height: 64, objectFit: 'contain' }} />;
+    return <span style={{ fontSize: 35 }}>🏦</span>;
+  };
+
+  const activeConfig = selectedMethod && selectedMethod !== 'transferencia' ? yapePlin[selectedMethod] : null;
   const activePhone = activeConfig?.phone.replace(/^\+51/, '').replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3') ?? '';
 
   return (
@@ -557,21 +566,28 @@ function StepPago({
       ) : (
         <div style={{ padding: 18, borderRadius: 14, background: 'linear-gradient(180deg, #c96e4b14 0%, #1f302800 100%)', border: '1px solid #c96e4b44' }}>
           <SpinnerKeyframes />
-          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c96e4b', textTransform: 'uppercase', textAlign: 'center', marginBottom: 14 }}>⚡ Paga rápido con</div>
+          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c96e4b', textTransform: 'uppercase', textAlign: 'center', marginBottom: 14 }}>⚡ Elige tu método de pago</div>
 
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 16 }}>
-            <button onClick={() => phase !== 'validating' && selectMethod('yape')} style={methodBtnStyle('yape')}>yape</button>
-            <span style={{ color: '#c4b297', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>o</span>
-            <button onClick={() => phase !== 'validating' && selectMethod('plin')} style={methodBtnStyle('plin')}>plin</button>
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'stretch', marginBottom: 16 }}>
+            <button onClick={() => phase !== 'validating' && selectMethod('yape')} style={methodCardStyle('yape')}>
+              {methodIcon('yape')}
+            </button>
+            <button onClick={() => phase !== 'validating' && selectMethod('plin')} style={methodCardStyle('plin')}>
+              {methodIcon('plin')}
+            </button>
+            <button onClick={() => phase !== 'validating' && selectMethod('transferencia')} style={methodCardStyle('transferencia')}>
+              {methodIcon('transferencia')}
+              <span>Transferencia</span>
+            </button>
           </div>
 
           {phase === 'select' && (
             <div style={{ textAlign: 'center', fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b29799' }}>
-              Selecciona tu método de pago para ver el QR
+              Selecciona tu método de pago para continuar
             </div>
           )}
 
-          {phase === 'qr' && selectedMethod && activeConfig && (
+          {(phase === 'qr' || phase === 'validating') && selectedMethod && selectedMethod !== 'transferencia' && activeConfig && (
             <>
               <div style={{ background: '#0f1a14', borderRadius: 12, padding: 16, display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 12, flexWrap: 'wrap' }}>
                 <div style={{ flexShrink: 0 }}>
@@ -604,6 +620,71 @@ function StepPago({
                 ✓ Confirmé el pago de {Money.formatPEN(totals.totalCents)}
               </button>
             </>
+          )}
+
+          {phase === 'transferencia' && selectedMethod === 'transferencia' && (
+            <div style={{ background: '#0f1a14', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: '#c96e4b22', border: '1px solid #c96e4b55', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: 20 }}>🏦</span>
+                </div>
+                <div>
+                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 14, fontWeight: 700, color: '#f2e0cc' }}>Transferencia bancaria BCP</div>
+                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297' }}>Soles</div>
+                </div>
+              </div>
+
+              <div style={{ background: '#182520', borderRadius: 8, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Titular</div>
+                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 16, fontWeight: 600, color: '#f2e0cc' }}>ALPASO LIVE COMMERCE SAC</div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <div style={{ background: '#182520', borderRadius: 8, padding: '14px 16px' }}>
+                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>N° de Cuenta</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, fontWeight: 700, color: '#f2e0cc', letterSpacing: 2, wordBreak: 'break-all' }}>193-7332599054</div>
+                </div>
+                <div style={{ background: '#182520', borderRadius: 8, padding: '14px 16px' }}>
+                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 4 }}>CCI</div>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, fontWeight: 700, color: '#f2e0cc', letterSpacing: 1, wordBreak: 'break-all' }}>002-193-0073325990541-4</div>
+                </div>
+              </div>
+
+              <div style={{ background: '#c96e4b14', border: '1px solid #c96e4b55', borderRadius: 10, padding: '16px 20px', textAlign: 'center' }}>
+                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b297', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>Monto a transferir</div>
+                <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 32, fontWeight: 700, color: '#c96e4b', lineHeight: 1 }}>{Money.formatPEN(totals.totalCents)}</div>
+              </div>
+
+              <div style={{ background: '#8faf8a14', borderRadius: 10, padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10, alignItems: 'center', textAlign: 'center' }}>
+                <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc', lineHeight: 1.5 }}>
+                  Después de transferir, envíanos el voucher por <strong>WhatsApp</strong> para confirmar tu pedido.
+                </div>
+                <a
+                  href={`https://wa.me/51917959370?text=${encodeURIComponent(`Hola! Soy ${customerName ?? ''}. Acabo de hacer una transferencia BCP por S/ ${Money.formatPEN(totals.totalCents)}. Te envío el voucher para confirmar mi pedido.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setVoucherSent(true)}
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 24px', background: '#25D366', color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 13, borderRadius: 999, textDecoration: 'none', boxShadow: '0 8px 20px -6px #25D36688' }}
+                >
+                  📱 Enviar voucher por WhatsApp
+                </a>
+                {voucherSent && (
+                  <button
+                    onClick={handlePaid}
+                    style={{ width: '100%', padding: '13px 16px', background: '#c96e4b', color: '#1f3028', border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                  >
+                    ✓ Ya envié el voucher — Confirmar pedido
+                  </button>
+                )}
+              </div>
+
+              <button
+                onClick={() => { setPhase('select'); setSelectedMethod(null); setVoucherSent(false); }}
+                style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, cursor: 'pointer', textDecoration: 'underline', padding: 0, alignSelf: 'center' }}
+              >
+                Cambiar método de pago
+              </button>
+            </div>
           )}
 
           {phase === 'validating' && (
@@ -697,7 +778,7 @@ export default function Checkout() {
           ) : step === 'datos' ? (
             <StepDatos data={data} setData={setData} totals={totals} shippingZones={activeZones} />
           ) : (
-            <StepPago items={items} totals={totals} onSubmit={submitPayment} status={status} yapePlin={activeYapePlin} />
+            <StepPago items={items} totals={totals} onSubmit={submitPayment} status={status} yapePlin={activeYapePlin} customerName={data.nombre} />
           )}
         </div>
 

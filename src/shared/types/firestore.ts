@@ -324,7 +324,7 @@ export type PedidoStatus =
   | 'entregado'        // delivery confirmed
   | 'cancelado';       // cancelled — reason in notes
 
-export type PaymentAdapter = 'yapePlin' | 'niubiz' | 'stripe';
+export type PaymentAdapter = 'yape' | 'plin' | 'transferencia' | 'niubiz' | 'stripe';
 
 // CartItem snapshot — matches CartItem in cart.ts
 // Stored inside PedidoDoc so the order is self-contained even if source docs change.
