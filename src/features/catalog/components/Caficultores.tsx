@@ -59,6 +59,8 @@ function ProducerCard({ p, idx, total, onOpenProfile }: { p: Caficultor; idx: nu
   );
 }
 
+const PER_PAGE = 3;
+
 function gridStyle(count: number): React.CSSProperties {
   if (count === 1) return { display: 'grid', gridTemplateColumns: '1fr', gap: 24, width: '45%', marginLeft: 'auto', marginRight: 'auto' };
   if (count === 2) return { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24, width: '100%' };
@@ -69,6 +71,23 @@ export default function Caficultores() {
   const { data: producers, isLoading } = useCaficultores();
   const total = producers?.length ?? 0;
   const [selected, setSelected] = useState<{ producer: Caficultor; idx: number } | null>(null);
+  const [page, setPage] = useState(0);
+
+  const useCarousel = total > PER_PAGE;
+  const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+  const canPrev = page > 0;
+  const canNext = page < totalPages - 1;
+
+  const navBtnStyle = (enabled: boolean): React.CSSProperties => ({
+    width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
+    background: enabled ? '#c96e4b' : '#f2e0cc18',
+    border: 'none', color: '#f2e0cc',
+    fontSize: 20, lineHeight: 1,
+    cursor: enabled ? 'pointer' : 'default',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    opacity: enabled ? 1 : 0.35,
+    transition: 'all .2s ease',
+  });
 
   return (
     <section id="caficultores" style={{ position: 'relative', padding: '100px 36px', background: '#1f3028', color: '#f2e0cc', overflow: 'hidden' }}>
@@ -93,12 +112,12 @@ export default function Caficultores() {
         </div>
 
         {isLoading ? (
-          <div style={gridStyle(3)} className="tw-prod-grid">
-            {[0, 1, 2].map((i) => (
+          <div className="tw-carousel-page" style={{ width: '100%' }}>
+            {[0, 1, 2].map(i => (
               <div key={i} style={{ background: '#2a3d33', borderRadius: 24, height: 480, animation: 'tw-skeleton-pulse 1.6s ease-in-out infinite' }} />
             ))}
           </div>
-        ) : (
+        ) : !useCarousel ? (
           <div style={gridStyle(total)} className="tw-prod-grid">
             {(producers ?? []).map((p, i) => (
               <ProducerCard
@@ -110,21 +129,74 @@ export default function Caficultores() {
               />
             ))}
           </div>
+        ) : (
+          <>
+            {/* Carousel track */}
+            <div style={{ overflow: 'hidden', paddingBottom: 12 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  width: `${totalPages * 100}%`,
+                  transform: `translateX(-${(page / totalPages) * 100}%)`,
+                  transition: 'transform 0.45s cubic-bezier(.2,.7,.2,1)',
+                }}
+              >
+                {Array.from({ length: totalPages }).map((_, pageIdx) => (
+                  <div key={pageIdx} className="tw-carousel-page" style={{ width: `${100 / totalPages}%` }}>
+                    {(producers ?? []).slice(pageIdx * PER_PAGE, (pageIdx + 1) * PER_PAGE).map((p, i) => (
+                      <ProducerCard
+                        key={p.id}
+                        p={p}
+                        idx={pageIdx * PER_PAGE + i}
+                        total={total}
+                        onOpenProfile={() => setSelected({ producer: p, idx: pageIdx * PER_PAGE + i })}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         )}
 
-        <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
-          <a href="#contacto" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 500, letterSpacing: '0.06em', color: '#f2e0cc', textDecoration: 'none', padding: '14px 28px', border: '1px solid #f2e0cc55', borderRadius: 999, transition: 'all .3s ease' }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#c96e4b'; (e.currentTarget as HTMLElement).style.borderColor = '#c96e4b'; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = '#f2e0cc55'; }}>
-            {total > 0 ? `Ver las ${total} fincas →` : 'Ver las fincas →'}
-          </a>
-        </div>
+        {/* Navigation: arrows + dots */}
+        {useCarousel && totalPages > 1 && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 28 }}>
+            <button onClick={() => setPage(p => p - 1)} disabled={!canPrev} style={navBtnStyle(canPrev)}>‹</button>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              {Array.from({ length: totalPages }).map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i)}
+                  style={{
+                    width: i === page ? 28 : 8, height: 8, borderRadius: 999,
+                    background: i === page ? '#c96e4b' : '#f2e0cc33',
+                    border: 'none', cursor: 'pointer', padding: 0,
+                    transition: 'all .3s ease',
+                  }}
+                />
+              ))}
+            </div>
+            <button onClick={() => setPage(p => p + 1)} disabled={!canNext} style={navBtnStyle(canNext)}>›</button>
+          </div>
+        )}
+
       </div>
 
       <style>{`
         .tw-prod-grid { max-width: 1200px; margin-left: auto; margin-right: auto; }
         @media (max-width: 1040px) { .tw-prod-grid { grid-template-columns: repeat(2, 1fr) !important; width: 100% !important; } }
         @media (max-width: 640px)  { .tw-prod-grid { grid-template-columns: 1fr !important; gap: 24px !important; } }
+        .tw-carousel-page {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 24px;
+          box-sizing: border-box;
+          align-items: start;
+          flex-shrink: 0;
+        }
+        @media (max-width: 1040px) { .tw-carousel-page { grid-template-columns: repeat(2, 1fr) !important; } }
+        @media (max-width: 640px)  { .tw-carousel-page { grid-template-columns: 1fr !important; } }
         @keyframes tw-skeleton-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
       `}</style>
 
