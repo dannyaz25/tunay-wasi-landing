@@ -668,7 +668,7 @@ export default function Checkout() {
               <StepPill active={step === 'pago'} done={false} n="2" label="💳 Pago" />
             </div>
           </div>
-          <button onClick={closeCheckout} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, color: '#c4b297', background: 'transparent', border: '1px solid #c4b29744', borderRadius: 999, padding: '8px 14px', cursor: 'pointer', letterSpacing: '0.04em' }}>Cerrar ✕</button>
+          <button onClick={status === 'done' ? reset : closeCheckout} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, color: '#c4b297', background: 'transparent', border: '1px solid #c4b29744', borderRadius: 999, padding: '8px 14px', cursor: 'pointer', letterSpacing: '0.04em' }}>Cerrar ✕</button>
         </div>
 
         {/* Cycle banner */}
