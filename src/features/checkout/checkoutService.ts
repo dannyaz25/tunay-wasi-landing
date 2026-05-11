@@ -31,7 +31,8 @@ export async function startCheckout(
 
   const fn = adapterMap[adapter];
   if (!fn) return { ok: false, error: 'unknown_adapter' };
-  const result = await fn(payload);
+  const orderId = `ALP-${Date.now()}-${Math.random().toString(36).slice(2, 7).toUpperCase()}`;
+  const result = await fn(payload, orderId);
   if (result.ok && result.orderId) {
     await saveOrder(result.orderId, adapter, payload).catch((err) => {
       console.error('[orderService] saveOrder failed:', err);
