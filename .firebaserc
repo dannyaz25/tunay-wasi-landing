@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "alpaso-app",
+    "qa": "alpaso-app",
+    "prod": "tunay-wasi"
+  }
+}
