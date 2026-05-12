@@ -46,6 +46,7 @@ export interface CaficultorDoc {
 
   // ── Story & media ─────────────────────────────────────────────────────
   historia?: string;               // long producer bio / story (→ quote & bio)
+  resumen?: string;               // short producer bio (→ card subline)
   impactoSocial?: string;          // investment goal / social mission
   fotoPerfilUrl?: string;          // Cloudinary profile photo URL
   fotosUrls?: string[];            // Cloudinary farm/process photo URLs (max 5)
@@ -69,9 +70,10 @@ export interface CaficultorDoc {
 // ═══════════════════════════════════════════════════════════════════════════
 
 export type GrindKey = 'grano' | 'espresso' | 'v60' | 'prensa' | 'moka';
-export type WeightLabel = '250g' | '1kg' | '3kg';
-export type ToneOption = 'green' | 'tan' | 'terra' | 'cream' | 'deep';
-export type TagTone = 'sage' | 'terra' | 'deep';
+import type { WeightOption } from '@/shared/types/cart';
+import type { ToneOption, TagTone } from '@/shared/types/catalog';
+export type WeightLabel = WeightOption;
+export type { ToneOption, TagTone };
 
 export interface ProductoDoc {
   id: string;                      // UUID — stored inside doc, mirrors Firestore doc id

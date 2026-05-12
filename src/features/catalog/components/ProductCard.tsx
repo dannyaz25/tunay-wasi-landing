@@ -1,9 +1,18 @@
 import { useState } from 'react';
 import { Money } from '@/shared/money';
 import type { Producto, ProductLabel } from '@/shared/types/catalog';
+import type { GrindOption } from '@/shared/types/cart';
 import { useCartActions } from '@/features/cart/useCart';
 import ImageSlot from '@/components/decor/ImageSlot';
 
+type GrindMode = 'Grano' | 'Molido';
+type GrindType = Exclude<GrindOption, 'Grano'>;
+
+const GRIND_OPTIONS: { label: GrindType; coarse: string }[] = [
+  { label: 'V60',          coarse: 'Medio–fino' },
+  { label: 'Chemex',       coarse: 'Medio–grueso' },
+  { label: 'French Press', coarse: 'Grueso' },
+];
 
 const TAG_TONES: Record<string, { bg: string; text: string }> = {
   sage:  { bg: '#8faf8a', text: '#1f3028' },
@@ -26,26 +35,28 @@ const LABEL_STYLES: Record<ProductLabel, React.CSSProperties> = {
   },
 };
 
-const GRIND_DEFAULT = 'Grano';
-
 export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; onRequestBreakdown: (unitCents: number, qty: number, producerPct: number) => void }) {
   const [hover, setHover] = useState(false);
   const [weightIdx, setWeightIdx] = useState(0);
   const [qty, setQty] = useState(1);
+  const [grindMode, setGrindMode] = useState<GrindMode>('Grano');
+  const [grindType, setGrindType] = useState<GrindType>('V60');
   const { add, open: openCart } = useCartActions();
   const tone = TAG_TONES[p.tagTone] ?? TAG_TONES.sage;
   const [wLabel, unitCents] = p.weights[weightIdx];
   const netCents = Math.round(unitCents / 1.18);
   const caficultorCents = Math.round(netCents * qty * p.producerPct / 100);
+  const effectiveGrind = grindMode === 'Grano' ? 'Grano' : grindType;
+  const currentGrindInfo = GRIND_OPTIONS.find(g => g.label === grindType)!;
 
   const handleReservar = () => {
     add({
-      id: `${p.code}-${wLabel}-${GRIND_DEFAULT}`,
+      id: `${p.code}-${wLabel}-${effectiveGrind}`,
       sku: p.code,
       productoId: p.id,
       name: p.name,
       weight: wLabel as '250g' | '1kg' | '3kg',
-      grind: GRIND_DEFAULT,
+      grind: effectiveGrind,
       unitCents,
       qty,
       maxQty: 30,
@@ -95,6 +106,9 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
         <div style={{ position: 'absolute', bottom: 14, left: 14, background: '#f2e0cce0', color: '#1f3028', padding: '6px 10px', borderRadius: 8, fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.12em', backdropFilter: 'blur(6px)' }}>
           {p.alt} · {p.region.split(' · ').slice(-1)[0]}
         </div>
+        <div style={{ position: 'absolute', bottom: 14, right: 14, background: grindMode === 'Molido' ? '#c96e4b' : '#1f3028', color: '#f2e0cc', padding: '5px 10px', borderRadius: 8, fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.18em', backdropFilter: 'blur(6px)', transition: 'background .3s ease' }}>
+          {grindMode === 'Grano' ? 'EN GRANO' : `MOLIDO · ${currentGrindInfo.coarse.toUpperCase()}`}
+        </div>
       </div>
 
       <div>
@@ -115,22 +129,75 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
         ))}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#8faf8a22', border: '1px solid #8faf8a66', borderRadius: 12, padding: '10px 14px' }}>
-        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#8faf8a', animation: 'tw-pulse-mini 2s ease-in-out infinite', display: 'inline-block' }} />
-        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#1f3028' }}>Tostado un día antes del envío — café ultra fresco</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: grindMode === 'Molido' ? '#c96e4b18' : '#8faf8a22', border: `1px solid ${grindMode === 'Molido' ? '#c96e4b55' : '#8faf8a66'}`, borderRadius: 12, padding: '10px 14px', transition: 'all .35s ease' }}>
+        <span style={{ width: 8, height: 8, borderRadius: '50%', background: grindMode === 'Molido' ? '#c96e4b' : '#8faf8a', animation: 'tw-pulse-mini 2s ease-in-out infinite', display: 'inline-block', transition: 'background .35s ease' }} />
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#1f3028' }}>
+          {grindMode === 'Grano'
+            ? 'Tostado un día antes del envío — café ultra fresco'
+            : 'Tostado y molido el día del envío — máxima frescura'}
+        </span>
       </div>
 
       <p style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 14, lineHeight: 1.45, color: '#1f3028', fontStyle: 'italic', margin: 0, opacity: 0.85 }}>{p.desc}</p>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', paddingTop: 14, borderTop: '1px solid #1f302822' }}>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em', color: '#533b22' }}>BIEN PARA</span>
-        {p.brews.map((b) => (
-          <span key={b} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, padding: '3px 9px', borderRadius: 6, background: '#1f302811', color: '#1f3028', border: '1px solid #1f302822' }}>{b}</span>
-        ))}
-      </div>
+      {grindMode === 'Grano' ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', paddingTop: 14, borderTop: '1px solid #1f302822' }}>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em', color: '#533b22' }}>BIEN PARA</span>
+          {p.brews.map((b) => (
+            <span key={b} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, padding: '3px 9px', borderRadius: 6, background: '#1f302811', color: '#1f3028', border: '1px solid #1f302822' }}>{b}</span>
+          ))}
+        </div>
+      ) : (
+        <div style={{ paddingTop: 14, borderTop: '1px solid #1f302822' }}>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em', color: '#533b22', display: 'block', marginBottom: 8 }}>TIPO DE MOLIDO</span>
+          <div style={{ display: 'flex', gap: 6 }}>
+            {GRIND_OPTIONS.map(({ label, coarse }) => (
+              <button
+                key={label}
+                onClick={() => setGrindType(label)}
+                style={{
+                  padding: '6px 10px', borderRadius: 8, cursor: 'pointer', border: 'none',
+                  fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 600,
+                  background: grindType === label ? '#c96e4b' : '#1f302811',
+                  color: grindType === label ? '#f2e0cc' : '#1f3028',
+                  outline: grindType === label ? '2px solid #c96e4b55' : 'none',
+                  transition: 'all .2s ease',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+                }}
+              >
+                <span>{label}</span>
+                <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 8, letterSpacing: '0.1em', opacity: 0.7 }}>{coarse}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div>
         <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.2em', color: '#533b22', marginBottom: 8 }}>PRESENTACIÓN</div>
+
+        {/* Grano / Molido toggle */}
+        <div style={{ display: 'flex', background: '#1f302811', borderRadius: 10, padding: 3, marginBottom: 10, border: '1px solid #1f302820' }}>
+          {(['Grano', 'Molido'] as GrindMode[]).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setGrindMode(mode)}
+              style={{
+                flex: 1, padding: '8px 10px', borderRadius: 8, cursor: 'pointer', border: 'none',
+                fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 700,
+                letterSpacing: '0.06em', textTransform: 'uppercase',
+                background: grindMode === mode ? (mode === 'Grano' ? '#1f3028' : '#c96e4b') : 'transparent',
+                color: grindMode === mode ? '#f2e0cc' : '#533b2299',
+                transition: 'all .25s ease',
+                boxShadow: grindMode === mode ? '0 4px 12px -4px rgba(83,59,34,0.4)' : 'none',
+              }}
+            >
+              {mode === 'Grano' ? '⬡ Grano' : '≋ Molido'}
+            </button>
+          ))}
+        </div>
+
+        {/* Weight selector */}
         <div style={{ display: 'flex', gap: 8 }}>
           {p.weights.map(([wl], i) => (
             <button key={wl} onClick={() => setWeightIdx(i)} style={{ flex: 1, padding: '8px 6px', borderRadius: 8, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600, background: weightIdx === i ? '#c96e4b' : '#f2e0cc', color: weightIdx === i ? '#f2e0cc' : '#1f3028', border: `1px solid ${weightIdx === i ? '#c96e4b' : '#1f302833'}`, transition: 'all .25s ease' }}>{wl}</button>
