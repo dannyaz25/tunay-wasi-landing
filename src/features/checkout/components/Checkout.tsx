@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, type ChangeEvent } from 'react';
+import PoliciesModal from './PoliciesModal';
 import { QRCodeSVG } from 'qrcode.react';
 import { Money } from '@/shared/money';
 import type { AdapterName, ShippingData, ShippingZone } from '@/shared/types/checkout';
@@ -176,6 +177,7 @@ function StepDatos({
   const [phoneBlurred, setPhoneBlurred] = useState(false);
   const [emailBlurred, setEmailBlurred] = useState(false);
   const [dniBlurred, setDniBlurred] = useState(false);
+  const [showPolicies, setShowPolicies] = useState(false);
   const phoneError = phoneBlurred && !isValidPeruvianPhone(data.telefono);
   const emailError = emailBlurred && !isValidEmail(data.email);
   const dniError = dniBlurred && data.dni.replace(/\D/g, '').length < 8;
@@ -380,9 +382,10 @@ function StepDatos({
       <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 14, background: '#f2e0cc', border: '1px solid #1f302822', cursor: 'pointer' }}>
         <input type="checkbox" checked={data.acepta} onChange={e => setData(d => ({ ...d, acepta: e.target.checked }))} style={{ accentColor: '#8faf8a', width: 16, height: 16, flexShrink: 0 }} />
         <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028' }}>
-          Acepto las <a href="#" style={{ color: '#c96e4b', textDecoration: 'underline' }}>políticas de compra, privacidad y entrega</a>.
+          Acepto las <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); setShowPolicies(true); }} style={{ background: 'none', border: 'none', padding: 0, color: '#c96e4b', textDecoration: 'underline', fontFamily: 'Montserrat, sans-serif', fontSize: 12, cursor: 'pointer' }}>políticas de compra, privacidad y entrega</button>.
         </span>
       </label>
+      {showPolicies && <PoliciesModal onClose={() => setShowPolicies(false)} />}
     </div>
   );
 }
