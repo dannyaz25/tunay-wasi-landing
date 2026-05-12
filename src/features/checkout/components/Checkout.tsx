@@ -7,7 +7,7 @@ import type { CartTotals } from '@/shared/types/cart';
 import {
   useCartIsCheckoutOpen, useCartCheckoutStep, useCartActions, useCartItems,
 } from '@/features/cart/useCart';
-import { useCheckout, isValidPeruvianPhone } from '../useCheckout';
+import { useCheckout, isValidPeruvianPhone, isValidEmail } from '../useCheckout';
 import { useActiveCycle } from '@/features/catalog/useActiveCycle';
 import { useShipping } from '@/features/catalog/useShipping';
 import { useYapePlin } from '@/features/catalog/useYapePlin';
@@ -174,8 +174,10 @@ function StepDatos({
   shippingZones: ShippingZoneRule[];
 }) {
   const [phoneBlurred, setPhoneBlurred] = useState(false);
+  const [emailBlurred, setEmailBlurred] = useState(false);
   const [dniBlurred, setDniBlurred] = useState(false);
   const phoneError = phoneBlurred && !isValidPeruvianPhone(data.telefono);
+  const emailError = emailBlurred && !isValidEmail(data.email);
   const dniError = dniBlurred && data.dni.replace(/\D/g, '').length < 8;
 
   const isOlvaZone = data.zone === 'limaExt' || data.zone === 'provincia';
@@ -352,6 +354,22 @@ function StepDatos({
           />
         </FormField>
       </div>
+
+      {/* Email */}
+      <FormField
+        label="Correo electrónico"
+        error={emailError ? 'Correo inválido' : undefined}
+        hint={!emailError && !data.email ? 'Para enviarte la confirmación de tu pedido' : undefined}
+      >
+        <input
+          type="email"
+          value={data.email}
+          onChange={setField('email')}
+          onBlur={() => setEmailBlurred(true)}
+          placeholder="tu@correo.com"
+          style={emailError ? inputErrorStyle : inputStyle}
+        />
+      </FormField>
 
       {/* Shipping summary card */}
       <ShippingSummaryCard zone={data.zone} totals={totals} shippingZones={shippingZones} />

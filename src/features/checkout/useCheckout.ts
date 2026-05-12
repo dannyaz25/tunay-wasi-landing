@@ -6,6 +6,10 @@ import { useCartTotals } from '@/features/cart/useCartTotals';
 import { startCheckout } from './checkoutService';
 import { catalogKeys } from '@/features/catalog/catalogKeys';
 
+export function isValidEmail(raw: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw.trim());
+}
+
 export function isValidPeruvianPhone(raw: string): boolean {
   const digits = raw.replace(/[\s\-+()]/g, '');
   const local = digits.startsWith('51') && digits.length === 11 ? digits.slice(2) : digits;
@@ -19,6 +23,7 @@ const DEFAULT_DATA: ShippingData = {
   direccion: '',
   referencia: '',
   nombre: '',
+  email: '',
   telefono: '',
   zone: 'lima',
   acepta: false,
@@ -47,6 +52,7 @@ export function useCheckout() {
     (isOlvaZone ? data.dni.trim().length >= 8 : true) &&
     (!isNationalZone || data.ciudad.trim().length > 1) &&
     data.nombre.trim().length > 1 &&
+    isValidEmail(data.email) &&
     isValidPeruvianPhone(data.telefono) &&
     data.acepta;
 

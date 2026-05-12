@@ -10,6 +10,7 @@ export interface ShippingData {
   direccion: string;
   referencia: string;
   nombre: string;
+  email: string;
   telefono: string;
   zone: ShippingZone;
   acepta: boolean;

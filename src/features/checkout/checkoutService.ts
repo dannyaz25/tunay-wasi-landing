@@ -8,6 +8,8 @@ import { stripeAdapter } from './adapters/stripeAdapter';
 import { yapeAdapter, plinAdapter, transferenciaAdapter } from './adapters/yapePlinAdapter';
 import { saveOrder } from './orderService';
 import { KG_PER_UNIT } from '@/features/catalog/stockUtils';
+import { sendMail } from '@/services/mailService';
+import { emailPedidoRecibido } from '@/services/emailTemplates';
 
 interface StockCheckResult {
   ok: boolean;
@@ -68,7 +70,25 @@ export async function startCheckout(
       console.error('[orderService] saveOrder failed:', err);
       return null;
     });
-    if (orderId) result.orderId = orderId;
+    if (orderId) {
+      result.orderId = orderId;
+      const email = payload.shipping.email;
+      if (email) {
+        const { subject, html } = emailPedidoRecibido({
+          nombre: payload.shipping.nombre,
+          orderId,
+          items: payload.cart.items.map(i => ({
+            name: i.name, weight: i.weight, grind: i.grind,
+            qty: i.qty, unitCents: i.unitCents,
+          })),
+          totalCents: payload.totals.totalCents,
+          adapter,
+        });
+        sendMail({ to: email, subject, html }).catch(err =>
+          console.error('[checkoutService] sendMail failed:', err),
+        );
+      }
+    }
   }
   return result;
 }
