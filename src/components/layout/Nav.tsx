@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 
 const LINKS: [string, string][] = [
-  ['Preventa', '#preventa'],
-  ['Origen', '#origen'],
-  ['Caficultores', '#caficultores'],
-  ['Café', '#cafe'],
-  ['Modelo 50/50', '#modelo'],
+  ['¿Por qué Tunay Wasi?', '#modelo'],
+  ['¿Cuánto ganas?', '#calculadora'],
+  ['¿Cuánto café necesito?', '#requisitos'],
+  ['Preguntas frecuentes', '#faq'],
   ['Contacto', '#contacto'],
 ];
 
@@ -49,8 +48,8 @@ export default function Nav() {
             <div style={{ fontFamily: 'Mulish, sans-serif', fontWeight: 700, letterSpacing: '0.005em', color: '#1f3028', fontSize: 20 }}>
               Tunay Wasi
             </div>
-            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.32em', color: '#533b22', marginTop: 4, textTransform: 'uppercase' }}>
-              Verdadera · Casa
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.32em', color: '#c96e4b', marginTop: 4, textTransform: 'uppercase' }}>
+              Para caficultores
             </div>
           </div>
         </a>
@@ -63,7 +62,7 @@ export default function Nav() {
               position: 'relative', padding: '6px 0',
             }}>{label}</a>
           ))}
-          <a href="#preventa" className="tw-cta-btn" style={{
+          <a href="#registro" className="tw-cta-btn" style={{
             fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600,
             color: '#f2e0cc', background: '#c96e4b', padding: '11px 22px',
             borderRadius: 999, textDecoration: 'none', letterSpacing: '0.06em',
@@ -72,7 +71,7 @@ export default function Nav() {
           onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = '#1f3028'; }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = '#c96e4b'; }}>
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f2e0cc', animation: 'tw-pulse-dot 2s ease-in-out infinite' }} />
-            Reservar mi café
+            Registrar mi café
           </a>
 
           {/* Hamburger — visible ≤880px */}
@@ -105,7 +104,7 @@ export default function Nav() {
             >{label}</a>
           ))}
           <a
-            href="#preventa"
+            href="#registro"
             onClick={closeMenu}
             style={{
               fontFamily: 'Montserrat, sans-serif', fontSize: 14, fontWeight: 600,
@@ -115,7 +114,7 @@ export default function Nav() {
             }}
           >
             <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#f2e0cc' }} />
-            Reservar mi café
+            Registrar mi café
           </a>
         </div>
       )}
