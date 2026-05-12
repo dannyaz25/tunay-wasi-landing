@@ -1,13 +1,14 @@
 import { z } from 'zod';
 import type { CartItem } from '@/shared/types/cart';
+import { WEIGHT_OPTIONS, GRIND_OPTIONS } from '@/shared/constants';
 
 const schema = z.object({
   id: z.string().min(1),
   sku: z.string().min(1),
   productoId: z.string().min(1),
   name: z.string().min(1),
-  weight: z.enum(['250g', '1kg', '3kg']),
-  grind: z.enum(['Grano', 'V60', 'Chemex', 'Espresso', 'Moka', 'French Press', 'AeroPress']),
+  weight: z.enum(WEIGHT_OPTIONS),
+  grind: z.enum(GRIND_OPTIONS),
   unitCents: z.number().int().nonnegative(),
   qty: z.number().int().positive(),
   maxQty: z.number().int().positive(),

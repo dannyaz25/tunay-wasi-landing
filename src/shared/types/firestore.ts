@@ -46,6 +46,7 @@ export interface CaficultorDoc {
 
   // ── Story & media ─────────────────────────────────────────────────────
   historia?: string;               // long producer bio / story (→ quote & bio)
+  resumen?: string;               // short producer bio (→ card subline)
   impactoSocial?: string;          // investment goal / social mission
   fotoPerfilUrl?: string;          // Cloudinary profile photo URL
   fotosUrls?: string[];            // Cloudinary farm/process photo URLs (max 5)
@@ -69,9 +70,10 @@ export interface CaficultorDoc {
 // ═══════════════════════════════════════════════════════════════════════════
 
 export type GrindKey = 'grano' | 'espresso' | 'v60' | 'prensa' | 'moka';
-export type WeightLabel = '250g' | '1kg' | '3kg';
-export type ToneOption = 'green' | 'tan' | 'terra' | 'cream' | 'deep';
-export type TagTone = 'sage' | 'terra' | 'deep';
+import type { WeightOption } from '@/shared/types/cart';
+import type { ToneOption, TagTone } from '@/shared/types/catalog';
+export type WeightLabel = WeightOption;
+export type { ToneOption, TagTone };
 
 export interface ProductoDoc {
   id: string;                      // UUID — stored inside doc, mirrors Firestore doc id
@@ -108,7 +110,9 @@ export interface ProductoDoc {
   label?: 'PREVENTA' | 'NEW';
 
   // ── Inventory ─────────────────────────────────────────────────────────
-  stockKg: number;                 // remaining kg (updated by admin or webhook)
+  stockKg: number;                 // kg verde disponible en bodega
+  stockReservedKg?: number;        // kg verde reservado por pedidos pendiente_pago (default 0)
+  // stockDisponibleKg = stockKg - (stockReservedKg ?? 0)  — calculado, no almacenado
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -317,12 +321,16 @@ export interface LandingConfigDoc {
 // ═══════════════════════════════════════════════════════════════════════════
 
 export type PedidoStatus =
-  | 'pendiente_pago'   // Yape: voucher uploaded, awaiting admin confirm
-  | 'confirmado'       // payment confirmed by admin or gateway webhook
+  | 'pendiente_pago'   // voucher uploaded, awaiting admin confirm
+  | 'pago_confirmado'  // admin confirmed payment — stockKg deducted
   | 'en_preparacion'   // roasting + packing in progress
-  | 'enviado'          // handed to carrier — trackingCode available
+  | 'despachado'       // handed to carrier — trackingCode available
   | 'entregado'        // delivery confirmed
-  | 'cancelado';       // cancelled — reason in notes
+  | 'cancelado'        // cancelled — reason in cancelReason
+  | 'reembolsado'      // post-confirmation refund issued
+  // legacy aliases kept for backward compat with existing Firestore docs:
+  | 'confirmado'
+  | 'enviado';
 
 export type PaymentAdapter = 'yape' | 'plin' | 'transferencia' | 'niubiz' | 'stripe';
 
@@ -384,10 +392,13 @@ export interface PedidoDoc {
 
   // Admin
   notes?: string;              // internal admin notes
-  confirmedAt?: string;        // ISO 8601 — when admin confirmed Yape payment
-  shippedAt?: string;          // ISO 8601
+  confirmedAt?: string;        // ISO 8601 — when admin confirmed payment (→ pago_confirmado)
+  shippedAt?: string;          // ISO 8601 — when handed to carrier (→ despachado)
+  deliveredAt?: string;        // ISO 8601 — when delivery confirmed (→ entregado)
   trackingCode?: string;       // carrier tracking number
   trackingUrl?: string;        // carrier tracking URL
+  cancelledAt?: string;        // ISO 8601 — when order was cancelled
+  cancelReason?: string;       // reason for cancellation / refund
 
   createdAt: string;           // ISO 8601 — client timestamp at order creation
   updatedAt: string;           // ISO 8601 — last status change

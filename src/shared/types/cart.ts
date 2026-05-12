@@ -1,12 +1,7 @@
-export type WeightOption = '250g' | '1kg' | '3kg';
-export type GrindOption =
-  | 'Grano'
-  | 'V60'
-  | 'Chemex'
-  | 'Espresso'
-  | 'Moka'
-  | 'French Press'
-  | 'AeroPress';
+import { WEIGHT_OPTIONS, GRIND_OPTIONS } from '../constants';
+
+export type WeightOption = (typeof WEIGHT_OPTIONS)[number];
+export type GrindOption  = (typeof GRIND_OPTIONS)[number];
 
 export interface CartItem {
   id: string;

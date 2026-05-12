@@ -14,6 +14,7 @@ function mapCaficultorDoc(id: string, raw: CaficultorDoc): Caficultor {
     score: raw.puntajeSCA,
     color: 'green',
     quote: raw.historia ?? '',
+    summary: raw.resumen ?? '',
     bio: raw.historia,
     socialImpact: raw.impactoSocial,
     yearsExp: raw.experienciaAnos ? Number(raw.experienciaAnos) : undefined,
@@ -33,7 +34,7 @@ const STATIC_PRODUCTS: Producto[] = [
     notes: ['Caramelo', 'Naranja sanguina', 'Cacao'],
     body: 'Medio', acidity: 'Cítrica brillante',
     score: '87.5+', tag: 'Versátil', tagTone: 'sage',
-    brews: ['V60', 'Chemex', 'AeroPress'],
+    brews: ['V60', 'Chemex', 'French Press'],
     weights: [['250g', 3900], ['1kg', 15000], ['3kg', 46000]],
     producerPct: 42,
     tone: 'green', stockKg: 9.2,
@@ -261,5 +262,38 @@ export async function fetchYapePlin(): Promise<YapePlinData> {
     return snap.data() as YapePlinData;
   } catch {
     return STATIC_YAPE_PLIN;
+  }
+}
+
+// ── Transferencia ─────────────────────────────────────────────────────────────
+
+export interface TransferenciaBankData {
+  name: string;
+  accountType: string;
+  accountNumber: string;
+  cci: string;
+}
+
+export interface TransferenciaData {
+  enabled: boolean;
+  accountHolder: string;
+  banks: TransferenciaBankData[];
+  instructions: string[];
+}
+
+export const STATIC_TRANSFERENCIA: TransferenciaData = {
+  enabled: true,
+  accountHolder: 'ALPASO LIVE COMMERCE SAC',
+  banks: [{ name: 'BCP', accountType: 'Cuenta Corriente', accountNumber: '193-7332599054', cci: '002-193-0073325990541-4' }],
+  instructions: ['Transfiere el monto exacto a la cuenta indicada', 'Usa como referencia tu número de pedido', 'Sube la captura del comprobante', 'Tu pedido se confirma en máximo 24 horas'],
+};
+
+export async function fetchTransferencia(): Promise<TransferenciaData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'transferencia'));
+    if (!snap.exists()) return STATIC_TRANSFERENCIA;
+    return snap.data() as TransferenciaData;
+  } catch {
+    return STATIC_TRANSFERENCIA;
   }
 }

@@ -7,5 +7,14 @@ dist
 
 .idea
 .claude
+.kiro
+.qoder
+.vscode
+
+.mcp.json
+.opencode.json
+
 
 package-lock.json
+# Added by code-review-graph
+.code-review-graph/
