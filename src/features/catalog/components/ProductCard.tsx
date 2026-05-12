@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Money } from '@/shared/money';
 import type { Producto, ProductLabel } from '@/shared/types/catalog';
 import type { GrindOption } from '@/shared/types/cart';
+import type { WeightLabel } from '@/shared/types/firestore';
 import { useCartActions } from '@/features/cart/useCart';
 import ImageSlot from '@/components/decor/ImageSlot';
+import { maxQtyForWeight, disponibleKg } from '@/features/catalog/stockUtils';
 
 type GrindMode = 'Grano' | 'Molido';
 type GrindType = Exclude<GrindOption, 'Grano'>;
@@ -44,10 +46,17 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
   const { add, open: openCart } = useCartActions();
   const tone = TAG_TONES[p.tagTone] ?? TAG_TONES.sage;
   const [wLabel, unitCents] = p.weights[weightIdx];
+  const stockDispo = disponibleKg(p.stockKg, p.stockReservedKg);
+  const computedMaxQty = maxQtyForWeight(stockDispo, wLabel as WeightLabel);
+  const isAgotado = computedMaxQty === 0;
   const netCents = Math.round(unitCents / 1.18);
   const caficultorCents = Math.round(netCents * qty * p.producerPct / 100);
   const effectiveGrind = grindMode === 'Grano' ? 'Grano' : grindType;
   const currentGrindInfo = GRIND_OPTIONS.find(g => g.label === grindType)!;
+
+  useEffect(() => {
+    if (!isAgotado) setQty((q) => Math.min(q, computedMaxQty));
+  }, [computedMaxQty, isAgotado]);
 
   const handleReservar = () => {
     add({
@@ -59,7 +68,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
       grind: effectiveGrind,
       unitCents,
       qty,
-      maxQty: 30,
+      maxQty: computedMaxQty,
       caficultor: p.producer,
       finca: p.farm,
       producerPct: p.producerPct,
@@ -199,12 +208,35 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
 
         {/* Weight selector */}
         <div style={{ display: 'flex', gap: 8 }}>
-          {p.weights.map(([wl], i) => (
-            <button key={wl} onClick={() => setWeightIdx(i)} style={{ flex: 1, padding: '8px 6px', borderRadius: 8, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600, background: weightIdx === i ? '#c96e4b' : '#f2e0cc', color: weightIdx === i ? '#f2e0cc' : '#1f3028', border: `1px solid ${weightIdx === i ? '#c96e4b' : '#1f302833'}`, transition: 'all .25s ease' }}>{wl}</button>
-          ))}
+          {p.weights.map(([wl], i) => {
+            const wMax = maxQtyForWeight(stockDispo, wl as WeightLabel);
+            const wAgotado = wMax === 0;
+            return (
+              <button
+                key={wl}
+                onClick={() => { setWeightIdx(i); setQty(1); }}
+                disabled={wAgotado}
+                style={{
+                  flex: 1, padding: '8px 6px', borderRadius: 8,
+                  cursor: wAgotado ? 'not-allowed' : 'pointer',
+                  fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600,
+                  background: wAgotado ? '#1f302811' : weightIdx === i ? '#c96e4b' : '#f2e0cc',
+                  color: wAgotado ? '#533b2266' : weightIdx === i ? '#f2e0cc' : '#1f3028',
+                  border: `1px solid ${wAgotado ? '#1f302822' : weightIdx === i ? '#c96e4b' : '#1f302833'}`,
+                  transition: 'all .25s ease',
+                  position: 'relative', overflow: 'hidden',
+                }}
+              >
+                {wl}
+                {wAgotado && (
+                  <span style={{ display: 'block', fontFamily: 'JetBrains Mono, monospace', fontSize: 7, letterSpacing: '0.12em', color: '#c96e4b', lineHeight: 1, marginTop: 2 }}>AGOTADO</span>
+                )}
+              </button>
+            );
+          })}
         </div>
         <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em', color: '#533b22', marginTop: 8 }}>
-          Stock verde: {p.stockKg} kg
+          Stock verde: {p.stockKg} kg{p.stockReservedKg ? ` · reservado: ${p.stockReservedKg.toFixed(2)} kg` : ''}
         </div>
       </div>
 
@@ -229,16 +261,36 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
             </button>
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #1f302833', borderRadius: 999, overflow: 'hidden', background: '#f2e0cc' }}>
-          <button onClick={() => setQty((q) => Math.max(1, q - 1))} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 16, color: '#1f3028' }}>−</button>
+        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #1f302833', borderRadius: 999, overflow: 'hidden', background: '#f2e0cc', opacity: isAgotado ? 0.4 : 1 }}>
+          <button onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={isAgotado} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: isAgotado ? 'not-allowed' : 'pointer', fontSize: 16, color: '#1f3028' }}>−</button>
           <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, minWidth: 28, textAlign: 'center', color: '#1f3028' }}>{qty}</span>
-          <button onClick={() => setQty((q) => q + 1)} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: 'pointer', fontSize: 16, color: '#1f3028' }}>+</button>
+          <button onClick={() => setQty((q) => Math.min(computedMaxQty, q + 1))} disabled={isAgotado || qty >= computedMaxQty} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: isAgotado || qty >= computedMaxQty ? 'not-allowed' : 'pointer', fontSize: 16, color: '#1f3028' }}>+</button>
         </div>
       </div>
 
-      <button onClick={handleReservar} style={{ marginTop: 4, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f2e0cc', background: hover ? '#c96e4b' : '#1f3028', padding: '12px 18px', borderRadius: 999, border: 'none', cursor: 'pointer', boxShadow: '0 12px 24px -14px #533b22aa', transition: 'all .35s ease', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
-        <span>Reservar — entrega junio</span>
-        <span>→</span>
+      <button
+        onClick={handleReservar}
+        disabled={isAgotado}
+        style={{
+          marginTop: 4, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13,
+          letterSpacing: '0.08em', textTransform: 'uppercase', color: '#f2e0cc',
+          background: isAgotado ? '#533b2244' : hover ? '#c96e4b' : '#1f3028',
+          padding: '12px 18px', borderRadius: 999, border: 'none',
+          cursor: isAgotado ? 'not-allowed' : 'pointer',
+          boxShadow: isAgotado ? 'none' : '0 12px 24px -14px #533b22aa',
+          transition: 'all .35s ease', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+        }}
+      >
+        {isAgotado ? (
+          <>
+            <span>Agotado para este ciclo</span>
+          </>
+        ) : (
+          <>
+            <span>Reservar — entrega junio</span>
+            <span>→</span>
+          </>
+        )}
       </button>
 
       <style>{`@keyframes tw-pulse-mini { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }`}</style>

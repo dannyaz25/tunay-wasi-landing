@@ -26,7 +26,8 @@
     "desc": "Café de pequeño productor, proceso Honey con secado cuidadoso — notas a jalea y caramelo en cada taza.",
     "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
     "label": "PREVENTA",
-    "stockKg": 9.2
+    "stockKg": 9.2,
+    "stockReservedKg": 0
   },
   {
     "id": "a2b3c4d5-6789-0abc-def1-234567890123",
@@ -55,7 +56,8 @@
     "desc": "Café natural de terceros generaciones, secado lento en camas africanas con notas a frutas maduras y chocolate.",
     "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
     "label": "PREVENTA",
-    "stockKg": 6.5
+    "stockKg": 6.5,
+    "stockReservedKg": 0
   },
   {
     "id": "b3c4d5e6-7890-1abc-ef23-345678901234",
@@ -84,7 +86,8 @@
     "desc": "Variedad Typica lavada de cuarta generación, reconocida por su limpieza en taza y acidez brillante.",
     "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
     "label": "PREVENTA",
-    "stockKg": 8.0
+    "stockKg": 8.0,
+    "stockReservedKg": 0
   },
   {
     "id": "c4d5e6f7-8901-2abc-f234-456789012345",
@@ -113,7 +116,8 @@
     "desc": "Café Honey con dulzura natural y cuerpo medio, conquistando a los tostadores limeños con su perfil equilibrado.",
     "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
     "label": "PREVENTA",
-    "stockKg": 5.5
+    "stockKg": 5.5,
+    "stockReservedKg": 0
   },
   {
     "id": "d5e6f7a8-9012-3bcd-0123-567890123456",
@@ -142,7 +146,8 @@
     "desc": "Geisha lavado de alta puntuación (88+), producido por joven barista que regresó al campo con innovación.",
     "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
     "label": "PREVENTA",
-    "stockKg": 10.0
+    "stockKg": 10.0,
+    "stockReservedKg": 0
   },
   {
     "id": "e6f7a8b9-0123-4cde-1234-678901234567",
@@ -171,6 +176,7 @@
     "desc": "Café de cooperativa de mujeres exportado a Europa, procesamiento natural con perfil de taza complejo y cuerpo denso.",
     "photo": "/imgs/geishaBello-HorizonteOxapampa2.png",
     "label": "PREVENTA",
-    "stockKg": 7.5
+    "stockKg": 7.5,
+    "stockReservedKg": 0
   }
 ]
