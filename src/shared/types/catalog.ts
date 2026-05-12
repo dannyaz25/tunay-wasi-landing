@@ -26,6 +26,7 @@ export interface Producto {
   producerPct: number;
   tone: ToneOption;
   stockKg: number;
+  stockReservedKg?: number;
   desc: string;
   photo?: string;
   label?: ProductLabel;

@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type { AdapterName, ShippingData } from '@/shared/types/checkout';
 import { useCartItems, useCartActions } from '@/features/cart/useCart';
 import { useCartTotals } from '@/features/cart/useCartTotals';
 import { startCheckout } from './checkoutService';
+import { catalogKeys } from '@/features/catalog/catalogKeys';
 
 export function isValidPeruvianPhone(raw: string): boolean {
   const digits = raw.replace(/[\s\-+()]/g, '');
@@ -35,6 +37,7 @@ export function useCheckout() {
   const items = useCartItems();
   const { clear, closeCheckout } = useCartActions();
   const totals = useCartTotals(data.zone, data.olvaMode);
+  const queryClient = useQueryClient();
 
   const isOlvaZone = data.zone === 'limaExt' || data.zone === 'provincia';
   const isNationalZone = data.zone === 'provincia';
@@ -55,6 +58,7 @@ export function useCheckout() {
         clear();
         setOrderId(res.orderId ?? null);
         setStatus('done');
+        queryClient.invalidateQueries({ queryKey: catalogKeys.products() });
       } else {
         setStatus('idle');
         alert('Hubo un problema: ' + (res.error ?? 'desconocido'));

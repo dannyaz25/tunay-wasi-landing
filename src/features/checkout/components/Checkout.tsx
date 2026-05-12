@@ -94,8 +94,8 @@ function Row({ k, v, accent, strike }: { k: string; v: string; accent?: string |
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
       <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 9, color: '#1f3028', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>{k}</span>
-      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontWeight: 600, color: accent ?? '#1f3028' }}>
-        {strike && <span style={{ textDecoration: 'line-through', color: '#c4b29766', marginRight: 6, fontSize: 13 }}>{strike}</span>}
+      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontWeight: 900, color: accent ?? '#1f3028' }}>
+        {strike && <span style={{ textDecoration: 'line-through', color: '#7c705f9e',  marginRight: 6, fontSize: 13 }}>{strike}</span>}
         {v}
       </span>
     </div>
@@ -124,7 +124,7 @@ function ShippingSummaryCard({
     <div style={{ borderRadius: 14, background: '#f2e0cc', border: '1px solid #1f302833', padding: '10px 14px', boxShadow: '0 4px 12px -8px #533b2244' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
         <div>
-          <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#533b22' }}>{headerLabel}</div>
+          <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600, color: '#533b22' }}>{headerLabel}</div>
           {rule && rule.freeThresholdCents > 0 && zone !== 'recojo' && (
             <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#7a6850', marginTop: 2 }}>
               Envío gratis desde {Money.formatPEN(rule.freeThresholdCents)}
@@ -136,12 +136,12 @@ function ShippingSummaryCard({
             </div>
           )}
           {totals.isFreeShipping && (
-            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a', marginTop: 2 }}>
+            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, color: '#8faf8a', marginTop: 2 }}>
               🎉 ¡Envío gratis!
             </div>
           )}
         </div>
-        <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 20, color: totals.isFreeShipping || zone === 'recojo' ? '#8faf8a' : '#1f3028', whiteSpace: 'nowrap' }}>
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: 18, color: totals.isFreeShipping || zone === 'recojo' ? '#8faf8a' : '#1f3028', whiteSpace: 'nowrap' }}>
           {costLabel}
         </span>
       </div>
@@ -156,7 +156,7 @@ function FreeShippingBanner({ totals }: { totals: CartTotals }) {
     <div style={{ borderRadius: 14, background: '#f2e0cc', border: '1px solid #1f302833', padding: '10px 14px', overflow: 'hidden', boxShadow: '0 4px 12px -8px #533b2244' }}>
       <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028', marginBottom: 8 }}>
         Agrega <strong>{Money.formatPENShort(totals.remainingForFreeCents)}</strong> más y el envío es{' '}
-        <span style={{ color: '#8faf8a', fontWeight: 600 }}>gratis</span>
+        <span style={{ color: '#8faf8a', fontWeight: 700 }}>gratis</span>
       </div>
       <div style={{ height: 4, borderRadius: 99, background: '#1f30281a', overflow: 'hidden' }}>
         <div style={{ height: '100%', width: `${pct}%`, background: 'linear-gradient(90deg, #c96e4b 0%, #8faf8a 100%)', borderRadius: 99, transition: 'width .4s ease' }} />
@@ -383,7 +383,7 @@ function HowToPayAccordion({ method, totalFormatted, yapePlin }: { method: 'yape
 
   return (
     <div style={{ marginTop: 8 }}>
-      <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
         <span style={{ display: 'inline-block', transition: 'transform .2s', transform: open ? 'rotate(90deg)' : 'none', fontSize: 8 }}>▶</span>
         ¿Cómo pago con {method === 'yape' ? 'Yape' : 'Plin'}?
       </button>
@@ -809,7 +809,7 @@ export default function Checkout() {
             <div style={{ padding: '40px 0', textAlign: 'center' }}>
               <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#8faf8a', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond, serif', fontSize: 40, color: '#1f3028' }}>✓</div>
               <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, color: '#1f3028', margin: 0 }}>¡Pedido recibido!</h3>
-              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#c4b297', marginTop: 12, maxWidth: 380, marginInline: 'auto', lineHeight: 1.6 }}>
+              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#93846e', marginTop: 12, maxWidth: 380, marginInline: 'auto', lineHeight: 1.6 }}>
                 Pedido <strong style={{ color: '#1f3028' }}>#{orderId}</strong> registrado. Verificaremos tu pago y te confirmaremos por WhatsApp.
               </p>
               <button onClick={reset} style={{ marginTop: 24, padding: '12px 24px', background: '#c96e4b', color: '#1f3028', border: 'none', borderRadius: 999, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Listo</button>
