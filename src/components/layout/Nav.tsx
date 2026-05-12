@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
 const LINKS: [string, string][] = [
-  ['¿Por qué Tunay Wasi?', '#modelo'],
+  ['¿Por qué Tunay Wasi?', '#origen'],
   ['¿Cuánto ganas?', '#calculadora'],
-  ['¿Cuánto café necesito?', '#requisitos'],
   ['Preguntas frecuentes', '#faq'],
+  ['Registrar mi café', '#registro'],
   ['Contacto', '#contacto'],
 ];
 

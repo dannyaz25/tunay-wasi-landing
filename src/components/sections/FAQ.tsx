@@ -35,11 +35,11 @@ const FAQS: FaqItem[] = [
   },
   {
     q: '¿Se aplican descuentos al pago?',
-    a: 'No hay comisiones ocultas ni descuentos sorpresa. Los únicos conceptos descontados son: flete Lima (coordinado contigo), costo de empaque (bolsas kraft 250g con tu nombre) y la cata Q-Grader — que en la Fase 1 está cubierta por Tunay Wasi. Todo el desglose es visible en tu ficha de caficultor.',
+    a: 'No hay comisiones ocultas ni descuentos sorpresa. Los únicos conceptos descontados son: flete Lima (coordinado contigo) y costo de empaque (bolsas kraft 250g con tu nombre). La cata Q-Grader está cubierta por Tunay Wasi. Todo el desglose es visible en tu ficha de caficultor.',
   },
   {
     q: '¿Cuánto café debo producir?',
-    a: 'El lote mínimo es de 10 kg de café verde oro por microlote. No hay máximo. Si tienes varios microlotes de distintas variedades o procesos, puedes registrarlos por separado — cada uno con su propia ficha de catación y precio.',
+    a: 'El lote mínimo es de 12 kg de café verde oro por microlote. No hay máximo. Si tienes varios microlotes de distintas variedades o procesos, puedes registrarlos por separado — cada uno con su propia ficha de catación y precio.',
   },
 ];
 

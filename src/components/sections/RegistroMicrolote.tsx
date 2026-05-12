@@ -13,7 +13,6 @@ interface MicroloteForm {
   proceso: string;
   faseActual: string;
   fechaEstimadaEntrega: string;
-  fecha: string;
   cantidadKg: string;
 }
 
@@ -26,7 +25,6 @@ const EMPTY: MicroloteForm = {
   proceso: '',
   faseActual: '',
   fechaEstimadaEntrega: '',
-  fecha: '',
   cantidadKg: '',
 };
 
@@ -91,8 +89,8 @@ export default function RegistroMicrolote() {
       `Proceso: ${values.proceso}`,
       `Fase actual: ${values.faseActual}`,
       `Fecha estimada de entrega: ${values.fechaEstimadaEntrega || 'Por definir'}`,
-      `Fecha: ${values.fecha || new Date().toLocaleDateString('es-PE')}`,
       `Cantidad total: ${values.cantidadKg} kg`,
+      `Fecha de registro: ${new Date().toLocaleDateString('es-PE')}`,
     ];
     const msg = encodeURIComponent(lines.join('\n'));
     window.open(`https://wa.me/51917959370?text=${msg}`, '_blank');
@@ -134,8 +132,8 @@ export default function RegistroMicrolote() {
           </p>
           <div style={{ marginTop: 32, display: 'flex', flexDirection: 'column', gap: 14 }}>
             {[
-              ['📦', 'Lote mínimo: 10 kg verde oro'],
-              ['☕', 'Cata Q-Grader sin costo en Fase 1'],
+              ['📦', 'Lote mínimo: 12 kg verde oro'],
+              ['☕', 'Cata Q-Grader sin costo — cubierta por Tunay Wasi'],
               ['💰', 'Pago a los 7 días hábiles post-venta'],
               ['🔍', 'Tu nombre en cada bolsa que se vende'],
             ].map(([icon, text]) => (
@@ -206,18 +204,14 @@ export default function RegistroMicrolote() {
             </Field>
           </div>
 
-          {/* Fecha entrega + Fecha + Cantidad */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 16 }}>
+          {/* Fecha entrega + Cantidad */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
             <Field label="Fecha est. entrega">
               <input type="date" value={values.fechaEstimadaEntrega} onChange={setField('fechaEstimadaEntrega')}
                 style={{ ...inputStyle, color: '#1f3028', borderBottomColor: '#1f302844' }} />
             </Field>
-            <Field label="Fecha">
-              <input type="date" value={values.fecha} onChange={setField('fecha')}
-                style={{ ...inputStyle, color: '#1f3028', borderBottomColor: '#1f302844' }} />
-            </Field>
             <Field label="Cantidad total (kg)" error={showErr('cantidadKg')}>
-              <input type="number" value={values.cantidadKg} onChange={setField('cantidadKg')} onBlur={onBlur('cantidadKg')} placeholder="10"
+              <input type="number" value={values.cantidadKg} onChange={setField('cantidadKg')} onBlur={onBlur('cantidadKg')} placeholder="12"
                 style={{ ...inputStyle, color: '#1f3028', borderBottomColor: showErr('cantidadKg') ? '#c96e4b' : '#1f302844' }} />
             </Field>
           </div>

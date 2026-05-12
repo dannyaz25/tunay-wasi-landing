@@ -3,5 +3,18 @@
     "default": "alpaso-app",
     "qa": "alpaso-app",
     "prod": "tunay-wasi"
-  }
+  },
+  "targets": {
+    "alpaso-app": {
+      "hosting": {
+        "alpaso-app-caficultores": [
+          "alpaso-app-caficultores"
+        ],
+        "alpaso-app-negocios": [
+          "alpaso-app-negocios"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

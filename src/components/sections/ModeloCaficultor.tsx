@@ -9,16 +9,14 @@ const ACOPIADOR_RANGES: Record<string, [number, number]> = {
   '90+':   [35, 45],
 };
 
-// Precio Tunay Wasi por kg de verde (calculado: 1kg verde → ~0.83kg tostado × precio por 250g × 4 × factor productor)
-// Factor productor ~42.1% del precio neto sin IGV
-// Precios bolsa 250g: 82-83→S/25.66, 84-85→S/27.46, 86-87→S/35.53, 88-89→S/39.33, 90+→S/49.88
-// kg verde → kg tostado: 0.83  |  bolsas por kg tostado: 4
+// Pago caficultor por kg de café verde — valores exactos de PRICING_RULES sección 5
+// Selecto S/34.65 · Esp.Estándar S/38.44 · Esp.Alta S/55.48 · Joya S/66.84 · Geisha S/85.78
 const TW_KG_VERDE: Record<string, number> = {
-  '82-83': Math.round(25.66 * 4 * 0.83 * 0.421),   // ~35.88 → redondeado
-  '84-85': Math.round(27.46 * 4 * 0.83 * 0.421),
-  '86-87': Math.round(35.53 * 4 * 0.83 * 0.421),
-  '88-89': Math.round(39.33 * 4 * 0.83 * 0.421),
-  '90+':   Math.round(49.88 * 4 * 0.83 * 0.421),
+  '82-83': 34.65,
+  '84-85': 38.44,
+  '86-87': 55.48,
+  '88-89': 66.84,
+  '90+':   85.78,
 };
 
 const SCORES = ['82-83', '84-85', '86-87', '88-89', '90+'] as const;
@@ -132,7 +130,7 @@ export default function ModeloCaficultor() {
                     style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderRadius: 12, cursor: 'pointer', border: `1px solid ${score === s ? '#c96e4b' : '#f2e0cc22'}`, background: score === s ? '#c96e4b18' : 'transparent', transition: 'all .2s ease', textAlign: 'left' }}>
                     <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, color: score === s ? '#c96e4b' : '#c4b297' }}>{SCORE_LABELS[s]}</span>
                     <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: score === s ? '#8faf8a' : '#f2e0cc44' }}>
-                      ~S/{TW_KG_VERDE[s]}/kg
+                      S/{TW_KG_VERDE[s].toFixed(2)}/kg
                     </span>
                   </button>
                 ))}
@@ -170,7 +168,7 @@ export default function ModeloCaficultor() {
                   <div style={{ height: '100%', width: `${barTW}%`, background: 'linear-gradient(90deg, #8faf8a 0%, #c96e4b 100%)', borderRadius: 99, transition: 'width 1.4s cubic-bezier(.2,.7,.2,1) 0.2s' }} />
                 </div>
                 <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a99', marginTop: 4 }}>
-                  ~S/ {twPriceKg}/kg de café verde · {SCORE_LABELS[score]}
+                  S/ {twPriceKg.toFixed(2)}/kg de café verde · {SCORE_LABELS[score]}
                 </div>
               </div>
             </div>
