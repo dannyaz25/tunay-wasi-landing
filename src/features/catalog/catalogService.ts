@@ -265,6 +265,181 @@ export async function fetchYapePlin(): Promise<YapePlinData> {
   }
 }
 
+// ── Pricing tiers ────────────────────────────────────────────────────────────
+
+export interface ScaTierData {
+  tier: string;
+  label: string;
+  scaMin: number;
+  scaMax: number | null;
+  caficultorPerKgCents: number;
+}
+
+export interface PricingData {
+  tuesteYield: number;
+  scaMinQualifying: number;
+  tiers: ScaTierData[];
+}
+
+export const STATIC_PRICING: PricingData = {
+  tuesteYield: 0.83,
+  scaMinQualifying: 82,
+  tiers: [
+    { tier: 'selecto',              label: 'Selecto',              scaMin: 82,   scaMax: 83.9, caficultorPerKgCents: 3465 },
+    { tier: 'especialidadEstandar', label: 'Especialidad Estándar', scaMin: 84,   scaMax: 85.9, caficultorPerKgCents: 3844 },
+    { tier: 'especialidadAlta',     label: 'Especialidad Alta',     scaMin: 86,   scaMax: 87.9, caficultorPerKgCents: 5548 },
+    { tier: 'joyaDeFinca',          label: 'Joya de Finca',         scaMin: 88,   scaMax: 89.9, caficultorPerKgCents: 6684 },
+    { tier: 'exclusivo',            label: 'Exclusivo / Geisha',    scaMin: 90,   scaMax: null, caficultorPerKgCents: 8578 },
+  ],
+};
+
+export async function fetchPricing(): Promise<PricingData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'pricing'));
+    if (!snap.exists()) return STATIC_PRICING;
+    return snap.data() as PricingData;
+  } catch {
+    return STATIC_PRICING;
+  }
+}
+
+// ── CafiLanding config ────────────────────────────────────────────────────────
+
+export interface CafiAcopiadorRange { acopMin: number; acopMax: number }
+
+export interface CafiLandingConfigData {
+  waitlist: { maxSlots: number };
+  calculator: {
+    sliderMinKg: number;
+    sliderMaxKg: number;
+    sliderStepKg: number;
+    defaultKg: number;
+    defaultTierIndex: number;
+    footnote: string;
+    acopiadorRanges: CafiAcopiadorRange[];
+  };
+}
+
+export const STATIC_CAFI_LANDING: CafiLandingConfigData = {
+  waitlist: { maxSlots: 15 },
+  calculator: {
+    sliderMinKg: 50,
+    sliderMaxKg: 3000,
+    sliderStepKg: 50,
+    defaultKg: 500,
+    defaultTierIndex: 2,
+    footnote: 'Precio acopiador: referencial MIDAGRI — Perspectivas del Café Peruano 2026 + subastas VRAEM ago-2025',
+    acopiadorRanges: [
+      { acopMin: 12, acopMax: 18 },
+      { acopMin: 16, acopMax: 24 },
+      { acopMin: 20, acopMax: 30 },
+      { acopMin: 24, acopMax: 36 },
+      { acopMin: 28, acopMax: 42 },
+    ],
+  },
+};
+
+export async function fetchCafiLandingConfig(): Promise<CafiLandingConfigData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'cafiLanding'));
+    if (!snap.exists()) return STATIC_CAFI_LANDING;
+    return snap.data() as CafiLandingConfigData;
+  } catch {
+    return STATIC_CAFI_LANDING;
+  }
+}
+
+// ── Supply landing config ─────────────────────────────────────────────────────
+
+export interface SupplyLote {
+  id: string;
+  origen: string;
+  finca: string;
+  variedad: string;
+  proceso: string;
+  altitud: string;
+  sca: number;
+  sacos: number;
+  kg: number;
+  precio: number;
+  tag: 'washed' | 'honey' | 'natural';
+  notas: string;
+  tone: 'green' | 'terra' | 'gold' | 'cream';
+  estado: string;
+  featured?: boolean;
+}
+
+export interface SupplyLogisticsItem { key: string; value: string }
+
+export interface SupplyContactB2B { email: string; whatsapp: string; bodega: string }
+
+export interface SupplyHeroCard {
+  procesoDisplay: string;  // display label shown in italic next to variedad, e.g. "washed"
+  notasCata: string;       // extended tasting note for the cup-notes ticket
+  qGrader: string;         // attribution line, e.g. "Q-Grader · M. Quispe · 04 · 2026"
+}
+
+export interface SupplyLandingConfigData {
+  cosechaLabel: string;
+  logistics: SupplyLogisticsItem[];
+  contactB2B: SupplyContactB2B;
+  heroCard: SupplyHeroCard;
+}
+
+export interface MicrolotesLandingData {
+  lotes: SupplyLote[];
+}
+
+export const STATIC_MICROLOTES: MicrolotesLandingData = {
+  lotes: [
+    { id: 'TW-068', origen: 'Cusco · Quillabamba', finca: 'Finca Quillabamba',  variedad: 'Caturra', proceso: 'Lavado',  altitud: '1,720 m', sca: 87.5, sacos: 12, kg:  552, precio:  62.40, tag: 'washed',  notas: 'Naranja sanguina · chocolate de leche · panela',      tone: 'green', estado: 'disponible',      featured: true },
+    { id: 'TW-072', origen: 'San Martín · Lamas',   finca: 'Asoc. Kechwa',       variedad: 'Bourbon', proceso: 'Honey',   altitud: '1,540 m', sca: 86.0, sacos: 18, kg:  828, precio:  56.80, tag: 'honey',   notas: 'Miel de caña · durazno blanco · cedro',              tone: 'terra', estado: 'disponible'      },
+    { id: 'TW-074', origen: 'Puno · Sandia',         finca: 'Microlote Tunki',    variedad: 'Geisha',  proceso: 'Natural', altitud: '1,920 m', sca: 91.2, sacos:  4, kg:  184, precio: 168.00, tag: 'natural', notas: 'Jazmín · bergamota · té negro · final largo',         tone: 'gold',  estado: 'edición limitada' },
+    { id: 'TW-077', origen: 'Cajamarca · Jaén',      finca: 'Finca Las Pirias',   variedad: 'Typica',  proceso: 'Lavado',  altitud: '1,650 m', sca: 84.0, sacos: 26, kg: 1196, precio:  48.20, tag: 'washed',  notas: 'Caramelo · cacao · cuerpo redondo',                   tone: 'cream', estado: 'disponible'      },
+  ],
+};
+
+export async function fetchMicrolotesLanding(): Promise<MicrolotesLandingData> {
+  try {
+    const snap = await getDocs(collection(db, 'microlotesLanding'));
+    if (snap.empty) return STATIC_MICROLOTES;
+    const lotes = snap.docs.map(d => d.data() as SupplyLote);
+    return { lotes };
+  } catch {
+    return STATIC_MICROLOTES;
+  }
+}
+
+export const STATIC_SUPPLY_LANDING: SupplyLandingConfigData = {
+  cosechaLabel: 'abril 2026',
+  logistics: [
+    { key: 'MOQ',        value: '1 saco (46 kg)' },
+    { key: 'Pago',       value: '50 % anticipo · 50 % entrega' },
+    { key: 'Plazos',     value: '7 — 10 días en Lima' },
+    { key: 'Provincias', value: 'Olva · Shalom · transporte privado' },
+  ],
+  contactB2B: {
+    email: "tunaywasi@gmail.com",
+    whatsapp: "+51 917 959 370",
+    bodega: "Jr. El Greco 223, San Borja, Lima · L–V · 9 — 17h"
+  },
+  heroCard: {
+    procesoDisplay: 'washed',
+    notasCata: 'Naranja sanguina, chocolate de leche, panela. Cuerpo cremoso, acidez cítrica viva.',
+    qGrader: 'Q-Grader · M. Quispe · 04 · 2026',
+  },
+};
+
+export async function fetchSupplyLandingConfig(): Promise<SupplyLandingConfigData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'supplyLanding'));
+    if (!snap.exists()) return STATIC_SUPPLY_LANDING;
+    return snap.data() as SupplyLandingConfigData;
+  } catch {
+    return STATIC_SUPPLY_LANDING;
+  }
+}
+
 // ── Transferencia ─────────────────────────────────────────────────────────────
 
 export interface TransferenciaBankData {

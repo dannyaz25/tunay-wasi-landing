@@ -68,9 +68,10 @@ function loadJson<T>(relPath: string): T {
 
 type DocWithId = { id: string; [k: string]: unknown };
 
-const caficultores = loadJson<DocWithId[]>('data/caficultores.json');
-const productos    = loadJson<DocWithId[]>('data/productos.json');
-const config       = loadJson<Record<string, unknown>>('data/config.json');
+const caficultores    = loadJson<DocWithId[]>('data/caficultores.json');
+const productos       = loadJson<DocWithId[]>('data/productos.json');
+const config          = loadJson<Record<string, unknown>>('data/config.json');
+const { lotes: microlotes } = loadJson<{ lotes: DocWithId[] }>('data/microlotesLanding.json');
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 function ok(msg: string)  { console.log(`  ✓ ${msg}`); }
@@ -113,6 +114,7 @@ async function main() {
   await seedCollection('caficultores', caficultores);
   await seedCollection('productos',    productos);
   await seedConfig(config);
+  await seedCollection('microlotesLanding', microlotes);
 
   console.log('\n✅  Seed complete.\n');
   process.exit(0);
