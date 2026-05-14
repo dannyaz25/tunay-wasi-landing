@@ -6,7 +6,7 @@ on:
       ref:
         description: 'Branch o commit a desplegar'
         required: false
-        default: 'main'
+        default: 'qa'
 
 env:
   NODE_VERSION: '20'
