@@ -19,6 +19,15 @@ async function bootstrap() {
         </QueryClientProvider>
       </StrictMode>,
     );
+  } else if (target === 'mayoristas') {
+    const { default: AppMayoristas } = await import('./AppMayoristas');
+    createRoot(root!).render(
+      <StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <AppMayoristas />
+        </QueryClientProvider>
+      </StrictMode>,
+    );
   } else {
     const { default: App } = await import('./App');
     createRoot(root!).render(
