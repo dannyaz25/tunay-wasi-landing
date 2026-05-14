@@ -1,5 +1,9 @@
 import { useState, useMemo } from 'react';
 import CoffeeBranch from '@/components/decor/CoffeeBranch';
+import { useSupplyLandingConfig } from '@/features/mayoristas/useSupplyLandingConfig';
+import { STATIC_SUPPLY_LANDING } from '@/features/catalog/catalogService';
+import { saveSolicitudSupply } from '@/features/mayoristas/supplyFormService';
+import { useLoteReservado, setLoteReservado } from '@/features/mayoristas/useLoteReservado';
 
 type Status = 'idle' | 'sending' | 'sent';
 
@@ -11,9 +15,14 @@ interface FormValues {
   volumen: string;
   frecuencia: string;
   sca: string;
-  variedad: string;
+  variedad: string[];
   mensaje: string;
 }
+
+const VARIEDADES = [
+  'Caturra', 'Bourbon', 'Geisha', 'Typica',
+  'Catuaí', 'Pache', 'Catimor', 'Mundo Novo',
+];
 
 interface InputProps {
   name: keyof FormValues;
@@ -48,7 +57,7 @@ function SupplyInput({ name, label, type, placeholder, values, setVal, blur, err
       </label>
       <input
         type={type ?? 'text'}
-        value={values[name]}
+        value={values[name] as string}
         placeholder={placeholder}
         onChange={setVal(name)}
         onBlur={blur(name)}
@@ -89,7 +98,7 @@ function SupplySelect({ name, label, options, values, setVal }: SelectProps) {
       }}>{label}</label>
       <div style={{ position: 'relative' }}>
         <select
-          value={values[name]}
+          value={values[name] as string}
           onChange={setVal(name)}
           style={{
             width: '100%', boxSizing: 'border-box',
@@ -115,20 +124,75 @@ function SupplySelect({ name, label, options, values, setVal }: SelectProps) {
   );
 }
 
-const contacts = [
-  ['Ventas B2B', 'supply@tunaywasi.pe'],
-  ['WhatsApp', '+51 987 654 321'],
-  ['Bodega Lima', 'Av. Surquillo 487 · L–V · 9 — 17h'],
-] as const;
+interface MultiChipsProps {
+  label: string;
+  options: string[];
+  selected: string[];
+  toggle: (v: string) => void;
+}
+
+function SupplyMultiChips({ label, options, selected, toggle }: MultiChipsProps) {
+  const labelId = 'supply-variedades-label';
+  return (
+    <div style={{ gridColumn: '1 / -1' }} role="group" aria-labelledby={labelId}>
+      <label id={labelId} style={{
+        fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.22em',
+        color: '#c4b297', textTransform: 'uppercase',
+        display: 'block', marginBottom: 12,
+      }}>{label}</label>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        {options.map(v => {
+          const on = selected.includes(v);
+          return (
+            <button
+              key={v}
+              type="button"
+              onClick={() => toggle(v)}
+              aria-pressed={on}
+              className="tw-sup-chip"
+              style={{
+                fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500,
+                padding: '0 18px', minHeight: 44, borderRadius: 999, cursor: 'pointer',
+                background: on ? '#c96e4b' : 'transparent',
+                color: on ? '#f2e0cc' : '#c4b297',
+                border: `1px solid ${on ? '#c96e4b' : '#f2e0cc33'}`,
+                transition: 'background .2s ease, color .2s ease, border-color .2s ease',
+                letterSpacing: '0.03em',
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                touchAction: 'manipulation',
+              }}
+            >
+              {on && (
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                  <path d="M2 6l3 3 5-5" stroke="#f2e0cc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              )}
+              {v}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 export default function SupplyForm() {
+  const { data = STATIC_SUPPLY_LANDING } = useSupplyLandingConfig();
+  const { email: b2bEmail, whatsapp: b2bWhatsapp, bodega: b2bBodega } = data.contactB2B;
+  const loteReservado = useLoteReservado();
+  const contacts: [string, string][] = [
+    ['Ventas B2B', b2bEmail],
+    ['WhatsApp',   b2bWhatsapp],
+    ['Bodega Lima', b2bBodega],
+  ];
   const [values, setValues] = useState<FormValues>({
     empresa: '', nombre: '', email: '', telefono: '',
     volumen: '46', frecuencia: 'mensual',
-    sca: '84', variedad: '', mensaje: '',
+    sca: '84', variedad: [], mensaje: '',
   });
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
   const [status, setStatus] = useState<Status>('idle');
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const errors = useMemo(() => {
     const e: Partial<Record<keyof FormValues, string>> = {};
@@ -154,14 +218,42 @@ export default function SupplyForm() {
   const blur = (k: keyof FormValues) => () =>
     setTouched(t => ({ ...t, [k]: true }));
 
+  const toggleVariedad = (v: string) =>
+    setValues(vals => ({
+      ...vals,
+      variedad: vals.variedad.includes(v)
+        ? vals.variedad.filter(x => x !== v)
+        : [...vals.variedad, v],
+    }));
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(Object.fromEntries(Object.keys(values).map(k => [k, true])));
     if (!isValid) return;
     setStatus('sending');
-    // TODO: wire to POST /api/mayoristas/solicitud
-    await new Promise(r => setTimeout(r, 900));
-    setStatus('sent');
+    setServerError(null);
+    try {
+      await saveSolicitudSupply({
+        empresa: values.empresa,
+        contacto: values.nombre,
+        email: values.email,
+        telefono: values.telefono,
+        volumenKg: Number(values.volumen),
+        frecuencia: values.frecuencia,
+        puntajeMin: Number(values.sca),
+        variedad: values.variedad.length > 0 ? values.variedad.join(', ') : undefined,
+        mensaje: values.mensaje || undefined,
+        loteId: loteReservado?.id,
+        loteVariedad: loteReservado?.variedad,
+        loteOrigen: loteReservado?.origen,
+        loteSca: loteReservado?.sca,
+        lotePrecioKg: loteReservado?.precioKg,
+      });
+      setStatus('sent');
+    } catch (err) {
+      setServerError((err as Error).message ?? 'Error al enviar. Inténtalo de nuevo.');
+      setStatus('idle');
+    }
   };
 
   const inputProps = { values, setVal: setVal as InputProps['setVal'], blur, errors, touched };
@@ -298,10 +390,49 @@ export default function SupplyForm() {
                 }}>TW-SUP / Q2 · 2026</span>
               </div>
 
+              {loteReservado && (
+                <div style={{
+                  background: '#c96e4b14', border: '1px solid #c96e4b44', borderRadius: 10,
+                  padding: '12px 14px',
+                  display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
+                }}>
+                  <div>
+                    <div style={{
+                      fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.2em',
+                      color: '#c96e4b', textTransform: 'uppercase', marginBottom: 5,
+                    }}>Lote seleccionado</div>
+                    <div style={{
+                      fontFamily: 'Cormorant Garamond, serif', fontSize: 18, fontWeight: 600,
+                      color: '#f2e0cc', lineHeight: 1.1,
+                    }}>
+                      {loteReservado.id} · {loteReservado.variedad}
+                    </div>
+                    <div style={{
+                      fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', marginTop: 4,
+                    }}>
+                      {loteReservado.origen} · SCA {loteReservado.sca} pts · S/ {loteReservado.precioKg.toFixed(2)} / kg
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setLoteReservado(null)}
+                    aria-label="Quitar lote seleccionado"
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      color: '#c4b29799', padding: 4, flexShrink: 0, lineHeight: 1,
+                    }}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+              )}
+
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="tw-sup-form-grid">
-                <SupplyInput name="empresa" label="Empresa / negocio" placeholder="Tostadora El Origen" {...inputProps} />
-                <SupplyInput name="nombre" label="Nombre de contacto" placeholder="María Quispe" {...inputProps} />
-                <SupplyInput name="email" label="Email" type="email" placeholder="hola@tostadora.pe" {...inputProps} />
+                <SupplyInput name="empresa" label="Empresa / negocio" placeholder="Mi Negocio" {...inputProps} />
+                <SupplyInput name="nombre" label="Nombre de contacto" placeholder="Nombre y Apellidos" {...inputProps} />
+                <SupplyInput name="email" label="Email" type="email" placeholder="hola@negocio.pe" {...inputProps} />
                 <SupplyInput name="telefono" label="Teléfono" placeholder="+51 987 654 321" {...inputProps} />
                 <SupplySelect name="volumen" label="Volumen requerido" values={values} setVal={setVal as SelectProps['setVal']} options={[
                   ['46', '46 kg · 1 saco'],
@@ -323,7 +454,12 @@ export default function SupplyForm() {
                   ['88', '88+ · top lot'],
                   ['90', '90+ · edición limitada'],
                 ]} />
-                <SupplyInput name="variedad" label="Variedad preferida (opcional)" placeholder="Caturra, Geisha, Bourbon…" {...inputProps} />
+                <SupplyMultiChips
+                  label="Variedad preferida (opcional)"
+                  options={VARIEDADES}
+                  selected={values.variedad}
+                  toggle={toggleVariedad}
+                />
               </div>
 
               <div>
@@ -351,6 +487,16 @@ export default function SupplyForm() {
                 />
               </div>
 
+              {serverError && (
+                <div style={{
+                  fontFamily: 'Montserrat, sans-serif', fontSize: 12,
+                  color: '#c96e4b', padding: '10px 14px',
+                  border: '1px solid #c96e4b55', borderRadius: 8,
+                }}>
+                  {serverError}
+                </div>
+              )}
+
               <button type="submit" disabled={status === 'sending'} className="tw-sup-submit" style={{
                 marginTop: 8,
                 fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13,
@@ -369,7 +515,7 @@ export default function SupplyForm() {
                 fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
                 color: '#c4b29799', textAlign: 'center', textTransform: 'uppercase',
               }}>
-                Respondemos en menos de 24h · supply@tunaywasi.pe
+                Respondemos en menos de 24h · {b2bEmail}
               </div>
             </div>
           )}
@@ -378,6 +524,7 @@ export default function SupplyForm() {
 
       <style>{`
         .tw-sup-submit:hover:not(:disabled) { background: #f2e0cc !important; }
+        .tw-sup-chip:focus-visible { outline: 2px solid #c96e4b; outline-offset: 2px; }
         @media (max-width: 980px) {
           .tw-sup-form-2col { grid-template-columns: 1fr !important; gap: 56px !important; }
           .tw-sup-form-grid { grid-template-columns: 1fr !important; }

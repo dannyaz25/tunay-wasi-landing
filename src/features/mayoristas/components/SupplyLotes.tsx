@@ -1,57 +1,9 @@
 import { useState } from 'react';
 import CoffeeBranch from '@/components/decor/CoffeeBranch';
-
-interface Lote {
-  id: string;
-  origen: string;
-  finca: string;
-  variedad: string;
-  proceso: string;
-  altitud: string;
-  sca: number;
-  sacos: number;
-  kg: number;
-  precio: number;
-  tag: 'washed' | 'honey' | 'natural';
-  notas: string;
-  tone: 'green' | 'terra' | 'gold' | 'cream';
-  estado: string;
-}
-
-const LOTES: Lote[] = [
-  {
-    id: 'TW-068', origen: 'Cusco · Quillabamba', finca: 'Finca Quillabamba',
-    variedad: 'Caturra', proceso: 'Lavado',
-    altitud: '1,720 m', sca: 87.5, sacos: 12, kg: 552,
-    precio: 62.40, tag: 'washed',
-    notas: 'Naranja sanguina · chocolate de leche · panela',
-    tone: 'green', estado: 'disponible',
-  },
-  {
-    id: 'TW-072', origen: 'San Martín · Lamas', finca: 'Asoc. Kechwa',
-    variedad: 'Bourbon', proceso: 'Honey',
-    altitud: '1,540 m', sca: 86.0, sacos: 18, kg: 828,
-    precio: 56.80, tag: 'honey',
-    notas: 'Miel de caña · durazno blanco · cedro',
-    tone: 'terra', estado: 'disponible',
-  },
-  {
-    id: 'TW-074', origen: 'Puno · Sandia', finca: 'Microlote Tunki',
-    variedad: 'Geisha', proceso: 'Natural',
-    altitud: '1,920 m', sca: 91.2, sacos: 4, kg: 184,
-    precio: 168.00, tag: 'natural',
-    notas: 'Jazmín · bergamota · té negro · final largo',
-    tone: 'gold', estado: 'edición limitada',
-  },
-  {
-    id: 'TW-077', origen: 'Cajamarca · Jaén', finca: 'Finca Las Pirias',
-    variedad: 'Typica', proceso: 'Lavado',
-    altitud: '1,650 m', sca: 84.0, sacos: 26, kg: 1196,
-    precio: 48.20, tag: 'washed',
-    notas: 'Caramelo · cacao · cuerpo redondo',
-    tone: 'cream', estado: 'disponible',
-  },
-];
+import { useSupplyLandingConfig } from '@/features/mayoristas/useSupplyLandingConfig';
+import { useMicrolotesLanding } from '@/features/mayoristas/useMicrolotesLanding';
+import { STATIC_SUPPLY_LANDING, STATIC_MICROLOTES } from '@/features/catalog/catalogService';
+import { setLoteReservado } from '@/features/mayoristas/useLoteReservado';
 
 const PALETTE = {
   green: { accent: '#8faf8a' },
@@ -68,8 +20,10 @@ const FILTERS: [string, string][] = [
 ];
 
 export default function SupplyLotes() {
+  const { data: supply = STATIC_SUPPLY_LANDING } = useSupplyLandingConfig();
+  const { data: microlotes = STATIC_MICROLOTES } = useMicrolotesLanding();
   const [filter, setFilter] = useState<string>('all');
-  const filtered = filter === 'all' ? LOTES : LOTES.filter(l => l.tag === filter);
+  const filtered = filter === 'all' ? microlotes.lotes : microlotes.lotes.filter(l => l.tag === filter);
 
   return (
     <section id="lotes" style={{
@@ -98,7 +52,7 @@ export default function SupplyLotes() {
             }}>
               Cosecha
               <br />
-              <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>abril 2026.</span>
+              <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>{supply.cosechaLabel}.</span>
             </h2>
           </div>
           <div>
@@ -220,25 +174,30 @@ export default function SupplyLotes() {
                       lineHeight: 1, marginTop: 4,
                     }}>S/ {l.precio.toFixed(2)}</div>
                   </div>
-                  <a href={`#solicitud`} className="tw-sup-reservar" style={{
-                    fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600,
-                    letterSpacing: '0.08em', textTransform: 'uppercase',
-                    color: '#f2e0cc', background: '#1f3028',
-                    padding: '11px 16px', textDecoration: 'none',
-                    transition: 'all .25s ease',
-                  }}>
+                  <a
+                    href="#solicitud"
+                    className="tw-sup-reservar"
+                    onClick={() => setLoteReservado({ id: l.id, variedad: l.variedad, origen: l.origen, sca: l.sca, precioKg: l.precio })}
+                    style={{
+                      fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600,
+                      letterSpacing: '0.08em', textTransform: 'uppercase',
+                      color: '#f2e0cc', background: '#1f3028',
+                      padding: '11px 16px', textDecoration: 'none',
+                      transition: 'all .25s ease',
+                    }}
+                  >
                     Reservar →
                   </a>
                 </div>
 
                 {l.estado !== 'disponible' && (
                   <div style={{
-                    position: 'absolute', bottom: 18, left: -8,
-                    fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.24em',
+                    position: 'absolute', top: 16, right: 16, zIndex: 5,
+                    fontFamily: 'Bowlby One SC, sans-serif', fontSize: 8, letterSpacing: '0.22em',
                     color: '#f2e0cc', background: '#c96e4b',
-                    padding: '5px 10px', textTransform: 'uppercase',
-                    transform: 'rotate(-3deg)',
-                    boxShadow: '0 4px 10px -3px #00000066',
+                    padding: '4px 10px', borderRadius: 999, textTransform: 'uppercase',
+                    boxShadow: '0 4px 12px -4px #c96e4b99',
+                    pointerEvents: 'none',
                   }}>{l.estado}</div>
                 )}
               </article>

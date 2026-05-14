@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useSupplyLandingConfig } from '@/features/mayoristas/useSupplyLandingConfig';
+import { useMicrolotesLanding } from '@/features/mayoristas/useMicrolotesLanding';
+import { STATIC_SUPPLY_LANDING, STATIC_MICROLOTES } from '@/features/catalog/catalogService';
 
 const features = [
   ['Trazabilidad', 'Finca · lote · cosecha verificados.'],
@@ -7,6 +10,11 @@ const features = [
 ] as const;
 
 export default function SupplyHero() {
+  const { data: supply = STATIC_SUPPLY_LANDING } = useSupplyLandingConfig();
+  const { data: microlotes = STATIC_MICROLOTES } = useMicrolotesLanding();
+  const { heroCard } = supply;
+  const lote = microlotes.lotes.find(l => l.featured) ?? microlotes.lotes[0];
+
   const [loaded, setLoaded] = useState(false);
   useEffect(() => { setLoaded(true); }, []);
 
@@ -157,29 +165,29 @@ export default function SupplyHero() {
               <span style={{
                 fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.24em',
                 color: '#533b22', textTransform: 'uppercase',
-              }}>LOTE · TW-068 · CUSCO</span>
+              }}>LOTE · {lote.id} · {lote.origen.split('·')[0].trim().toUpperCase()}</span>
               <span style={{
                 fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
                 color: '#c96e4b',
-              }}>87.5 SCA</span>
+              }}>{lote.sca} SCA</span>
             </div>
             <div style={{
               fontFamily: 'Cormorant Garamond, serif', fontSize: 38, fontWeight: 600,
               lineHeight: 1.0, letterSpacing: '-0.01em',
             }}>
-              Caturra
-              <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}> washed</span>
+              {lote.variedad}
+              <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}> {heroCard.procesoDisplay}</span>
               <br />
-              Finca Quillabamba
+              {lote.finca}
             </div>
             <div style={{
               marginTop: 20,
               display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
             }}>
               {[
-                ['Altitud', '1,720 m'],
-                ['Proceso', 'Lavado'],
-                ['Disponible', '12 sacos'],
+                ['Altitud', lote.altitud],
+                ['Proceso', lote.proceso],
+                ['Disponible', `${lote.sacos} sacos`],
               ].map(([k, v]) => (
                 <div key={k}>
                   <div style={{
@@ -201,7 +209,7 @@ export default function SupplyHero() {
                 FOB LIMA / KG
               </span>
               <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 28, fontWeight: 600 }}>
-                S/ 62.40
+                S/ {lote.precio.toFixed(2)}
               </span>
             </div>
           </div>
@@ -223,13 +231,13 @@ export default function SupplyHero() {
               fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic',
               fontSize: 18, color: '#f2e0cc', lineHeight: 1.4,
             }}>
-              "Naranja sanguina, chocolate de leche, panela. Cuerpo cremoso, acidez cítrica viva."
+              "{heroCard.notasCata}"
             </div>
             <div style={{
               marginTop: 12, fontFamily: 'JetBrains Mono, monospace', fontSize: 10,
               letterSpacing: '0.20em', color: '#c4b297', textTransform: 'uppercase',
             }}>
-              Q-Grader · M. Quispe · 04 · 2026
+              {heroCard.qGrader}
             </div>
           </div>
 

@@ -577,3 +577,105 @@ export function emailPedidoRecibido(data: {
     `, `Pedido ${data.orderId} recibido — verificamos tu pago en 24 h`),
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. B2B mayorista — confirmación al comprador
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function emailBienvenidaMayoristaB2B(data: {
+  contacto: string
+  empresa: string
+  email: string
+  volumenKg: number
+  frecuencia: string
+  mensaje?: string
+  loteReservado?: { id: string; variedad: string; origen: string; sca: number; precioKg: number }
+}): { subject: string; html: string } {
+  const loteBlock = data.loteReservado
+    ? `<div style="margin:0 0 4px;padding:14px 16px;background:#c96e4b0f;border-radius:8px;border-left:3px solid #c96e4b;">
+        <p style="margin:0 0 4px;font-family:'Montserrat',Arial,sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c96e4b;">Lote de tu interés</p>
+        <p style="margin:0 0 2px;font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:600;color:#1f3028;">${data.loteReservado.id} &mdash; ${data.loteReservado.variedad}</p>
+        <p style="margin:0;font-family:'Montserrat',Arial,sans-serif;font-size:11px;color:#533b22;">${data.loteReservado.origen} &middot; SCA ${data.loteReservado.sca} pts &middot; S/ ${data.loteReservado.precioKg.toFixed(2)} / kg FOB Lima</p>
+      </div>`
+    : ''
+
+  return {
+    subject: 'Tunay Wasi — Recibimos tu solicitud B2B',
+    html: layout(`
+      ${pill('Solicitud B2B recibida', '#c96e4b18', '#c96e4b')}
+
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:32px;font-weight:600;color:#1f3028;margin:16px 0 6px;line-height:1.15;">
+        ¡Recibimos tu solicitud, ${data.contacto}!
+      </h2>
+      <p style="font-family:'Montserrat',Arial,sans-serif;font-size:13px;color:#533b22;margin:0 0 4px;line-height:1.7;">
+        Hemos recibido la solicitud de <strong>${data.empresa}</strong>. Nos pondremos en contacto contigo en las próximas <strong>24 horas</strong> con una propuesta a medida.
+      </p>
+
+      ${divider()}
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        ${data.loteReservado ? `<tr><td style="padding:0 0 16px;">${loteBlock}</td></tr>` : ''}
+        ${dataField('Empresa', data.empresa)}
+        ${dataField('Volumen solicitado', `${data.volumenKg} kg`)}
+        ${dataField('Frecuencia de compra', data.frecuencia)}
+        ${data.mensaje ? dataField('Tu mensaje', data.mensaje) : ''}
+      </table>
+
+      ${divider()}
+
+      <p style="font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#533b22;margin:0;line-height:1.7;">
+        Mientras tanto puedes explorar los lotes disponibles de la cosecha actual.
+      </p>
+
+      ${ctaButton('Ver lotes disponibles →', `${APP_URL}#lotes`)}
+    `, `Solicitud de ${data.empresa} recibida — te contactamos en 24 h`),
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. B2B mayorista — alerta al admin
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function emailAlertaAdminMayoristaB2B(data: {
+  empresa: string
+  contacto: string
+  email: string
+  telefono: string
+  volumenKg: number
+  frecuencia: string
+  puntajeMin: number
+  variedad?: string
+  mensaje?: string
+  loteReservado?: { id: string; variedad: string; origen: string; sca: number; precioKg: number }
+}): { subject: string; html: string } {
+  return {
+    subject: `[TW] Nueva solicitud B2B — ${data.empresa}`,
+    html: layout(`
+      ${pill('Admin · Nueva solicitud mayorista', '#1f302814', '#533b22')}
+
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#1f3028;margin:16px 0 6px;line-height:1.15;">
+        Nueva solicitud B2B
+      </h2>
+      <p style="font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#533b22;margin:0;line-height:1.7;">
+        Desde el landing de mayoristas.
+      </p>
+
+      ${divider()}
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        ${data.loteReservado ? dataField('Lote reservado', `${pill(data.loteReservado.id, '#c96e4b18', '#c96e4b')} ${data.loteReservado.variedad} &middot; ${data.loteReservado.origen} &middot; SCA ${data.loteReservado.sca} &middot; S/ ${data.loteReservado.precioKg.toFixed(2)} / kg`) : ''}
+        ${dataField('Empresa', data.empresa)}
+        ${dataField('Contacto', data.contacto)}
+        ${dataField('Email', `<a href="mailto:${data.email}" style="color:#c96e4b;text-decoration:none;font-weight:600;">${data.email}</a>`)}
+        ${dataField('Teléfono / WhatsApp', `<a href="https://wa.me/${data.telefono.replace(/\D/g, '')}" style="color:#c96e4b;text-decoration:none;font-weight:600;">${data.telefono}</a>`)}
+        ${dataField('Volumen requerido', `${data.volumenKg} kg`)}
+        ${dataField('Frecuencia de compra', data.frecuencia)}
+        ${dataField('SCA mínimo', `${pill(String(data.puntajeMin) + '+', '#c96e4b18', '#c96e4b')}`)}
+        ${data.variedad ? dataField('Variedad preferida', data.variedad) : ''}
+        ${data.mensaje ? dataField('Mensaje', data.mensaje) : ''}
+      </table>
+
+      ${ctaButton('Ver Dashboard →', `${APP_URL}/admin/dashboard`)}
+    `, `Nueva solicitud B2B de ${data.empresa}`),
+  }
+}

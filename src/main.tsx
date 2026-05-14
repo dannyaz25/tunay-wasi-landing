@@ -29,11 +29,11 @@ async function bootstrap() {
       </StrictMode>,
     );
   } else {
-    const { default: App } = await import('./App');
+    const { default: AppClientes } = await import('./AppClientes');
     createRoot(root!).render(
       <StrictMode>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <AppClientes />
         </QueryClientProvider>
       </StrictMode>,
     );

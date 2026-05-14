@@ -1,3 +1,6 @@
+import { useSupplyLandingConfig } from '@/features/mayoristas/useSupplyLandingConfig';
+import { STATIC_SUPPLY_LANDING } from '@/features/catalog/catalogService';
+
 const pasos = [
   {
     n: '01', titulo: 'Eliges el lote',
@@ -19,14 +22,9 @@ const pasos = [
   },
 ] as const;
 
-const logistics = [
-  ['MOQ', '1 saco (46 kg)'],
-  ['Pago', '50 % anticipo · 50 % entrega'],
-  ['Plazos', '7 — 10 días en Lima'],
-  ['Provincias', 'Olva · Shalom · transporte privado'],
-] as const;
-
 export default function SupplyProceso() {
+  const { data = STATIC_SUPPLY_LANDING } = useSupplyLandingConfig();
+  const logistics = data.logistics;
   return (
     <section id="proceso" style={{
       background: '#1f3028',
@@ -145,7 +143,7 @@ export default function SupplyProceso() {
           border: '1px solid #8faf8a33',
           display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24,
         }} className="tw-sup-logi">
-          {logistics.map(([k, v]) => (
+          {logistics.map(({ key: k, value: v }) => (
             <div key={k} style={{
               display: 'flex', flexDirection: 'column', gap: 6,
               paddingLeft: 18, borderLeft: '1px solid #c96e4b66',
