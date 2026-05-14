@@ -156,7 +156,7 @@
     "contact": {
       "email": "tunaywasi@gmail.com",
       "whatsapp": "+51917959370",
-      "address": "Jr. Independencia 240, Barranco, Lima",
+      "address": "Jr. El Greco 223, San Borja, Lima",
       "appUrl": "https://tunay-wasi.web.app",
       "adminEmail": "tunaywasi@gmail.com"
     },
@@ -187,6 +187,70 @@
       "Sube la captura del comprobante"
     ],
     "voucherStoragePath": "pedidos/vouchers"
+  },
+
+  "transferencia": {
+    "enabled": true,
+    "accountHolder": "ALPASO LIVE COMMERCE SAC",
+    "banks": [
+      {
+        "name": "BCP",
+        "accountType": "Cuenta Corriente",
+        "accountNumber": "193-7332599054",
+        "cci": "002-193-0073325990541-4"
+      }
+    ],
+    "instructions": [
+      "Transfiere el monto exacto a la cuenta indicada",
+      "Usa como referencia tu número de pedido",
+      "Sube la captura del comprobante",
+      "Tu pedido se confirma en máximo 24 horas"
+    ],
+    "voucherStoragePath": "pedidos/vouchers"
+  },
+
+  "cafiLanding": {
+    "_owner": "landing/caficultores — configuración del landing B2B para caficultores",
+    "waitlist": {
+      "maxSlots": 15
+    },
+    "calculator": {
+      "sliderMinKg": 50,
+      "sliderMaxKg": 3000,
+      "sliderStepKg": 50,
+      "defaultKg": 500,
+      "defaultTierIndex": 2,
+      "footnote": "Precio acopiador: referencial MIDAGRI — Perspectivas del Café Peruano 2026 + subastas VRAEM ago-2025",
+      "acopiadorRanges": [
+        { "acopMin": 11, "acopMax": 17 },
+        { "acopMin": 15, "acopMax": 22 },
+        { "acopMin": 20, "acopMax": 30 },
+        { "acopMin": 25, "acopMax": 45 },
+        { "acopMin": 35, "acopMax": 70 }
+      ]
+    }
+  },
+
+  "supplyLanding": {
+    "_owner": "landing/mayoristas — configuración del landing B2B para tostadoras y mayoristas",
+    "cosechaLabel": "abril 2026",
+    "_lotesRef": "Ver scripts/data/microlotesLanding.json — Firestore: configurations/microlotesLanding",
+    "logistics": [
+      { "key": "MOQ",        "value": "1 saco (46 kg)" },
+      { "key": "Pago",       "value": "50 % anticipo · 50 % entrega" },
+      { "key": "Plazos",     "value": "7 — 10 días en Lima" },
+      { "key": "Provincias", "value": "Olva · Shalom · transporte privado" }
+    ],
+    "contactB2B": {
+      "email": "tunaywasi@gmail.com",
+      "whatsapp": "+51 917 959 370",
+      "bodega": "Jr. El Greco 223, San Borja, Lima · L–V · 9 — 17h"
+    },
+    "heroCard": {
+      "procesoDisplay": "washed",
+      "notasCata": "Naranja sanguina, chocolate de leche, panela. Cuerpo cremoso, acidez cítrica viva.",
+      "qGrader": "Q-Grader · M. Quispe · 04 · 2026"
+    }
   },
 
   "paymentGateway": {

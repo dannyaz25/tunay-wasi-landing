@@ -7,11 +7,12 @@ import type { CartTotals } from '@/shared/types/cart';
 import {
   useCartIsCheckoutOpen, useCartCheckoutStep, useCartActions, useCartItems,
 } from '@/features/cart/useCart';
-import { useCheckout, isValidPeruvianPhone } from '../useCheckout';
+import { useCheckout, isValidPeruvianPhone, isValidEmail } from '../useCheckout';
 import { useActiveCycle } from '@/features/catalog/useActiveCycle';
 import { useShipping } from '@/features/catalog/useShipping';
 import { useYapePlin } from '@/features/catalog/useYapePlin';
-import type { ShippingZoneRule, YapePlinData } from '@/features/catalog/catalogService';
+import { useTransferencia } from '@/features/catalog/useTransferencia';
+import type { ShippingZoneRule, YapePlinData, TransferenciaData } from '@/features/catalog/catalogService';
 import ubigeo from '@/data/peru-ubigeo.json';
 
 // ── Ubigeo helpers ───────────────────────────────────────────────────────────
@@ -45,7 +46,7 @@ function inferZone(dep: string, _prov: string, dist = ''): Exclude<ShippingZone,
 const inputStyle: React.CSSProperties = {
   width: '100%', fontFamily: 'Montserrat, sans-serif', fontSize: 13,
   padding: '9px 12px', borderRadius: 10,
-  background: '#0f1a14', color: '#f2e0cc',
+  background: '#faf3e6', color: '#1f3028',
   border: '1px solid #c4b29733', outline: 'none',
   transition: 'all .25s ease', boxSizing: 'border-box',
 };
@@ -62,13 +63,13 @@ function StepPill({ active, done, n, label }: { active: boolean; done: boolean; 
     <div style={{
       display: 'inline-flex', alignItems: 'center', gap: 6,
       padding: '6px 12px', borderRadius: 999,
-      background: active ? '#c96e4b' : (done ? '#8faf8a' : '#f2e0cc11'),
-      color: active || done ? '#1f3028' : '#c4b297',
+      background: active ? '#c96e4b' : (done ? '#8faf8a' : '#1f302811'),
+      color: active || done ? '#1f3028' : '#533b22',
       fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 600, letterSpacing: '0.04em',
-      border: `1px solid ${active ? '#c96e4b' : (done ? '#8faf8a' : '#c4b29733')}`,
+      border: `1px solid ${active ? '#c96e4b' : (done ? '#8faf8a' : '#533b2244')}`,
       transition: 'all .3s ease',
     }}>
-      <span style={{ width: 16, height: 16, borderRadius: '50%', background: active || done ? '#1f3028' : '#c4b29733', color: active || done ? '#f2e0cc' : '#c4b297', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontFamily: 'Bowlby One SC, sans-serif' }}>
+      <span style={{ width: 16, height: 16, borderRadius: '50%', background: active || done ? '#1f3028' : '#533b2233', color: active || done ? '#f2e0cc' : '#533b22', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontFamily: 'Bowlby One SC, sans-serif' }}>
         {done ? '✓' : n}
       </span>
       {label}
@@ -79,12 +80,12 @@ function StepPill({ active, done, n, label }: { active: boolean; done: boolean; 
 function FormField({ label, children, hint, error }: { label: string; children: React.ReactNode; hint?: string; error?: string }) {
   return (
     <div>
-      <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: error ? '#c96e4b' : '#c4b297', textTransform: 'uppercase', marginBottom: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: error ? '#c96e4b' : 'rgb(148 122 94)', textTransform: 'uppercase', marginBottom: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span>{label}</span>
         {error && <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontStyle: 'italic', textTransform: 'none', letterSpacing: 0, color: '#c96e4b', fontWeight: 400 }}>{error}</span>}
       </div>
       {children}
-      {hint && !error && <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#8faf8a', marginTop: 4 }}>{hint}</div>}
+      {hint && !error && <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#8faf8a', fontWeight: 700, marginTop: 4 }}>{hint}</div>}
     </div>
   );
 }
@@ -92,9 +93,9 @@ function FormField({ label, children, hint, error }: { label: string; children: 
 function Row({ k, v, accent, strike }: { k: string; v: string; accent?: string | null; strike?: string | null }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-      <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#c4b297' }}>{k}</span>
-      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontWeight: 600, color: accent ?? '#f2e0cc' }}>
-        {strike && <span style={{ textDecoration: 'line-through', color: '#c4b29766', marginRight: 6, fontSize: 13 }}>{strike}</span>}
+      <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 9, color: '#1f3028', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.12em' }}>{k}</span>
+      <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 17, fontWeight: 900, color: accent ?? '#1f3028' }}>
+        {strike && <span style={{ textDecoration: 'line-through', color: '#7c705f9e',  marginRight: 6, fontSize: 13 }}>{strike}</span>}
         {v}
       </span>
     </div>
@@ -120,12 +121,12 @@ function ShippingSummaryCard({
     ? 'Gratis'
     : Money.formatPEN(totals.shippingCents);
   return (
-    <div style={{ borderRadius: 10, background: '#0f1a14', border: '1px solid #c4b29733', padding: '10px 14px' }}>
+    <div style={{ borderRadius: 14, background: '#f2e0cc', border: '1px solid #1f302833', padding: '10px 14px', boxShadow: '0 4px 12px -8px #533b2244' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
         <div>
-          <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#c4b297' }}>{headerLabel}</div>
+          <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 600, color: '#533b22' }}>{headerLabel}</div>
           {rule && rule.freeThresholdCents > 0 && zone !== 'recojo' && (
-            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b29799', marginTop: 2 }}>
+            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#7a6850', marginTop: 2 }}>
               Envío gratis desde {Money.formatPEN(rule.freeThresholdCents)}
             </div>
           )}
@@ -135,12 +136,12 @@ function ShippingSummaryCard({
             </div>
           )}
           {totals.isFreeShipping && (
-            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a', marginTop: 2 }}>
+            <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, color: '#8faf8a', marginTop: 2 }}>
               🎉 ¡Envío gratis!
             </div>
           )}
         </div>
-        <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 20, color: totals.isFreeShipping || zone === 'recojo' ? '#8faf8a' : '#f2e0cc', whiteSpace: 'nowrap' }}>
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 800, fontSize: 18, color: totals.isFreeShipping || zone === 'recojo' ? '#8faf8a' : '#1f3028', whiteSpace: 'nowrap' }}>
           {costLabel}
         </span>
       </div>
@@ -152,12 +153,12 @@ function FreeShippingBanner({ totals }: { totals: CartTotals }) {
   if (totals.isFreeShipping || totals.remainingForFreeCents <= 0 || totals.freeThresholdCents <= 0) return null;
   const pct = Math.min(100, (totals.subtotalCents / totals.freeThresholdCents) * 100);
   return (
-    <div style={{ borderRadius: 10, background: '#0f1a14', border: '1px solid #c4b29733', padding: '10px 14px', overflow: 'hidden' }}>
-      <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc', marginBottom: 8 }}>
+    <div style={{ borderRadius: 14, background: '#f2e0cc', border: '1px solid #1f302833', padding: '10px 14px', overflow: 'hidden', boxShadow: '0 4px 12px -8px #533b2244' }}>
+      <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028', marginBottom: 8 }}>
         Agrega <strong>{Money.formatPENShort(totals.remainingForFreeCents)}</strong> más y el envío es{' '}
-        <span style={{ color: '#8faf8a', fontWeight: 600 }}>gratis</span>
+        <span style={{ color: '#8faf8a', fontWeight: 700 }}>gratis</span>
       </div>
-      <div style={{ height: 4, borderRadius: 99, background: '#f2e0cc1a', overflow: 'hidden' }}>
+      <div style={{ height: 4, borderRadius: 99, background: '#1f30281a', overflow: 'hidden' }}>
         <div style={{ height: '100%', width: `${pct}%`, background: 'linear-gradient(90deg, #c96e4b 0%, #8faf8a 100%)', borderRadius: 99, transition: 'width .4s ease' }} />
       </div>
     </div>
@@ -173,8 +174,10 @@ function StepDatos({
   shippingZones: ShippingZoneRule[];
 }) {
   const [phoneBlurred, setPhoneBlurred] = useState(false);
+  const [emailBlurred, setEmailBlurred] = useState(false);
   const [dniBlurred, setDniBlurred] = useState(false);
   const phoneError = phoneBlurred && !isValidPeruvianPhone(data.telefono);
+  const emailError = emailBlurred && !isValidEmail(data.email);
   const dniError = dniBlurred && data.dni.replace(/\D/g, '').length < 8;
 
   const isOlvaZone = data.zone === 'limaExt' || data.zone === 'provincia';
@@ -212,8 +215,8 @@ function StepDatos({
     const active = data.olvaMode === mode;
     return {
       padding: '12px 14px', borderRadius: 10, cursor: 'pointer', textAlign: 'left',
-      background: active ? '#8faf8a18' : '#0f1a14',
-      border: `2px solid ${active ? '#8faf8a' : '#c4b29733'}`,
+      background: active ? '#8faf8a18' : '#f2e0cc',
+      border: `2px solid ${active ? '#8faf8a' : '#1f302833'}`,
       transition: 'all .2s ease', outline: 'none',
     };
   };
@@ -259,7 +262,7 @@ function StepDatos({
       {/* Olva carrier options */}
       {isOlvaZone && olvaRule && (
         <div>
-          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c4b297', textTransform: 'uppercase', marginBottom: 8 }}>
+          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: 'rgb(148 122 94)', textTransform: 'uppercase', marginBottom: 8 }}>
             {olvaRule.carrier ?? 'Olva Courier'}{olvaRule.transitDays ? ` · ${olvaRule.transitDays} días hábiles` : ''}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
@@ -268,13 +271,13 @@ function StepDatos({
               onClick={() => setData(d => ({ ...d, olvaMode: 'recojo' }))}
               style={olvaCardStyle('recojo')}
             >
-              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#f2e0cc', marginBottom: 3 }}>
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#1f3028', marginBottom: 3 }}>
                 📦 Recojo en agencia
               </div>
-              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', marginBottom: 8 }}>
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#7a6850', marginBottom: 8 }}>
                 Recoges en agencia Olva
               </div>
-              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 17, color: data.olvaMode === 'recojo' ? '#8faf8a' : '#f2e0cc' }}>
+              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 17, color: data.olvaMode === 'recojo' ? '#8faf8a' : '#1f3028' }}>
                 {Money.formatPENShort(recojoPrice)}
               </div>
             </button>
@@ -283,13 +286,13 @@ function StepDatos({
               onClick={() => setData(d => ({ ...d, olvaMode: 'domicilio' }))}
               style={olvaCardStyle('domicilio')}
             >
-              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#f2e0cc', marginBottom: 3 }}>
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#1f3028', marginBottom: 3 }}>
                 🏠 A domicilio
               </div>
-              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', marginBottom: 8 }}>
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#7a6850', marginBottom: 8 }}>
                 Llega a tu puerta
               </div>
-              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 17, color: data.olvaMode === 'domicilio' ? '#8faf8a' : '#f2e0cc' }}>
+              <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 17, color: data.olvaMode === 'domicilio' ? '#8faf8a' : '#1f3028' }}>
                 {Money.formatPENShort(domicilioPrice)}
               </div>
             </button>
@@ -352,15 +355,31 @@ function StepDatos({
         </FormField>
       </div>
 
+      {/* Email */}
+      <FormField
+        label="Correo electrónico"
+        error={emailError ? 'Correo inválido' : undefined}
+        hint={!emailError && !data.email ? 'Para enviarte la confirmación de tu pedido' : undefined}
+      >
+        <input
+          type="email"
+          value={data.email}
+          onChange={setField('email')}
+          onBlur={() => setEmailBlurred(true)}
+          placeholder="tu@correo.com"
+          style={emailError ? inputErrorStyle : inputStyle}
+        />
+      </FormField>
+
       {/* Shipping summary card */}
       <ShippingSummaryCard zone={data.zone} totals={totals} shippingZones={shippingZones} />
 
       {/* Free shipping progress banner */}
       <FreeShippingBanner totals={totals} />
 
-      <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 10, background: '#0f1a14', border: '1px solid #c4b29722', cursor: 'pointer' }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 14, background: '#f2e0cc', border: '1px solid #1f302822', cursor: 'pointer' }}>
         <input type="checkbox" checked={data.acepta} onChange={e => setData(d => ({ ...d, acepta: e.target.checked }))} style={{ accentColor: '#8faf8a', width: 16, height: 16, flexShrink: 0 }} />
-        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc' }}>
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028' }}>
           Acepto las <a href="#" style={{ color: '#c96e4b', textDecoration: 'underline' }}>políticas de compra, privacidad y entrega</a>.
         </span>
       </label>
@@ -382,14 +401,14 @@ function HowToPayAccordion({ method, totalFormatted, yapePlin }: { method: 'yape
 
   return (
     <div style={{ marginTop: 8 }}>
-      <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
+      <button onClick={() => setOpen(o => !o)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
         <span style={{ display: 'inline-block', transition: 'transform .2s', transform: open ? 'rotate(90deg)' : 'none', fontSize: 8 }}>▶</span>
         ¿Cómo pago con {method === 'yape' ? 'Yape' : 'Plin'}?
       </button>
       {open && (
         <ol style={{ margin: '8px 0 0', paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 4 }}>
           {steps.map((s, i) => (
-            <li key={i} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', lineHeight: 1.5 }}>{s}</li>
+            <li key={i} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#533b22', lineHeight: 1.5 }}>{s}</li>
           ))}
         </ol>
       )}
@@ -413,16 +432,16 @@ function ValidationTimer({ totalSeconds = 120, whatsappPhone }: { totalSeconds?:
   return (
     <div style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 6 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799' }}>Tiempo de verificación</span>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: expired ? '#c96e4b' : '#f2e0cc', fontWeight: 600 }}>
+        <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#533b22' }}>Tiempo de verificación</span>
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 12, color: expired ? '#c96e4b' : '#1f3028', fontWeight: 600 }}>
           {mins}:{secs.toString().padStart(2, '0')}
         </span>
       </div>
-      <div style={{ height: 3, borderRadius: 99, background: '#f2e0cc1a', overflow: 'hidden' }}>
+      <div style={{ height: 3, borderRadius: 99, background: '#1f30281a', overflow: 'hidden' }}>
         <div style={{ height: '100%', width: `${pct}%`, borderRadius: 99, background: expired ? '#c96e4b' : '#8faf8a', transition: 'width 1s linear, background .5s ease' }} />
       </div>
       {expired && (
-        <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b297', textAlign: 'center', marginTop: 2 }}>
+        <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#533b22', textAlign: 'center', marginTop: 2 }}>
           ¿Demora más?{' '}
           <a href={`https://api.whatsapp.com/send/?phone=${waPhone}&text=Hola%2C+realic%C3%A9+un+pago+y+no+recib%C3%AD+confirmaci%C3%B3n`} target="_blank" rel="noopener noreferrer" style={{ color: '#8faf8a', textDecoration: 'underline' }}>
             Escríbenos por WhatsApp
@@ -446,29 +465,40 @@ function SpinnerKeyframes() {
 
 // ── Step Pago ────────────────────────────────────────────────────────────────
 
-type PaymentPhase = 'select' | 'qr' | 'validating' | 'failed';
+type PaymentPhase = 'select' | 'qr' | 'validating' | 'failed' | 'transferencia';
 
 function StepPago({
-  items, totals, onSubmit, status, yapePlin,
+  items, totals, onSubmit, status, yapePlin, transferencia, customerName,
 }: {
   items: CartItem[];
   totals: CartTotals;
   onSubmit: (a: AdapterName) => void;
   status: string;
   yapePlin: YapePlinData;
+  transferencia: TransferenciaData;
+  customerName?: string;
 }) {
-  const [selectedMethod, setSelectedMethod] = useState<'yape' | 'plin' | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<'yape' | 'plin' | 'transferencia' | null>(null);
   const [phase, setPhase] = useState<PaymentPhase>('select');
   const [comprobante, setComprobante] = useState<string | null>(null);
+  const [voucherSent, setVoucherSent] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
+  const [showInstructions, setShowInstructions] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const qrRef = useRef<HTMLDivElement>(null);
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(key);
+    setTimeout(() => setCopied(null), 2000);
+  };
 
   useEffect(() => {
     if (phase === 'validating' && status === 'idle') setPhase('failed');
   }, [status, phase]);
 
-  const selectMethod = (m: 'yape' | 'plin') => { setSelectedMethod(m); setPhase('qr'); };
-  const handlePaid = () => { setPhase('validating'); onSubmit('yapePlin'); };
+  const selectMethod = (m: 'yape' | 'plin' | 'transferencia') => { setSelectedMethod(m); setPhase(m === 'transferencia' ? 'transferencia' : 'qr'); };
+  const handlePaid = () => { setPhase('validating'); onSubmit(selectedMethod ?? 'yape'); };
   const downloadQR = () => {
     const svg = qrRef.current?.querySelector('svg');
     if (!svg) return;
@@ -479,52 +509,59 @@ function StepPago({
     URL.revokeObjectURL(url);
   };
 
-  const methodBtnStyle = (m: 'yape' | 'plin'): React.CSSProperties => {
+  const methodCardStyle = (m: 'yape' | 'plin' | 'transferencia'): React.CSSProperties => {
     const active = selectedMethod === m && phase !== 'select';
     return {
-      background: m === 'yape' ? '#742280' : '#0bb4d9', color: '#f2e0cc',
-      padding: '11px 28px', borderRadius: 10,
-      fontFamily: 'Montserrat, sans-serif', fontSize: 16, fontWeight: 800,
-      border: active ? '2px solid #c4b297' : '2px solid transparent',
-      boxShadow: active ? '0 0 0 3px #c4b29733' : 'none',
+      flex: 1, minWidth: 100, padding: '12px 10px', borderRadius: 10,
+      fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 700,
+      border: '2px solid ' + (active ? '#c96e4b' : '#533b2244'),
+      boxShadow: active ? '0 0 0 3px #c96e4b33' : 'none',
+      background: active ? '#c96e4b22' : '#f2e0cc',
+      color: active ? '#c96e4b' : '#533b22',
       cursor: phase === 'validating' ? 'default' : 'pointer',
-      outline: 'none', transition: 'all .2s ease',
+      outline: 'none', transition: 'all .2s ease', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
     };
   };
 
-  const activeConfig = selectedMethod ? yapePlin[selectedMethod] : null;
+  const methodIcon = (m: 'yape' | 'plin' | 'transferencia') => {
+    if (m === 'yape') return <img src="/imgs/yape-seeklogo.png" alt="Yape" style={{ width: 64, height: 64, objectFit: 'contain' }} />;
+    if (m === 'plin') return <img src="/imgs/plin-seeklogo.png" alt="Plin" style={{ width: 64, height: 64, objectFit: 'contain' }} />;
+    return <span style={{ fontSize: 35 }}>🏦</span>;
+  };
+
+  const activeConfig = selectedMethod && selectedMethod !== 'transferencia' ? yapePlin[selectedMethod] : null;
   const activePhone = activeConfig?.phone.replace(/^\+51/, '').replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3') ?? '';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       {/* Order summary */}
-      <div style={{ background: '#0f1a14', border: '1px solid #c4b29722', borderRadius: 14, padding: 18 }}>
+      <div style={{ background: '#f2e0cc', border: '1px solid #1f302833', borderRadius: 20, padding: 22, boxShadow: '0 10px 24px -14px #533b2266' }}>
         <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#8faf8a', textTransform: 'uppercase', marginBottom: 12 }}>Resumen</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 0.7fr 0.5fr 0.7fr', gap: 8, fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.16em', color: '#c4b29799', textTransform: 'uppercase', paddingBottom: 10, borderBottom: '1px solid #f2e0cc18' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 0.7fr 0.5fr 0.7fr', gap: 8, fontFamily: 'Montserrat, sans-serif', fontSize: 9, letterSpacing: '0.12em', color: '#1f3028', fontWeight: 700, textTransform: 'uppercase', paddingBottom: 10, borderBottom: '1px solid #1f302818' }}>
           <span>Producto</span>
           <span style={{ textAlign: 'right' }}>c/u</span>
           <span style={{ textAlign: 'right' }}>cant.</span>
           <span style={{ textAlign: 'right' }}>total</span>
         </div>
         {items.map(it => (
-          <div key={it.id} style={{ display: 'grid', gridTemplateColumns: '2fr 0.7fr 0.5fr 0.7fr', gap: 8, padding: '9px 0', borderBottom: '1px solid #f2e0cc14', alignItems: 'baseline' }}>
-            <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc' }}>
-              {it.name} <span style={{ color: '#c4b297', fontSize: 11 }}>({it.weight} · {it.grind})</span>
+          <div key={it.id} style={{ display: 'grid', gridTemplateColumns: '2fr 0.7fr 0.5fr 0.7fr', gap: 8, padding: '9px 0', borderBottom: '1px solid #1f302814', alignItems: 'baseline' }}>
+            <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028' }}>
+              {it.name} <span style={{ color: '#7a6850', fontSize: 11 }}>({it.weight} · {it.grind})</span>
             </span>
-            <span style={{ textAlign: 'right', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc' }}>{Money.formatPEN(it.unitCents)}</span>
-            <span style={{ textAlign: 'right', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc' }}>{it.qty}</span>
-            <span style={{ textAlign: 'right', fontFamily: 'Cormorant Garamond, serif', fontSize: 16, fontWeight: 600, color: '#f2e0cc' }}>{Money.formatPEN(it.unitCents * it.qty)}</span>
+            <span style={{ textAlign: 'right', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028' }}>{Money.formatPEN(it.unitCents)}</span>
+            <span style={{ textAlign: 'right', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028' }}>{it.qty}</span>
+            <span style={{ textAlign: 'right', fontFamily: 'Cormorant Garamond, serif', fontSize: 16, fontWeight: 600, color: '#1f3028' }}>{Money.formatPEN(it.unitCents * it.qty)}</span>
           </div>
         ))}
         <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 7 }}>
           <Row k="Subtotal" v={Money.formatPEN(totals.subtotalCents)} />
           {totals.discountCents > 0 && <Row k="Descuento" v={'– ' + Money.formatPEN(totals.discountCents)} accent="#8faf8a" />}
           <Row k={totals.shippingLabel} v={totals.isFreeShipping ? 'Gratis' : Money.formatPEN(totals.shippingCents)} strike={totals.isFreeShipping ? Money.formatPEN(totals.shippingFlat) : null} accent={totals.isFreeShipping ? '#8faf8a' : null} />
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', paddingTop: 10, borderTop: '1px solid #f2e0cc22', marginTop: 4 }}>
-            <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 20, color: '#f2e0cc' }}>Total</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', paddingTop: 10, borderTop: '1px solid #1f302822', marginTop: 4 }}>
+            <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 20, color: '#1f3028' }}>Total</span>
             <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 28, color: '#c96e4b' }}>{Money.formatPEN(totals.totalCents)}</span>
           </div>
-          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.16em', color: '#8faf8a' }}>
+          <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.16em', color: '#8faf8a', fontWeight: 700 }}>
             {totals.subtotalCents > 0 ? Math.round(totals.producerShareCents / totals.subtotalCents * 100) : 42}% al caficultor: {Money.formatPEN(totals.producerShareCents)}
           </div>
         </div>
@@ -532,14 +569,14 @@ function StepPago({
 
       {/* Payment section */}
       {phase === 'failed' ? (
-        <div style={{ padding: 22, borderRadius: 14, background: '#c4b29709', border: '2px solid #c4b29755', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, textAlign: 'center' }}>
+        <div style={{ padding: 22, borderRadius: 20, background: '#f2e0cc', border: '1px solid #1f302833', boxShadow: '0 10px 24px -14px #533b2266', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, textAlign: 'center' }}>
           <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#c4b29722', border: '2px solid #c4b297', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>⚠️</div>
-          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 20, color: '#f2e0cc' }}>No detectamos tu pago automáticamente</div>
+          <div style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 20, color: '#1f3028' }}>No detectamos tu pago automáticamente</div>
           <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#c4b297', lineHeight: 1.6, maxWidth: 320 }}>
             Si ya realizaste la transferencia, adjunta tu comprobante aquí.
           </div>
           <input ref={fileRef} type="file" accept="image/*" onChange={(e: ChangeEvent<HTMLInputElement>) => { const f = e.target.files?.[0]; if (f) setComprobante(f.name); }} style={{ display: 'none' }} />
-          <button onClick={() => fileRef.current?.click()} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', borderRadius: 12, background: '#0f1a14', border: '2px dashed #c4b29766', color: '#f2e0cc', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13, cursor: 'pointer', width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}>
+          <button onClick={() => fileRef.current?.click()} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '13px 24px', borderRadius: 12, background: '#faf3e6', border: '2px dashed #c4b29766', color: '#1f3028', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 13, cursor: 'pointer', width: '100%', justifyContent: 'center', boxSizing: 'border-box' }}>
             📎 {comprobante ? `✓ ${comprobante}` : 'Subir captura de comprobante'}
           </button>
           {comprobante && (
@@ -557,23 +594,30 @@ function StepPago({
       ) : (
         <div style={{ padding: 18, borderRadius: 14, background: 'linear-gradient(180deg, #c96e4b14 0%, #1f302800 100%)', border: '1px solid #c96e4b44' }}>
           <SpinnerKeyframes />
-          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c96e4b', textTransform: 'uppercase', textAlign: 'center', marginBottom: 14 }}>⚡ Paga rápido con</div>
+          <div style={{ fontFamily: 'Bowlby One SC, sans-serif', fontSize: 9, letterSpacing: '0.22em', color: '#c96e4b', textTransform: 'uppercase', textAlign: 'center', marginBottom: 14 }}>⚡ Elige tu método de pago</div>
 
-          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 16 }}>
-            <button onClick={() => phase !== 'validating' && selectMethod('yape')} style={methodBtnStyle('yape')}>yape</button>
-            <span style={{ color: '#c4b297', fontFamily: 'Cormorant Garamond, serif', fontStyle: 'italic' }}>o</span>
-            <button onClick={() => phase !== 'validating' && selectMethod('plin')} style={methodBtnStyle('plin')}>plin</button>
+          <div style={{ display: 'flex', gap: 10, justifyContent: 'center', alignItems: 'stretch', marginBottom: 16 }}>
+            <button onClick={() => phase !== 'validating' && selectMethod('yape')} style={methodCardStyle('yape')}>
+              {methodIcon('yape')}
+            </button>
+            <button onClick={() => phase !== 'validating' && selectMethod('plin')} style={methodCardStyle('plin')}>
+              {methodIcon('plin')}
+            </button>
+            <button onClick={() => phase !== 'validating' && selectMethod('transferencia')} style={methodCardStyle('transferencia')}>
+              {methodIcon('transferencia')}
+              <span>Transferencia</span>
+            </button>
           </div>
 
           {phase === 'select' && (
-            <div style={{ textAlign: 'center', fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#c4b29799' }}>
-              Selecciona tu método de pago para ver el QR
+            <div style={{ textAlign: 'center', fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#7a6850' }}>
+              Selecciona tu método de pago para continuar
             </div>
           )}
 
-          {phase === 'qr' && selectedMethod && activeConfig && (
+          {(phase === 'qr' || phase === 'validating') && selectedMethod && selectedMethod !== 'transferencia' && activeConfig && (
             <>
-              <div style={{ background: '#0f1a14', borderRadius: 12, padding: 16, display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 12, flexWrap: 'wrap' }}>
+              <div style={{ background: '#f2e0cc', borderRadius: 16, padding: 18, border: '1px solid #1f302833', boxShadow: '0 8px 18px -10px #533b2244', display: 'flex', gap: 16, alignItems: 'flex-start', marginBottom: 12, flexWrap: 'wrap' }}>
                 <div style={{ flexShrink: 0 }}>
                   <div ref={qrRef} style={{ borderRadius: 6, overflow: 'hidden', lineHeight: 0, width: 120, height: 120 }}>
                     {activeConfig.qrImageUrl ? (
@@ -582,19 +626,19 @@ function StepPago({
                       <QRCodeSVG value={activeConfig.phone.replace(/^\+51/, '')} size={120} fgColor="#1f3028" bgColor="#ffffff" level="M" />
                     )}
                   </div>
-                  <button onClick={downloadQR} style={{ marginTop: 8, width: 120, padding: '6px 0', borderRadius: 6, background: 'transparent', border: '1px solid #c4b29744', color: '#c4b297', fontFamily: 'Montserrat, sans-serif', fontSize: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+                  <button onClick={downloadQR} style={{ marginTop: 8, width: 120, padding: '6px 0', borderRadius: 6, background: 'transparent', border: '1px solid #533b2244', color: '#533b22', fontFamily: 'Montserrat, sans-serif', fontSize: 10, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
                     ⬇ Descargar QR
                   </button>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 9, justifyContent: 'center', paddingTop: 4, flex: 1 }}>
-                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#f2e0cc', lineHeight: 1.5 }}>
+                  <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#1f3028', lineHeight: 1.5 }}>
                     Escanea desde <strong style={{ color: selectedMethod === 'yape' ? '#c084fc' : '#38bdf8' }}>{selectedMethod}</strong>
                   </div>
-                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: '#c4b297', letterSpacing: '0.08em' }}>
+                  <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 13, color: '#533b22', letterSpacing: '0.08em' }}>
                     📱 {activePhone}
                   </div>
                   <div>
-                    <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', marginBottom: 1 }}>Total a pagar</div>
+                    <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#533b22', marginBottom: 1 }}>Total a pagar</div>
                     <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 22, fontWeight: 700, color: '#c96e4b' }}>{Money.formatPEN(totals.totalCents)}</div>
                   </div>
                   <HowToPayAccordion method={selectedMethod} totalFormatted={Money.formatPEN(totals.totalCents)} yapePlin={yapePlin} />
@@ -606,10 +650,102 @@ function StepPago({
             </>
           )}
 
+          {phase === 'transferencia' && selectedMethod === 'transferencia' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 12 }}>
+              {transferencia.banks.map((bank) => (
+                <div key={bank.name} style={{ background: '#f2e0cc', borderRadius: 16, overflow: 'hidden', border: '1px solid #1f302833', boxShadow: '0 8px 18px -10px #533b2244' }}>
+                  {/* Header */}
+                  <div style={{ padding: '14px 16px', borderBottom: '1px solid #1f302812', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700, color: '#1f3028' }}>{bank.name}</span>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, fontWeight: 700, color: '#7a6850', letterSpacing: '0.1em' }}>{bank.accountType.toUpperCase()}</span>
+                  </div>
+
+                  {/* Titular */}
+                  <div style={{ padding: '10px 16px', borderBottom: '1px solid #1f302812', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontWeight: 700, color: '#533b22', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Titular</span>
+                    <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#533b22' }}>{transferencia.accountHolder}</span>
+                  </div>
+
+                  {/* N° Cuenta */}
+                  <div style={{ padding: '10px 16px', borderBottom: '1px solid #1f302812', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontWeight: 700, color: '#533b22', textTransform: 'uppercase', letterSpacing: '0.08em', flexShrink: 0 }}>N° Cuenta</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#1f3028', letterSpacing: 1 }}>{bank.accountNumber}</span>
+                      <button onClick={() => copyToClipboard(bank.accountNumber, `cuenta-${bank.name}`)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === `cuenta-${bank.name}` ? '#8faf8a' : '#7a6850', padding: 2, display: 'flex', transition: 'color .2s' }}>
+                        {copied === `cuenta-${bank.name}`
+                          ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                          : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        }
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* CCI */}
+                  <div style={{ padding: '10px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}>
+                    <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, fontWeight: 700, color: '#533b22', textTransform: 'uppercase', letterSpacing: '0.08em', flexShrink: 0 }}>CCI</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#1f3028', letterSpacing: 1 }}>{bank.cci}</span>
+                      <button onClick={() => copyToClipboard(bank.cci, `cci-${bank.name}`)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: copied === `cci-${bank.name}` ? '#8faf8a' : '#7a6850', padding: 2, display: 'flex', transition: 'color .2s' }}>
+                        {copied === `cci-${bank.name}`
+                          ? <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                          : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                        }
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Monto */}
+              <div style={{ padding: '14px 16px', background: '#f2e0cc', borderRadius: 16, border: '1px solid #1f302833', boxShadow: '0 8px 18px -10px #533b2244', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, color: '#533b22', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Monto</span>
+                <span style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 26, fontWeight: 700, color: '#c96e4b', lineHeight: 1 }}>{Money.formatPEN(totals.totalCents)}</span>
+              </div>
+
+              {/* Instrucciones colapsables */}
+              {transferencia.instructions.length > 0 && (
+                <div style={{ marginTop: 4 }}>
+                  <button onClick={() => setShowInstructions(v => !v)} style={{ background: 'transparent', border: 'none', color: '#8faf8a', fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5, padding: 0 }}>
+                    <span style={{ display: 'inline-block', transition: 'transform .2s', transform: showInstructions ? 'rotate(90deg)' : 'none', fontSize: 8 }}>▶</span>
+                    ¿Cómo hago la transferencia?
+                  </button>
+                  {showInstructions && (
+                    <ol style={{ margin: '8px 0 0', paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                      {transferencia.instructions.map((step, i) => (
+                        <li key={i} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#533b22', lineHeight: 1.5 }}>{step}</li>
+                      ))}
+                    </ol>
+                  )}
+                </div>
+              )}
+
+              {/* WhatsApp */}
+              <a
+                href={`https://wa.me/${yapePlin.yape.phone.replace(/\D/g, '')}?text=${encodeURIComponent(`Hola! Soy ${customerName ?? ''}. Acabo de hacer una transferencia ${transferencia.banks[0]?.name ?? ''} por ${Money.formatPEN(totals.totalCents)}. Te envío el voucher para confirmar mi pedido.`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setVoucherSent(true)}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '13px 16px', background: '#25D366', color: '#fff', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 13, borderRadius: 12, textDecoration: 'none' }}
+              >
+                📱 Enviar voucher por WhatsApp
+              </a>
+
+              {voucherSent && (
+                <button onClick={handlePaid} style={{ padding: '13px 16px', background: '#c96e4b', color: '#1f3028', border: 'none', borderRadius: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontWeight: 700, fontSize: 13, letterSpacing: '0.06em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                  ✓ Ya envié el voucher — Confirmar pedido
+                </button>
+              )}
+
+              <button onClick={() => { setPhase('select'); setSelectedMethod(null); setVoucherSent(false); }} style={{ background: 'transparent', border: 'none', color: '#7a6850', fontFamily: 'Montserrat, sans-serif', fontSize: 11, cursor: 'pointer', textDecoration: 'underline', padding: 0, alignSelf: 'center' }}>
+                Cambiar método de pago
+              </button>
+            </div>
+          )}
+
           {phase === 'validating' && (
-            <div style={{ background: '#0f1a14', borderRadius: 12, padding: 24, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 12, textAlign: 'center' }}>
-              <div style={{ width: 40, height: 40, border: '3px solid #f2e0cc1a', borderTopColor: '#c96e4b', borderRadius: '50%', animation: 'tw-spin 1s linear infinite' }} />
-              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#f2e0cc', lineHeight: 1.7 }}>
+            <div style={{ background: '#f2e0cc', borderRadius: 16, padding: 24, border: '1px solid #1f302833', boxShadow: '0 8px 18px -10px #533b2244', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, marginBottom: 12, textAlign: 'center' }}>
+              <div style={{ width: 40, height: 40, border: '3px solid #1f30281a', borderTopColor: '#c96e4b', borderRadius: '50%', animation: 'tw-spin 1s linear infinite' }} />
+              <div style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#1f3028', lineHeight: 1.7 }}>
                 <strong>Verificando tu pago…</strong><br />
                 <span style={{ fontSize: 11, color: '#c4b297' }}>no cierres esta ventana</span>
               </div>
@@ -617,7 +753,7 @@ function StepPago({
             </div>
           )}
 
-          <div style={{ textAlign: 'center', fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#c4b29799', marginTop: 2 }}>
+          <div style={{ textAlign: 'center', fontFamily: 'Montserrat, sans-serif', fontSize: 10, color: '#7a6850', marginTop: 2 }}>
             Te contactamos por WhatsApp · Coordinamos entrega
           </div>
         </div>
@@ -637,9 +773,11 @@ export default function Checkout() {
   const { data: cycle } = useActiveCycle();
   const { data: shippingZones } = useShipping();
   const { data: yapePlin } = useYapePlin();
+  const { data: transferencia } = useTransferencia();
 
   const activeZones = shippingZones ?? [];
   const activeYapePlin = yapePlin ?? { enabled: true, yape: { phone: '+51917959370', accountName: 'Tunay Wasi' }, plin: { phone: '+51917959370', accountName: 'Tunay Wasi' } };
+  const activeTransferencia = transferencia ?? { enabled: true, accountHolder: 'ALPASO LIVE COMMERCE SAC', banks: [{ name: 'BCP', accountType: 'Cuenta Corriente', accountNumber: '193-7332599054', cci: '002-193-0073325990541-4' }], instructions: [] };
 
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';
@@ -654,31 +792,31 @@ export default function Checkout() {
       style={{ position: 'fixed', inset: 0, zIndex: 110, background: '#0a1410cc', backdropFilter: 'blur(6px)', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', overflowY: 'auto', padding: '32px 16px' }}
       onClick={closeCheckout}
     >
-      <div onClick={e => e.stopPropagation()} style={{ width: 'min(680px, 100%)', background: '#1f3028', color: '#f2e0cc', borderRadius: 20, border: '1px solid #c96e4b33', boxShadow: '0 60px 120px -40px #000000ee', overflow: 'hidden', position: 'relative' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width: 'min(680px, 100%)', background: '#f2e0cc', color: '#1f3028', borderRadius: 20, border: '1px solid #c96e4b33', boxShadow: '0 60px 120px -40px #000000ee', overflow: 'hidden', position: 'relative' }}>
 
         {/* Header */}
-        <div style={{ padding: '18px 28px', borderBottom: '1px solid #f2e0cc18', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ padding: '18px 28px', borderBottom: '1px solid #1f302818', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
           <div>
-            <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 26, color: '#f2e0cc', margin: 0, lineHeight: 1.05 }}>
+            <h2 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: 26, color: '#1f3028', margin: 0, lineHeight: 1.05 }}>
               Checkout — <span style={{ color: '#c96e4b', fontStyle: 'italic' }}>Selección</span>
             </h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
               <StepPill active={step === 'datos'} done={step === 'pago'} n="1" label="👤 Datos" />
-              <span style={{ color: '#c4b29766', fontSize: 12 }}>—</span>
+              <span style={{ color: '#533b2266', fontSize: 12 }}>—</span>
               <StepPill active={step === 'pago'} done={false} n="2" label="💳 Pago" />
             </div>
           </div>
-          <button onClick={closeCheckout} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, color: '#c4b297', background: 'transparent', border: '1px solid #c4b29744', borderRadius: 999, padding: '8px 14px', cursor: 'pointer', letterSpacing: '0.04em' }}>Cerrar ✕</button>
+          <button onClick={status === 'done' ? reset : closeCheckout} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 500, color: '#533b22', background: 'transparent', border: '1px solid #533b2255', borderRadius: 999, padding: '8px 14px', cursor: 'pointer', letterSpacing: '0.04em' }}>Cerrar ✕</button>
         </div>
 
         {/* Cycle banner */}
         <div style={{ padding: '12px 28px 0' }}>
-          <div style={{ padding: '10px 14px', borderRadius: 10, background: '#c96e4b22', border: '1px solid #c96e4b66', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#f2e0cc', lineHeight: 1.5 }}>
+          <div style={{ padding: '10px 14px', borderRadius: 10, background: '#c96e4b22', border: '1px solid #c96e4b66', fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: '#1f3028', lineHeight: 1.5 }}>
             <strong style={{ color: '#c96e4b' }}>☕ Selección</strong>{' '}
             {cycle ? (
-              <span style={{ color: '#c4b297' }}>Cierre: <strong style={{ color: '#f2e0cc' }}>{cycle.closeAt}</strong> · Lima: <strong style={{ color: '#f2e0cc' }}>{cycle.deliverLima}</strong> · Nacional: <strong style={{ color: '#f2e0cc' }}>{cycle.deliverProv}</strong></span>
+              <span style={{ color: '#533b22' }}>Cierre: <strong style={{ color: '#1f3028' }}>{cycle.closeAt}</strong> · Lima: <strong style={{ color: '#1f3028' }}>{cycle.deliverLima}</strong> · Nacional: <strong style={{ color: '#1f3028' }}>{cycle.deliverProv}</strong></span>
             ) : (
-              <span style={{ color: '#c4b297' }}>Cierre: <strong style={{ color: '#f2e0cc' }}>31 may.</strong> · Lima: <strong style={{ color: '#f2e0cc' }}>ago. 1a semana</strong> · Nacional: <strong style={{ color: '#f2e0cc' }}>ago. 2a semana</strong></span>
+              <span style={{ color: '#533b22' }}>Cierre: <strong style={{ color: '#1f3028' }}>31 may.</strong> · Lima: <strong style={{ color: '#1f3028' }}>ago. 1a semana</strong> · Nacional: <strong style={{ color: '#1f3028' }}>ago. 2a semana</strong></span>
             )}
           </div>
         </div>
@@ -688,27 +826,27 @@ export default function Checkout() {
           {status === 'done' ? (
             <div style={{ padding: '40px 0', textAlign: 'center' }}>
               <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#8faf8a', margin: '0 auto 20px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Cormorant Garamond, serif', fontSize: 40, color: '#1f3028' }}>✓</div>
-              <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, color: '#f2e0cc', margin: 0 }}>¡Pedido recibido!</h3>
-              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#c4b297', marginTop: 12, maxWidth: 380, marginInline: 'auto', lineHeight: 1.6 }}>
-                Pedido <strong style={{ color: '#f2e0cc' }}>#{orderId}</strong> registrado. Verificaremos tu pago y te confirmaremos por WhatsApp.
+              <h3 style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 600, fontSize: 32, color: '#1f3028', margin: 0 }}>¡Pedido recibido!</h3>
+              <p style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#93846e', marginTop: 12, maxWidth: 380, marginInline: 'auto', lineHeight: 1.6 }}>
+                Pedido <strong style={{ color: '#1f3028' }}>#{orderId}</strong> registrado. Verificaremos tu pago y te confirmaremos por WhatsApp.
               </p>
               <button onClick={reset} style={{ marginTop: 24, padding: '12px 24px', background: '#c96e4b', color: '#1f3028', border: 'none', borderRadius: 999, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Listo</button>
             </div>
           ) : step === 'datos' ? (
             <StepDatos data={data} setData={setData} totals={totals} shippingZones={activeZones} />
           ) : (
-            <StepPago items={items} totals={totals} onSubmit={submitPayment} status={status} yapePlin={activeYapePlin} />
+            <StepPago items={items} totals={totals} onSubmit={submitPayment} status={status} yapePlin={activeYapePlin} transferencia={activeTransferencia} customerName={data.nombre} />
           )}
         </div>
 
         {/* Footer */}
         {status !== 'done' && (
-          <div style={{ padding: '16px 28px', borderTop: '1px solid #f2e0cc18', background: '#182520', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-            <button onClick={() => step === 'pago' ? setCheckoutStep('datos') : closeCheckout()} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#c4b297', background: 'transparent', border: '1px solid #c4b29744', borderRadius: 999, padding: '10px 16px', cursor: 'pointer', letterSpacing: '0.04em' }}>
+          <div style={{ padding: '16px 28px', borderTop: '1px solid #1f302818', background: '#e8d5bc', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+            <button onClick={() => step === 'pago' ? setCheckoutStep('datos') : closeCheckout()} style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, fontWeight: 500, color: '#533b22', background: 'transparent', border: '1px solid #533b2255', borderRadius: 999, padding: '10px 16px', cursor: 'pointer', letterSpacing: '0.04em' }}>
               ← Volver
             </button>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-              <a href={`https://api.whatsapp.com/send/?phone=${activeYapePlin.yape.phone.replace('+', '')}&text=Hola%2C+tengo+dudas+sobre+Tunay+Wasi&type=phone_number&app_absent=0`} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, color: '#8faf8a', display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>💬 ¿Dudas?</a>
+              <a href={`https://api.whatsapp.com/send/?phone=${activeYapePlin.yape.phone.replace('+', '')}&text=Hola%2C+tengo+dudas+sobre+Tunay+Wasi&type=phone_number&app_absent=0`} target="_blank" rel="noopener noreferrer" style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 11, fontWeight: 700, color: '#4d7a48', display: 'inline-flex', alignItems: 'center', gap: 5, textDecoration: 'none' }}>💬 ¿Dudas?</a>
               {step === 'datos' && (
                 <button onClick={() => setCheckoutStep('pago')} disabled={!canContinue} style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 12, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#1f3028', background: canContinue ? 'linear-gradient(135deg, #c96e4b 0%, #d68863 100%)' : '#c4b29766', padding: '12px 24px', borderRadius: 999, border: 'none', cursor: canContinue ? 'pointer' : 'not-allowed', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
                   Ir a pagar →

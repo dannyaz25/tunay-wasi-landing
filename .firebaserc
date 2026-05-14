@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "alpaso-app"
+  },
+  "targets": {
+    "alpaso-app": {
+      "hosting": {
+        "clientes": ["alpaso-app"],
+        "caficultores": ["alpaso-app-caficultores"],
+        "negocios": ["alpaso-app-negocios"]
+      }
+    }
+  }
+}
