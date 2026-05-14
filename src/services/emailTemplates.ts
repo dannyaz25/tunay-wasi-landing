@@ -355,6 +355,119 @@ const ADAPTER_LABEL: Record<AdapterName, string> = {
   stripe:        'Tarjeta (Stripe)',
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. Bienvenida caficultor — confirmación de lista de espera
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function emailBienvenidaCaficultorWaitlist(data: {
+  nombre: string
+  email: string
+  finca: string
+  region: string
+  sca: string
+}): { subject: string; html: string } {
+  return {
+    subject: `Tunay Wasi — Estás en la lista, ${data.nombre}`,
+    html: layout(`
+      ${pill('Lista de espera · Caficultores', '#8faf8a22', '#8faf8a')}
+
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;font-weight:600;color:#1f3028;margin:16px 0 6px;line-height:1.15;">
+        ¡Bienvenido, ${data.nombre}!
+      </h2>
+      <p style="font-family:'Montserrat',Arial,sans-serif;font-size:13px;color:#533b22;margin:0;line-height:1.75;">
+        Tu finca quedó registrada en nuestra lista de espera. Serás de los primeros en acceder a precios justos según el puntaje SCA real de tu café.
+      </p>
+
+      ${divider()}
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        ${dataField('Finca / Cooperativa', data.finca)}
+        ${dataField('Región', data.region)}
+        ${dataField('Puntaje SCA estimado', data.sca)}
+        ${dataField('Correo registrado', data.email)}
+      </table>
+
+      ${divider()}
+
+      <p style="font-family:'Montserrat',Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c4b297;margin:0 0 14px;">Próximos pasos</p>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td style="padding:0 12px 12px 0;vertical-align:top;width:24px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#c96e4b;color:#f2e0cc;font-family:'Montserrat',Arial,sans-serif;font-size:10px;font-weight:700;text-align:center;line-height:22px;">1</div>
+          </td>
+          <td style="padding-bottom:12px;">
+            <p style="margin:0;font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#533b22;line-height:1.6;">Te contactamos para coordinar el <strong style="color:#1f3028;">envío de tu muestra</strong> a Lima</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 12px 12px 0;vertical-align:top;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#8faf8a;color:#1f3028;font-family:'Montserrat',Arial,sans-serif;font-size:10px;font-weight:700;text-align:center;line-height:22px;">2</div>
+          </td>
+          <td style="padding-bottom:12px;">
+            <p style="margin:0;font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#533b22;line-height:1.6;">Nuestro Q-Grader realiza la <strong style="color:#1f3028;">cata SCA</strong> y te informamos el puntaje real</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 12px 0 0;vertical-align:top;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#1f302822;color:#533b22;font-family:'Montserrat',Arial,sans-serif;font-size:10px;font-weight:700;text-align:center;line-height:22px;">3</div>
+          </td>
+          <td>
+            <p style="margin:0;font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#533b22;line-height:1.6;"><strong style="color:#1f3028;">Recibes el pago</strong> al entregar tu microlote en Lima, según precio SCA acordado</p>
+          </td>
+        </tr>
+      </table>
+
+      ${ctaButton('Ver cómo funciona →', `${APP_URL}/caficultores#calculadora`)}
+    `, `Bienvenido a la lista de espera de Tunay Wasi, ${data.nombre}`),
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 6. Alerta admin — nuevo caficultor en lista de espera
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function emailAlertaAdminCaficultor(data: {
+  nombre: string
+  email: string
+  telefono: string
+  finca: string
+  region: string
+  kg: string
+  sca: string
+}): { subject: string; html: string } {
+  return {
+    subject: `[TW] Nuevo caficultor — ${data.nombre || data.email}`,
+    html: layout(`
+      ${pill('Admin · Lista de espera caficultores', '#1f302814', '#533b22')}
+
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#1f3028;margin:16px 0 6px;line-height:1.15;">
+        Nuevo registro de caficultor
+      </h2>
+      <p style="font-family:'Montserrat',Arial,sans-serif;font-size:12px;color:#533b22;margin:0;line-height:1.7;">
+        Desde el landing B2B de caficultores.
+      </p>
+
+      ${divider()}
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        ${dataField('Nombre', data.nombre || '—')}
+        ${dataField('Email', `<a href="mailto:${data.email}" style="color:#c96e4b;text-decoration:none;font-weight:600;">${data.email}</a>`)}
+        ${dataField('Teléfono / WhatsApp', `<a href="https://wa.me/${data.telefono.replace(/\D/g, '')}" style="color:#c96e4b;text-decoration:none;font-weight:600;">${data.telefono}</a>`)}
+        ${dataField('Finca / Cooperativa', data.finca || '—')}
+        ${dataField('Región', data.region || '—')}
+        ${dataField('Producción anual (kg)', data.kg || '—')}
+        ${dataField('Puntaje SCA estimado', `${pill(data.sca, '#c96e4b18', '#c96e4b')}`)}
+      </table>
+
+      ${ctaButton('Abrir Dashboard →', `${APP_URL}/admin/caficultores`)}
+    `, `Nuevo caficultor registrado — ${data.nombre || data.email}`),
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 4. Pedido recibido — aviso inmediato al cliente tras checkout
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function emailPedidoRecibido(data: {
   nombre: string
   orderId: string

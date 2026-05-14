@@ -1,5 +1,9 @@
 import { useState, useMemo } from 'react';
 import { useCafiLandingConfig } from '@/features/caficultores/useCafiLandingConfig';
+import { saveCafiWaitlist, DuplicateEmailError } from '@/features/caficultores/cafiWaitlistService';
+import ubigeo from '@/data/peru-ubigeo.json';
+
+const DEPARTAMENTOS = Object.keys(ubigeo);
 
 type Status = 'idle' | 'sending' | 'sent';
 
@@ -47,13 +51,22 @@ export default function CafiLista() {
   });
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
   const [status, setStatus] = useState<Status>('idle');
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const errors = useMemo(() => {
     const e: Partial<Record<keyof FormValues, string>> = {};
     if (!values.email.trim()) e.email = 'Necesitamos tu correo.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) e.email = 'El correo no se ve bien.';
     if (!values.telefono.trim()) e.telefono = 'Necesitamos tu WhatsApp.';
-    else if (values.telefono.replace(/\D/g, '').length < 9) e.telefono = 'Mínimo 9 dígitos.';
+    else {
+      const digits = values.telefono.replace(/\D/g, '');
+      const local = digits.startsWith('51') ? digits.slice(2) : digits;
+      if (local.length !== 9) e.telefono = 'Debe tener 9 dígitos.';
+      else if (!local.startsWith('9')) e.telefono = 'Celular debe empezar con 9.';
+    }
+    if (!values.nombre.trim()) e.nombre = 'Ingresa tu nombre.';
+    if (!values.finca.trim()) e.finca = 'Ingresa el nombre de tu finca.';
+    if (!values.region) e.region = 'Selecciona tu región.';
     return e;
   }, [values]);
 
@@ -67,12 +80,22 @@ export default function CafiLista() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched({ email: true, telefono: true });
+    setTouched({ email: true, telefono: true, nombre: true, finca: true, region: true });
     if (!isValid) return;
     setStatus('sending');
-    // TODO: wire to POST /api/caficultores/waitlist
-    await new Promise(r => setTimeout(r, 900));
-    setStatus('sent');
+    setServerError(null);
+    try {
+      await saveCafiWaitlist(values);
+      setStatus('sent');
+    } catch (err) {
+      if (err instanceof DuplicateEmailError) {
+        setServerError('Este correo ya está en la lista de espera.');
+        setTouched(t => ({ ...t, email: true }));
+      } else {
+        setServerError('Ocurrió un error. Inténtalo de nuevo.');
+      }
+      setStatus('idle');
+    }
   };
 
   const inputBase: React.CSSProperties = {
@@ -174,7 +197,7 @@ export default function CafiLista() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
-              <FormField label="Correo Electrónico *" error={touched.email && errors.email} ok={touched.email && !errors.email && values.email}>
+              <FormField label="Correo Electrónico *" error={(touched.email && errors.email) || serverError || false} ok={touched.email && !errors.email && !serverError && values.email}>
                 <input type="email" placeholder="tu@email.com" value={values.email}
                   onChange={change('email')} onBlur={blur('email')}
                   style={{ ...inputBase, borderColor: (touched.email && errors.email) ? '#c96e4b' : ((touched.email && !errors.email && values.email) ? '#8faf8a' : '#c4b29733') }}
@@ -189,27 +212,28 @@ export default function CafiLista() {
               </FormField>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }} className="tw-cafi-fields">
-                <FormField label="Tu nombre">
+                <FormField label="Tu nombre *" error={touched.nombre && errors.nombre} ok={touched.nombre && !errors.nombre && values.nombre}>
                   <input placeholder="Tu nombre completo" value={values.nombre}
-                    onChange={change('nombre')} style={inputBase}
-                    onFocus={(e) => { e.target.style.borderColor = '#c96e4b'; }}
-                    onBlur={(e) => { e.target.style.borderColor = '#c4b29733'; }} />
+                    onChange={change('nombre')} onBlur={blur('nombre')}
+                    style={{ ...inputBase, borderColor: (touched.nombre && errors.nombre) ? '#c96e4b' : ((touched.nombre && !errors.nombre && values.nombre) ? '#8faf8a' : '#c4b29733') }}
+                    onFocus={(e) => { e.target.style.borderColor = '#c96e4b'; }} />
                 </FormField>
-                <FormField label="Finca / Cooperativa">
+                <FormField label="Finca / Cooperativa *" error={touched.finca && errors.finca} ok={touched.finca && !errors.finca && values.finca}>
                   <input placeholder="Nombre de tu finca" value={values.finca}
-                    onChange={change('finca')} style={inputBase}
-                    onFocus={(e) => { e.target.style.borderColor = '#c96e4b'; }}
-                    onBlur={(e) => { e.target.style.borderColor = '#c4b29733'; }} />
+                    onChange={change('finca')} onBlur={blur('finca')}
+                    style={{ ...inputBase, borderColor: (touched.finca && errors.finca) ? '#c96e4b' : ((touched.finca && !errors.finca && values.finca) ? '#8faf8a' : '#c4b29733') }}
+                    onFocus={(e) => { e.target.style.borderColor = '#c96e4b'; }} />
                 </FormField>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14 }} className="tw-cafi-fields-3">
-                <FormField label="Región">
-                  <select value={values.region} onChange={change('region')} style={inputBase}>
+                <FormField label="Región *" error={touched.region && errors.region} ok={touched.region && !errors.region && values.region}>
+                  <select value={values.region} onChange={change('region')} onBlur={blur('region')}
+                    style={{ ...inputBase, borderColor: (touched.region && errors.region) ? '#c96e4b' : ((touched.region && !errors.region && values.region) ? '#8faf8a' : '#c4b29733') }}>
                     <option value="">Selecciona…</option>
-                    <option>Cusco</option><option>San Martín</option><option>Puno</option>
-                    <option>Junín</option><option>Cajamarca</option><option>Amazonas</option>
-                    <option>Pasco</option><option>Otro</option>
+                    {DEPARTAMENTOS.map(dep => (
+                      <option key={dep} value={dep}>{dep}</option>
+                    ))}
                   </select>
                 </FormField>
                 <FormField label="Kg / año (aprox.)">
