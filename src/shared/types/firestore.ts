@@ -441,6 +441,35 @@ export interface YapePlinConfigDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// DOCUMENTO: configuration/cafiLanding
+// Path:  /configuration/cafiLanding
+// Owner: landing/caficultores — B2B producer acquisition landing.
+// Controls waitlist cap and the calculator's acopiador reference ranges.
+// SCA tier prices (tunay side) come from configuration/pricing.tiers.
+// ═══════════════════════════════════════════════════════════════════════════
+
+export interface CafiAcopiadorRange {
+  acopMin: number;  // S/ per kg verde, lower bound (MIDAGRI reference)
+  acopMax: number;  // S/ per kg verde, upper bound (MIDAGRI reference)
+}
+
+export interface CafiLandingConfigDoc {
+  waitlist: {
+    maxSlots: number;   // 15 — first N producers get guaranteed price
+  };
+  calculator: {
+    sliderMinKg: number;      // 50
+    sliderMaxKg: number;      // 3000
+    sliderStepKg: number;     // 50
+    defaultKg: number;        // 500
+    defaultTierIndex: number; // 2 (86–87 pts)
+    footnote: string;         // MIDAGRI data attribution text
+    // One entry per pricing tier, same order as PricingDoc.tiers
+    acopiadorRanges: CafiAcopiadorRange[];
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // DOCUMENTO: configuration/paymentGateway
 // Path:  /configuration/paymentGateway
 // Non-secret gateway metadata (public). Secret keys → Cloud Functions env vars.

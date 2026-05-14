@@ -209,6 +209,28 @@
     "voucherStoragePath": "pedidos/vouchers"
   },
 
+  "cafiLanding": {
+    "_owner": "landing/caficultores — configuración del landing B2B para caficultores",
+    "waitlist": {
+      "maxSlots": 15
+    },
+    "calculator": {
+      "sliderMinKg": 50,
+      "sliderMaxKg": 3000,
+      "sliderStepKg": 50,
+      "defaultKg": 500,
+      "defaultTierIndex": 2,
+      "footnote": "Precio acopiador: referencial MIDAGRI — Perspectivas del Café Peruano 2026 + subastas VRAEM ago-2025",
+      "acopiadorRanges": [
+        { "acopMin": 11, "acopMax": 17 },
+        { "acopMin": 15, "acopMax": 22 },
+        { "acopMin": 20, "acopMax": 30 },
+        { "acopMin": 25, "acopMax": 45 },
+        { "acopMin": 35, "acopMax": 70 }
+      ]
+    }
+  },
+
   "paymentGateway": {
     "niubiz": {
       "enabled": false,

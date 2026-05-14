@@ -265,6 +265,90 @@ export async function fetchYapePlin(): Promise<YapePlinData> {
   }
 }
 
+// ── Pricing tiers ────────────────────────────────────────────────────────────
+
+export interface ScaTierData {
+  tier: string;
+  label: string;
+  scaMin: number;
+  scaMax: number | null;
+  caficultorPerKgCents: number;
+}
+
+export interface PricingData {
+  tuesteYield: number;
+  scaMinQualifying: number;
+  tiers: ScaTierData[];
+}
+
+export const STATIC_PRICING: PricingData = {
+  tuesteYield: 0.83,
+  scaMinQualifying: 82,
+  tiers: [
+    { tier: 'selecto',              label: 'Selecto',              scaMin: 82,   scaMax: 83.9, caficultorPerKgCents: 3465 },
+    { tier: 'especialidadEstandar', label: 'Especialidad Estándar', scaMin: 84,   scaMax: 85.9, caficultorPerKgCents: 3844 },
+    { tier: 'especialidadAlta',     label: 'Especialidad Alta',     scaMin: 86,   scaMax: 87.9, caficultorPerKgCents: 5548 },
+    { tier: 'joyaDeFinca',          label: 'Joya de Finca',         scaMin: 88,   scaMax: 89.9, caficultorPerKgCents: 6684 },
+    { tier: 'exclusivo',            label: 'Exclusivo / Geisha',    scaMin: 90,   scaMax: null, caficultorPerKgCents: 8578 },
+  ],
+};
+
+export async function fetchPricing(): Promise<PricingData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'pricing'));
+    if (!snap.exists()) return STATIC_PRICING;
+    return snap.data() as PricingData;
+  } catch {
+    return STATIC_PRICING;
+  }
+}
+
+// ── CafiLanding config ────────────────────────────────────────────────────────
+
+export interface CafiAcopiadorRange { acopMin: number; acopMax: number }
+
+export interface CafiLandingConfigData {
+  waitlist: { maxSlots: number };
+  calculator: {
+    sliderMinKg: number;
+    sliderMaxKg: number;
+    sliderStepKg: number;
+    defaultKg: number;
+    defaultTierIndex: number;
+    footnote: string;
+    acopiadorRanges: CafiAcopiadorRange[];
+  };
+}
+
+export const STATIC_CAFI_LANDING: CafiLandingConfigData = {
+  waitlist: { maxSlots: 15 },
+  calculator: {
+    sliderMinKg: 50,
+    sliderMaxKg: 3000,
+    sliderStepKg: 50,
+    defaultKg: 500,
+    defaultTierIndex: 2,
+    footnote: 'Precio acopiador: referencial MIDAGRI — Perspectivas del Café Peruano 2026 + subastas VRAEM ago-2025',
+    acopiadorRanges: [
+      { acopMin: 12, acopMax: 18 },
+      { acopMin: 16, acopMax: 24 },
+      { acopMin: 20, acopMax: 30 },
+      { acopMin: 24, acopMax: 36 },
+      { acopMin: 28, acopMax: 42 },
+    ],
+  },
+};
+
+export async function fetchCafiLandingConfig(): Promise<CafiLandingConfigData> {
+  try {
+    const snap = await getDoc(doc(db, 'configurations', 'cafiLanding'));
+    if (!snap.exists()) return STATIC_CAFI_LANDING;
+    return snap.data() as CafiLandingConfigData;
+  } catch {
+    return STATIC_CAFI_LANDING;
+  }
+}
+
 // ── Transferencia ─────────────────────────────────────────────────────────────
 
 export interface TransferenciaBankData {

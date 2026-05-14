@@ -8,4 +8,6 @@ export const catalogKeys = {
   landingConfig: () => [...catalogKeys.all, 'landingConfig'] as const,
   yapePlin: () => [...catalogKeys.all, 'yapePlin'] as const,
   transferencia: () => [...catalogKeys.all, 'transferencia'] as const,
+  pricing: () => [...catalogKeys.all, 'pricing'] as const,
+  cafiLandingConfig: () => [...catalogKeys.all, 'cafiLandingConfig'] as const,
 };
