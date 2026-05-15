@@ -8,8 +8,6 @@ type Tema = 'cafe' | 'mayorista' | 'caficultor' | 'prensa';
 
 const TEMAS: [Tema, string][] = [
   ['cafe', 'Comprar café'],
-  ['mayorista', 'Mayorista / cafetería'],
-  ['caficultor', 'Soy caficultor'],
   ['prensa', 'Prensa'],
 ];
 

@@ -13,7 +13,7 @@ function mapCaficultorDoc(id: string, raw: CaficultorDoc): Caficultor {
     process: raw.proceso,
     score: raw.puntajeSCA,
     color: 'green',
-    quote: raw.historia ?? '',
+    quote: raw.resumen ?? '',
     summary: raw.resumen ?? '',
     bio: raw.historia,
     socialImpact: raw.impactoSocial,

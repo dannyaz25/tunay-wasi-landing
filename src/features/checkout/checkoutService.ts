@@ -62,6 +62,7 @@ export async function startCheckout(
 ): Promise<CheckoutResult> {
   const stock = await checkStock(payload.cart.items);
   if (!stock.ok) return { ok: false, error: 'oversold', oversold: stock.oversold };
+
   const fn = adapterMap[adapter];
   if (!fn) return { ok: false, error: 'unknown_adapter' };
   const result = await fn(payload);
