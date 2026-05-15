@@ -80,7 +80,7 @@ export default function SupplyHero() {
             <br />
             <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>directo del origen</span>
             <br />
-            para tu <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#8faf8a' }}>tostadora</span>.
+            para tu <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#8faf8a' }}>negocio</span>.
           </h1>
 
           <p style={{
