@@ -5,6 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:clientes": "VITE_APP_TARGET=clientes vite build --outDir dist/clientes",
+    "build:caficultores": "VITE_APP_TARGET=caficultores vite build --outDir dist/caficultores",
+    "build:negocios": "VITE_APP_TARGET=mayoristas vite build --outDir dist/negocios",
+    "build:all": "tsc --noEmit && npm run build:clientes && npm run build:caficultores && npm run build:negocios",
     "preview": "vite preview",
     "seed": "tsx scripts/seed.ts",
     "seed:force": "tsx scripts/seed.ts --force"

@@ -441,6 +441,131 @@ export interface YapePlinConfigDoc {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// DOCUMENTO: configuration/cafiLanding
+// Path:  /configuration/cafiLanding
+// Owner: landing/caficultores — B2B producer acquisition landing.
+// Controls waitlist cap and the calculator's acopiador reference ranges.
+// SCA tier prices (tunay side) come from configuration/pricing.tiers.
+// ═══════════════════════════════════════════════════════════════════════════
+
+export interface CafiAcopiadorRange {
+  acopMin: number;  // S/ per kg verde, lower bound (MIDAGRI reference)
+  acopMax: number;  // S/ per kg verde, upper bound (MIDAGRI reference)
+}
+
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COLECCIÓN: microlotesLanding
+// Path:  /microlotesLanding/{loteId}   e.g. /microlotesLanding/TW-068
+// One Firestore doc per available B2B lot. Decoupled from supplyLanding so
+// lots can be added/updated/removed without touching the rest of the config.
+// Static fallback: scripts/data/microlotesLanding.json  (lotes[])
+// ═══════════════════════════════════════════════════════════════════════════
+
+export type LoteTag   = 'washed' | 'honey' | 'natural';
+export type LoteTone  = 'green' | 'terra' | 'gold' | 'cream';
+
+export interface MicroloteLandingDoc {
+  id: string;         // "TW-068" — lot reference number (display)
+  origen: string;     // "Cusco · Quillabamba"
+  finca: string;      // "Finca Quillabamba"
+  variedad: string;   // "Caturra"
+  proceso: string;    // "Lavado"
+  altitud: string;    // "1,720 m"
+  sca: number;        // 87.5
+  sacos: number;      // 12
+  kg: number;         // 552
+  precio: number;     // 62.40 — S/ FOB Lima / kg (decimal, not cents — B2B wholesale)
+  tag: LoteTag;       // used for filter tabs
+  notas: string;      // "Naranja sanguina · chocolate de leche · panela"
+  tone: LoteTone;     // drives accent color in card
+  estado: string;     // "disponible" | "edición limitada" | "agotado"
+  featured?: boolean; // true on the single lot spotlighted in SupplyHero spec card
+}
+
+
+export interface CafiLandingConfigDoc {
+  waitlist: {
+    maxSlots: number;   // 15 — first N producers get guaranteed price
+  };
+  calculator: {
+    sliderMinKg: number;      // 50
+    sliderMaxKg: number;      // 3000
+    sliderStepKg: number;     // 50
+    defaultKg: number;        // 500
+    defaultTierIndex: number; // 2 (86–87 pts)
+    footnote: string;         // MIDAGRI data attribution text
+    // One entry per pricing tier, same order as PricingDoc.tiers
+    acopiadorRanges: CafiAcopiadorRange[];
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DOCUMENTO: configuration/supplyLanding
+// Path:  /configuration/supplyLanding
+// Owner: landing/mayoristas — B2B wholesale landing.
+// Controls cosechaLabel, logistics strip, contactB2B and heroCard.
+// Static fallback: scripts/data/config.json → supplyLanding
+//
+// NOTA: los lotes ya NO están aquí.
+// Lotes → colección propia /microlotesLanding/{loteId}
+//          Static fallback: scripts/data/microlotesLanding.json
+// ═══════════════════════════════════════════════════════════════════════════
+
+export interface SupplyLogisticsItem {
+  key: string;    // "MOQ" | "Pago" | "Plazos" | "Provincias"
+  value: string;  // "1 saco (46 kg)"
+}
+
+export interface SupplyLandingConfigDoc {
+  // Label shown in the lotes section heading  e.g. "abril 2026"
+  cosechaLabel: string;
+
+  // Logistics strip shown in SupplyProceso — 4 entries expected
+  logistics: SupplyLogisticsItem[];
+
+  // B2B-specific contact info shown in SupplyForm left column
+  contactB2B: {
+    email: string;    // "supply@tunaywasi.pe"
+    whatsapp: string; // "+51 917 959 370"
+    bodega: string;   // "Av. San Borja Norte 1065 · L–V · 9 — 17h"
+  };
+
+  // Featured lote shown in SupplyHero spec card
+  heroCard: {
+    procesoDisplay: string;  // italic label next to variedad e.g. "washed"
+    notasCata: string;       // extended tasting note for cup-notes ticket
+    qGrader: string;         // attribution e.g. "Q-Grader · M. Quispe · 04 · 2026"
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// COLECCIÓN: solicitudes_b2b
+// Path:  /solicitudes_b2b/{solicitudId}
+// Created by SupplyForm on submit. Same collection read by tunaywasi admin
+// (AdminMayoristas page) — source field distinguishes origin.
+// ═══════════════════════════════════════════════════════════════════════════
+
+export type SolicitudB2BStatus = 'nuevo' | 'sin_stock' | 'en_negociacion' | 'cerrado' | 'perdido';
+
+export interface SolicitudSupplyDoc {
+  empresa: string;          // "Tostadora El Origen"
+  contacto: string;         // "María Quispe"  (maps to FormValues.nombre)
+  email: string;            // normalised lowercase
+  telefono: string;         // "+51 987 654 321"
+  volumenKg: number;        // 46 | 92 | 138 | 276 | 500
+  frecuencia: string;       // "mensual" | "bimestral" | "trimestral" | "unico"
+  puntajeMin: number;       // 82 | 84 | 86 | 88 | 90  (SCA floor)
+  variedad?: string;        // optional — "Caturra, Geisha"
+  mensaje?: string;         // optional free-text
+
+  // Set by saveSolicitudSupply — not from form
+  status: SolicitudB2BStatus;   // always 'nuevo' on create
+  source: 'mayoristas-landing'; // distinguishes from tunaywasi admin entries ('web')
+  createdAt: unknown;           // Firestore ServerTimestamp
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // DOCUMENTO: configuration/paymentGateway
 // Path:  /configuration/paymentGateway
 // Non-secret gateway metadata (public). Secret keys → Cloud Functions env vars.
@@ -489,7 +614,13 @@ export interface PaymentGatewayConfigDoc {
 //   /configurations/shipping              → ShippingDoc
 //   /configurations/landing               → LandingConfigDoc
 //   /configurations/yapePlin              → YapePlinConfigDoc
+//   /configurations/supplyLanding         → SupplyLandingConfigDoc
+//   /microlotesLanding/{loteId}           → MicroloteLandingDoc   (e.g. TW-068)
 //   /configurations/paymentGateway        → PaymentGatewayConfigDoc
+//
+// Collections — B2B:
+//   /solicitudes_b2b/{id}  → SolicitudSupplyDoc   source: 'mayoristas-landing'
+//                                                   (same collection as tunaywasi admin reads)
 //
 // Firebase Storage paths:
 //   tunaywasi/caficultores/{id}/  → producer profile + farm photos

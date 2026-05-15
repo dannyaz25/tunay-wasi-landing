@@ -1,25 +1,25 @@
-name: CI — Build check
+name: Deploy → negocios (alpaso-app-negocios.web.app)
 
 on:
-  push:
-    branches: [main, qa]
-  pull_request:
-    branches: [main, qa]
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch o commit a desplegar'
+        required: false
+        default: 'qa'
 
 env:
   NODE_VERSION: '20'
 
 jobs:
-  build:
-    name: Type check + Build (3 targets)
+  deploy:
+    name: Build & Deploy negocios
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout (${{ github.ref_name }})
+      - name: Checkout (${{ inputs.ref || 'main' }})
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || 'main' }}
 
       - name: Setup Node ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v4
@@ -30,12 +30,9 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Type check
-        run: npx tsc --noEmit
-
-      - name: Build clientes
-        run: npm run build:clientes
-        env: &firebase_env
+      - name: Build negocios/mayoristas → dist/negocios
+        run: npm run build:negocios
+        env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
           VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
@@ -48,10 +45,11 @@ jobs:
           VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
           VITE_EMAILJS_PRIVATE_KEY: ${{ secrets.VITE_EMAILJS_PRIVATE_KEY }}
 
-      - name: Build caficultores
-        run: npm run build:caficultores
-        env: *firebase_env
-
-      - name: Build negocios
-        run: npm run build:negocios
-        env: *firebase_env
+      - name: Deploy → alpaso-app-negocios.web.app
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ALPASO }}
+          projectId: alpaso-app
+          channelId: live
+          target: negocios
