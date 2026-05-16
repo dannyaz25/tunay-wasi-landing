@@ -11,51 +11,48 @@ const ans: React.CSSProperties = {
 
 const FAQS: { q: string; a: ReactNode }[] = [
   {
-    q: '¿Mi café califica?',
-    a: <p style={ans}>Necesitas café de especialidad con puntaje SCA de 82 puntos o más. Si estás entre los primeros 15, tendrás acceso prioritario a nuestro tostador Q-Grader para validar y vender tu café.</p>,
-  },
-  {
-    q: '¿Qué criterios evalúa el puntaje SCA?',
-    a: <p style={ans}>El sistema SCA evalúa 10 atributos: fragancia y aroma, sabor, postgusto, acidez, cuerpo, equilibrio, dulzor, taza limpia, uniformidad y puntuación general — en una escala del 0 al 100.</p>,
-  },
-  {
-    q: '¿Qué puntaje necesita mi café?',
+    q: '¿Cómo funciona?',
     a: (
-      <div style={{ ...ans, display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <span><strong style={{ color: '#f2e0cc' }}>90–100 pts</strong> — exquisito</span>
-        <span><strong style={{ color: '#f2e0cc' }}>85–89 pts</strong> — excelente</span>
-        <span><strong style={{ color: '#f2e0cc' }}>82–84 pts</strong> — muy bueno ✓ <em>mínimo requerido</em></span>
-        <span style={{ opacity: 0.55 }}><strong>Menos de 82</strong> — no es especialidad</span>
+      <div style={{ ...ans, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <span>1️⃣ <strong style={{ color: '#f2e0cc' }}>Registras tu finca</strong> — llenas el formulario con tus datos y los de tu café.</span>
+        <span>2️⃣ <strong style={{ color: '#f2e0cc' }}>Nos envías una muestra</strong> — entre 300 y 500 gramos de tu grano verde al nodo de cata más cercano a ti.</span>
+        <span>3️⃣ <strong style={{ color: '#f2e0cc' }}>Lo catamos</strong> — un experto Q-Grader evalúa tu café y te decimos el puntaje.</span>
+        <span>4️⃣ <strong style={{ color: '#f2e0cc' }}>Lo publicamos</strong> — si estás de acuerdo, abrimos la preventa con tu nombre, tu finca y tu historia.</span>
+        <span>5️⃣ <strong style={{ color: '#f2e0cc' }}>Se vende</strong> — los clientes compran tu café desde cualquier parte del país.</span>
+        <span>6️⃣ <strong style={{ color: '#f2e0cc' }}>Te pagamos</strong> — cuando el lote se agota en preventa, recibes tu pago directo. <span style={{ color: '#8faf8a' }}>Los primeros 15 caficultores tienen la cata gratis.</span></span>
       </div>
     ),
   },
   {
-    q: '¿Cómo es el proceso de cata?',
-    a: <p style={ans}>Nuestro tostador Q-Grader evalúa 5 tazas siguiendo el protocolo SCA, dentro de las 24 horas posteriores al tueste y con mínimo 8 horas de reposo. Perfil de tueste ligero o medio claro.</p>,
+    q: '¿Cuándo me pagan?',
+    a: <p style={ans}>Te pagamos cuando tu lote se vende en preventa — no al recepcionar, no al mes siguiente. El pago sale directo de lo que recaudamos con la venta de tu café.</p>,
   },
   {
-    q: '¿Cuánto me pagan y cuándo?',
+    q: '¿Cuánto me pagan?',
     a: (
-      <div style={{ ...ans, display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <p style={{ margin: 0 }}>Te pagamos <strong style={{ color: '#f2e0cc' }}>al recepcionar tu microlote en Lima</strong>, no al momento de la venta final.</p>
-        <ul style={{ margin: '4px 0 0', paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 5 }}>
-          <li><strong style={{ color: '#f2e0cc' }}>82.0 – 83.4 pts</strong> (Selecto) — S/ 28.00 / kg verde <span style={{ opacity: 0.6 }}>(flete a tu cargo)</span></li>
-          <li><strong style={{ color: '#f2e0cc' }}>83.5 – 85.4 pts</strong> (Especialidad Estándar) — S/ 32.00 / kg verde <span style={{ opacity: 0.6 }}>(flete a tu cargo)</span></li>
-          <li><strong style={{ color: '#f2e0cc' }}>85.5 – 87.4 pts</strong> (Especialidad Alta) — S/ 46.00 / kg verde <span style={{ color: '#8faf8a' }}>✅ reembolsamos flete</span></li>
-          <li><strong style={{ color: '#f2e0cc' }}>87.5 – 89.4 pts</strong> (Joya de Finca) — S/ 56.00 / kg verde <span style={{ color: '#8faf8a' }}>✅ reembolsamos flete</span></li>
-          <li><strong style={{ color: '#f2e0cc' }}>89.5+ pts</strong> (Exclusivo / Geisha) — S/ 72.00+ / kg verde <span style={{ color: '#8faf8a' }}>✅ reembolsamos flete</span></li>
-        </ul>
-        <p style={{ margin: '4px 0 0' }}>Sin costos de registro. Si tu café no califica (&lt;82 pts), te lo comunicamos sin cargo.</p>
+      <div style={{ ...ans, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <p style={{ margin: '0 0 8px' }}>Depende del puntaje SCA de tu café:</p>
+        <span><strong style={{ color: '#f2e0cc' }}>82–83 pts</strong> — S/ 34.65 por kg verde</span>
+        <span><strong style={{ color: '#f2e0cc' }}>84–85 pts</strong> — S/ 38.44 por kg verde</span>
+        <span><strong style={{ color: '#f2e0cc' }}>86–87 pts</strong> — S/ 55.48 por kg verde <span style={{ color: '#8faf8a' }}>✅ flete incluido</span></span>
+        <span><strong style={{ color: '#f2e0cc' }}>88–89 pts</strong> — S/ 66.84 por kg verde <span style={{ color: '#8faf8a' }}>✅ flete incluido</span></span>
+        <span><strong style={{ color: '#f2e0cc' }}>90+ pts</strong> — S/ 85.78 por kg verde <span style={{ color: '#8faf8a' }}>✅ flete incluido</span></span>
+        <p style={{ margin: '8px 0 0', opacity: 0.85 }}>El precio puede ajustarse según el <strong style={{ color: '#f2e0cc' }}>análisis físico del grano</strong> al recepcionar: humedad y defectos. Te explicamos el resultado antes de cualquier descuento.</p>
+        <p style={{ margin: '4px 0 0', opacity: 0.7 }}>Los primeros 15 caficultores tienen la cata gratis.</p>
       </div>
     ),
   },
   {
-    q: '¿Se aplican descuentos al pago?',
-    a: <p style={ans}>Solo descontamos defectos mayores (granos negros, agrios, fermentados). El flete a Lima es por tu cuenta o lo deducimos del pago según acuerdo. No hay comisiones ocultas — todo está en el contrato.</p>,
+    q: '¿Qué pasa si mi café no califica?',
+    a: <p style={ans}>Si tu café saca menos de 82 puntos SCA, te avisamos sin cargo y te devolvemos el grano.</p>,
   },
   {
-    q: '¿Cuánto café debo producir?',
-    a: <p style={ans}>El lote mínimo es de <strong style={{ color: '#f2e0cc' }}>12 kg de café verde</strong>. Comenzamos con microlotes pequeños con enfoque en calidad.</p>,
+    q: '¿Cuánto café necesito tener?',
+    a: <p style={ans}>El mínimo es <strong style={{ color: '#f2e0cc' }}>12 kg de café verde</strong>. Empezamos con microlotes pequeños — así tu riesgo es mínimo y nosotros podemos probarlo con los clientes.</p>,
+  },
+  {
+    q: '¿Qué es el puntaje SCA?',
+    a: <p style={ans}>Es como una nota para tu café. Un catador experto (Q-Grader) lo prueba y le pone puntaje del 0 al 100. Tu café necesita al menos 82 puntos para ser café de especialidad. Mientras más alto el puntaje, más te pagamos.</p>,
   },
 ];
 

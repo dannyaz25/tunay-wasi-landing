@@ -1,20 +1,20 @@
 const BENEFITS = [
   {
     icon: '💰',
-    title: 'Precio Justo por Puntaje SCA',
-    desc: 'Pagamos según la calidad real de tu café: desde S/ 34.65 por kg verde (82 pts) hasta S/ 85.78 por kg (90+ pts). No el precio spot del mercado.',
+    title: 'Cobras cuando tu lote se vende',
+    desc: 'Publicamos tu café en preventa con tu nombre y tu historia. Cuando el lote se agota, recibes entre S/ 34.65 y S/ 85.78 por kg verde según el puntaje SCA. Sin regateo, sin sorpresas.',
     color: '#c96e4b',
   },
   {
-    icon: '⚡',
-    title: 'Pago al Recepcionar tu Lote',
-    desc: 'Te pagamos dentro de las 48h de recepcionar tu microlote en Lima y confirmar el puntaje SCA. Sin esperar semanas ni depender de cuándo llega el dinero.',
+    icon: '🎯',
+    title: 'Tu historia en cada bolsa',
+    desc: 'Cada bolsa lleva tu nombre, tu finca y un QR con el viaje completo de tu café — desde tu finca hasta la taza del cliente. Tú no eres un grano anónimo en un saco.',
     color: '#8faf8a',
   },
   {
-    icon: '🎯',
-    title: 'Tu Historia en Cada Bolsa',
-    desc: 'Los clientes ven tu nombre, tu finca, tu historia. Construyes tu marca directamente — no eres un grano anónimo en un saco.',
+    icon: '📦',
+    title: 'Solo 12 kg para empezar',
+    desc: 'Empezamos con microlotes pequeños. Tú envías 12 kg, nosotros los tostamos, empacamos y vendemos. Conforme vendes más lotes, puedes enviar cantidades mayores.',
     color: '#c4b297',
   },
 ] as const;

@@ -156,8 +156,8 @@ export default function CafiLista() {
           borderRadius: 14, textAlign: 'center',
           fontFamily: 'Montserrat, sans-serif', fontSize: 14, color: '#f2e0cc',
         }}>
-          🌱 Los primeros <strong style={{ color: '#8faf8a' }}>{maxSlots} caficultores</strong> acceden al primer lote con
-          {' '}<strong style={{ color: '#f2e0cc' }}>precio garantizado</strong>.
+          🌱 Los primeros <strong style={{ color: '#8faf8a' }}>{maxSlots} caficultores</strong> en registrarse tienen
+          {' '}<strong style={{ color: '#f2e0cc' }}>acceso prioritario</strong> al proceso de cata y preventa.
         </div>
 
         <form onSubmit={submit} style={{
@@ -192,7 +192,7 @@ export default function CafiLista() {
                 marginTop: 14, lineHeight: 1.6,
               }}>
                 Te escribimos a <strong style={{ color: '#f2e0cc' }}>{values.email}</strong> con los
-                siguientes pasos del proceso de cata y recepción.
+                siguientes pasos del proceso de cata y preventa.
               </p>
             </div>
           ) : (

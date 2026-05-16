@@ -89,11 +89,11 @@ export default function CafiHero() {
           margin: 0, color: '#f2e0cc',
           ...fade(0.15),
         }}>
-          Vende tu <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>Café</span>
-          {' '}y recibe <br />
-          <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#8faf8a' }}>pago justo</span>
-          {' '}al entregarlo<br />
-          en <span style={{ fontStyle: 'italic', fontWeight: 500 }}>Lima</span>.
+          Vende tu <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>café</span>
+          {' '}directo<br />
+          <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#8faf8a' }}>a todo el país.</span><br />
+          Nosotros hacemos{' '}
+          <span style={{ fontStyle: 'italic', fontWeight: 500 }}>el resto.</span>
         </h1>
 
         <p style={{
@@ -102,10 +102,11 @@ export default function CafiHero() {
           color: '#c4b297', maxWidth: 720, margin: '36px auto 0',
           ...fade(0.3),
         }}>
-          Te pagamos al recepcionar tu microlote en Lima, según el puntaje SCA de tu café.
-          Desde <strong style={{ color: '#f2e0cc' }}>S/ {minPrice} por kg verde</strong> ({minLabel}) hasta
-          {' '}<strong style={{ color: '#8faf8a' }}>S/ {maxPrice} por kg</strong> ({maxLabel}).
-          {' '}Sin intermediarios.
+          Registra tu finca. Lo catamos, lo vendemos en preventa
+          con tu nombre y tu historia — y cuando tu lote se agota, te pagamos entre{' '}
+          <strong style={{ color: '#f2e0cc' }}>S/ {minPrice}</strong> y{' '}
+          <strong style={{ color: '#8faf8a' }}>S/ {maxPrice} por kg verde</strong> según
+          la calidad de tu café. Sin acopiadores. Sin regateo.
         </p>
 
         <div style={{

@@ -32,18 +32,17 @@ export function CafiFinalCTA() {
           fontSize: 'clamp(36px, 5.5vw, 68px)', lineHeight: 1.0,
           margin: 0, color: '#f2e0cc', letterSpacing: '-0.01em',
         }}>
-          ¿Listo para vender tu café
+          ¿Tienes café de calidad?
           <br />
           <span style={{ fontStyle: 'italic', fontWeight: 500, color: '#c96e4b' }}>
-            al precio que merece?
+            Nosotros lo vendemos por ti.
           </span>
         </h2>
         <p style={{
           fontFamily: 'Montserrat, sans-serif', fontSize: 16, lineHeight: 1.65,
           color: '#c4b297', maxWidth: 580, margin: '28px auto 0',
         }}>
-          Pago justo al entregarlo en Lima, según calidad SCA real.
-          Tu historia en cada bolsa.
+          Registra tu finca. Te contactamos para coordinar la muestra y el resto lo hacemos nosotros.
         </p>
         <a href="#lista" style={{
           marginTop: 40, display: 'inline-flex', alignItems: 'center', gap: 12,
