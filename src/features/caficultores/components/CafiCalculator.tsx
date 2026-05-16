@@ -3,19 +3,26 @@ import { useCafiLandingConfig, STATIC_DATA } from '@/features/caficultores/useCa
 
 const fmtPEN = (n: number) => 'S/ ' + Math.round(n).toLocaleString('es-PE');
 
+const NIVELES = [
+  { label: 'Inicio',  kg: 12  },
+  { label: 'Bronce',  kg: 25  },
+  { label: 'Plata',   kg: 50  },
+  { label: 'Oro',     kg: 100 },
+];
+
 export default function CafiCalculator() {
   const { data = STATIC_DATA } = useCafiLandingConfig();
   const { calculator } = data;
 
-  const [kg, setKg] = useState(calculator.defaultKg);
   const [tier, setTier] = useState(calculator.defaultTierIndex);
-
+  const [nivelIdx, setNivelIdx] = useState(0);
   const t = calculator.tiers[tier] ?? calculator.tiers[0];
+
+  const KG_LOTE = NIVELES[nivelIdx].kg;
   const acopMid = (t.acopMin + t.acopMax) / 2;
-  const acopTotal = kg * acopMid;
-  const tunayTotal = kg * t.tunay;
+  const acopTotal = KG_LOTE * acopMid;
+  const tunayTotal = KG_LOTE * t.tunay;
   const delta = Math.round((tunayTotal / acopTotal - 1) * 100);
-  const pct = ((kg - calculator.sliderMinKg) / (calculator.sliderMaxKg - calculator.sliderMinKg)) * 100;
 
   return (
     <section id="calculadora" style={{
@@ -52,93 +59,48 @@ export default function CafiCalculator() {
             fontFamily: 'Montserrat, sans-serif', fontSize: 15, lineHeight: 1.65,
             color: '#c4b297', maxWidth: 660, margin: '0 auto',
           }}>
-            El acopiador compra café. Tunay Wasi vende tu historia — tu nombre, tu finca
-            y tu proceso en cada bolsa que llega al consumidor.
+            Compara cuánto recibirías por tus kilos con un acopiador tradicional
+            versus vender con Tunay Wasi — sin acopiadores, sin regateo.
           </p>
         </div>
 
+        {/* Selector de tier SCA */}
         <div style={{
           background: 'linear-gradient(135deg, #2a3d33 0%, #1f3028 60%)',
           border: '1px solid #c4b29722',
-          borderRadius: 24,
-          padding: 36,
+          borderRadius: 24, padding: 36,
           boxShadow: '0 30px 60px -28px #000000aa',
+          marginBottom: 36,
         }}>
-          <div style={{ marginBottom: 32 }}>
-            <div style={{
-              display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-              marginBottom: 16, flexWrap: 'wrap', gap: 8,
-            }}>
-              <div style={{
-                fontFamily: 'Montserrat, sans-serif', fontSize: 14, fontWeight: 600,
-                color: '#f2e0cc', letterSpacing: '0.02em',
-              }}>¿Cuántos kg de café vendes al año?</div>
-              <div style={{
-                fontFamily: 'Cormorant Garamond, serif', fontSize: 36, fontWeight: 700,
-                color: '#8faf8a', lineHeight: 1,
-              }}>{kg.toLocaleString('es-PE')} <span style={{ fontSize: 16, color: '#c4b297', fontWeight: 500 }}>kg/año</span></div>
-            </div>
-            <input
-              type="range"
-              min={calculator.sliderMinKg}
-              max={calculator.sliderMaxKg}
-              step={calculator.sliderStepKg}
-              value={kg}
-              onChange={(e) => setKg(Number(e.target.value))}
-              className="tw-cafi-slider"
-              style={{
-                width: '100%', height: 6, borderRadius: 999,
-                appearance: 'none',
-                background: `linear-gradient(90deg, #c96e4b 0%, #8faf8a ${pct}%, #f2e0cc1a ${pct}%, #f2e0cc1a 100%)`,
-                outline: 'none',
-              }}
-            />
-            <div style={{
-              display: 'flex', justifyContent: 'space-between', marginTop: 8,
-              fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.18em',
-              color: '#c4b29799',
-            }}>
-              <span>{calculator.sliderMinKg} kg</span>
-              <span>1 000 kg</span>
-              <span>2 000 kg</span>
-              <span>{calculator.sliderMaxKg.toLocaleString('es-PE')} kg</span>
-            </div>
-          </div>
-
-          <div>
-            <div style={{
-              fontFamily: 'Montserrat, sans-serif', fontSize: 14, fontWeight: 600,
-              color: '#f2e0cc', marginBottom: 14, letterSpacing: '0.02em',
-            }}>¿Cuál es tu puntaje SCA estimado?</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {calculator.tiers.map((s, i) => (
-                <button key={s.label} onClick={() => setTier(i)} style={{
-                  flex: '1 1 140px',
-                  fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600,
-                  padding: '12px 16px', borderRadius: 999, cursor: 'pointer',
-                  background: tier === i ? '#c96e4b' : '#0f1a14',
-                  color: tier === i ? '#f2e0cc' : '#c4b297',
-                  border: `1px solid ${tier === i ? '#c96e4b' : '#c4b29733'}`,
-                  letterSpacing: '0.02em',
-                  transition: 'all .25s ease',
-                }}>{s.label}</button>
-              ))}
-            </div>
+          <div style={{
+            fontFamily: 'Montserrat, sans-serif', fontSize: 14, fontWeight: 600,
+            color: '#f2e0cc', marginBottom: 14, letterSpacing: '0.02em',
+          }}>¿Cuál es el puntaje SCA de tu café?</div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+            {calculator.tiers.map((s, i) => (
+              <button key={s.label} onClick={() => setTier(i)} style={{
+                flex: '1 1 140px',
+                fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600,
+                padding: '12px 16px', borderRadius: 999, cursor: 'pointer',
+                background: tier === i ? '#c96e4b' : '#0f1a14',
+                color: tier === i ? '#f2e0cc' : '#c4b297',
+                border: `1px solid ${tier === i ? '#c96e4b' : '#c4b29733'}`,
+                letterSpacing: '0.02em',
+                transition: 'all .25s ease',
+              }}>{s.label}</button>
+            ))}
           </div>
         </div>
 
+        {/* Comparación por microlote */}
         <div style={{
-          marginTop: 36,
           display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 24, alignItems: 'stretch',
         }} className="tw-cafi-compare">
+
+          {/* Acopiador */}
           <div style={{
-            background: '#0f1a14',
-            border: '1px solid #c4b29722',
-            borderRadius: 20,
-            padding: 36,
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden',
+            background: '#0f1a14', border: '1px solid #c4b29722',
+            borderRadius: 20, padding: 36, textAlign: 'center',
           }}>
             <div style={{ fontSize: 40, marginBottom: 8 }}>😔</div>
             <div style={{
@@ -148,12 +110,10 @@ export default function CafiCalculator() {
             <div style={{
               fontFamily: 'Cormorant Garamond, serif', fontWeight: 700,
               fontSize: 56, color: '#c4b297', lineHeight: 1,
-              letterSpacing: '-0.01em',
             }}>{fmtPEN(acopTotal)}</div>
             <div style={{
-              fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#c4b297',
-              marginTop: 18,
-            }}>S/ {t.acopMin} – S/ {t.acopMax} por kg ({t.label})</div>
+              fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#c4b297', marginTop: 18,
+            }}>S/ {t.acopMin} – S/ {t.acopMax} por kg · {KG_LOTE} kg</div>
             <div style={{
               fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.18em',
               color: '#c4b29766', textTransform: 'uppercase', marginTop: 10,
@@ -162,19 +122,14 @@ export default function CafiCalculator() {
 
           <div className="tw-cafi-arrow" style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#c96e4b',
-            fontFamily: 'Cormorant Garamond, serif', fontSize: 48,
+            color: '#c96e4b', fontFamily: 'Cormorant Garamond, serif', fontSize: 48,
           }}>→</div>
 
+          {/* Tunay Wasi */}
           <div style={{
             background: 'linear-gradient(135deg, #c96e4b22 0%, #8faf8a14 100%)',
-            border: '1px solid #8faf8a66',
-            borderRadius: 20,
-            padding: 36,
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0 30px 60px -28px #8faf8a55',
+            border: '1px solid #8faf8a66', borderRadius: 20, padding: 36, textAlign: 'center',
+            position: 'relative', boxShadow: '0 30px 60px -28px #8faf8a55',
           }}>
             <div style={{
               position: 'absolute', top: 12, right: 12,
@@ -191,12 +146,10 @@ export default function CafiCalculator() {
             <div style={{
               fontFamily: 'Cormorant Garamond, serif', fontWeight: 700,
               fontSize: 56, color: '#f2e0cc', lineHeight: 1,
-              letterSpacing: '-0.01em',
             }}>{fmtPEN(tunayTotal)}</div>
             <div style={{
-              fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#f2e0cc',
-              marginTop: 18,
-            }}>≈ S/ {t.tunay.toFixed(2)} por kg de café verde ({t.label})</div>
+              fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: '#f2e0cc', marginTop: 18,
+            }}>S/ {t.tunay.toFixed(2)} por kg · {KG_LOTE} kg · {t.label}</div>
             <div style={{
               display: 'inline-block', marginTop: 14,
               padding: '6px 14px', borderRadius: 999,
@@ -204,34 +157,44 @@ export default function CafiCalculator() {
               fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 700,
               color: '#8faf8a', letterSpacing: '0.04em',
             }}>+{delta}% más que el acopiador</div>
+            <div style={{
+              fontFamily: 'JetBrains Mono, monospace', fontSize: 9, letterSpacing: '0.14em',
+              color: '#8faf8a88', textTransform: 'uppercase', marginTop: 10,
+            }}>Recibes esto cuando tu lote se agota · sujeto a análisis físico</div>
           </div>
         </div>
 
+        {/* Proyección por nivel */}
         <div style={{
-          marginTop: 32, padding: '20px 24px',
-          background: '#0f1a14', borderRadius: 14, border: '1px solid #c4b29722',
-          fontFamily: 'Montserrat, sans-serif', fontSize: 12, lineHeight: 1.65,
-          color: '#c4b297', textAlign: 'center',
+          marginTop: 28, padding: '20px 28px',
+          background: '#0f1a14', borderRadius: 16, border: '1px solid #c4b29722',
         }}>
-          <strong style={{ color: '#f2e0cc' }}>Cálculo ({t.label}):</strong> 1 kg verde → ~0.83 kg tostado → precio según puntaje SCA = <strong style={{ color: '#8faf8a' }}>S/ {t.tunay.toFixed(2)}/kg</strong>.
-          {' '}{calculator.footnote}.
+          <div style={{
+            fontFamily: 'Montserrat, sans-serif', fontSize: 13, lineHeight: 1.65, color: '#c4b297',
+            marginBottom: 14,
+          }}>
+            <strong style={{ color: '#f2e0cc' }}>¿Cuánto ganarías con un lote más grande?</strong>
+            {' '}Conforme vendas más lotes y tu café suba de calificación, puedes enviar lotes más grandes.
+          </div>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {NIVELES.map((n, i) => (
+              <button key={n.label} onClick={() => setNivelIdx(i)} style={{
+                padding: '8px 16px', borderRadius: 999, cursor: 'pointer',
+                background: nivelIdx === i ? '#c96e4b22' : '#f2e0cc0a',
+                border: `1px solid ${nivelIdx === i ? '#c96e4b88' : '#f2e0cc1a'}`,
+                fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.15em',
+                color: nivelIdx === i ? '#c96e4b' : '#c4b29766',
+                textTransform: 'uppercase',
+                transition: 'all .2s ease',
+              }}>
+                {i === 0 ? '★ ' : ''}{n.label} · {n.kg} kg
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <style>{`
-        .tw-cafi-slider::-webkit-slider-thumb {
-          appearance: none; -webkit-appearance: none;
-          width: 22px; height: 22px; border-radius: 50%;
-          background: #f2e0cc; border: 3px solid #c96e4b;
-          cursor: grab; box-shadow: 0 4px 12px -2px #00000088;
-          transition: transform .2s ease;
-        }
-        .tw-cafi-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
-        .tw-cafi-slider::-moz-range-thumb {
-          width: 22px; height: 22px; border-radius: 50%;
-          background: #f2e0cc; border: 3px solid #c96e4b;
-          cursor: grab;
-        }
         @media (max-width: 760px) {
           .tw-cafi-compare { grid-template-columns: 1fr !important; }
           .tw-cafi-arrow { transform: rotate(90deg); }
