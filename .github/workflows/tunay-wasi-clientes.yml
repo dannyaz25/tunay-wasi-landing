@@ -45,6 +45,7 @@ jobs:
           VITE_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_EMAILJS_PUBLIC_KEY }}
           VITE_EMAILJS_PRIVATE_KEY: ${{ secrets.VITE_EMAILJS_PRIVATE_KEY }}
           VITE_SHEETS_WEBHOOK_URL: ${{ secrets.VITE_SHEETS_WEBHOOK_URL }}
+          VITE_FIRESTORE_DATABASE: ${{ secrets.VITE_FIRESTORE_DATABASE }}
 
       - name: Deploy to tunay-wasi.web.app
         uses: FirebaseExtended/action-hosting-deploy@v0
