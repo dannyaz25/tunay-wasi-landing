@@ -19,6 +19,7 @@ import type { UsuarioONE, ProductoONE } from '@/one/types'
 // Lazy imports de componentes (se crearán en los próximos días)
 import CatalogoPublico from '@/one/components/CatalogoPublico'
 import CheckoutONE from '@/one/components/CheckoutONE'
+import AuthScreen from '@/one/components/AuthScreen'
 
 // Placeholder para componentes no construidos aún
 const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
@@ -141,7 +142,18 @@ const AppONE: React.FC = () => {
   }
 
   if (hash === '#/login') {
-    return <Placeholder nombre="Login / Registro" />
+    if (user) {
+      window.location.hash = carritoProducto ? '#/checkout' : '#/'
+      return null
+    }
+    return (
+      <AuthScreen
+        mensajePrevia={carritoProducto ? 'Para continuar con tu pedido, ingresa o crea tu cuenta.' : undefined}
+        onSuccess={() => {
+          window.location.hash = carritoProducto ? '#/checkout' : '#/'
+        }}
+      />
+    )
   }
 
   // Ruta por defecto: catálogo público
