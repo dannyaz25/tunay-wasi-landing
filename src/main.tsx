@@ -7,7 +7,7 @@ import './index.css';
 const root = document.getElementById('root');
 if (!root) throw new Error('Missing #root element');
 
-const target = import.meta.env.VITE_APP_TARGET;
+const target = import.meta.env.VITE_APP_TARGET as string | undefined;
 
 async function bootstrap() {
   if (target === 'caficultores') {
@@ -25,6 +25,15 @@ async function bootstrap() {
       <StrictMode>
         <QueryClientProvider client={queryClient}>
           <AppMayoristas />
+        </QueryClientProvider>
+      </StrictMode>,
+    );
+  } else if (target === 'one') {
+    const { default: AppONE } = await import('./AppONE');
+    createRoot(root!).render(
+      <StrictMode>
+        <QueryClientProvider client={queryClient}>
+          <AppONE />
         </QueryClientProvider>
       </StrictMode>,
     );
