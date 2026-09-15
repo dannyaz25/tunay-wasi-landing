@@ -11,7 +11,9 @@
     "build:all": "tsc --noEmit && npm run build:clientes && npm run build:caficultores && npm run build:negocios",
     "preview": "vite preview",
     "seed": "tsx scripts/seed.ts",
-    "seed:force": "tsx scripts/seed.ts --force"
+    "seed:force": "tsx scripts/seed.ts --force",
+    "seed:one": "VITE_USE_EMULATOR=true tsx src/one/seed/seed-one.ts",
+    "seed:one:qa": "FIREBASE_PROJECT=alpaso-app tsx src/one/seed/seed-one.ts"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -27,6 +29,7 @@
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "firebase-admin": "^13.10.0",
     "tsx": "^4.21.0",
     "typescript": "^5.3.3",
     "vite": "^5.1.0"

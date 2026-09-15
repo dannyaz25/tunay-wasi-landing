@@ -1,0 +1,27 @@
+[
+  {
+    "id": "kit-001",
+    "pedidoId": "ONE-2026-3301",
+    "emprendedorId": "user-emprendedor-002",
+    "nombreLocal": "La Taza Verde",
+    "productos": [
+      {
+        "caficultorNombre": "Jorge Quispe Mamani",
+        "caficultorFoto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+        "caficultorRegion": "Cusco",
+        "caficultorAltitud": 1650,
+        "caficultorHistoria": "Soy de la tercera generación de caficultores en Quillabamba. Trabajo 3 hectáreas con variedades Caturra y Typica que mi abuelo plantó en los años 70.",
+        "productoNombre": "Caturra Natural — Finca Quispe",
+        "variedad": "Caturra",
+        "proceso": "natural",
+        "notasSabor": ["maracuyá", "ciruela", "miel de abeja"],
+        "puntajeReferencial": 84
+      }
+    ],
+    "menuPdfUrl": null,
+    "fichasUrl": null,
+    "qrUrl": null,
+    "instagramPackUrl": null,
+    "createdAt": "2026-09-13T12:00:00.000Z"
+  }
+]

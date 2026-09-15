@@ -1,0 +1,49 @@
+[
+  {
+    "uid": "user-emprendedor-001",
+    "rol": "emprendedor",
+    "nombre": "Carlos Mendoza",
+    "email": "carlos@cafeelorigenmiraflores.pe",
+    "telefono": "+51987654321",
+    "emprendedor": {
+      "nombreLocal": "Café El Origen",
+      "distritoLocal": "Miraflores",
+      "etapa": "proxima_apertura",
+      "fechaAperturaEstimada": "2026-11-01",
+      "pedidoIds": ["ONE-2026-4821"]
+    },
+    "createdAt": "2026-09-10T00:00:00.000Z"
+  },
+  {
+    "uid": "user-emprendedor-002",
+    "rol": "emprendedor",
+    "nombre": "Lucía Torres",
+    "email": "lucia@latazaverde.pe",
+    "telefono": "+51976543210",
+    "emprendedor": {
+      "nombreLocal": "La Taza Verde",
+      "distritoLocal": "Barranco",
+      "etapa": "abierto",
+      "pedidoIds": ["ONE-2026-3301"]
+    },
+    "createdAt": "2026-09-08T00:00:00.000Z"
+  },
+  {
+    "uid": "user-caficultor-001",
+    "rol": "caficultor",
+    "nombre": "María Huamán Díaz",
+    "email": "maria.huaman@tunaywasi.pe",
+    "telefono": "+51964321987",
+    "caficultor": {
+      "caficultorId": "caficultor-001"
+    },
+    "createdAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "uid": "user-admin-001",
+    "rol": "admin",
+    "nombre": "Admin Tunay Wasi",
+    "email": "admin@tunaywasi.pe",
+    "createdAt": "2026-09-01T00:00:00.000Z"
+  }
+]

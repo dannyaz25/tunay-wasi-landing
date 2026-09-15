@@ -1,0 +1,38 @@
+[
+  {
+    "id": "caficultor-001",
+    "nombre": "María Huamán Díaz",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cajamarca",
+    "distrito": "San Ignacio",
+    "altitudMsnm": 1820,
+    "historia": "Cultivo café desde hace 18 años en las laderas de Los Alisos. Aprendí de mi padre, que fue uno de los primeros en adoptar el proceso lavado en nuestra región. Cada cosecha la hacemos a mano, cherry a cherry, para que llegue solo lo mejor. Mi sueño es que quien tome una taza sepa exactamente de dónde viene.",
+    "coordenadas": { "lat": -5.1275, "lng": -79.0325 },
+    "activo": true,
+    "createdAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-002",
+    "nombre": "Jorge Quispe Mamani",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cusco",
+    "distrito": "Quillabamba",
+    "altitudMsnm": 1650,
+    "historia": "Soy de la tercera generación de caficultores en Quillabamba. Trabajo 3 hectáreas con variedades Caturra y Typica que mi abuelo plantó en los años 70. Desde 2022 trabajo el proceso natural para resaltar los sabores frutados de nuestra altitud. El café es nuestra identidad.",
+    "coordenadas": { "lat": -12.8619, "lng": -72.6869 },
+    "activo": true,
+    "createdAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-003",
+    "nombre": "Rosa Llanos Vega",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "San Martín",
+    "distrito": "Moyobamba",
+    "altitudMsnm": 1480,
+    "historia": "Empecé sola después de que mi esposo se fue a Lima. Hoy tengo 2 hectáreas, mis tres hijos me ayudan en cosecha y vendemos directo sin pasar por el acopiador del pueblo. El proceso honey lo aprendí en un taller de DEVIDA y cambió todo — el café tiene más cuerpo y los compradores lo notan.",
+    "coordenadas": { "lat": -6.0342, "lng": -76.9711 },
+    "activo": true,
+    "createdAt": "2026-09-01T00:00:00.000Z"
+  }
+]

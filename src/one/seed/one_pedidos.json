@@ -1,0 +1,100 @@
+[
+  {
+    "id": "ONE-2026-4821",
+    "emprendedorId": "user-emprendedor-001",
+    "emprendedorNombre": "Carlos Mendoza",
+    "emprendedorEmail": "carlos@cafeelorigenmiraflores.pe",
+    "emprendedorTelefono": "+51987654321",
+    "nombreLocal": "Café El Origen",
+    "distritoLocal": "Miraflores",
+    "items": [
+      {
+        "productoId": "producto-001",
+        "productoNombre": "Bourbon Lavado — Los Alisos",
+        "caficultorNombre": "María Huamán Díaz",
+        "formato": "1kg",
+        "cantidad": 2,
+        "precioUnitarioCents": 14500,
+        "subtotalCents": 29000
+      }
+    ],
+    "subtotalCents": 29000,
+    "deliveryCents": 1000,
+    "totalCents": 30000,
+    "metodoPago": "yape",
+    "pagoStatus": "voucher_subido",
+    "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
+    "direccionEntrega": "Av. Larco 123, Miraflores, Lima",
+    "logisticaStatus": "preparando",
+    "kitGenerado": false,
+    "esKitProveedor": true,
+    "compromisoMeses": 3,
+    "createdAt": "2026-09-14T10:30:00.000Z",
+    "updatedAt": "2026-09-14T11:00:00.000Z"
+  },
+  {
+    "id": "ONE-2026-3301",
+    "emprendedorId": "user-emprendedor-002",
+    "emprendedorNombre": "Lucía Torres",
+    "emprendedorEmail": "lucia@latazaverde.pe",
+    "emprendedorTelefono": "+51976543210",
+    "nombreLocal": "La Taza Verde",
+    "distritoLocal": "Barranco",
+    "items": [
+      {
+        "productoId": "producto-002",
+        "productoNombre": "Caturra Natural — Finca Quispe",
+        "caficultorNombre": "Jorge Quispe Mamani",
+        "formato": "5kg",
+        "cantidad": 1,
+        "precioUnitarioCents": 60000,
+        "subtotalCents": 60000
+      }
+    ],
+    "subtotalCents": 60000,
+    "deliveryCents": 1000,
+    "totalCents": 61000,
+    "metodoPago": "transferencia",
+    "pagoStatus": "verificado",
+    "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
+    "direccionEntrega": "Jr. Centenario 456, Barranco, Lima",
+    "logisticaStatus": "entregado",
+    "kitGenerado": true,
+    "kitId": "kit-001",
+    "esKitProveedor": false,
+    "createdAt": "2026-09-08T09:00:00.000Z",
+    "updatedAt": "2026-09-12T16:00:00.000Z"
+  },
+  {
+    "id": "ONE-2026-1102",
+    "emprendedorId": "user-emprendedor-001",
+    "emprendedorNombre": "Carlos Mendoza",
+    "emprendedorEmail": "carlos@cafeelorigenmiraflores.pe",
+    "emprendedorTelefono": "+51987654321",
+    "nombreLocal": "Café El Origen",
+    "distritoLocal": "Miraflores",
+    "items": [
+      {
+        "productoId": "producto-003",
+        "productoNombre": "Typica Honey — Alto Moyobamba",
+        "caficultorNombre": "Rosa Llanos Vega",
+        "formato": "250g",
+        "cantidad": 3,
+        "precioUnitarioCents": 3900,
+        "subtotalCents": 11700
+      }
+    ],
+    "subtotalCents": 11700,
+    "deliveryCents": 1000,
+    "totalCents": 12700,
+    "metodoPago": "yape",
+    "pagoStatus": "verificado",
+    "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
+    "direccionEntrega": "Av. Larco 123, Miraflores, Lima",
+    "logisticaStatus": "despachado",
+    "kitGenerado": false,
+    "esKitProveedor": false,
+    "createdAt": "2026-09-11T14:00:00.000Z",
+    "updatedAt": "2026-09-13T10:00:00.000Z"
+  }
+]

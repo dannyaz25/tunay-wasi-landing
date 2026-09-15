@@ -1,0 +1,77 @@
+[
+  {
+    "id": "producto-001",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "María Huamán Díaz",
+    "nombre": "Bourbon Lavado — Los Alisos",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1820,
+    "cosecha": "Junio 2026",
+    "notasSabor": ["durazno", "panela", "chocolate amargo"],
+    "descripcion": "Cosecha manual en parcela de 1.2 ha a 1,820 msnm. Fermentación controlada 36h, secado en camas africanas 18 días. Perfil limpio y elegante, ideal para métodos de filtrado.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial declarado por la productora — certificación independiente próximamente",
+    "precios": {
+      "g250": 4500,
+      "kg1": 14500,
+      "kg5": 65000
+    },
+    "kgDisponibles": 48,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-09-05T00:00:00.000Z",
+    "updatedAt": "2026-09-05T00:00:00.000Z"
+  },
+  {
+    "id": "producto-002",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Jorge Quispe Mamani",
+    "nombre": "Caturra Natural — Finca Quispe",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1650,
+    "cosecha": "Julio 2026",
+    "notasSabor": ["maracuyá", "ciruela", "miel de abeja"],
+    "descripcion": "Proceso natural en camas elevadas por 25 días. Los cerezos se seleccionan al 100% rojos. El resultado es un perfil frutal intenso con dulzor natural sobresaliente.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial declarado por el productor — certificación independiente próximamente",
+    "precios": {
+      "g250": 4200,
+      "kg1": 13500,
+      "kg5": 60000
+    },
+    "kgDisponibles": 32,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-09-05T00:00:00.000Z",
+    "updatedAt": "2026-09-05T00:00:00.000Z"
+  },
+  {
+    "id": "producto-003",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Rosa Llanos Vega",
+    "nombre": "Typica Honey — Alto Moyobamba",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1480,
+    "cosecha": "Mayo 2026",
+    "notasSabor": ["caramelo", "manzana verde", "nuez"],
+    "descripcion": "Proceso honey con mucílago al 50%. Secado en camas por 20 días bajo sombra parcial. Cuerpo medio, acidez balanceada. Excelente para espresso y métodos de inmersión.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial declarado por la productora — certificación independiente próximamente",
+    "precios": {
+      "g250": 3900,
+      "kg1": 12500,
+      "kg5": 55000
+    },
+    "kgDisponibles": 60,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-09-05T00:00:00.000Z",
+    "updatedAt": "2026-09-05T00:00:00.000Z"
+  }
+]
