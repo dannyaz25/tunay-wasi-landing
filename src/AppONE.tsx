@@ -20,6 +20,7 @@ import type { UsuarioONE, ProductoONE } from '@/one/types'
 import CatalogoPublico from '@/one/components/CatalogoPublico'
 import CheckoutONE from '@/one/components/CheckoutONE'
 import AuthScreen from '@/one/components/AuthScreen'
+import AdminONE from '@/one/components/AdminONE'
 
 // Placeholder para componentes no construidos aún
 const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
@@ -138,7 +139,7 @@ const AppONE: React.FC = () => {
       window.location.hash = '#/'
       return null
     }
-    return <Placeholder nombre="Admin ONE" />
+    return <AdminONE />
   }
 
   if (hash === '#/login') {
