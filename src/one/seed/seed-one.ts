@@ -9,7 +9,7 @@
  *
  * NUNCA contra producción (tunay-wasi).
  */
-import { initializeApp, cert, getApps } from 'firebase-admin/app'
+import { initializeApp, getApps } from 'firebase-admin/app'
 import { getFirestore } from 'firebase-admin/firestore'
 import { readFileSync } from 'fs'
 import { resolve, dirname } from 'path'

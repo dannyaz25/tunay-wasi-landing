@@ -9,6 +9,8 @@ import React, { useEffect, useState } from 'react'
 import { fetchProductos, fetchCaficultores } from '../service'
 import type { ProductoONE, CaficultorONE } from '../types'
 import { PROCESO_LABELS } from '../config'
+import seedProductos from '../seed/one_productos.json'
+import seedCaficultores from '../seed/one_caficultores.json'
 
 const C = {
   cream: '#f2e0cc',
@@ -243,7 +245,6 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
   const [productos, setProductos] = useState<ProductoONE[]>([])
   const [caficultores, setCaficultores] = useState<Map<string, CaficultorONE>>(new Map())
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     async function cargar() {
@@ -252,12 +253,17 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
           fetchProductos(),
           fetchCaficultores(),
         ])
-        setProductos(prods)
-        const mapa = new Map(cafics.map((c) => [c.id, c]))
+        // Si Firestore no tiene datos aún, usar seed local
+        const productosFinales = prods.length > 0 ? prods : (seedProductos as ProductoONE[])
+        const caficsFinales = cafics.length > 0 ? cafics : (seedCaficultores as CaficultorONE[])
+        setProductos(productosFinales)
+        const mapa = new Map(caficsFinales.map((c) => [c.id, c]))
         setCaficultores(mapa)
       } catch (e) {
-        setError('No se pudo cargar el catálogo. Intenta de nuevo.')
-        console.error(e)
+        // Firestore no disponible — usar seed local
+        setProductos(seedProductos as ProductoONE[])
+        const mapa = new Map((seedCaficultores as CaficultorONE[]).map((c) => [c.id, c]))
+        setCaficultores(mapa)
       } finally {
         setLoading(false)
       }
@@ -328,16 +334,7 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
           </div>
         )}
 
-        {error && (
-          <div style={{
-            textAlign: 'center', padding: 40,
-            color: C.terra, fontFamily: 'Montserrat, sans-serif',
-          }}>
-            {error}
-          </div>
-        )}
-
-        {!loading && !error && productos.length === 0 && (
+        {!loading && productos.length === 0 && (
           <div style={{ textAlign: 'center', padding: 60, color: C.tan }}>
             Próximamente — catálogo en preparación.
           </div>
