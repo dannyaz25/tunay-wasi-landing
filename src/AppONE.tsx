@@ -21,6 +21,7 @@ import CatalogoPublico from '@/one/components/CatalogoPublico'
 import CheckoutONE from '@/one/components/CheckoutONE'
 import AuthScreen from '@/one/components/AuthScreen'
 import AdminONE from '@/one/components/AdminONE'
+import PortalEmprendedor from '@/one/components/PortalEmprendedor'
 
 // Placeholder para componentes no construidos aún
 const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
@@ -123,7 +124,12 @@ const AppONE: React.FC = () => {
       window.location.hash = '#/login'
       return null
     }
-    return <Placeholder nombre="Portal Emprendedor" />
+    return (
+      <PortalEmprendedor
+        usuarioId={user.uid}
+        nombreUsuario={usuarioONE?.nombre ?? user.displayName ?? 'Emprendedor'}
+      />
+    )
   }
 
   if (hash === '#/caficultor-portal') {
