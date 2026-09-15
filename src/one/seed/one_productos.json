@@ -2,76 +2,2901 @@
   {
     "id": "producto-001",
     "caficultorId": "caficultor-001",
-    "caficultorNombre": "María Huamán Díaz",
-    "nombre": "Bourbon Lavado — Los Alisos",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Bourbon Lavado — Finca La Coipa",
     "variedad": "Bourbon",
     "proceso": "lavado",
-    "altitudMsnm": 1820,
+    "altitudMsnm": 1850,
     "cosecha": "Junio 2026",
-    "notasSabor": ["durazno", "panela", "chocolate amargo"],
-    "descripcion": "Cosecha manual en parcela de 1.2 ha a 1,820 msnm. Fermentación controlada 36h, secado en camas africanas 18 días. Perfil limpio y elegante, ideal para métodos de filtrado.",
-    "puntajeReferencial": 86,
-    "notaReferencial": "Puntaje referencial declarado por la productora — certificación independiente próximamente",
+    "notasSabor": [
+      "chocolate negro",
+      "avellana",
+      "mandarina"
+    ],
+    "descripcion": "Bourbon lavado de altura con acidez brillante y cuerpo sedoso. La altitud de La Coipa aporta una complejidad floral que distingue este lote.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 14500,
-      "kg5": 65000
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
     },
-    "kgDisponibles": 48,
+    "kgDisponibles": 120,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
-    "createdAt": "2026-09-05T00:00:00.000Z",
-    "updatedAt": "2026-09-05T00:00:00.000Z"
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
   },
   {
     "id": "producto-002",
-    "caficultorId": "caficultor-002",
-    "caficultorNombre": "Jorge Quispe Mamani",
-    "nombre": "Caturra Natural — Finca Quispe",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Caturra Natural — Finca La Coipa",
     "variedad": "Caturra",
     "proceso": "natural",
-    "altitudMsnm": 1650,
+    "altitudMsnm": 1850,
     "cosecha": "Julio 2026",
-    "notasSabor": ["maracuyá", "ciruela", "miel de abeja"],
-    "descripcion": "Proceso natural en camas elevadas por 25 días. Los cerezos se seleccionan al 100% rojos. El resultado es un perfil frutal intenso con dulzor natural sobresaliente.",
-    "puntajeReferencial": 84,
-    "notaReferencial": "Puntaje referencial declarado por el productor — certificación independiente próximamente",
+    "notasSabor": [
+      "maracuyá",
+      "mora",
+      "miel de abeja"
+    ],
+    "descripcion": "Caturra natural secado en camas africanas con notas tropicales intensas. Un café festivo y dulce que expresa la riqueza del suelo cajamarquino.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
       "g250": 4200,
-      "kg1": 13500,
-      "kg5": 60000
+      "kg1": 15960,
+      "kg5": 71400
     },
-    "kgDisponibles": 32,
+    "kgDisponibles": 85,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
-    "createdAt": "2026-09-05T00:00:00.000Z",
-    "updatedAt": "2026-09-05T00:00:00.000Z"
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
   },
   {
     "id": "producto-003",
-    "caficultorId": "caficultor-003",
-    "caficultorNombre": "Rosa Llanos Vega",
-    "nombre": "Typica Honey — Alto Moyobamba",
-    "variedad": "Typica",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Bourbon Honey — Lote Alto",
+    "variedad": "Bourbon",
     "proceso": "honey",
-    "altitudMsnm": 1480,
-    "cosecha": "Mayo 2026",
-    "notasSabor": ["caramelo", "manzana verde", "nuez"],
-    "descripcion": "Proceso honey con mucílago al 50%. Secado en camas por 20 días bajo sombra parcial. Cuerpo medio, acidez balanceada. Excelente para espresso y métodos de inmersión.",
-    "puntajeReferencial": 83,
-    "notaReferencial": "Puntaje referencial declarado por la productora — certificación independiente próximamente",
+    "altitudMsnm": 1850,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "miel",
+      "melocotón",
+      "caña de azúcar"
+    ],
+    "descripcion": "Proceso honey que preserva el mucílago y entrega una dulzura suave con notas de fruta de hueso madura. Excelente balance para cafeterías.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 12500,
-      "kg5": 55000
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
     },
     "kgDisponibles": 60,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
-    "createdAt": "2026-09-05T00:00:00.000Z",
-    "updatedAt": "2026-09-05T00:00:00.000Z"
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-004",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Caturra Lavado — Parcela Baja",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1850,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "caramelo",
+      "almendra",
+      "lima"
+    ],
+    "descripcion": "Lavado clásico de Caturra con fermentación controlada de 36 horas. Perfil limpio y equilibrado ideal para espresso y filtrado.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3800,
+      "kg1": 14440,
+      "kg5": 64600
+    },
+    "kgDisponibles": 140,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-005",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Bourbon Natural — Secado Lento",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1850,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "ciruela",
+      "uva pasa",
+      "coco"
+    ],
+    "descripcion": "Natural de secado prolongado en 28 días bajo sol controlado. Perfil de fruta oscura con retrogusto largo y dulce.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5200,
+      "kg1": 19760,
+      "kg5": 88400
+    },
+    "kgDisponibles": 45,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-006",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Caturra Anaeróbico — Fermentación 72h",
+    "variedad": "Caturra",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1850,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "cereza",
+      "cacao",
+      "rosa"
+    ],
+    "descripcion": "Anaeróbico con fermentación en tanque cerrado por 72 horas. Perfil complejo y expresivo con acidez vinosa y dulzura de fruta roja.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 30,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-007",
+    "caficultorId": "caficultor-001",
+    "caficultorNombre": "Segundo Rojas Herrera",
+    "nombre": "Bourbon Lavado — Selección Especial",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1850,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "té negro",
+      "bergamota",
+      "chocolate negro"
+    ],
+    "descripcion": "Selección de los mejores granos del lote con triple densimetría. Perfil fino y elegante con notas de té y chocolate de alta calidad.",
+    "puntajeReferencial": 88,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5800,
+      "kg1": 22040,
+      "kg5": 98600
+    },
+    "kgDisponibles": 25,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-008",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Caturra Lavado — Finca San Ignacio",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1760,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "durazno",
+      "caramelo",
+      "almendra"
+    ],
+    "descripcion": "Lavado de fermentación tradicional de 24 horas en San Ignacio. Café de perfil suave y accesible con dulzura de fruta amarilla.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4100,
+      "kg1": 15580,
+      "kg5": 69700
+    },
+    "kgDisponibles": 110,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-009",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Pache Natural — Camas Africanas",
+    "variedad": "Pache",
+    "proceso": "natural",
+    "altitudMsnm": 1760,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "fresa",
+      "guayaba",
+      "miel de abeja"
+    ],
+    "descripcion": "Pache natural secado en camas elevadas durante 21 días. Variedad poco común con notas de fruta tropical y dulzura persistente.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 70,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-010",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Bourbon Lavado — Parcela Alta",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1760,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "manzana verde",
+      "vainilla",
+      "avellana"
+    ],
+    "descripcion": "Bourbon de la parcela más alta de la finca con fermentación prolongada que acentúa las notas frutales. Acidez brillante y final dulce.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4900,
+      "kg1": 18620,
+      "kg5": 83300
+    },
+    "kgDisponibles": 95,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-011",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Caturra Honey — Proceso Amarillo",
+    "variedad": "Caturra",
+    "proceso": "honey",
+    "altitudMsnm": 1760,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "albaricoque",
+      "jazmín",
+      "fruta tropical"
+    ],
+    "descripcion": "Honey amarillo con 40% de mucílago conservado. Equilibrio entre claridad del lavado y dulzura del natural, con floral delicado.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4400,
+      "kg1": 16720,
+      "kg5": 74800
+    },
+    "kgDisponibles": 55,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-012",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Pache Lavado — Lote Mujeres",
+    "variedad": "Pache",
+    "proceso": "lavado",
+    "altitudMsnm": 1760,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "lima",
+      "té negro",
+      "caramelo"
+    ],
+    "descripcion": "Lote producido íntegramente por la asociación de mujeres caficultoras de San Ignacio. Pache lavado con notas cítricas y cuerpo medio.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 130,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-013",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Bourbon Natural — Lote Reserva",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1760,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "dátil",
+      "piña",
+      "uva pasa"
+    ],
+    "descripcion": "Natural de reserva con cerezas seleccionadas a mano. Secado de 25 días bajo sombra parcial que preserva los azúcares naturales del fruto.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5300,
+      "kg1": 20140,
+      "kg5": 90100
+    },
+    "kgDisponibles": 40,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-014",
+    "caficultorId": "caficultor-002",
+    "caficultorNombre": "Nelly Díaz Castillo",
+    "nombre": "Caturra Anaeróbico — Lote Experimental",
+    "variedad": "Caturra",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1760,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "vino tinto",
+      "arándano",
+      "lavanda"
+    ],
+    "descripcion": "Primer lote anaeróbico de la finca, fermentado en bidones sellados por 60 horas. Perfil vinoso con floral intenso, experimental y único.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5600,
+      "kg1": 21280,
+      "kg5": 95200
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-015",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Catimor Lavado — Valle de Jaén",
+    "variedad": "Catimor",
+    "proceso": "lavado",
+    "altitudMsnm": 1420,
+    "cosecha": "Abril 2026",
+    "notasSabor": [
+      "chocolate negro",
+      "caramelo",
+      "avellana"
+    ],
+    "descripcion": "Catimor lavado de tierras medias con cuerpo pronunciado y dulzura de chocolate. Perfil consistente ideal para espresso de volumen.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3600,
+      "kg1": 13680,
+      "kg5": 61200
+    },
+    "kgDisponibles": 180,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-016",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Mundo Novo Natural — Finca Jaén",
+    "variedad": "Mundo Novo",
+    "proceso": "natural",
+    "altitudMsnm": 1420,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "mora",
+      "guayaba",
+      "coco"
+    ],
+    "descripcion": "Mundo Novo poco habitual en Perú, procesado en natural con notas exuberantes de fruta tropical oscura. Cuerpo pleno y retrogusto persistente.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 75,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-017",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Caturra Natural — Lote Estación Seca",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1420,
+    "cosecha": "Abril 2026",
+    "notasSabor": [
+      "fresa",
+      "guayaba",
+      "miel de abeja"
+    ],
+    "descripcion": "Natural de Caturra secado en camas africanas con notas tropicales expresivas. Dulzura prominente y cuerpo pleno que refleja la riqueza de la región.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3800,
+      "kg1": 14440,
+      "kg5": 64600
+    },
+    "kgDisponibles": 150,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-018",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Marsellesa Natural — Lote Experimental",
+    "variedad": "Marsellesa",
+    "proceso": "natural",
+    "altitudMsnm": 1420,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "maracuyá",
+      "dátil",
+      "miel de abeja"
+    ],
+    "descripcion": "Marsellesa, variedad resistente con excelente potencial de taza, procesada en natural. Notas tropicales intensas con dulzura de miel bien integrada.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 65,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-019",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Catimor Honey — Finca Baja",
+    "variedad": "Catimor",
+    "proceso": "honey",
+    "altitudMsnm": 1420,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "manzanilla",
+      "caña de azúcar",
+      "melocotón"
+    ],
+    "descripcion": "Honey de Catimor con mucílago completo conservado durante el secado. Suavidad herbácea con dulzura de caña y final de fruta amarilla.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 100,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-020",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Caturra Lavado — Parcela Río",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1420,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "lima",
+      "té negro",
+      "chocolate negro"
+    ],
+    "descripcion": "Parcela junto al río con suelo franco arcilloso que aporta mineralidad al perfil de taza. Lavado limpio con acidez cítrica y cuerpo sólido.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4100,
+      "kg1": 15580,
+      "kg5": 69700
+    },
+    "kgDisponibles": 120,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-021",
+    "caficultorId": "caficultor-003",
+    "caficultorNombre": "Pedro Humberto Llatas Quiroz",
+    "nombre": "Mundo Novo Natural — Cosecha Temprana",
+    "variedad": "Mundo Novo",
+    "proceso": "natural",
+    "altitudMsnm": 1420,
+    "cosecha": "Abril 2026",
+    "notasSabor": [
+      "maracuyá",
+      "coco",
+      "uva pasa"
+    ],
+    "descripcion": "Natural de Mundo Novo secado en camas africanas con notas tropicales expresivas. Dulzura prominente y cuerpo pleno que refleja la riqueza de la región.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3600,
+      "kg1": 13680,
+      "kg5": 61200
+    },
+    "kgDisponibles": 160,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-022",
+    "caficultorId": "caficultor-004",
+    "caficultorNombre": "Inés Quispe Mamani",
+    "nombre": "Typica Lavado — Yungas de Cusco",
+    "variedad": "Typica",
+    "proceso": "lavado",
+    "altitudMsnm": 1550,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "durazno",
+      "caramelo",
+      "avellana"
+    ],
+    "descripcion": "Typica lavado cultivada bajo sombra nativa en las yungas cusqueñas. Variedad patrimonial con perfil suave, dulce y de gran tradición.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 90,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-023",
+    "caficultorId": "caficultor-004",
+    "caficultorNombre": "Inés Quispe Mamani",
+    "nombre": "Bourbon Natural — Quellouno",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1550,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "fresa",
+      "maracuyá",
+      "miel de abeja"
+    ],
+    "descripcion": "Natural de Bourbon con notas de fruta roja tropical que reflejan la biodiversidad de las yungas. Dulzura intensa y cuerpo cremoso.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
+    },
+    "kgDisponibles": 65,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-024",
+    "caficultorId": "caficultor-004",
+    "caficultorNombre": "Inés Quispe Mamani",
+    "nombre": "Typica Honey — Parcela Sombra",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1550,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "albaricoque",
+      "jazmín",
+      "miel"
+    ],
+    "descripcion": "Typica honey de parcela bajo sombra densa de cedro y pacae. La fermentación natural del mucílago aporta dulzura floral característica.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4900,
+      "kg1": 18620,
+      "kg5": 83300
+    },
+    "kgDisponibles": 50,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-025",
+    "caficultorId": "caficultor-004",
+    "caficultorNombre": "Inés Quispe Mamani",
+    "nombre": "Bourbon Natural — Finca Comunal",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1550,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "fresa",
+      "mora",
+      "piña"
+    ],
+    "descripcion": "Natural de Bourbon secado en camas africanas con notas tropicales expresivas. Dulzura prominente y cuerpo pleno que refleja la riqueza de la región.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 115,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-026",
+    "caficultorId": "caficultor-004",
+    "caficultorNombre": "Inés Quispe Mamani",
+    "nombre": "Caturra Natural — Lote Tardío",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1550,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "ciruela",
+      "coco",
+      "piña"
+    ],
+    "descripcion": "Cosecha tardía de Caturra en natural, cuando los frutos están sobremaduros y concentran más azúcares. Perfil exuberante y tropical.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 40,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-027",
+    "caficultorId": "caficultor-004",
+    "caficultorNombre": "Inés Quispe Mamani",
+    "nombre": "Typica Lavado — Reserva Cusco",
+    "variedad": "Typica",
+    "proceso": "lavado",
+    "altitudMsnm": 1550,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "bergamota",
+      "caramelo",
+      "almendra"
+    ],
+    "descripcion": "Reserva anual de Typica de los mejores granos seleccionados. Fermentación de 36 horas que resalta la elegancia y fineza de esta variedad ancestral.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5100,
+      "kg1": 19380,
+      "kg5": 86700
+    },
+    "kgDisponibles": 35,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-028",
+    "caficultorId": "caficultor-005",
+    "caficultorNombre": "Eulogio Ccopa Huanca",
+    "nombre": "Typica Lavado — La Convención",
+    "variedad": "Typica",
+    "proceso": "lavado",
+    "altitudMsnm": 1680,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "durazno",
+      "avellana",
+      "té negro"
+    ],
+    "descripcion": "Typica cultivada bajo frutales en La Convención, con matices dulces heredados del microclima húmedo. Fermentación en pozas de madera de 30 horas.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
+    },
+    "kgDisponibles": 85,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-029",
+    "caficultorId": "caficultor-005",
+    "caficultorNombre": "Eulogio Ccopa Huanca",
+    "nombre": "Bourbon Natural — Finca Santa Ana",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1680,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "mora",
+      "guayaba",
+      "uva pasa"
+    ],
+    "descripcion": "Natural de Bourbon con cerezas rojas seleccionadas manualmente. Secado lento de 24 días con volteo diario para uniformidad de perfil.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5200,
+      "kg1": 19760,
+      "kg5": 88400
+    },
+    "kgDisponibles": 55,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-030",
+    "caficultorId": "caficultor-005",
+    "caficultorNombre": "Eulogio Ccopa Huanca",
+    "nombre": "Typica Honey — Bajo Sombra Frutal",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1680,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "fruta tropical",
+      "caña de azúcar",
+      "miel"
+    ],
+    "descripcion": "Honey de Typica con influencia de los frutales que dan sombra a la parcela. Perfil dulce y tropical con textura sedosa en taza.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4900,
+      "kg1": 18620,
+      "kg5": 83300
+    },
+    "kgDisponibles": 45,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-031",
+    "caficultorId": "caficultor-005",
+    "caficultorNombre": "Eulogio Ccopa Huanca",
+    "nombre": "Caturra Lavado — Parcela Alta",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1680,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "manzana verde",
+      "caramelo",
+      "almendra"
+    ],
+    "descripcion": "Caturra de la parcela más alta de la finca con 40 años de antigüedad. Lavado que expresa la complejidad de cafetales viejos con suelo profundo.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 80,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-032",
+    "caficultorId": "caficultor-005",
+    "caficultorNombre": "Eulogio Ccopa Huanca",
+    "nombre": "Bourbon Anaeróbico — Cusco Experimental",
+    "variedad": "Bourbon",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1680,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "cereza",
+      "vino tinto",
+      "cacao"
+    ],
+    "descripcion": "Anaeróbico de Bourbon con fermentación a temperatura controlada de 18°C por 80 horas. Perfil complejo con acidez vinosa y retrogusto de cacao.",
+    "puntajeReferencial": 88,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5800,
+      "kg1": 22040,
+      "kg5": 98600
+    },
+    "kgDisponibles": 22,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-033",
+    "caficultorId": "caficultor-005",
+    "caficultorNombre": "Eulogio Ccopa Huanca",
+    "nombre": "Typica Honey — Selección Familiar",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1680,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "albaricoque",
+      "miel",
+      "caña de azúcar"
+    ],
+    "descripcion": "Honey de Typica con mucílago parcialmente conservado durante el secado. Dulzura equilibrada con notas de fruta de hueso y floral delicado.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5100,
+      "kg1": 19380,
+      "kg5": 86700
+    },
+    "kgDisponibles": 30,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-034",
+    "caficultorId": "caficultor-006",
+    "caficultorNombre": "Rosa Elvira Ramírez Torres",
+    "nombre": "Caturra Lavado — Moyobamba",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1310,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "mandarina",
+      "caramelo",
+      "avellana"
+    ],
+    "descripcion": "Caturra lavado de la tierra del helecho arbóreo, procesado en beneficio propio con agua de manantial. Cuerpo redondo y acidez suave característica de Moyobamba.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 145,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-035",
+    "caficultorId": "caficultor-006",
+    "caficultorNombre": "Rosa Elvira Ramírez Torres",
+    "nombre": "Catimor Natural — Valle Alto Mayo",
+    "variedad": "Catimor",
+    "proceso": "natural",
+    "altitudMsnm": 1310,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "maracuyá",
+      "piña",
+      "coco"
+    ],
+    "descripcion": "Natural de Catimor aprovechando la humedad regulada del Alto Mayo. Perfil tropical exuberante con dulzura prominente y cuerpo pleno.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3600,
+      "kg1": 13680,
+      "kg5": 61200
+    },
+    "kgDisponibles": 160,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-036",
+    "caficultorId": "caficultor-006",
+    "caficultorNombre": "Rosa Elvira Ramírez Torres",
+    "nombre": "Bourbon Lavado — Hermanos Ramírez",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1310,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "durazno",
+      "chocolate negro",
+      "lima"
+    ],
+    "descripcion": "Lote trabajado en conjunto con los hermanos Ramírez en parcelas adyacentes. Bourbon lavado con notas de fruta amarilla y chocolate limpio.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4100,
+      "kg1": 15580,
+      "kg5": 69700
+    },
+    "kgDisponibles": 110,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-037",
+    "caficultorId": "caficultor-006",
+    "caficultorNombre": "Rosa Elvira Ramírez Torres",
+    "nombre": "Caturra Honey — Mucílago Rojo",
+    "variedad": "Caturra",
+    "proceso": "honey",
+    "altitudMsnm": 1310,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "albaricoque",
+      "fruta tropical",
+      "caña de azúcar"
+    ],
+    "descripcion": "Honey rojo con más del 60% de mucílago conservado. Proceso que realza la dulzura natural de la Caturra de tierras medias sanmartinas.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 75,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-038",
+    "caficultorId": "caficultor-006",
+    "caficultorNombre": "Rosa Elvira Ramírez Torres",
+    "nombre": "Catimor Lavado — Lote Familia",
+    "variedad": "Catimor",
+    "proceso": "lavado",
+    "altitudMsnm": 1310,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "caramelo",
+      "almendra",
+      "vainilla"
+    ],
+    "descripcion": "Producción familiar de Catimor lavado con técnica depurada durante años. Café de entrada accesible y consistente, ideal para tostado medio.",
+    "puntajeReferencial": 80,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3500,
+      "kg1": 13300,
+      "kg5": 59500
+    },
+    "kgDisponibles": 200,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-039",
+    "caficultorId": "caficultor-006",
+    "caficultorNombre": "Rosa Elvira Ramírez Torres",
+    "nombre": "Bourbon Natural — San Martín Alto",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1310,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "mora",
+      "dátil",
+      "guayaba"
+    ],
+    "descripcion": "Natural de Bourbon secado en lonas sobre plataformas elevadas durante 20 días. Las condiciones húmedas del Alto Mayo aportan notas de fruta oscura.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 70,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-040",
+    "caficultorId": "caficultor-007",
+    "caficultorNombre": "Juan Aurelio Pérez Saavedra",
+    "nombre": "Caturra Honey — Lamas",
+    "variedad": "Caturra",
+    "proceso": "honey",
+    "altitudMsnm": 1200,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "miel",
+      "melocotón",
+      "manzanilla"
+    ],
+    "descripcion": "Primer honey de la finca Pérez Saavedra, proceso aprendido con asistencia técnica. Mucílago conservado al 50% que entrega dulzura floral y suavidad.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 95,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-041",
+    "caficultorId": "caficultor-007",
+    "caficultorNombre": "Juan Aurelio Pérez Saavedra",
+    "nombre": "Bourbon Lavado — Tradición Lamas",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1200,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "caramelo",
+      "chocolate negro",
+      "avellana"
+    ],
+    "descripcion": "Lavado tradicional de Bourbon siguiendo la técnica de tres generaciones de la familia Pérez. Café confiable con cuerpo sólido y retrogusto limpio.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3700,
+      "kg1": 14060,
+      "kg5": 62900
+    },
+    "kgDisponibles": 170,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-042",
+    "caficultorId": "caficultor-007",
+    "caficultorNombre": "Juan Aurelio Pérez Saavedra",
+    "nombre": "Marsellesa Natural — Lote Nuevo",
+    "variedad": "Marsellesa",
+    "proceso": "natural",
+    "altitudMsnm": 1200,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "maracuyá",
+      "fresa",
+      "piña"
+    ],
+    "descripcion": "Natural de Marsellesa de parcelas nuevas en Lamas. Variedad resistente que en natural expresa notas de fruta tropical fresca y acidez vivaz.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 100,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-043",
+    "caficultorId": "caficultor-007",
+    "caficultorNombre": "Juan Aurelio Pérez Saavedra",
+    "nombre": "Catimor Lavado — Valle Tarapoto",
+    "variedad": "Catimor",
+    "proceso": "lavado",
+    "altitudMsnm": 1200,
+    "cosecha": "Abril 2026",
+    "notasSabor": [
+      "lima",
+      "vainilla",
+      "caramelo"
+    ],
+    "descripcion": "Catimor lavado de las tierras del valle cercano a Tarapoto. Perfil clásico y consistente con dulzura de vainilla y finalidad cítrica.",
+    "puntajeReferencial": 80,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3500,
+      "kg1": 13300,
+      "kg5": 59500
+    },
+    "kgDisponibles": 190,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-044",
+    "caficultorId": "caficultor-007",
+    "caficultorNombre": "Juan Aurelio Pérez Saavedra",
+    "nombre": "Caturra Natural — Lomas de Lamas",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1200,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "coco",
+      "guayaba",
+      "miel de abeja"
+    ],
+    "descripcion": "Natural de Caturra en las lomas de Lamas aprovechando el viento seco de la estación. Dulzura de coco con notas tropicales frescas.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3800,
+      "kg1": 14440,
+      "kg5": 64600
+    },
+    "kgDisponibles": 80,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-045",
+    "caficultorId": "caficultor-007",
+    "caficultorNombre": "Juan Aurelio Pérez Saavedra",
+    "nombre": "Bourbon Honey — Lote Especial",
+    "variedad": "Bourbon",
+    "proceso": "honey",
+    "altitudMsnm": 1200,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "jazmín",
+      "albaricoque",
+      "miel"
+    ],
+    "descripcion": "Honey de Bourbon con secado en camas africanas artesanales construidas por la familia. Floral y dulce con notas de albaricoque que perduran.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 60,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-046",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Bourbon Lavado — Satipo",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1650,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "mandarina",
+      "chocolate negro",
+      "avellana"
+    ],
+    "descripcion": "Bourbon lavado de la Selva Central con fermentación en poza de cemento. La altitud de Satipo aporta acidez brillante y notas cítricas bien definidas.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 105,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-047",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Caturra Natural — Parcela Madre",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1650,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "fresa",
+      "ciruela",
+      "uva pasa"
+    ],
+    "descripcion": "Natural de la parcela más antigua de la finca, sembrada por la madre de Luz Marina. Caturra de planta vieja con complejidad y profundidad notables.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
+    },
+    "kgDisponibles": 50,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-048",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Typica Honey — Beneficio Húmedo Propio",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1650,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "melocotón",
+      "fruta tropical",
+      "jazmín"
+    ],
+    "descripcion": "Honey de Typica con mucílago parcialmente conservado durante el secado. Dulzura equilibrada con notas de fruta de hueso y floral delicado.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 90,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-049",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Pache Honey — Microclima Satipo",
+    "variedad": "Pache",
+    "proceso": "honey",
+    "altitudMsnm": 1650,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "melocotón",
+      "caña de azúcar",
+      "fruta tropical"
+    ],
+    "descripcion": "Honey de Pache aprovechando el microclima de Satipo para secado uniforme. Variedad de porte bajo con perfil dulce y textura suave.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 65,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-050",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Bourbon Natural — Lote Terraza Alta",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1650,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "mora",
+      "dátil",
+      "guayaba"
+    ],
+    "descripcion": "Natural de la terraza más alta con exposición solar directa para secado intenso de 22 días. Fruta oscura pronunciada con dulzura de dátil.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4900,
+      "kg1": 18620,
+      "kg5": 83300
+    },
+    "kgDisponibles": 45,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-051",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Caturra Lavado — Parcela Nueva",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1650,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "manzana verde",
+      "bergamota",
+      "almendra"
+    ],
+    "descripcion": "Caturra de parcela reinjertada hace tres años con material genético mejorado. Lavado que expresa la frescura de planta joven con acidez limpia.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 80,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-052",
+    "caficultorId": "caficultor-008",
+    "caficultorNombre": "Luz Marina Cóndor Palomino",
+    "nombre": "Bourbon Anaeróbico — Primer Lote",
+    "variedad": "Bourbon",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1650,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "cereza",
+      "rosa",
+      "fruta fermentada"
+    ],
+    "descripcion": "Debut anaeróbico de Luz Marina con fermentación en tanques de plástico sellados. Perfil intenso de cereza y floral que sorprende por su complejidad.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 25,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-053",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Bourbon Lavado — Chanchamayo Clásico",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1780,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "manzana verde",
+      "caramelo",
+      "chocolate negro"
+    ],
+    "descripcion": "El café más representativo de la finca Huamán, un Bourbon lavado de alta precisión que lleva la tradición de Chanchamayo. Acidez viva y cuerpo pleno.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
+    },
+    "kgDisponibles": 125,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-054",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Caturra Natural — Perené",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1780,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "ciruela",
+      "maracuyá",
+      "miel de abeja"
+    ],
+    "descripcion": "Natural de Caturra con secado en plataforma de madera junto al río Perené. La brisa del valle fresco asegura secado lento y perfil frutal complejo.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5200,
+      "kg1": 19760,
+      "kg5": 88400
+    },
+    "kgDisponibles": 55,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-055",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Bourbon Natural — Lote Reserva Anual",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1780,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "uva pasa",
+      "mora",
+      "dátil"
+    ],
+    "descripcion": "Reserva anual de natural con la selección de las mejores cerezas de toda la cosecha. Complejidad de fruta oscura madura con dulzura prolongada.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5600,
+      "kg1": 21280,
+      "kg5": 95200
+    },
+    "kgDisponibles": 30,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-056",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Caturra Lavado — Finca Alta Chanchamayo",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1780,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "lima",
+      "avellana",
+      "bergamota"
+    ],
+    "descripcion": "Caturra de la parte más alta de la finca donde las noches frías alargan la maduración. Lavado preciso con acidez brillante y notas cítricas finas.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5100,
+      "kg1": 19380,
+      "kg5": 86700
+    },
+    "kgDisponibles": 70,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-057",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Bourbon Honey — Lote Dorado",
+    "variedad": "Bourbon",
+    "proceso": "honey",
+    "altitudMsnm": 1780,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "albaricoque",
+      "caña de azúcar",
+      "jazmín"
+    ],
+    "descripcion": "Honey dorado de Bourbon con 30% de mucílago para perfil entre lavado y natural. Elegancia floral con dulzura equilibrada y acidez suave.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
+    },
+    "kgDisponibles": 60,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-058",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Typica Honey — Herencia Chanchamayo",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1780,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "miel",
+      "albaricoque",
+      "manzanilla"
+    ],
+    "descripcion": "Honey de Typica con mucílago parcialmente conservado durante el secado. Dulzura equilibrada con notas de fruta de hueso y floral delicado.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5100,
+      "kg1": 19380,
+      "kg5": 86700
+    },
+    "kgDisponibles": 40,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-059",
+    "caficultorId": "caficultor-009",
+    "caficultorNombre": "Ángel Huamán Flores",
+    "nombre": "Caturra Anaeróbico — Valle Perené",
+    "variedad": "Caturra",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1780,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "arándano",
+      "vino tinto",
+      "lavanda"
+    ],
+    "descripcion": "Anaeróbico de Caturra inspirado en técnicas de fermentación de vinos del sur del Perú. Notas de fruta roja con floral lavanda y final vinoso prolongado.",
+    "puntajeReferencial": 88,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5800,
+      "kg1": 22040,
+      "kg5": 98600
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-060",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Caturra Lavado — Utcubamba",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1490,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "mandarina",
+      "caramelo",
+      "almendra"
+    ],
+    "descripcion": "Caturra lavado de la cuenca del Utcubamba, procesado con cuidado y precisión por la asociación de mujeres. Perfil accesible con acidez cítrica fina.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 100,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-061",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Bourbon Natural — Bagua Grande",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1490,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "guayaba",
+      "maracuyá",
+      "miel de abeja"
+    ],
+    "descripcion": "Natural de Bourbon del valle protegido de Bagua Grande con notas tropicales características del Amazonas peruano. Dulzura equilibrada con acidez suave.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 75,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-062",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Typica Anaeróbico — Lote Mujeres Productoras",
+    "variedad": "Typica",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1490,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "vino tinto",
+      "cereza",
+      "rosa"
+    ],
+    "descripcion": "Anaeróbico de Typica con fermentación en tanque sellado. Perfil complejo con acidez vinosa, fruta roja y retrogusto prolongado.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 90,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-063",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Pache Honey — Valle Utcubamba",
+    "variedad": "Pache",
+    "proceso": "honey",
+    "altitudMsnm": 1490,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "miel",
+      "melocotón",
+      "fruta tropical"
+    ],
+    "descripcion": "Honey de Pache aprovechando las condiciones secas del valle del Utcubamba en la estación de menor lluvia. Dulzura intensa con notas de fruta de hueso.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 55,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-064",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Catimor Lavado — Finca Amazonas",
+    "variedad": "Catimor",
+    "proceso": "lavado",
+    "altitudMsnm": 1490,
+    "cosecha": "Abril 2026",
+    "notasSabor": [
+      "lima",
+      "caramelo",
+      "chocolate negro"
+    ],
+    "descripcion": "Catimor lavado de las parcelas bajas con cuerpo pronunciado y dulzura accesible. Opción de entrada perfecta para cafeterías que buscan volumen y calidad.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3700,
+      "kg1": 14060,
+      "kg5": 62900
+    },
+    "kgDisponibles": 155,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-065",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Bourbon Natural — Cosecha Tardía",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1490,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "piña",
+      "coco",
+      "mora"
+    ],
+    "descripcion": "Cosecha tardía de Bourbon en natural cuando los frutos pasan su punto óptimo y concentran azúcares adicionales. Dulzura tropical intensa.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 40,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-066",
+    "caficultorId": "caficultor-010",
+    "caficultorNombre": "Marleni Sangama Shupingahua",
+    "nombre": "Caturra Lavado — Lote Selección",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1490,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "bergamota",
+      "almendra",
+      "manzana verde"
+    ],
+    "descripcion": "Selección de los mejores granos de la cosecha con densimetría y mesa gravitacional. Lavado de alta calidad para presentaciones especiales.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4800,
+      "kg1": 18240,
+      "kg5": 81600
+    },
+    "kgDisponibles": 35,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-067",
+    "caficultorId": "caficultor-011",
+    "caficultorNombre": "Carlos Efraín Valera Guevara",
+    "nombre": "Geisha Lavado — Rodríguez de Mendoza",
+    "variedad": "Geisha",
+    "proceso": "lavado",
+    "altitudMsnm": 1920,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "bergamota",
+      "jazmín",
+      "durazno"
+    ],
+    "descripcion": "Geisha lavado del Amazonas alto a 1920 msnm. Perfil floral delicado con acidez refinada y retrogusto de fruta amarilla que define esta variedad excepcional.",
+    "puntajeReferencial": 89,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 6500,
+      "kg1": 24700,
+      "kg5": 110500
+    },
+    "kgDisponibles": 22,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-068",
+    "caficultorId": "caficultor-011",
+    "caficultorNombre": "Carlos Efraín Valera Guevara",
+    "nombre": "Bourbon Anaeróbico — Gran Reserva",
+    "variedad": "Bourbon",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1920,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "cereza",
+      "rosa",
+      "cacao"
+    ],
+    "descripcion": "Gran reserva anaeróbico de Bourbon a alta altitud. Fermentación de 96 horas a temperatura de 15°C para perfil de excepcional complejidad.",
+    "puntajeReferencial": 89,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 6200,
+      "kg1": 23560,
+      "kg5": 105400
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-069",
+    "caficultorId": "caficultor-011",
+    "caficultorNombre": "Carlos Efraín Valera Guevara",
+    "nombre": "Geisha Natural — Lote Micro",
+    "variedad": "Geisha",
+    "proceso": "natural",
+    "altitudMsnm": 1920,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "guayaba",
+      "maracuyá",
+      "fresa"
+    ],
+    "descripcion": "Micro-lote de Geisha en natural, secada en camas africanas por 30 días bajo supervisión diaria. La riqueza tropical de este lote es extraordinaria.",
+    "puntajeReferencial": 89,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 6400,
+      "kg1": 24320,
+      "kg5": 108800
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-070",
+    "caficultorId": "caficultor-011",
+    "caficultorNombre": "Carlos Efraín Valera Guevara",
+    "nombre": "Bourbon Lavado — Alta Selva",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1920,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "lima",
+      "avellana",
+      "té negro"
+    ],
+    "descripcion": "Bourbon lavado del punto más alto de la finca donde la temperatura baja a 10°C en las noches. Acidez fina y elegante con retrogusto largo.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 35,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-071",
+    "caficultorId": "caficultor-011",
+    "caficultorNombre": "Carlos Efraín Valera Guevara",
+    "nombre": "Geisha Honey — Experimental Amazónico",
+    "variedad": "Geisha",
+    "proceso": "honey",
+    "altitudMsnm": 1920,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "jazmín",
+      "albaricoque",
+      "caña de azúcar"
+    ],
+    "descripcion": "Honey de Geisha experimental con secado en estructura cubierta para controlar humedad. Floral intenso con dulzura de albaricoque y caña.",
+    "puntajeReferencial": 89,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 6300,
+      "kg1": 23940,
+      "kg5": 107100
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-072",
+    "caficultorId": "caficultor-011",
+    "caficultorNombre": "Carlos Efraín Valera Guevara",
+    "nombre": "Bourbon Natural — Cimas de Mendoza",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1920,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "mora",
+      "ciruela",
+      "uva pasa"
+    ],
+    "descripcion": "Natural de Bourbon de las cimas de Rodríguez de Mendoza, zona poco explorada del café peruano de altura extrema. Fruta oscura concentrada.",
+    "puntajeReferencial": 88,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5800,
+      "kg1": 22040,
+      "kg5": 98600
+    },
+    "kgDisponibles": 28,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-073",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Typica Lavado — Sandia Alta",
+    "variedad": "Typica",
+    "proceso": "lavado",
+    "altitudMsnm": 2100,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "chocolate negro",
+      "bergamota",
+      "almendra"
+    ],
+    "descripcion": "Typica lavado a 2100 msnm en Sandia, la mayor altitud de este catálogo. Maduración extremadamente lenta que produce una complejidad sin igual.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5600,
+      "kg1": 21280,
+      "kg5": 95200
+    },
+    "kgDisponibles": 40,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-074",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Bourbon Natural — Puno Reserva",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 2100,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "ciruela",
+      "uva pasa",
+      "dátil"
+    ],
+    "descripcion": "Natural de Bourbon puneño a máxima altura. La gran amplitud térmica entre día y noche concentra azúcares hasta niveles extraordinarios.",
+    "puntajeReferencial": 88,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5900,
+      "kg1": 22420,
+      "kg5": 100300
+    },
+    "kgDisponibles": 30,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-075",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Typica Lavado — Tercera Generación",
+    "variedad": "Typica",
+    "proceso": "lavado",
+    "altitudMsnm": 2100,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "té negro",
+      "vainilla",
+      "caramelo"
+    ],
+    "descripcion": "Lote que homenajea tres generaciones de la familia Apaza en Sandia. Typica lavado con la elegancia que solo dan décadas de suelo acondicionado.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 35,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-076",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Caturra Natural — Andes de Puno",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 2100,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "mora",
+      "guayaba",
+      "miel de abeja"
+    ],
+    "descripcion": "Caturra en natural de los Andes puneños. Las temperaturas bajas alargan el secado a 35 días, produciendo una concentración de fruta sin precedentes.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 28,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-077",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Bourbon Honey — Puno Experimental",
+    "variedad": "Bourbon",
+    "proceso": "honey",
+    "altitudMsnm": 2100,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "albaricoque",
+      "miel",
+      "caña de azúcar"
+    ],
+    "descripcion": "Honey de Bourbon a altitud extrema, primer proceso de este tipo en Sandia. La temperatura baja requirió 40 días de secado para resultado sobresaliente.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5600,
+      "kg1": 21280,
+      "kg5": 95200
+    },
+    "kgDisponibles": 22,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-078",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Typica Anaeróbico — Cima Sandia",
+    "variedad": "Typica",
+    "proceso": "anaerobico",
+    "altitudMsnm": 2100,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "vino tinto",
+      "cereza",
+      "lavanda"
+    ],
+    "descripcion": "Anaeróbico de Typica a 2100 msnm, experimento único en altitud extrema. La presión barométrica baja altera la fermentación creando un perfil completamente singular.",
+    "puntajeReferencial": 89,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 6100,
+      "kg1": 23180,
+      "kg5": 103700
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-079",
+    "caficultorId": "caficultor-012",
+    "caficultorNombre": "Demetrio Apaza Condori",
+    "nombre": "Bourbon Lavado — Andes Profundos",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 2100,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "lima",
+      "chocolate negro",
+      "avellana"
+    ],
+    "descripcion": "Lavado de Bourbon de los cafetales más remotos de Sandia. Acceso difícil y café de carácter único, procesado a mano con métodos artesanales.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5200,
+      "kg1": 19760,
+      "kg5": 88400
+    },
+    "kgDisponibles": 38,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-080",
+    "caficultorId": "caficultor-013",
+    "caficultorNombre": "Felicitas Huamaní Ochoa",
+    "nombre": "Catimor Lavado — Valle del Apurímac",
+    "variedad": "Catimor",
+    "proceso": "lavado",
+    "altitudMsnm": 1380,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "chocolate negro",
+      "caramelo",
+      "almendra"
+    ],
+    "descripcion": "Catimor lavado del VRAEM, un café que representa la resiliencia de Sivia. Perfil robusto con notas de chocolate y caramelo bien definidas.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3700,
+      "kg1": 14060,
+      "kg5": 62900
+    },
+    "kgDisponibles": 150,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-081",
+    "caficultorId": "caficultor-013",
+    "caficultorNombre": "Felicitas Huamaní Ochoa",
+    "nombre": "Caturra Natural — Sivia Resurgente",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1380,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "maracuyá",
+      "coco",
+      "miel de abeja"
+    ],
+    "descripcion": "Natural de Caturra de las tierras fértiles del Apurímac. Un café de esperanza que muestra el potencial de la región ayacuchana.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 90,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-082",
+    "caficultorId": "caficultor-013",
+    "caficultorNombre": "Felicitas Huamaní Ochoa",
+    "nombre": "Bourbon Lavado — Finca Sivia",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1380,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "mandarina",
+      "vainilla",
+      "avellana"
+    ],
+    "descripcion": "Bourbon lavado en finca que lleva el nombre de la localidad, símbolo del renacimiento caficultor de Ayacucho. Notas dulces y cítricas con cuerpo medio.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3900,
+      "kg1": 14820,
+      "kg5": 66300
+    },
+    "kgDisponibles": 120,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-083",
+    "caficultorId": "caficultor-013",
+    "caficultorNombre": "Felicitas Huamaní Ochoa",
+    "nombre": "Catimor Honey — Apurímac Dulce",
+    "variedad": "Catimor",
+    "proceso": "honey",
+    "altitudMsnm": 1380,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "miel",
+      "melocotón",
+      "caña de azúcar"
+    ],
+    "descripcion": "Honey de Catimor que transforma esta variedad funcional en algo sorprendente. El mucílago conservado aporta dulzura que el Catimor lavado nunca muestra.",
+    "puntajeReferencial": 82,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4000,
+      "kg1": 15200,
+      "kg5": 68000
+    },
+    "kgDisponibles": 80,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-084",
+    "caficultorId": "caficultor-013",
+    "caficultorNombre": "Felicitas Huamaní Ochoa",
+    "nombre": "Marsellesa Lavado — Valle VRAEM",
+    "variedad": "Marsellesa",
+    "proceso": "lavado",
+    "altitudMsnm": 1380,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "lima",
+      "caramelo",
+      "té negro"
+    ],
+    "descripcion": "Marsellesa lavado resistente a la roya y adaptada al clima del VRAEM. Café de perfil limpio y cítrico que demuestra el potencial de variedades modernas.",
+    "puntajeReferencial": 81,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 3600,
+      "kg1": 13680,
+      "kg5": 61200
+    },
+    "kgDisponibles": 140,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-085",
+    "caficultorId": "caficultor-013",
+    "caficultorNombre": "Felicitas Huamaní Ochoa",
+    "nombre": "Caturra Lavado — Media Hectárea Inicial",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1380,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "chocolate negro",
+      "almendra",
+      "bergamota"
+    ],
+    "descripcion": "Lote de la primera media hectárea con que Felicitas comenzó hace ocho años. Caturra lavado de parcela original con historia e identidad propias.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4200,
+      "kg1": 15960,
+      "kg5": 71400
+    },
+    "kgDisponibles": 70,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-086",
+    "caficultorId": "caficultor-014",
+    "caficultorNombre": "Wilmer Rodríguez Espinoza",
+    "nombre": "Caturra Lavado — Tingo María",
+    "variedad": "Caturra",
+    "proceso": "lavado",
+    "altitudMsnm": 1580,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "durazno",
+      "caramelo",
+      "almendra"
+    ],
+    "descripcion": "Caturra lavado de la capital del café suave peruano. La combinación de altitud media y clima húmedo de Tingo María produce un perfil equilibrado y accesible.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4100,
+      "kg1": 15580,
+      "kg5": 69700
+    },
+    "kgDisponibles": 130,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-087",
+    "caficultorId": "caficultor-014",
+    "caficultorNombre": "Wilmer Rodríguez Espinoza",
+    "nombre": "Typica Anaeróbico — Finca Familiar Huánuco",
+    "variedad": "Typica",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1580,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "arándano",
+      "cacao",
+      "fruta fermentada"
+    ],
+    "descripcion": "Anaeróbico de Typica con fermentación en tanque sellado. Perfil complejo con acidez vinosa, fruta roja y retrogusto prolongado.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 95,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-088",
+    "caficultorId": "caficultor-014",
+    "caficultorNombre": "Wilmer Rodríguez Espinoza",
+    "nombre": "Bourbon Lavado — Sombra Cítrica",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1580,
+    "cosecha": "Mayo 2026",
+    "notasSabor": [
+      "mandarina",
+      "lima",
+      "chocolate negro"
+    ],
+    "descripcion": "Bourbon cultivado bajo sombra de naranjos y mandarinos. Los cítricos vecinos impregnan el suelo y el ambiente con notas que se trasladan al café.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 85,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-089",
+    "caficultorId": "caficultor-014",
+    "caficultorNombre": "Wilmer Rodríguez Espinoza",
+    "nombre": "Caturra Natural — Leoncio Prado",
+    "variedad": "Caturra",
+    "proceso": "natural",
+    "altitudMsnm": 1580,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "fresa",
+      "guayaba",
+      "piña"
+    ],
+    "descripcion": "Natural de Caturra con secado en plataforma de concreto durante 18 días. Fruta tropical fresca característica de las tierras húmedas de Leoncio Prado.",
+    "puntajeReferencial": 83,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4100,
+      "kg1": 15580,
+      "kg5": 69700
+    },
+    "kgDisponibles": 75,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-090",
+    "caficultorId": "caficultor-014",
+    "caficultorNombre": "Wilmer Rodríguez Espinoza",
+    "nombre": "Typica Honey — Bajo Plátano",
+    "variedad": "Typica",
+    "proceso": "honey",
+    "altitudMsnm": 1580,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "albaricoque",
+      "miel",
+      "jazmín"
+    ],
+    "descripcion": "Honey de Typica bajo sombra de plátanos que regulan la temperatura durante el secado. El microclima suave entrega un perfil floral y dulce característico.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4500,
+      "kg1": 17100,
+      "kg5": 76500
+    },
+    "kgDisponibles": 60,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-091",
+    "caficultorId": "caficultor-014",
+    "caficultorNombre": "Wilmer Rodríguez Espinoza",
+    "nombre": "Bourbon Lavado — Agua Pura Tingo",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1580,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "caramelo",
+      "bergamota",
+      "almendra"
+    ],
+    "descripcion": "Lavado con agua de manantial no clorada que preserva la pureza del perfil. Fermentación controlada de 30 horas en poza cubierta con resultado limpio y elegante.",
+    "puntajeReferencial": 84,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4600,
+      "kg1": 17480,
+      "kg5": 78200
+    },
+    "kgDisponibles": 80,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-092",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Bourbon Honey — Chirinos Especial",
+    "variedad": "Bourbon",
+    "proceso": "honey",
+    "altitudMsnm": 1970,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "miel",
+      "albaricoque",
+      "caña de azúcar"
+    ],
+    "descripcion": "Honey de Bourbon de la finca Núñez en Chirinos, zona icónica del café cajamarquino. Mucílago completo preservado en secado lento de 30 días con resultado excepcional.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5200,
+      "kg1": 19760,
+      "kg5": 88400
+    },
+    "kgDisponibles": 55,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-093",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Pache Lavado — Finca Alta Chirinos",
+    "variedad": "Pache",
+    "proceso": "lavado",
+    "altitudMsnm": 1970,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "manzana verde",
+      "bergamota",
+      "almendra"
+    ],
+    "descripcion": "Pache lavado de la finca más alta de Chirinos, variedad poco conocida de porte bajo. Maduración lenta a casi 2000 msnm entrega una fineza aromática muy singular.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5100,
+      "kg1": 19380,
+      "kg5": 86700
+    },
+    "kgDisponibles": 45,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-094",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Bourbon Natural — Cajamarca Alta",
+    "variedad": "Bourbon",
+    "proceso": "natural",
+    "altitudMsnm": 1970,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "mora",
+      "ciruela",
+      "uva pasa"
+    ],
+    "descripcion": "Natural de Bourbon en la zona alta de Cajamarca. Fruta oscura concentrada por la altitud y el secado meticuloso que practica Griselda con su esposo.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 38,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-095",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Pache Natural — Lote Sello",
+    "variedad": "Pache",
+    "proceso": "natural",
+    "altitudMsnm": 1970,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "guayaba",
+      "dátil",
+      "maracuyá"
+    ],
+    "descripcion": "El lote insignia de la finca Núñez, un Pache en natural que expresa toda la personalidad de Chirinos. Fruta tropical madura con dulzura de dátil.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5600,
+      "kg1": 21280,
+      "kg5": 95200
+    },
+    "kgDisponibles": 30,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-096",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Bourbon Lavado — Suelo Volcánico",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1970,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "durazno",
+      "chocolate negro",
+      "vainilla"
+    ],
+    "descripcion": "Bourbon lavado en suelo volcánico de Chirinos, mineral y rico en potasio. La mineralidad del suelo se expresa en la acidez fina y el cuerpo redondo del café.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5100,
+      "kg1": 19380,
+      "kg5": 86700
+    },
+    "kgDisponibles": 60,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-097",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Pache Honey — Primera Vez",
+    "variedad": "Pache",
+    "proceso": "honey",
+    "altitudMsnm": 1970,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "jazmín",
+      "fruta tropical",
+      "miel"
+    ],
+    "descripcion": "Primer honey de Pache de la finca, resultado de tres años aprendiendo el proceso. Perfil floral sorprendente con dulzura tropical y textura suave.",
+    "puntajeReferencial": 86,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5200,
+      "kg1": 19760,
+      "kg5": 88400
+    },
+    "kgDisponibles": 28,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-098",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Bourbon Anaeróbico — Chirinos Tope",
+    "variedad": "Bourbon",
+    "proceso": "anaerobico",
+    "altitudMsnm": 1970,
+    "cosecha": "Julio 2026",
+    "notasSabor": [
+      "cereza",
+      "cacao",
+      "fruta fermentada"
+    ],
+    "descripcion": "Anaeróbico de Bourbon del lote más alto de Chirinos. La altitud cercana a 2000 msnm y la fermentación anaerobia crean un perfil denso e inolvidable.",
+    "puntajeReferencial": 88,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5900,
+      "kg1": 22420,
+      "kg5": 100300
+    },
+    "kgDisponibles": 22,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-099",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Bourbon Lavado — Reserva Anual Chirinos",
+    "variedad": "Bourbon",
+    "proceso": "lavado",
+    "altitudMsnm": 1970,
+    "cosecha": "Junio 2026",
+    "notasSabor": [
+      "lima",
+      "avellana",
+      "té negro"
+    ],
+    "descripcion": "La reserva anual de Griselda, un Bourbon lavado de selección triple que representa lo mejor de la finca. Elegancia y precisión en cada taza.",
+    "puntajeReferencial": 87,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 5500,
+      "kg1": 20900,
+      "kg5": 93500
+    },
+    "kgDisponibles": 20,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
+  },
+  {
+    "id": "producto-100",
+    "caficultorId": "caficultor-015",
+    "caficultorNombre": "Griselda Núñez Tarrillo",
+    "nombre": "Pache Lavado — Cierre de Cosecha",
+    "variedad": "Pache",
+    "proceso": "lavado",
+    "altitudMsnm": 1970,
+    "cosecha": "Agosto 2026",
+    "notasSabor": [
+      "caramelo",
+      "mandarina",
+      "almendra"
+    ],
+    "descripcion": "El último lote de la cosecha 2026 de Chirinos, procesado con la calma del cierre de temporada. Pache lavado de perfil clásico y redondo que cierra el año con dignidad.",
+    "puntajeReferencial": 85,
+    "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
+    "precios": {
+      "g250": 4900,
+      "kg1": 18620,
+      "kg5": 83300
+    },
+    "kgDisponibles": 42,
+    "kgReservados": 0,
+    "status": "activo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
+    "createdAt": "2026-01-15T00:00:00.000Z",
+    "updatedAt": "2026-09-01T00:00:00.000Z"
   }
 ]
