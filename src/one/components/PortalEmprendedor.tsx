@@ -8,6 +8,7 @@
  */
 import React, { useEffect, useState } from 'react'
 import { fetchPedidosByEmprendedor, fetchKitByPedido } from '../service'
+import { demoFetchPedidosByEmprendedor, demoFetchKitByPedido } from '../demoService'
 import { logout } from '../authService'
 import type { PedidoONE, KitIdentidadONE } from '../types'
 
@@ -127,9 +128,10 @@ const KitSection: React.FC<{ kit: KitIdentidadONE }> = ({ kit }) => {
 interface Props {
   usuarioId: string
   nombreUsuario: string
+  isDemo?: boolean
 }
 
-const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario }) => {
+const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo = false }) => {
   const [pedidos, setPedidos] = useState<PedidoONE[]>([])
   const [kits, setKits] = useState<Map<string, KitIdentidadONE>>(new Map())
   const [loading, setLoading] = useState(true)
@@ -138,16 +140,17 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario }) => {
   useEffect(() => {
     async function cargar() {
       try {
-        const data = await fetchPedidosByEmprendedor(usuarioId)
+        const data = isDemo
+          ? await demoFetchPedidosByEmprendedor(usuarioId)
+          : await fetchPedidosByEmprendedor(usuarioId)
         setPedidos(data)
 
-        // Cargar kits de pedidos que tengan kitId
         const kitsMap = new Map<string, KitIdentidadONE>()
         await Promise.all(
           data
             .filter((p) => p.kitGenerado && p.kitId)
             .map(async (p) => {
-              const kit = await fetchKitByPedido(p.id)
+              const kit = isDemo ? await demoFetchKitByPedido(p.id) : await fetchKitByPedido(p.id)
               if (kit) kitsMap.set(p.id, kit)
             })
         )

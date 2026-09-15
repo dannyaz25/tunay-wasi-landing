@@ -22,6 +22,7 @@ import CheckoutONE from '@/one/components/CheckoutONE'
 import AuthScreen from '@/one/components/AuthScreen'
 import AdminONE from '@/one/components/AdminONE'
 import PortalEmprendedor from '@/one/components/PortalEmprendedor'
+import { DEMO_USER } from '@/one/demoService'
 
 // Placeholder para componentes no construidos aún
 const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
@@ -33,12 +34,19 @@ const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
 
 // ─── Auth state ───────────────────────────────────────────────────────────────
 
-function useAuthONE() {
+function useAuthONE(isDemo = false) {
   const [user, setUser] = useState<User | null>(null)
   const [usuarioONE, setUsuarioONE] = useState<UsuarioONE | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (isDemo) {
+      // En modo demo: usuario pre-autenticado, sin Firebase
+      setUser({ uid: DEMO_USER.uid, email: DEMO_USER.email, displayName: DEMO_USER.nombre } as User)
+      setUsuarioONE({ uid: DEMO_USER.uid, rol: DEMO_USER.rol, nombre: DEMO_USER.nombre, email: DEMO_USER.email, telefono: DEMO_USER.telefono, createdAt: '2026-01-01T00:00:00.000Z' })
+      setLoading(false)
+      return
+    }
     const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser)
       if (firebaseUser) {
@@ -46,7 +54,6 @@ function useAuthONE() {
           const u = await fetchUsuario(firebaseUser.uid)
           setUsuarioONE(u)
         } catch {
-          // Usuario autenticado pero sin doc en one_usuarios aún
           setUsuarioONE(null)
         }
       } else {
@@ -55,9 +62,9 @@ function useAuthONE() {
       setLoading(false)
     })
     return unsub
-  }, [])
+  }, [isDemo])
 
-  const isAdmin = user?.email?.endsWith('@tunaywasi.pe') ?? false
+  const isAdmin = isDemo ? false : (user?.email?.endsWith('@tunaywasi.pe') ?? false)
 
   return { user, usuarioONE, loading, isAdmin }
 }
@@ -77,7 +84,8 @@ function useHash() {
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 const AppONE: React.FC = () => {
-  const { user, usuarioONE, loading, isAdmin } = useAuthONE()
+  const isDemo = new URLSearchParams(window.location.search).get('demo') === '1'
+  const { user, usuarioONE, loading, isAdmin } = useAuthONE(isDemo)
   const hash = useHash()
   const [carritoProducto, setCarritoProducto] = useState<ProductoONE | null>(null)
 
@@ -101,17 +109,18 @@ const AppONE: React.FC = () => {
   }
 
   if (hash === '#/checkout') {
-    if (!user) {
+    if (!user && !isDemo) {
       window.location.hash = '#/login'
       return null
     }
     return carritoProducto
       ? <CheckoutONE
           producto={carritoProducto}
-          usuarioId={user.uid}
-          usuarioNombre={usuarioONE?.nombre ?? user.displayName ?? 'Emprendedor'}
-          usuarioEmail={user.email ?? ''}
+          usuarioId={user?.uid ?? DEMO_USER.uid}
+          usuarioNombre={usuarioONE?.nombre ?? user?.displayName ?? 'Emprendedor'}
+          usuarioEmail={user?.email ?? ''}
           usuarioTelefono={usuarioONE?.telefono ?? ''}
+          isDemo={isDemo}
         />
       : <CatalogoPublico onSeleccionar={(p: ProductoONE) => {
           setCarritoProducto(p)
@@ -120,14 +129,15 @@ const AppONE: React.FC = () => {
   }
 
   if (hash === '#/portal') {
-    if (!user) {
+    if (!user && !isDemo) {
       window.location.hash = '#/login'
       return null
     }
     return (
       <PortalEmprendedor
-        usuarioId={user.uid}
-        nombreUsuario={usuarioONE?.nombre ?? user.displayName ?? 'Emprendedor'}
+        usuarioId={user?.uid ?? DEMO_USER.uid}
+        nombreUsuario={usuarioONE?.nombre ?? user?.displayName ?? 'Emprendedor'}
+        isDemo={isDemo}
       />
     )
   }
@@ -141,15 +151,15 @@ const AppONE: React.FC = () => {
   }
 
   if (hash === '#/admin') {
-    if (!isAdmin) {
+    if (!isAdmin && !isDemo) {
       window.location.hash = '#/'
       return null
     }
-    return <AdminONE />
+    return <AdminONE isDemo={isDemo} />
   }
 
   if (hash === '#/login') {
-    if (user) {
+    if (user || isDemo) {
       window.location.hash = carritoProducto ? '#/checkout' : '#/'
       return null
     }
@@ -168,7 +178,7 @@ const AppONE: React.FC = () => {
     <CatalogoPublico
       onSeleccionar={(producto: ProductoONE) => {
         setCarritoProducto(producto)
-        if (!user) {
+        if (!user && !isDemo) {
           window.location.hash = '#/login'
         } else {
           window.location.hash = '#/checkout'

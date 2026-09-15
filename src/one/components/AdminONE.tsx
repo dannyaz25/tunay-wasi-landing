@@ -16,6 +16,13 @@ import {
   fetchCaficultor,
   fetchProducto,
 } from '../service'
+import {
+  demoFetchPedidosAdmin,
+  demoVerificarPago,
+  demoRechazarPago,
+  demoUpdateLogistica,
+  demoGenerarKit,
+} from '../demoService'
 import type { PedidoONE } from '../types'
 import { PAGO_STATUS_LABELS } from '../config'
 import { logout } from '../authService'
@@ -111,18 +118,19 @@ function columnaDePedido(p: PedidoONE): string {
 const TabPedidos: React.FC<{
   pedidos: PedidoONE[]
   onAccion: () => void
-}> = ({ pedidos, onAccion }) => {
+  isDemo: boolean
+}> = ({ pedidos, onAccion, isDemo }) => {
   const [accionando, setAccionando] = useState<string | null>(null)
 
   async function despachar(pedidoId: string) {
     setAccionando(pedidoId)
-    try { await updateLogistica(pedidoId, 'despachado'); onAccion() }
+    try { await (isDemo ? demoUpdateLogistica(pedidoId, 'despachado') : updateLogistica(pedidoId, 'despachado')); onAccion() }
     finally { setAccionando(null) }
   }
 
   async function entregar(pedidoId: string) {
     setAccionando(pedidoId)
-    try { await updateLogistica(pedidoId, 'entregado'); onAccion() }
+    try { await (isDemo ? demoUpdateLogistica(pedidoId, 'entregado') : updateLogistica(pedidoId, 'entregado')); onAccion() }
     finally { setAccionando(null) }
   }
 
@@ -187,20 +195,21 @@ const TabPedidos: React.FC<{
 const TabPagos: React.FC<{
   pedidos: PedidoONE[]
   onAccion: () => void
-}> = ({ pedidos, onAccion }) => {
+  isDemo: boolean
+}> = ({ pedidos, onAccion, isDemo }) => {
   const pendientes = pedidos.filter((p) => p.pagoStatus === 'voucher_subido')
   const [accionando, setAccionando] = useState<string | null>(null)
   const [ampliada, setAmpliada] = useState<string | null>(null)
 
   async function verificar(pedidoId: string) {
     setAccionando(pedidoId)
-    try { await verificarPago(pedidoId); onAccion() }
+    try { await (isDemo ? demoVerificarPago(pedidoId) : verificarPago(pedidoId)); onAccion() }
     finally { setAccionando(null) }
   }
 
   async function rechazar(pedidoId: string) {
     setAccionando(pedidoId)
-    try { await rechazarPago(pedidoId); onAccion() }
+    try { await (isDemo ? demoRechazarPago(pedidoId) : rechazarPago(pedidoId)); onAccion() }
     finally { setAccionando(null) }
   }
 
@@ -274,7 +283,8 @@ const TabPagos: React.FC<{
 const TabKits: React.FC<{
   pedidos: PedidoONE[]
   onAccion: () => void
-}> = ({ pedidos, onAccion }) => {
+  isDemo: boolean
+}> = ({ pedidos, onAccion, isDemo }) => {
   const sinKit = pedidos.filter((p) => p.logisticaStatus === 'entregado' && !p.kitGenerado)
   const [generando, setGenerando] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -283,26 +293,29 @@ const TabKits: React.FC<{
     setGenerando(pedido.id)
     setError(null)
     try {
-      // Obtener datos del caficultor y producto para el kit
-      const productosKit = await Promise.all(
-        pedido.items.map(async (item) => {
-          const prod = await fetchProducto(item.productoId)
-          const cafic = await fetchCaficultor(prod.caficultorId)
-          return {
-            caficultorNombre: cafic.nombre,
-            caficultorFoto: cafic.foto,
-            caficultorRegion: cafic.region,
-            caficultorAltitud: cafic.altitudMsnm,
-            caficultorHistoria: cafic.historia,
-            productoNombre: prod.nombre,
-            variedad: prod.variedad,
-            proceso: prod.proceso,
-            notasSabor: prod.notasSabor,
-            puntajeReferencial: prod.puntajeReferencial,
-          }
-        })
-      )
-      await generarKit(pedido.id, pedido.nombreLocal, pedido.emprendedorId, productosKit)
+      if (isDemo) {
+        await demoGenerarKit(pedido.id)
+      } else {
+        const productosKit = await Promise.all(
+          pedido.items.map(async (item) => {
+            const prod = await fetchProducto(item.productoId)
+            const cafic = await fetchCaficultor(prod.caficultorId)
+            return {
+              caficultorNombre: cafic.nombre,
+              caficultorFoto: cafic.foto,
+              caficultorRegion: cafic.region,
+              caficultorAltitud: cafic.altitudMsnm,
+              caficultorHistoria: cafic.historia,
+              productoNombre: prod.nombre,
+              variedad: prod.variedad,
+              proceso: prod.proceso,
+              notasSabor: prod.notasSabor,
+              puntajeReferencial: prod.puntajeReferencial,
+            }
+          })
+        )
+        await generarKit(pedido.id, pedido.nombreLocal, pedido.emprendedorId, productosKit)
+      }
       onAccion()
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Error al generar el kit')
@@ -472,7 +485,7 @@ const TabMetricas: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
-const AdminONE: React.FC = () => {
+const AdminONE: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) => {
   const [tab, setTab] = useState<Tab>('pedidos')
   const [pedidos, setPedidos] = useState<PedidoONE[]>([])
   const [loading, setLoading] = useState(true)
@@ -480,7 +493,7 @@ const AdminONE: React.FC = () => {
 
   const cargar = useCallback(async () => {
     try {
-      const data = await fetchPedidosAdmin()
+      const data = isDemo ? await demoFetchPedidosAdmin() : await fetchPedidosAdmin()
       setPedidos(data)
       setError(null)
     } catch (e) {
@@ -489,7 +502,7 @@ const AdminONE: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [isDemo])
 
   useEffect(() => { cargar() }, [cargar])
 
@@ -574,9 +587,9 @@ const AdminONE: React.FC = () => {
         )}
         {!loading && !error && (
           <>
-            {tab === 'pedidos' && <TabPedidos pedidos={pedidos} onAccion={cargar} />}
-            {tab === 'pagos' && <TabPagos pedidos={pedidos} onAccion={cargar} />}
-            {tab === 'kits' && <TabKits pedidos={pedidos} onAccion={cargar} />}
+            {tab === 'pedidos' && <TabPedidos pedidos={pedidos} onAccion={cargar} isDemo={isDemo} />}
+            {tab === 'pagos' && <TabPagos pedidos={pedidos} onAccion={cargar} isDemo={isDemo} />}
+            {tab === 'kits' && <TabKits pedidos={pedidos} onAccion={cargar} isDemo={isDemo} />}
             {tab === 'metricas' && <TabMetricas pedidos={pedidos} />}
           </>
         )}

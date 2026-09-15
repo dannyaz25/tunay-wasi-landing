@@ -8,6 +8,7 @@
 import React, { useState, useRef } from 'react'
 import type { ProductoONE } from '../types'
 import { createPedido, subirVoucher } from '../service'
+import { demoCreatePedido, demoSubirVoucher, demoUploadVoucher } from '../demoService'
 import { ONE_CONFIG, FORMATO_LABELS } from '../config'
 import type { FormatoONE } from '../types'
 
@@ -28,7 +29,9 @@ function formatCents(cents: number): string {
   return `S/ ${(cents / 100).toFixed(0)}`
 }
 
-async function uploadToCloudinary(file: File): Promise<string> {
+async function uploadToCloudinary(file: File, isDemo: boolean): Promise<string> {
+  if (isDemo) return demoUploadVoucher(file)
+
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
   const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
 
@@ -320,10 +323,11 @@ interface Paso2Props {
   onBack: () => void
   cargando: boolean
   error: string | null
+  isDemo: boolean
 }
 
 const Paso2: React.FC<Paso2Props> = ({
-  totalCents, metodoPago, onMetodoChange, onVoucherSubido, onNext, onBack, cargando, error,
+  totalCents, metodoPago, onMetodoChange, onVoucherSubido, onNext, onBack, cargando, error, isDemo,
 }) => {
   const fileRef = useRef<HTMLInputElement>(null)
   const [voucherPreview, setVoucherPreview] = useState<string | null>(null)
@@ -336,7 +340,7 @@ const Paso2: React.FC<Paso2Props> = ({
     setVoucherPreview(URL.createObjectURL(file))
     setSubiendoArchivo(true)
     try {
-      const url = await uploadToCloudinary(file)
+      const url = await uploadToCloudinary(file, isDemo)
       setVoucherUrl(url)
       onVoucherSubido(url)
     } catch {
@@ -519,10 +523,11 @@ interface Props {
   usuarioNombre: string
   usuarioEmail: string
   usuarioTelefono: string
+  isDemo?: boolean
 }
 
 const CheckoutONE: React.FC<Props> = ({
-  producto, usuarioId, usuarioNombre, usuarioEmail, usuarioTelefono,
+  producto, usuarioId, usuarioNombre, usuarioEmail, usuarioTelefono, isDemo = false,
 }) => {
   const [step, setStep] = useState(1)
 
@@ -552,7 +557,7 @@ const CheckoutONE: React.FC<Props> = ({
     setCargando(true)
     setError(null)
     try {
-      const id = await createPedido({
+      const input = {
         emprendedorId: usuarioId,
         emprendedorNombre: usuarioNombre,
         emprendedorEmail: usuarioEmail,
@@ -571,8 +576,10 @@ const CheckoutONE: React.FC<Props> = ({
         direccionEntrega,
         esKitProveedor,
         compromisoMeses: esKitProveedor ? ONE_CONFIG.COMPROMISO_MESES_MIN : undefined,
-      })
-      await subirVoucher(id, voucherUrl)
+      }
+      const id = isDemo ? await demoCreatePedido(input) : await createPedido(input)
+      if (isDemo) await demoSubirVoucher(id, voucherUrl)
+      else await subirVoucher(id, voucherUrl)
       setPedidoId(id)
       setStep(3)
     } catch (e: unknown) {
@@ -635,6 +642,7 @@ const CheckoutONE: React.FC<Props> = ({
             onBack={() => setStep(1)}
             cargando={cargando}
             error={error}
+            isDemo={isDemo}
           />
         )}
 
