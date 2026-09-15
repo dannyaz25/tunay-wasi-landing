@@ -345,21 +345,32 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const usarSeed = () => {
+      setProductos(seedProductos as ProductoONE[])
+      setCaficultores(new Map((seedCaficultores as CaficultorONE[]).map((c) => [c.id, c])))
+      setLoading(false)
+    }
+
+    // Timeout de 3 s: si Firestore no responde (DB no existe / offline) cae al seed
+    const timer = setTimeout(usarSeed, 3000)
+
     async function cargar() {
       try {
         const [prods, cafics] = await Promise.all([fetchProductos(), fetchCaficultores()])
+        clearTimeout(timer)
         const productosFinales = prods.length > 0 ? prods : (seedProductos as ProductoONE[])
         const caficsFinales = cafics.length > 0 ? cafics : (seedCaficultores as CaficultorONE[])
         setProductos(productosFinales)
         setCaficultores(new Map(caficsFinales.map((c) => [c.id, c])))
       } catch {
-        setProductos(seedProductos as ProductoONE[])
-        setCaficultores(new Map((seedCaficultores as CaficultorONE[]).map((c) => [c.id, c])))
+        clearTimeout(timer)
+        usarSeed()
       } finally {
         setLoading(false)
       }
     }
     cargar()
+    return () => clearTimeout(timer)
   }, [])
 
   const destacado = productos[0]
