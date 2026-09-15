@@ -1,11 +1,8 @@
 /**
  * CatalogoPublico.tsx — Vista principal pública de TunayWasi ONE
- *
- * Muestra los cafés disponibles con foto del caficultor, historia
- * y precios por formato. Sin filtros. Sin búsqueda.
- * CTA: "Quiero este café para mi cafetería"
+ * Layout estilo Netflix: fondo oscuro, carrusel horizontal con hover expand
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { fetchProductos, fetchCaficultores } from '../service'
 import type { ProductoONE, CaficultorONE } from '../types'
 import { PROCESO_LABELS } from '../config'
@@ -13,6 +10,9 @@ import seedProductos from '../seed/one_productos.json'
 import seedCaficultores from '../seed/one_caficultores.json'
 
 const C = {
+  bg: '#0a0a0a',
+  bgCard: '#141414',
+  bgHover: '#1f1f1f',
   cream: '#f2e0cc',
   green: '#1f3028',
   terra: '#c96e4b',
@@ -20,224 +20,322 @@ const C = {
   tan: '#c4b297',
   brown: '#533b22',
   white: '#ffffff',
+  overlay: 'rgba(0,0,0,0.7)',
 }
 
 interface Props {
   onSeleccionar: (producto: ProductoONE) => void
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
-
 function formatCents(cents: number): string {
   return `S/ ${(cents / 100).toFixed(0)}`
 }
 
-// ─── Subcomponentes ───────────────────────────────────────────────────────────
+// ─── Hero Banner (primer producto destacado) ──────────────────────────────────
 
-const NotasSabor: React.FC<{ notas: string[] }> = ({ notas }) => (
-  <p style={{
-    fontSize: 13,
-    color: C.brown,
-    fontStyle: 'italic',
-    margin: '4px 0 0',
-    fontFamily: 'Cormorant Garamond, serif',
-    letterSpacing: '0.02em',
-  }}>
-    {notas.join(' · ')}
-  </p>
-)
-
-const BadgeProceso: React.FC<{ proceso: string }> = ({ proceso }) => (
-  <span style={{
-    display: 'inline-block',
-    padding: '2px 8px',
-    borderRadius: 12,
-    background: C.sage + '33',
-    color: C.green,
-    fontSize: 11,
-    fontFamily: 'Montserrat, sans-serif',
-    fontWeight: 600,
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-  }}>
-    {PROCESO_LABELS[proceso] ?? proceso}
-  </span>
-)
-
-const PreciosRow: React.FC<{ precios: ProductoONE['precios'] }> = ({ precios }) => (
-  <div style={{
-    display: 'flex',
-    gap: 12,
-    margin: '12px 0',
-    flexWrap: 'wrap',
-  }}>
-    {([
-      ['250g', precios.g250],
-      ['1 kg', precios.kg1],
-      ['5 kg', precios.kg5],
-    ] as [string, number][]).map(([label, cents]) => (
-      <div key={label} style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: C.cream,
-        border: `1px solid ${C.tan}`,
-        borderRadius: 8,
-        padding: '6px 14px',
-        minWidth: 72,
-      }}>
-        <span style={{ fontSize: 11, color: C.tan, fontFamily: 'Montserrat, sans-serif', fontWeight: 600 }}>
-          {label}
-        </span>
-        <span style={{ fontSize: 16, color: C.green, fontWeight: 700, fontFamily: 'Montserrat, sans-serif' }}>
-          {formatCents(cents)}
-        </span>
-      </div>
-    ))}
-  </div>
-)
-
-interface CardProps {
+const HeroBanner: React.FC<{
   producto: ProductoONE
   caficultor: CaficultorONE | undefined
   onSeleccionar: (p: ProductoONE) => void
-}
-
-const ProductoCard: React.FC<CardProps> = ({ producto, caficultor, onSeleccionar }) => (
+}> = ({ producto, caficultor, onSeleccionar }) => (
   <div style={{
-    background: C.white,
-    borderRadius: 16,
+    position: 'relative',
+    height: '56vw',
+    maxHeight: 500,
+    minHeight: 280,
+    background: C.bgCard,
     overflow: 'hidden',
-    boxShadow: '0 2px 12px rgba(31,48,40,0.10)',
-    display: 'flex',
-    flexDirection: 'column',
-    maxWidth: 480,
-    width: '100%',
-    margin: '0 auto',
   }}>
-    {/* Imagen del caficultor / producto */}
-    <div style={{ position: 'relative', height: 220, background: C.tan + '44' }}>
-      {caficultor?.foto ? (
-        <img
-          src={caficultor.foto}
-          alt={caficultor.nombre}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
-      ) : (
-        <div style={{
-          width: '100%', height: '100%',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: C.tan, fontSize: 48,
-        }}>
-          ☕
-        </div>
-      )}
-      {/* Badge de origen */}
-      {caficultor && (
-        <div style={{
-          position: 'absolute', bottom: 12, left: 12,
-          background: 'rgba(31,48,40,0.85)',
-          borderRadius: 8, padding: '6px 12px',
-        }}>
-          <p style={{
-            margin: 0, color: C.cream, fontSize: 13,
-            fontFamily: 'Montserrat, sans-serif', fontWeight: 700,
-          }}>
-            {caficultor.nombre}
-          </p>
-          <p style={{
-            margin: 0, color: C.sage, fontSize: 11,
-            fontFamily: 'Montserrat, sans-serif',
-          }}>
-            {caficultor.region} · {caficultor.altitudMsnm.toLocaleString()} msnm
-          </p>
-        </div>
-      )}
-    </div>
+    {/* Imagen de fondo */}
+    <div style={{
+      position: 'absolute', inset: 0,
+      background: `linear-gradient(to bottom, transparent 40%, ${C.bg} 100%),
+                   linear-gradient(to right, ${C.bg} 0%, transparent 60%)`,
+      zIndex: 1,
+    }} />
+    <div style={{
+      position: 'absolute', inset: 0,
+      background: 'url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1400&q=80) center/cover no-repeat',
+      filter: 'brightness(0.45)',
+    }} />
 
     {/* Contenido */}
-    <div style={{ padding: '20px 24px 24px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
-        <div>
-          <h3 style={{
-            margin: 0,
-            fontSize: 20,
-            fontFamily: 'Cormorant Garamond, serif',
-            color: C.green,
-            fontWeight: 700,
-            lineHeight: 1.2,
-          }}>
-            {producto.nombre}
-          </h3>
-          <p style={{
-            margin: '4px 0 0',
-            fontSize: 13,
-            color: C.tan,
-            fontFamily: 'Montserrat, sans-serif',
-          }}>
-            {producto.variedad} · {producto.cosecha}
-          </p>
-        </div>
-        <BadgeProceso proceso={producto.proceso} />
-      </div>
-
-      <NotasSabor notas={producto.notasSabor} />
-
-      {producto.puntajeReferencial && (
-        <p style={{
-          margin: '8px 0 0',
-          fontSize: 12,
-          color: C.tan,
-          fontFamily: 'Montserrat, sans-serif',
-        }}>
-          ~{producto.puntajeReferencial} pts · <em>{producto.notaReferencial}</em>
-        </p>
-      )}
-
-      <PreciosRow precios={producto.precios} />
-
-      <button
-        onClick={() => onSeleccionar(producto)}
-        style={{
-          width: '100%',
-          padding: '14px 0',
-          background: C.terra,
-          color: C.white,
-          border: 'none',
-          borderRadius: 10,
-          fontSize: 15,
-          fontFamily: 'Montserrat, sans-serif',
-          fontWeight: 700,
-          cursor: 'pointer',
-          letterSpacing: '0.03em',
-          transition: 'opacity 0.15s',
-        }}
-        onMouseOver={(e) => (e.currentTarget.style.opacity = '0.88')}
-        onMouseOut={(e) => (e.currentTarget.style.opacity = '1')}
-      >
-        Quiero este café para mi cafetería →
-      </button>
-
-      {/* Link al perfil del caficultor */}
-      {caficultor && (
-        <a
-          href={`#/caficultor/${caficultor.id}`}
+    <div style={{
+      position: 'absolute', bottom: '12%', left: '4%',
+      zIndex: 2, maxWidth: 480,
+    }}>
+      <p style={{
+        margin: '0 0 6px',
+        fontSize: 11, fontWeight: 700, letterSpacing: '0.18em',
+        color: C.terra, fontFamily: 'Montserrat, sans-serif',
+        textTransform: 'uppercase',
+      }}>
+        {caficultor?.region ?? ''} · {caficultor?.altitudMsnm?.toLocaleString()} msnm
+      </p>
+      <h1 style={{
+        margin: '0 0 10px',
+        fontSize: 'clamp(24px, 4vw, 42px)',
+        fontFamily: 'Cormorant Garamond, serif',
+        fontWeight: 700, color: C.white, lineHeight: 1.1,
+      }}>
+        {producto.nombre}
+      </h1>
+      <p style={{
+        margin: '0 0 6px',
+        fontSize: 14, color: C.cream + 'cc',
+        fontFamily: 'Montserrat, sans-serif', lineHeight: 1.5,
+      }}>
+        {producto.notasSabor.join(' · ')}
+      </p>
+      <p style={{
+        margin: '0 0 20px',
+        fontSize: 13, color: C.tan,
+        fontFamily: 'Montserrat, sans-serif',
+      }}>
+        {PROCESO_LABELS[producto.proceso]} · {producto.variedad} · {producto.cosecha}
+      </p>
+      <div style={{ display: 'flex', gap: 10 }}>
+        <button
+          onClick={() => onSeleccionar(producto)}
           style={{
-            display: 'block',
-            textAlign: 'center',
-            marginTop: 10,
-            fontSize: 12,
-            color: C.tan,
-            fontFamily: 'Montserrat, sans-serif',
-            textDecoration: 'none',
-          }}
-        >
-          Ver historia de {caficultor.nombre} →
+            padding: '10px 24px', borderRadius: 6, border: 'none',
+            background: C.white, color: C.bg,
+            fontSize: 15, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+            cursor: 'pointer', letterSpacing: '0.02em',
+          }}>
+          ▶  Quiero este café
+        </button>
+        <a href={`#/caficultor/${caficultor?.id}`}
+          style={{
+            padding: '10px 20px', borderRadius: 6,
+            background: 'rgba(109,109,110,0.7)',
+            color: C.white, textDecoration: 'none',
+            fontSize: 15, fontWeight: 600, fontFamily: 'Montserrat, sans-serif',
+          }}>
+          ⓘ  Más info
         </a>
-      )}
+      </div>
     </div>
   </div>
 )
+
+// ─── Card del carrusel ────────────────────────────────────────────────────────
+
+const CarruselCard: React.FC<{
+  producto: ProductoONE
+  caficultor: CaficultorONE | undefined
+  onSeleccionar: (p: ProductoONE) => void
+}> = ({ producto, caficultor, onSeleccionar }) => {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        flexShrink: 0,
+        width: 220,
+        borderRadius: 6,
+        overflow: 'visible',
+        position: 'relative',
+        transition: 'transform 0.25s ease, z-index 0s',
+        transform: hovered ? 'scale(1.22)' : 'scale(1)',
+        zIndex: hovered ? 10 : 1,
+        cursor: 'pointer',
+      }}
+    >
+      {/* Thumbnail */}
+      <div style={{
+        width: '100%', height: 130, borderRadius: 6,
+        background: C.bgCard, overflow: 'hidden', position: 'relative',
+      }}>
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `linear-gradient(135deg, ${C.green}88 0%, ${C.brown}44 100%)`,
+        }} />
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 48, opacity: 0.6,
+        }}>
+          ☕
+        </div>
+        {/* Badge proceso */}
+        <span style={{
+          position: 'absolute', top: 8, left: 8,
+          padding: '2px 8px', borderRadius: 4,
+          background: C.terra, color: C.white,
+          fontSize: 9, fontWeight: 700,
+          fontFamily: 'Montserrat, sans-serif', textTransform: 'uppercase',
+          letterSpacing: '0.06em',
+        }}>
+          {PROCESO_LABELS[producto.proceso]}
+        </span>
+      </div>
+
+      {/* Panel expandido al hover */}
+      {hovered && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0,
+          background: C.bgHover,
+          borderRadius: '0 0 6px 6px',
+          padding: '12px 14px 14px',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.8)',
+          zIndex: 10,
+        }}>
+          <p style={{
+            margin: '0 0 2px',
+            fontSize: 13, fontWeight: 700, color: C.white,
+            fontFamily: 'Cormorant Garamond, serif',
+            lineHeight: 1.2,
+          }}>
+            {producto.nombre}
+          </p>
+          <p style={{
+            margin: '0 0 6px',
+            fontSize: 10, color: C.tan,
+            fontFamily: 'Montserrat, sans-serif',
+          }}>
+            {caficultor?.nombre} · {caficultor?.region}
+          </p>
+          <p style={{
+            margin: '0 0 10px',
+            fontSize: 11, color: C.cream + 'aa',
+            fontFamily: 'Montserrat, sans-serif', fontStyle: 'italic',
+          }}>
+            {producto.notasSabor.join(' · ')}
+          </p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: C.terra, fontFamily: 'Montserrat, sans-serif' }}>
+              desde {formatCents(producto.precios.g250)}
+            </span>
+            {producto.puntajeReferencial && (
+              <span style={{ fontSize: 10, color: C.sage, fontFamily: 'Montserrat, sans-serif' }}>
+                ~{producto.puntajeReferencial} pts
+              </span>
+            )}
+          </div>
+          <button
+            onClick={() => onSeleccionar(producto)}
+            style={{
+              width: '100%', padding: '8px 0', borderRadius: 5,
+              border: 'none', background: C.terra, color: C.white,
+              fontSize: 12, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+              cursor: 'pointer',
+            }}>
+            Quiero este café →
+          </button>
+        </div>
+      )}
+
+      {/* Título siempre visible debajo */}
+      {!hovered && (
+        <div style={{ padding: '8px 4px 0' }}>
+          <p style={{
+            margin: 0, fontSize: 12, fontWeight: 600,
+            color: C.cream, fontFamily: 'Montserrat, sans-serif',
+            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+          }}>
+            {producto.nombre}
+          </p>
+          <p style={{
+            margin: '2px 0 0', fontSize: 10, color: C.tan,
+            fontFamily: 'Montserrat, sans-serif',
+          }}>
+            {caficultor?.nombre ?? ''}
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Fila de carrusel ─────────────────────────────────────────────────────────
+
+const CarruselRow: React.FC<{
+  titulo: string
+  productos: ProductoONE[]
+  caficultores: Map<string, CaficultorONE>
+  onSeleccionar: (p: ProductoONE) => void
+}> = ({ titulo, productos, caficultores, onSeleccionar }) => {
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [canLeft, setCanLeft] = useState(false)
+  const [canRight, setCanRight] = useState(true)
+
+  function scroll(dir: 'left' | 'right') {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollBy({ left: dir === 'right' ? 480 : -480, behavior: 'smooth' })
+  }
+
+  function onScroll() {
+    const el = scrollRef.current
+    if (!el) return
+    setCanLeft(el.scrollLeft > 10)
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10)
+  }
+
+  const ArrowBtn: React.FC<{ dir: 'left' | 'right'; visible: boolean }> = ({ dir, visible }) => (
+    <button
+      onClick={() => scroll(dir)}
+      style={{
+        position: 'absolute',
+        top: 0, bottom: 40,
+        [dir]: 0,
+        width: 48,
+        background: visible ? 'rgba(0,0,0,0.6)' : 'transparent',
+        border: 'none',
+        color: visible ? C.white : 'transparent',
+        fontSize: 22, cursor: visible ? 'pointer' : 'default',
+        zIndex: 20,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        transition: 'background 0.2s',
+        borderRadius: dir === 'left' ? '0 4px 4px 0' : '4px 0 0 4px',
+      }}>
+      {dir === 'left' ? '‹' : '›'}
+    </button>
+  )
+
+  return (
+    <div style={{ marginBottom: 40, position: 'relative' }}>
+      <h2 style={{
+        margin: '0 0 12px 4%',
+        fontSize: 18, fontWeight: 700,
+        color: C.cream, fontFamily: 'Montserrat, sans-serif',
+        letterSpacing: '0.02em',
+      }}>
+        {titulo}
+      </h2>
+
+      <div style={{ position: 'relative' }}>
+        <ArrowBtn dir="left" visible={canLeft} />
+        <div
+          ref={scrollRef}
+          onScroll={onScroll}
+          style={{
+            display: 'flex',
+            gap: 8,
+            overflowX: 'auto',
+            overflowY: 'visible',
+            scrollbarWidth: 'none',
+            padding: '8px 4% 60px',
+            scrollSnapType: 'x mandatory',
+          }}>
+          {productos.map((p) => (
+            <div key={p.id} style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+              <CarruselCard
+                producto={p}
+                caficultor={caficultores.get(p.caficultorId)}
+                onSeleccionar={onSeleccionar}
+              />
+            </div>
+          ))}
+        </div>
+        <ArrowBtn dir="right" visible={canRight} />
+      </div>
+    </div>
+  )
+}
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
@@ -249,21 +347,14 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
   useEffect(() => {
     async function cargar() {
       try {
-        const [prods, cafics] = await Promise.all([
-          fetchProductos(),
-          fetchCaficultores(),
-        ])
-        // Si Firestore no tiene datos aún, usar seed local
+        const [prods, cafics] = await Promise.all([fetchProductos(), fetchCaficultores()])
         const productosFinales = prods.length > 0 ? prods : (seedProductos as ProductoONE[])
         const caficsFinales = cafics.length > 0 ? cafics : (seedCaficultores as CaficultorONE[])
         setProductos(productosFinales)
-        const mapa = new Map(caficsFinales.map((c) => [c.id, c]))
-        setCaficultores(mapa)
-      } catch (e) {
-        // Firestore no disponible — usar seed local
+        setCaficultores(new Map(caficsFinales.map((c) => [c.id, c])))
+      } catch {
         setProductos(seedProductos as ProductoONE[])
-        const mapa = new Map((seedCaficultores as CaficultorONE[]).map((c) => [c.id, c]))
-        setCaficultores(mapa)
+        setCaficultores(new Map((seedCaficultores as CaficultorONE[]).map((c) => [c.id, c])))
       } finally {
         setLoading(false)
       }
@@ -271,124 +362,120 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
     cargar()
   }, [])
 
+  const destacado = productos[0]
+  const caficultorDestacado = destacado ? caficultores.get(destacado.caficultorId) : undefined
+
   return (
-    <div style={{ minHeight: '100vh', background: C.cream, fontFamily: 'Montserrat, sans-serif' }}>
-      {/* Header */}
+    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'Montserrat, sans-serif' }}>
+      {/* Header flotante estilo Netflix */}
       <header style={{
-        background: C.green,
-        padding: '20px 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        padding: '14px 4%',
+        background: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%)',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       }}>
         <div>
-          <h1 style={{
-            margin: 0,
-            color: C.cream,
-            fontSize: 22,
-            fontFamily: 'Cormorant Garamond, serif',
-            fontWeight: 700,
-            letterSpacing: '0.04em',
+          <span style={{
+            fontSize: 20, fontWeight: 700, letterSpacing: '0.08em',
+            color: C.terra, fontFamily: 'Cormorant Garamond, serif',
           }}>
             TUNAY WASI
-          </h1>
-          <p style={{ margin: 0, color: C.sage, fontSize: 12, letterSpacing: '0.06em' }}>
-            CAFÉ PERUANO · DIRECTO DEL PRODUCTOR
-          </p>
+          </span>
+          <span style={{
+            marginLeft: 12, fontSize: 11, color: C.tan,
+            letterSpacing: '0.1em', fontFamily: 'Montserrat, sans-serif',
+          }}>
+            CAFÉ PERUANO
+          </span>
         </div>
-        <a
-          href="#/portal"
-          style={{
-            color: C.tan, fontSize: 12, textDecoration: 'none',
-            fontFamily: 'Montserrat, sans-serif',
-          }}
-        >
-          Mi portal →
+        <a href="#/portal" style={{
+          color: C.cream, fontSize: 13, textDecoration: 'none',
+          fontFamily: 'Montserrat, sans-serif', fontWeight: 600,
+          padding: '7px 18px', borderRadius: 4,
+          background: C.terra,
+        }}>
+          Mi portal
         </a>
       </header>
 
       {/* Hero */}
-      <div style={{
-        background: C.green,
-        padding: '32px 24px 40px',
-        textAlign: 'center',
-      }}>
-        <p style={{
-          margin: '0 auto',
-          maxWidth: 520,
-          color: C.cream,
-          fontSize: 17,
-          lineHeight: 1.6,
-          fontFamily: 'Cormorant Garamond, serif',
-        }}>
-          Café de especialidad peruano para tu cafetería — con la historia del
-          productor lista para tu carta y tus mesas desde el día uno.
-        </p>
-      </div>
+      {loading ? (
+        <div style={{ height: 500, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <p style={{ color: C.tan, fontSize: 14 }}>Cargando...</p>
+        </div>
+      ) : destacado && (
+        <HeroBanner
+          producto={destacado}
+          caficultor={caficultorDestacado}
+          onSeleccionar={onSeleccionar}
+        />
+      )}
 
-      {/* Catálogo */}
-      <main style={{ padding: '32px 20px 60px', maxWidth: 560, margin: '0 auto' }}>
-        {loading && (
-          <div style={{ textAlign: 'center', padding: 60, color: C.tan }}>
-            Cargando catálogo...
-          </div>
-        )}
-
-        {!loading && productos.length === 0 && (
-          <div style={{ textAlign: 'center', padding: 60, color: C.tan }}>
-            Próximamente — catálogo en preparación.
-          </div>
-        )}
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-          {productos.map((producto) => (
-            <ProductoCard
-              key={producto.id}
-              producto={producto}
-              caficultor={caficultores.get(producto.caficultorId)}
+      {/* Filas de carrusel */}
+      <div style={{ paddingTop: 16 }}>
+        {!loading && productos.length > 0 && (
+          <>
+            <CarruselRow
+              titulo="Nuestros orígenes"
+              productos={productos}
+              caficultores={caficultores}
               onSeleccionar={onSeleccionar}
             />
-          ))}
-        </div>
+            <CarruselRow
+              titulo="Proceso lavado — sabores limpios"
+              productos={productos.filter(p => p.proceso === 'lavado')}
+              caficultores={caficultores}
+              onSeleccionar={onSeleccionar}
+            />
+            <CarruselRow
+              titulo="Proceso natural y honey — frutas y miel"
+              productos={productos.filter(p => p.proceso === 'natural' || p.proceso === 'honey')}
+              caficultores={caficultores}
+              onSeleccionar={onSeleccionar}
+            />
+          </>
+        )}
+      </div>
 
-        {/* Propuesta de valor */}
-        {!loading && productos.length > 0 && (
-          <div style={{
-            marginTop: 48,
-            padding: '24px 20px',
-            background: C.green,
-            borderRadius: 16,
-            textAlign: 'center',
+      {/* Propuesta de valor */}
+      {!loading && productos.length > 0 && (
+        <div style={{
+          margin: '0 4% 60px',
+          padding: '28px 24px',
+          background: C.bgCard,
+          borderRadius: 10,
+          borderLeft: `3px solid ${C.terra}`,
+        }}>
+          <h3 style={{
+            margin: '0 0 16px', fontSize: 18,
+            color: C.cream, fontFamily: 'Cormorant Garamond, serif', fontWeight: 700,
           }}>
-            <h3 style={{
-              margin: '0 0 12px',
-              color: C.cream,
-              fontFamily: 'Cormorant Garamond, serif',
-              fontSize: 20,
-              fontWeight: 700,
-            }}>
-              ¿Qué incluye tu pedido?
-            </h3>
+            ¿Qué incluye tu pedido?
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
             {[
-              '☕  Café tostado con etiqueta Tunay Wasi',
-              '📄  Menú personalizado con la historia del productor',
-              '🃏  Fichas para tus mesas (imprimibles)',
-              '📱  QR de trazabilidad para tus clientes',
-              '📸  Pack de fotos de la finca para Instagram',
-            ].map((item) => (
-              <p key={item} style={{
-                margin: '6px 0',
-                color: C.cream,
-                fontSize: 14,
-                fontFamily: 'Montserrat, sans-serif',
-                lineHeight: 1.4,
-              }}>
-                {item}
-              </p>
+              ['☕', 'Café tostado', 'Con etiqueta Tunay Wasi'],
+              ['📄', 'Menú personalizado', 'Con la historia del productor'],
+              ['🃏', 'Fichas para mesas', 'Imprimibles A6'],
+              ['📱', 'QR de trazabilidad', 'Para tus clientes'],
+              ['📸', 'Pack Instagram', '3 fotos + caption sugerido'],
+            ].map(([emoji, titulo, sub]) => (
+              <div key={titulo} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+                <span style={{ fontSize: 20 }}>{emoji}</span>
+                <div>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: C.cream, fontFamily: 'Montserrat, sans-serif' }}>{titulo}</p>
+                  <p style={{ margin: '2px 0 0', fontSize: 11, color: C.tan, fontFamily: 'Montserrat, sans-serif' }}>{sub}</p>
+                </div>
+              </div>
             ))}
           </div>
-        )}
-      </main>
+        </div>
+      )}
+
+      {/* Ocultar scrollbar globalmente para los carruseles */}
+      <style>{`
+        div::-webkit-scrollbar { display: none; }
+      `}</style>
     </div>
   )
 }
