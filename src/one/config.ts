@@ -1,9 +1,13 @@
 // TunayWasi ONE — constantes del modelo
 
 export const ONE_CONFIG = {
-  // Precios de delivery en centavos
-  DELIVERY_LIMA_CENTS: 1000,        // S/ 10
-  DELIVERY_PROVINCIA_CENTS: 2000,   // S/ 20
+  // Costos de producción (se suman al precio del caficultor)
+  TUESTE_POR_KG_CENTS: 500,         // S/ 5 por kg tostado
+  BOLSA_POR_UNIDAD_CENTS: 100,      // S/ 1 por bolsa
+
+  // Sin delivery (corre por cuenta del emprendedor) ni comisión en fase 1
+  DELIVERY_CENTS: 0,
+  COMISION_PORCENTAJE: 0,
 
   // Compromiso mínimo Kit Proveedor
   COMPROMISO_MESES_MIN: 3,
@@ -21,6 +25,24 @@ export const ONE_CONFIG = {
   PEDIDO_PREFIX: 'ONE',
   PEDIDO_YEAR: new Date().getFullYear(),
 } as const
+
+// Unidades por formato (para calcular costo de bolsas)
+export const UNIDADES_POR_FORMATO: Record<string, number> = {
+  '250g': 4,   // 4 bolsas de 250g = 1kg
+  '1kg': 1,    // 1 bolsa por kg
+  '5kg': 5,    // 5 bolsas de 1kg (o 1 saco, según empaque)
+}
+
+// Calcula el precio final al emprendedor dado el precio base del caficultor
+// precioBaseCents: precio del caficultor por kg en centavos
+// formato: '250g' | '1kg' | '5kg'
+export function calcularPrecioFinal(precioBaseKgCents: number, formato: '250g' | '1kg' | '5kg'): number {
+  const kgs = formato === '250g' ? 0.25 : formato === '1kg' ? 1 : 5
+  const unidades = UNIDADES_POR_FORMATO[formato]
+  const costoTueste = Math.round(ONE_CONFIG.TUESTE_POR_KG_CENTS * kgs)
+  const costoBolsas = ONE_CONFIG.BOLSA_POR_UNIDAD_CENTS * unidades
+  return Math.round(precioBaseKgCents * kgs) + costoTueste + costoBolsas
+}
 
 // Colecciones Firestore
 export const ONE_COLLECTIONS = {

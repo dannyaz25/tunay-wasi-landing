@@ -114,7 +114,7 @@ export async function createPedido(input: CreatePedidoInput): Promise<string> {
   }))
 
   const subtotalCents = items.reduce((acc, item) => acc + item.subtotalCents, 0)
-  const deliveryCents = ONE_CONFIG.DELIVERY_LIMA_CENTS
+  const deliveryCents = ONE_CONFIG.DELIVERY_CENTS
   const totalCents = subtotalCents + deliveryCents
 
   const pedido: Omit<PedidoONE, 'id'> = {

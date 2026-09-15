@@ -42,11 +42,14 @@ export interface ProductoONE {
   puntajeReferencial?: number     // ~86 pts — declarado por caficultor
   notaReferencial: string         // "Puntaje referencial — certificación independiente próximamente"
 
-  // Precios en centavos
+  // Precio base que fija el caficultor (por kg, en centavos)
+  precioBaseKgCents: number       // Ej: 8000 = S/ 80/kg
+
+  // Precios finales al emprendedor = precioBase + tueste (S/5/kg) + bolsa (S/1/u)
   precios: {
-    g250: number
-    kg1: number
-    kg5: number
+    g250: number                  // precioBase*0.25 + tueste*0.25 + bolsa*4
+    kg1: number                   // precioBase*1   + tueste*1    + bolsa*1
+    kg5: number                   // precioBase*5   + tueste*5    + bolsa*5
   }
 
   // Stock

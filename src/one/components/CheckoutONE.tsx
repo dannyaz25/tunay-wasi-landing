@@ -150,7 +150,7 @@ const Paso1: React.FC<Paso1Props> = ({
 }) => {
   const precioFormato = formato === '250g' ? producto.precios.g250 : formato === '1kg' ? producto.precios.kg1 : producto.precios.kg5
   const subtotal = precioFormato * cantidad
-  const total = subtotal + ONE_CONFIG.DELIVERY_LIMA_CENTS
+  const total = subtotal + ONE_CONFIG.DELIVERY_CENTS
   const canContinue = nombreLocal.trim() && distritoLocal.trim() && direccionEntrega.trim()
 
   return (
@@ -289,12 +289,6 @@ const Paso1: React.FC<Paso1Props> = ({
           </span>
           <span style={{ fontSize: 13, color: C.green, fontWeight: 600, fontFamily: 'Montserrat, sans-serif' }}>
             {formatCents(subtotal)}
-          </span>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-          <span style={{ fontSize: 13, color: C.brown, fontFamily: 'Montserrat, sans-serif' }}>Delivery Lima</span>
-          <span style={{ fontSize: 13, color: C.green, fontFamily: 'Montserrat, sans-serif' }}>
-            {formatCents(ONE_CONFIG.DELIVERY_LIMA_CENTS)}
           </span>
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${C.tan}`, paddingTop: 10 }}>
@@ -550,7 +544,7 @@ const CheckoutONE: React.FC<Props> = ({
 
   const precioFormato = formato === '250g' ? producto.precios.g250 : formato === '1kg' ? producto.precios.kg1 : producto.precios.kg5
   const subtotalCents = precioFormato * cantidad
-  const totalCents = subtotalCents + ONE_CONFIG.DELIVERY_LIMA_CENTS
+  const totalCents = subtotalCents + ONE_CONFIG.DELIVERY_CENTS
 
   async function confirmarPedido() {
     if (!voucherUrl) return

@@ -17,16 +17,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 120,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-002",
@@ -46,16 +47,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 85,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-003",
@@ -75,16 +77,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 60,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-004",
@@ -104,16 +107,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3800,
-      "kg1": 14440,
-      "kg5": 64600
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 140,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-005",
@@ -133,16 +137,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5200,
-      "kg1": 19760,
-      "kg5": 88400
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 45,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-006",
@@ -162,16 +167,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 30,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-007",
@@ -191,16 +197,17 @@
     "puntajeReferencial": 88,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5800,
-      "kg1": 22040,
-      "kg5": 98600
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 25,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-008",
@@ -220,16 +227,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4100,
-      "kg1": 15580,
-      "kg5": 69700
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 110,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-009",
@@ -249,16 +257,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 70,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-010",
@@ -278,16 +287,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4900,
-      "kg1": 18620,
-      "kg5": 83300
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 95,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-011",
@@ -307,16 +317,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4400,
-      "kg1": 16720,
-      "kg5": 74800
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 55,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-012",
@@ -336,16 +347,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 130,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-013",
@@ -365,16 +377,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5300,
-      "kg1": 20140,
-      "kg5": 90100
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 40,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-014",
@@ -394,16 +407,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5600,
-      "kg1": 21280,
-      "kg5": 95200
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-015",
@@ -423,16 +437,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3600,
-      "kg1": 13680,
-      "kg5": 61200
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 180,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-016",
@@ -452,16 +467,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 75,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-017",
@@ -481,16 +497,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3800,
-      "kg1": 14440,
-      "kg5": 64600
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 150,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-018",
@@ -510,16 +527,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 65,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-019",
@@ -539,16 +557,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 100,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-020",
@@ -568,16 +587,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4100,
-      "kg1": 15580,
-      "kg5": 69700
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 120,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-021",
@@ -597,16 +617,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3600,
-      "kg1": 13680,
-      "kg5": 61200
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 160,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-022",
@@ -626,16 +647,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 90,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-023",
@@ -655,16 +677,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 65,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-024",
@@ -684,16 +707,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4900,
-      "kg1": 18620,
-      "kg5": 83300
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 50,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-025",
@@ -713,16 +737,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 115,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-026",
@@ -742,16 +767,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 40,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-027",
@@ -771,16 +797,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5100,
-      "kg1": 19380,
-      "kg5": 86700
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 35,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-028",
@@ -800,16 +827,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 85,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-029",
@@ -829,16 +857,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5200,
-      "kg1": 19760,
-      "kg5": 88400
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 55,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-030",
@@ -858,16 +887,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4900,
-      "kg1": 18620,
-      "kg5": 83300
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 45,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-031",
@@ -887,16 +917,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 80,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-032",
@@ -916,16 +947,17 @@
     "puntajeReferencial": 88,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5800,
-      "kg1": 22040,
-      "kg5": 98600
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 22,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-033",
@@ -945,16 +977,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5100,
-      "kg1": 19380,
-      "kg5": 86700
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 30,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-034",
@@ -974,16 +1007,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 145,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-035",
@@ -1003,16 +1037,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3600,
-      "kg1": 13680,
-      "kg5": 61200
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 160,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-036",
@@ -1032,16 +1067,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4100,
-      "kg1": 15580,
-      "kg5": 69700
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 110,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-037",
@@ -1061,16 +1097,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 75,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-038",
@@ -1090,16 +1127,17 @@
     "puntajeReferencial": 80,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3500,
-      "kg1": 13300,
-      "kg5": 59500
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 200,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-039",
@@ -1119,16 +1157,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 70,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-040",
@@ -1148,16 +1187,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 95,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-041",
@@ -1177,16 +1217,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3700,
-      "kg1": 14060,
-      "kg5": 62900
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 170,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-042",
@@ -1206,16 +1247,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 100,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-043",
@@ -1235,16 +1277,17 @@
     "puntajeReferencial": 80,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3500,
-      "kg1": 13300,
-      "kg5": 59500
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 190,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-044",
@@ -1264,16 +1307,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3800,
-      "kg1": 14440,
-      "kg5": 64600
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 80,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-045",
@@ -1293,16 +1337,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 60,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-046",
@@ -1322,16 +1367,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 105,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-047",
@@ -1351,16 +1397,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 50,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-048",
@@ -1380,16 +1427,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 90,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-049",
@@ -1409,16 +1457,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 65,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-050",
@@ -1438,16 +1487,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4900,
-      "kg1": 18620,
-      "kg5": 83300
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 45,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-051",
@@ -1467,16 +1517,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 80,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-052",
@@ -1496,16 +1547,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 25,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-053",
@@ -1525,16 +1577,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 125,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-054",
@@ -1554,16 +1607,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5200,
-      "kg1": 19760,
-      "kg5": 88400
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 55,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-055",
@@ -1583,16 +1637,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5600,
-      "kg1": 21280,
-      "kg5": 95200
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 30,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-056",
@@ -1612,16 +1667,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5100,
-      "kg1": 19380,
-      "kg5": 86700
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 70,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-057",
@@ -1641,16 +1697,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 60,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-058",
@@ -1670,16 +1727,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5100,
-      "kg1": 19380,
-      "kg5": 86700
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 40,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-059",
@@ -1699,16 +1757,17 @@
     "puntajeReferencial": 88,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5800,
-      "kg1": 22040,
-      "kg5": 98600
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-060",
@@ -1728,16 +1787,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 100,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-061",
@@ -1757,16 +1817,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 75,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-062",
@@ -1786,16 +1847,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 90,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-063",
@@ -1815,16 +1877,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 55,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-064",
@@ -1844,16 +1907,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3700,
-      "kg1": 14060,
-      "kg5": 62900
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 155,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-065",
@@ -1873,16 +1937,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 40,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-066",
@@ -1902,16 +1967,17 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4800,
-      "kg1": 18240,
-      "kg5": 81600
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 35,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-067",
@@ -1931,16 +1997,17 @@
     "puntajeReferencial": 89,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 6500,
-      "kg1": 24700,
-      "kg5": 110500
+      "g250": 2775,
+      "kg1": 9600,
+      "kg5": 48000
     },
     "kgDisponibles": 22,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 9000
   },
   {
     "id": "producto-068",
@@ -1960,16 +2027,17 @@
     "puntajeReferencial": 89,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 6200,
-      "kg1": 23560,
-      "kg5": 105400
+      "g250": 2775,
+      "kg1": 9600,
+      "kg5": 48000
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 9000
   },
   {
     "id": "producto-069",
@@ -1989,16 +2057,17 @@
     "puntajeReferencial": 89,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 6400,
-      "kg1": 24320,
-      "kg5": 108800
+      "g250": 2775,
+      "kg1": 9600,
+      "kg5": 48000
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 9000
   },
   {
     "id": "producto-070",
@@ -2018,16 +2087,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 35,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-071",
@@ -2047,16 +2117,17 @@
     "puntajeReferencial": 89,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 6300,
-      "kg1": 23940,
-      "kg5": 107100
+      "g250": 2775,
+      "kg1": 9600,
+      "kg5": 48000
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 9000
   },
   {
     "id": "producto-072",
@@ -2076,16 +2147,17 @@
     "puntajeReferencial": 88,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5800,
-      "kg1": 22040,
-      "kg5": 98600
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 28,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-073",
@@ -2105,16 +2177,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5600,
-      "kg1": 21280,
-      "kg5": 95200
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 40,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-074",
@@ -2134,16 +2207,17 @@
     "puntajeReferencial": 88,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5900,
-      "kg1": 22420,
-      "kg5": 100300
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 30,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-075",
@@ -2163,16 +2237,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 35,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-076",
@@ -2192,16 +2267,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 28,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-077",
@@ -2221,16 +2297,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5600,
-      "kg1": 21280,
-      "kg5": 95200
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 22,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-078",
@@ -2250,16 +2327,17 @@
     "puntajeReferencial": 89,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 6100,
-      "kg1": 23180,
-      "kg5": 103700
+      "g250": 2775,
+      "kg1": 9600,
+      "kg5": 48000
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 9000
   },
   {
     "id": "producto-079",
@@ -2279,16 +2357,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5200,
-      "kg1": 19760,
-      "kg5": 88400
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 38,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-080",
@@ -2308,16 +2387,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3700,
-      "kg1": 14060,
-      "kg5": 62900
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 150,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-081",
@@ -2337,16 +2417,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 90,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-082",
@@ -2366,16 +2447,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3900,
-      "kg1": 14820,
-      "kg5": 66300
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 120,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-083",
@@ -2395,16 +2477,17 @@
     "puntajeReferencial": 82,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4000,
-      "kg1": 15200,
-      "kg5": 68000
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 80,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-084",
@@ -2424,16 +2507,17 @@
     "puntajeReferencial": 81,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 3600,
-      "kg1": 13680,
-      "kg5": 61200
+      "g250": 1400,
+      "kg1": 4100,
+      "kg5": 20500
     },
     "kgDisponibles": 140,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 3500
   },
   {
     "id": "producto-085",
@@ -2453,16 +2537,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4200,
-      "kg1": 15960,
-      "kg5": 71400
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 70,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-086",
@@ -2482,16 +2567,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4100,
-      "kg1": 15580,
-      "kg5": 69700
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 130,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-087",
@@ -2511,16 +2597,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 95,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-088",
@@ -2540,16 +2627,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 85,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-089",
@@ -2569,16 +2657,17 @@
     "puntajeReferencial": 83,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4100,
-      "kg1": 15580,
-      "kg5": 69700
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 75,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-090",
@@ -2598,16 +2687,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4500,
-      "kg1": 17100,
-      "kg5": 76500
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 60,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-091",
@@ -2627,16 +2717,17 @@
     "puntajeReferencial": 84,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4600,
-      "kg1": 17480,
-      "kg5": 78200
+      "g250": 1650,
+      "kg1": 5100,
+      "kg5": 25500
     },
     "kgDisponibles": 80,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 4500
   },
   {
     "id": "producto-092",
@@ -2656,16 +2747,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5200,
-      "kg1": 19760,
-      "kg5": 88400
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 55,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-093",
@@ -2685,16 +2777,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5100,
-      "kg1": 19380,
-      "kg5": 86700
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 45,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-094",
@@ -2714,16 +2807,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 38,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-095",
@@ -2743,16 +2837,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5600,
-      "kg1": 21280,
-      "kg5": 95200
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 30,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-096",
@@ -2772,16 +2867,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5100,
-      "kg1": 19380,
-      "kg5": 86700
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 60,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-097",
@@ -2801,16 +2897,17 @@
     "puntajeReferencial": 86,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5200,
-      "kg1": 19760,
-      "kg5": 88400
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 28,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   },
   {
     "id": "producto-098",
@@ -2830,16 +2927,17 @@
     "puntajeReferencial": 88,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5900,
-      "kg1": 22420,
-      "kg5": 100300
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 22,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-099",
@@ -2859,16 +2957,17 @@
     "puntajeReferencial": 87,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 5500,
-      "kg1": 20900,
-      "kg5": 93500
+      "g250": 2400,
+      "kg1": 8100,
+      "kg5": 40500
     },
     "kgDisponibles": 20,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 7500
   },
   {
     "id": "producto-100",
@@ -2888,15 +2987,16 @@
     "puntajeReferencial": 85,
     "notaReferencial": "Puntaje referencial basado en perfil de cosecha anterior",
     "precios": {
-      "g250": 4900,
-      "kg1": 18620,
-      "kg5": 83300
+      "g250": 2025,
+      "kg1": 6600,
+      "kg5": 33000
     },
     "kgDisponibles": 42,
     "kgReservados": 0,
     "status": "activo",
     "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-cafe.jpg",
     "createdAt": "2026-01-15T00:00:00.000Z",
-    "updatedAt": "2026-09-01T00:00:00.000Z"
+    "updatedAt": "2026-09-01T00:00:00.000Z",
+    "precioBaseKgCents": 6000
   }
 ]
