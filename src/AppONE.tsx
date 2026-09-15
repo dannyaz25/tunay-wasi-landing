@@ -18,6 +18,7 @@ import type { UsuarioONE, ProductoONE } from '@/one/types'
 
 // Lazy imports de componentes (se crearán en los próximos días)
 import CatalogoPublico from '@/one/components/CatalogoPublico'
+import CheckoutONE from '@/one/components/CheckoutONE'
 
 // Placeholder para componentes no construidos aún
 const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
@@ -102,7 +103,13 @@ const AppONE: React.FC = () => {
       return null
     }
     return carritoProducto
-      ? <Placeholder nombre="Checkout ONE" />
+      ? <CheckoutONE
+          producto={carritoProducto}
+          usuarioId={user.uid}
+          usuarioNombre={usuarioONE?.nombre ?? user.displayName ?? 'Emprendedor'}
+          usuarioEmail={user.email ?? ''}
+          usuarioTelefono={usuarioONE?.telefono ?? ''}
+        />
       : <CatalogoPublico onSeleccionar={(p: ProductoONE) => {
           setCarritoProducto(p)
           window.location.hash = '#/checkout'
