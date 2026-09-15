@@ -1,10 +1,10 @@
 /**
  * CatalogoPublico.tsx — Vista principal pública de TunayWasi ONE
- * Layout estilo Netflix: fondo oscuro, carrusel horizontal con hover expand
+ * Layout: Hero → Carrusel Destacados → Carrusel Nuevos → Grid con filtros
  */
 import React, { useEffect, useState, useRef } from 'react'
 import { fetchProductos, fetchCaficultores } from '../service'
-import type { ProductoONE, CaficultorONE } from '../types'
+import type { ProductoONE, CaficultorONE, ProcesoONE } from '../types'
 import { PROCESO_LABELS } from '../config'
 import seedProductos from '../seed/one_productos.json'
 import seedCaficultores from '../seed/one_caficultores.json'
@@ -20,7 +20,6 @@ const C = {
   tan: '#c4b297',
   brown: '#533b22',
   white: '#ffffff',
-  overlay: 'rgba(0,0,0,0.7)',
 }
 
 interface Props {
@@ -31,7 +30,14 @@ function formatCents(cents: number): string {
   return `S/ ${(cents / 100).toFixed(0)}`
 }
 
-// ─── Hero Banner (primer producto destacado) ──────────────────────────────────
+const PROCESO_COLORS: Record<ProcesoONE, string> = {
+  lavado: '#4a90c4',
+  natural: '#c96e4b',
+  honey: '#d4a017',
+  anaerobico: '#9b59b6',
+}
+
+// ─── Hero Banner ─────────────────────────────────────────────────────────────
 
 const HeroBanner: React.FC<{
   producto: ProductoONE
@@ -46,7 +52,6 @@ const HeroBanner: React.FC<{
     background: C.bgCard,
     overflow: 'hidden',
   }}>
-    {/* Imagen de fondo */}
     <div style={{
       position: 'absolute', inset: 0,
       background: `linear-gradient(to bottom, transparent 40%, ${C.bg} 100%),
@@ -58,8 +63,6 @@ const HeroBanner: React.FC<{
       background: 'url(https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1400&q=80) center/cover no-repeat',
       filter: 'brightness(0.45)',
     }} />
-
-    {/* Contenido */}
     <div style={{
       position: 'absolute', bottom: '12%', left: '4%',
       zIndex: 2, maxWidth: 480,
@@ -101,7 +104,7 @@ const HeroBanner: React.FC<{
             padding: '10px 24px', borderRadius: 6, border: 'none',
             background: C.white, color: C.bg,
             fontSize: 15, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
-            cursor: 'pointer', letterSpacing: '0.02em',
+            cursor: 'pointer',
           }}>
           ▶  Quiero este café
         </button>
@@ -119,34 +122,36 @@ const HeroBanner: React.FC<{
   </div>
 )
 
-// ─── Card del carrusel ────────────────────────────────────────────────────────
+// ─── Card compartida (carrusel + grid) ───────────────────────────────────────
 
-const CarruselCard: React.FC<{
+const ProductoCard: React.FC<{
   producto: ProductoONE
   caficultor: CaficultorONE | undefined
   onSeleccionar: (p: ProductoONE) => void
-}> = ({ producto, caficultor, onSeleccionar }) => {
+  width?: number
+}> = ({ producto, caficultor, onSeleccionar, width = 200 }) => {
   const [hovered, setHovered] = useState(false)
+  const procesoColor = PROCESO_COLORS[producto.proceso] ?? C.terra
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        flexShrink: 0,
-        width: 220,
-        borderRadius: 6,
+        width,
+        borderRadius: 8,
         overflow: 'visible',
         position: 'relative',
-        transition: 'transform 0.25s ease, z-index 0s',
-        transform: hovered ? 'scale(1.22)' : 'scale(1)',
+        transition: 'transform 0.2s ease',
+        transform: hovered ? 'scale(1.04)' : 'scale(1)',
         zIndex: hovered ? 10 : 1,
         cursor: 'pointer',
+        flexShrink: 0,
       }}
     >
       {/* Thumbnail */}
       <div style={{
-        width: '100%', height: 130, borderRadius: 6,
+        width: '100%', height: 130, borderRadius: 8,
         background: C.bgCard, overflow: 'hidden', position: 'relative',
       }}>
         <div style={{
@@ -156,96 +161,84 @@ const CarruselCard: React.FC<{
         <div style={{
           position: 'absolute', inset: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 48, opacity: 0.6,
+          fontSize: 44, opacity: 0.5,
         }}>
           ☕
         </div>
-        {/* Badge proceso */}
         <span style={{
           position: 'absolute', top: 8, left: 8,
           padding: '2px 8px', borderRadius: 4,
-          background: C.terra, color: C.white,
+          background: procesoColor, color: C.white,
           fontSize: 9, fontWeight: 700,
           fontFamily: 'Montserrat, sans-serif', textTransform: 'uppercase',
           letterSpacing: '0.06em',
         }}>
           {PROCESO_LABELS[producto.proceso]}
         </span>
+        {producto.puntajeReferencial && (
+          <span style={{
+            position: 'absolute', top: 8, right: 8,
+            padding: '2px 6px', borderRadius: 4,
+            background: 'rgba(0,0,0,0.7)', color: C.sage,
+            fontSize: 9, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+          }}>
+            ~{producto.puntajeReferencial}
+          </span>
+        )}
       </div>
 
-      {/* Panel expandido al hover */}
-      {hovered && (
-        <div style={{
-          position: 'absolute', top: '100%', left: 0, right: 0,
-          background: C.bgHover,
-          borderRadius: '0 0 6px 6px',
-          padding: '12px 14px 14px',
-          boxShadow: '0 8px 24px rgba(0,0,0,0.8)',
-          zIndex: 10,
+      {/* Info base */}
+      <div style={{
+        padding: '8px 4px 0',
+        background: hovered ? C.bgHover : 'transparent',
+        borderRadius: '0 0 8px 8px',
+      }}>
+        <p style={{
+          margin: 0, fontSize: 12, fontWeight: 700,
+          color: C.cream, fontFamily: 'Cormorant Garamond, serif',
+          lineHeight: 1.3,
+          whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
         }}>
-          <p style={{
-            margin: '0 0 2px',
-            fontSize: 13, fontWeight: 700, color: C.white,
-            fontFamily: 'Cormorant Garamond, serif',
-            lineHeight: 1.2,
-          }}>
-            {producto.nombre}
-          </p>
-          <p style={{
-            margin: '0 0 6px',
-            fontSize: 10, color: C.tan,
-            fontFamily: 'Montserrat, sans-serif',
-          }}>
-            {caficultor?.nombre} · {caficultor?.region}
-          </p>
-          <p style={{
-            margin: '0 0 10px',
-            fontSize: 11, color: C.cream + 'aa',
-            fontFamily: 'Montserrat, sans-serif', fontStyle: 'italic',
-          }}>
-            {producto.notasSabor.join(' · ')}
-          </p>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: C.terra, fontFamily: 'Montserrat, sans-serif' }}>
-              desde {formatCents(producto.precios.g250)}
-            </span>
-            {producto.puntajeReferencial && (
-              <span style={{ fontSize: 10, color: C.sage, fontFamily: 'Montserrat, sans-serif' }}>
-                ~{producto.puntajeReferencial} pts
-              </span>
-            )}
-          </div>
-          <button
-            onClick={() => onSeleccionar(producto)}
-            style={{
-              width: '100%', padding: '8px 0', borderRadius: 5,
-              border: 'none', background: C.terra, color: C.white,
-              fontSize: 12, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
-              cursor: 'pointer',
-            }}>
-            Quiero este café →
-          </button>
-        </div>
-      )}
+          {producto.nombre}
+        </p>
+        <p style={{
+          margin: '2px 0 0', fontSize: 10, color: C.tan,
+          fontFamily: 'Montserrat, sans-serif',
+        }}>
+          {caficultor?.nombre ?? producto.caficultorNombre} · {caficultor?.region ?? ''}
+        </p>
 
-      {/* Título siempre visible debajo */}
-      {!hovered && (
-        <div style={{ padding: '8px 4px 0' }}>
-          <p style={{
-            margin: 0, fontSize: 12, fontWeight: 600,
-            color: C.cream, fontFamily: 'Montserrat, sans-serif',
-            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-          }}>
-            {producto.nombre}
-          </p>
-          <p style={{
-            margin: '2px 0 0', fontSize: 10, color: C.tan,
-            fontFamily: 'Montserrat, sans-serif',
-          }}>
-            {caficultor?.nombre ?? ''}
-          </p>
-        </div>
-      )}
+        {/* Panel expandido al hover */}
+        {hovered && (
+          <div style={{ marginTop: 8 }}>
+            <p style={{
+              margin: '0 0 8px',
+              fontSize: 10, color: C.cream + 'aa',
+              fontFamily: 'Montserrat, sans-serif', fontStyle: 'italic',
+            }}>
+              {producto.notasSabor.join(' · ')}
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: C.terra, fontFamily: 'Montserrat, sans-serif' }}>
+                desde {formatCents(producto.precios.g250)}
+              </span>
+              <span style={{ fontSize: 10, color: C.tan, fontFamily: 'Montserrat, sans-serif' }}>
+                {producto.variedad}
+              </span>
+            </div>
+            <button
+              onClick={() => onSeleccionar(producto)}
+              style={{
+                width: '100%', padding: '7px 0', borderRadius: 5,
+                border: 'none', background: C.terra, color: C.white,
+                fontSize: 11, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+                cursor: 'pointer', marginBottom: 4,
+              }}>
+              Quiero este café →
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
@@ -263,9 +256,7 @@ const CarruselRow: React.FC<{
   const [canRight, setCanRight] = useState(true)
 
   function scroll(dir: 'left' | 'right') {
-    const el = scrollRef.current
-    if (!el) return
-    el.scrollBy({ left: dir === 'right' ? 480 : -480, behavior: 'smooth' })
+    scrollRef.current?.scrollBy({ left: dir === 'right' ? 480 : -480, behavior: 'smooth' })
   }
 
   function onScroll() {
@@ -275,63 +266,185 @@ const CarruselRow: React.FC<{
     setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 10)
   }
 
-  const ArrowBtn: React.FC<{ dir: 'left' | 'right'; visible: boolean }> = ({ dir, visible }) => (
-    <button
-      onClick={() => scroll(dir)}
-      style={{
-        position: 'absolute',
-        top: 0, bottom: 40,
-        [dir]: 0,
-        width: 48,
-        background: visible ? 'rgba(0,0,0,0.6)' : 'transparent',
-        border: 'none',
-        color: visible ? C.white : 'transparent',
-        fontSize: 22, cursor: visible ? 'pointer' : 'default',
-        zIndex: 20,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        transition: 'background 0.2s',
-        borderRadius: dir === 'left' ? '0 4px 4px 0' : '4px 0 0 4px',
-      }}>
-      {dir === 'left' ? '‹' : '›'}
-    </button>
-  )
+  if (productos.length === 0) return null
 
   return (
     <div style={{ marginBottom: 40, position: 'relative' }}>
       <h2 style={{
         margin: '0 0 12px 4%',
-        fontSize: 18, fontWeight: 700,
+        fontSize: 17, fontWeight: 700,
         color: C.cream, fontFamily: 'Montserrat, sans-serif',
         letterSpacing: '0.02em',
       }}>
         {titulo}
       </h2>
-
       <div style={{ position: 'relative' }}>
-        <ArrowBtn dir="left" visible={canLeft} />
+        {/* Flecha izquierda */}
+        <button onClick={() => scroll('left')} style={{
+          position: 'absolute', top: 0, bottom: 40, left: 0, width: 44,
+          background: canLeft ? 'rgba(0,0,0,0.65)' : 'transparent',
+          border: 'none', color: canLeft ? C.white : 'transparent',
+          fontSize: 22, cursor: canLeft ? 'pointer' : 'default',
+          zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          borderRadius: '0 4px 4px 0',
+        }}>‹</button>
+
         <div
           ref={scrollRef}
           onScroll={onScroll}
           style={{
-            display: 'flex',
-            gap: 8,
-            overflowX: 'auto',
-            overflowY: 'visible',
+            display: 'flex', gap: 10,
+            overflowX: 'auto', overflowY: 'visible',
             scrollbarWidth: 'none',
             padding: '8px 4% 60px',
             scrollSnapType: 'x mandatory',
           }}>
           {productos.map((p) => (
-            <div key={p.id} style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-              <CarruselCard
+            <div key={p.id} style={{ scrollSnapAlign: 'start' }}>
+              <ProductoCard
                 producto={p}
                 caficultor={caficultores.get(p.caficultorId)}
                 onSeleccionar={onSeleccionar}
+                width={200}
               />
             </div>
           ))}
         </div>
-        <ArrowBtn dir="right" visible={canRight} />
+
+        {/* Flecha derecha */}
+        <button onClick={() => scroll('right')} style={{
+          position: 'absolute', top: 0, bottom: 40, right: 0, width: 44,
+          background: canRight ? 'rgba(0,0,0,0.65)' : 'transparent',
+          border: 'none', color: canRight ? C.white : 'transparent',
+          fontSize: 22, cursor: canRight ? 'pointer' : 'default',
+          zIndex: 20, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          borderRadius: '4px 0 0 4px',
+        }}>›</button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Chip de filtro ───────────────────────────────────────────────────────────
+
+const Chip: React.FC<{
+  label: string
+  activo: boolean
+  color?: string
+  onClick: () => void
+}> = ({ label, activo, color = C.terra, onClick }) => (
+  <button
+    onClick={onClick}
+    style={{
+      padding: '6px 14px', borderRadius: 20,
+      border: `1px solid ${activo ? color : '#333'}`,
+      background: activo ? color : 'transparent',
+      color: activo ? C.white : C.tan,
+      fontSize: 12, fontWeight: 600,
+      fontFamily: 'Montserrat, sans-serif',
+      cursor: 'pointer', whiteSpace: 'nowrap',
+      transition: 'all 0.15s',
+    }}
+  >
+    {label}
+  </button>
+)
+
+// ─── Grid con filtros ────────────────────────────────────────────────────────
+
+const GridFiltrado: React.FC<{
+  productos: ProductoONE[]
+  caficultores: Map<string, CaficultorONE>
+  onSeleccionar: (p: ProductoONE) => void
+}> = ({ productos, caficultores, onSeleccionar }) => {
+  const [filtroProceso, setFiltroProceso] = useState<ProcesoONE | 'todos'>('todos')
+  const [filtroRegion, setFiltroRegion] = useState<string>('todas')
+
+  const regiones = Array.from(new Set(
+    productos.map(p => caficultores.get(p.caficultorId)?.region).filter(Boolean) as string[]
+  )).sort()
+
+  const filtrados = productos.filter(p => {
+    const region = caficultores.get(p.caficultorId)?.region
+    const pasaProceso = filtroProceso === 'todos' || p.proceso === filtroProceso
+    const pasaRegion = filtroRegion === 'todas' || region === filtroRegion
+    return pasaProceso && pasaRegion
+  })
+
+  const procesos: { key: ProcesoONE | 'todos'; label: string }[] = [
+    { key: 'todos', label: 'Todos' },
+    { key: 'lavado', label: 'Lavado' },
+    { key: 'natural', label: 'Natural' },
+    { key: 'honey', label: 'Honey' },
+    { key: 'anaerobico', label: 'Anaeróbico' },
+  ]
+
+  return (
+    <div style={{ padding: '0 4% 60px' }}>
+      <h2 style={{
+        margin: '0 0 16px',
+        fontSize: 17, fontWeight: 700,
+        color: C.cream, fontFamily: 'Montserrat, sans-serif',
+      }}>
+        Todo el catálogo
+      </h2>
+
+      {/* Filtros por proceso */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>
+        {procesos.map(({ key, label }) => (
+          <Chip
+            key={key}
+            label={label}
+            activo={filtroProceso === key}
+            color={key === 'todos' ? C.terra : PROCESO_COLORS[key as ProcesoONE] ?? C.terra}
+            onClick={() => setFiltroProceso(key)}
+          />
+        ))}
+      </div>
+
+      {/* Filtros por región */}
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
+        <Chip
+          label="Todas las regiones"
+          activo={filtroRegion === 'todas'}
+          color={C.sage}
+          onClick={() => setFiltroRegion('todas')}
+        />
+        {regiones.map(r => (
+          <Chip
+            key={r}
+            label={r}
+            activo={filtroRegion === r}
+            color={C.sage}
+            onClick={() => setFiltroRegion(r)}
+          />
+        ))}
+      </div>
+
+      {/* Contador */}
+      <p style={{
+        margin: '0 0 16px',
+        fontSize: 12, color: C.tan,
+        fontFamily: 'Montserrat, sans-serif',
+      }}>
+        {filtrados.length} {filtrados.length === 1 ? 'café encontrado' : 'cafés encontrados'}
+      </p>
+
+      {/* Grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gap: 20,
+      }}>
+        {filtrados.map(p => (
+          <ProductoCard
+            key={p.id}
+            producto={p}
+            caficultor={caficultores.get(p.caficultorId)}
+            onSeleccionar={onSeleccionar}
+            width={undefined}
+          />
+        ))}
       </div>
     </div>
   )
@@ -351,7 +464,6 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
       setLoading(false)
     }
 
-    // Timeout de 3 s: si Firestore no responde (DB no existe / offline) cae al seed
     const timer = setTimeout(usarSeed, 3000)
 
     async function cargar() {
@@ -376,9 +488,15 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
   const destacado = productos[0]
   const caficultorDestacado = destacado ? caficultores.get(destacado.caficultorId) : undefined
 
+  // Fila 1: primeros 8 productos como "destacados del mes"
+  const destacados = productos.slice(0, 8)
+
+  // Fila 2: siguientes 8 como "nuevos ingresos" (orden por createdAt desc en producción)
+  const nuevos = productos.slice(8, 16)
+
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'Montserrat, sans-serif' }}>
-      {/* Header flotante estilo Netflix */}
+      {/* Header flotante */}
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         padding: '14px 4%',
@@ -422,71 +540,35 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar }) => {
         />
       )}
 
-      {/* Filas de carrusel */}
-      <div style={{ paddingTop: 16 }}>
-        {!loading && productos.length > 0 && (
-          <>
-            <CarruselRow
-              titulo="Nuestros orígenes"
-              productos={productos}
-              caficultores={caficultores}
-              onSeleccionar={onSeleccionar}
-            />
-            <CarruselRow
-              titulo="Proceso lavado — sabores limpios"
-              productos={productos.filter(p => p.proceso === 'lavado')}
-              caficultores={caficultores}
-              onSeleccionar={onSeleccionar}
-            />
-            <CarruselRow
-              titulo="Proceso natural y honey — frutas y miel"
-              productos={productos.filter(p => p.proceso === 'natural' || p.proceso === 'honey')}
-              caficultores={caficultores}
-              onSeleccionar={onSeleccionar}
-            />
-          </>
-        )}
-      </div>
-
-      {/* Propuesta de valor */}
+      {/* Contenido */}
       {!loading && productos.length > 0 && (
-        <div style={{
-          margin: '0 4% 60px',
-          padding: '28px 24px',
-          background: C.bgCard,
-          borderRadius: 10,
-          borderLeft: `3px solid ${C.terra}`,
-        }}>
-          <h3 style={{
-            margin: '0 0 16px', fontSize: 18,
-            color: C.cream, fontFamily: 'Cormorant Garamond, serif', fontWeight: 700,
-          }}>
-            ¿Qué incluye tu pedido?
-          </h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
-            {[
-              ['☕', 'Café tostado', 'Con etiqueta Tunay Wasi'],
-              ['📄', 'Menú personalizado', 'Con la historia del productor'],
-              ['🃏', 'Fichas para mesas', 'Imprimibles A6'],
-              ['📱', 'QR de trazabilidad', 'Para tus clientes'],
-              ['📸', 'Pack Instagram', '3 fotos + caption sugerido'],
-            ].map(([emoji, titulo, sub]) => (
-              <div key={titulo} style={{ display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                <span style={{ fontSize: 20 }}>{emoji}</span>
-                <div>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: C.cream, fontFamily: 'Montserrat, sans-serif' }}>{titulo}</p>
-                  <p style={{ margin: '2px 0 0', fontSize: 11, color: C.tan, fontFamily: 'Montserrat, sans-serif' }}>{sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div style={{ paddingTop: 16 }}>
+          {/* Fila 1 — Destacados del mes */}
+          <CarruselRow
+            titulo="Destacados del mes"
+            productos={destacados}
+            caficultores={caficultores}
+            onSeleccionar={onSeleccionar}
+          />
+
+          {/* Fila 2 — Nuevos ingresos */}
+          <CarruselRow
+            titulo="Nuevos ingresos"
+            productos={nuevos}
+            caficultores={caficultores}
+            onSeleccionar={onSeleccionar}
+          />
+
+          {/* Fila 3 — Grid con filtros */}
+          <GridFiltrado
+            productos={productos}
+            caficultores={caficultores}
+            onSeleccionar={onSeleccionar}
+          />
         </div>
       )}
 
-      {/* Ocultar scrollbar globalmente para los carruseles */}
-      <style>{`
-        div::-webkit-scrollbar { display: none; }
-      `}</style>
+      <style>{`div::-webkit-scrollbar { display: none; }`}</style>
     </div>
   )
 }
