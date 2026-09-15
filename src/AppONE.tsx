@@ -22,6 +22,7 @@ import CheckoutONE from '@/one/components/CheckoutONE'
 import AuthScreen from '@/one/components/AuthScreen'
 import AdminONE from '@/one/components/AdminONE'
 import PortalEmprendedor from '@/one/components/PortalEmprendedor'
+import PortalCaficultor from '@/one/components/PortalCaficultor'
 import { DEMO_USER } from '@/one/demoService'
 
 // Placeholder para componentes no construidos aún
@@ -143,11 +144,19 @@ const AppONE: React.FC = () => {
   }
 
   if (hash === '#/caficultor-portal') {
-    if (!user || usuarioONE?.rol !== 'caficultor') {
-      window.location.hash = '#/'
+    if (!user && !isDemo) {
+      window.location.hash = '#/login'
       return null
     }
-    return <Placeholder nombre="Portal Caficultor" />
+    // En demo: usar caficultor-001 como demo
+    const caficultorId = usuarioONE?.caficultor?.caficultorId ?? 'caficultor-001'
+    return (
+      <PortalCaficultor
+        usuarioId={user?.uid ?? DEMO_USER.uid}
+        caficultorId={caficultorId}
+        isDemo={isDemo}
+      />
+    )
   }
 
   if (hash === '#/admin') {

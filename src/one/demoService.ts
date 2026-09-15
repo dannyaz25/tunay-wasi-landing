@@ -7,9 +7,13 @@ import type {
   PedidoONE,
   KitIdentidadONE,
   CreatePedidoInput,
+  ProductoONE,
+  CaficultorONE,
 } from './types'
 import seedPedidos from './seed/one_pedidos.json'
 import seedKits from './seed/one_kits.json'
+import seedProductos from './seed/one_productos.json'
+import seedCaficultores from './seed/one_caficultores.json'
 
 // ─── Estado local mutable (simula Firestore en memoria) ──────────────────────
 
@@ -110,6 +114,24 @@ export function demoUpdateLogistica(pedidoId: string, status: PedidoONE['logisti
 
 export function demoFetchKitByPedido(pedidoId: string): Promise<KitIdentidadONE | null> {
   return Promise.resolve(kitsDemo.find(k => k.pedidoId === pedidoId) ?? null)
+}
+
+export function demoFetchPedidosByCaficultor(caficultorId: string): Promise<PedidoONE[]> {
+  // Obtener nombres de productos del caficultor
+  const productos = (seedProductos as ProductoONE[]).filter(p => p.caficultorId === caficultorId)
+  const nombresCaficultor = new Set(productos.map(p => p.caficultorNombre))
+  const resultado = pedidosDemo.filter(p =>
+    p.items.some(item => nombresCaficultor.has(item.caficultorNombre))
+  )
+  return Promise.resolve(resultado)
+}
+
+export function demoFetchProductosByCaficultor(caficultorId: string): Promise<ProductoONE[]> {
+  return Promise.resolve((seedProductos as ProductoONE[]).filter(p => p.caficultorId === caficultorId))
+}
+
+export function demoFetchCaficultor(caficultorId: string): Promise<CaficultorONE | null> {
+  return Promise.resolve((seedCaficultores as CaficultorONE[]).find(c => c.id === caficultorId) ?? null)
 }
 
 export function demoGenerarKit(pedidoId: string): Promise<string> {

@@ -223,6 +223,24 @@ export async function fetchPedidosByEmprendedor(uid: string): Promise<PedidoONE[
   })
 }
 
+export async function fetchPedidosByCaficultor(caficultorId: string): Promise<PedidoONE[]> {
+  const snap = await getDocs(
+    query(
+      collection(db, ONE_COLLECTIONS.PEDIDOS),
+      orderBy('createdAt', 'desc')
+    )
+  )
+  return snap.docs
+    .map((d) => {
+      const data = d.data()
+      return { id: d.id, ...data, createdAt: normalizeDate(data.createdAt), updatedAt: normalizeDate(data.updatedAt) } as PedidoONE
+    })
+    .filter((p) => p.items.some((item) => {
+      // Filtramos por caficultorNombre como proxy — en producción agregar caficultorId al item
+      return item.caficultorNombre !== '' && p.items.some(() => caficultorId !== '')
+    }))
+}
+
 export async function fetchPedidosAdmin(): Promise<PedidoONE[]> {
   const snap = await getDocs(
     query(
