@@ -236,11 +236,25 @@ const Paso1: React.FC<Paso1Props> = ({
 
       <div style={{ marginBottom: 16 }}>
         <Label>Distrito</Label>
-        <Input
-          placeholder="Ej: Miraflores"
+        <select
           value={distritoLocal}
           onChange={(e) => onDistritoLocalChange(e.target.value)}
-        />
+          style={{
+            width: '100%', boxSizing: 'border-box',
+            padding: '12px 14px', borderRadius: 8,
+            border: `1.5px solid ${C.tan}`,
+            fontSize: 15, fontFamily: 'Montserrat, sans-serif',
+            color: C.green, background: C.white,
+            outline: 'none', cursor: 'pointer',
+          }}>
+          <option value="">Seleccionar distrito...</option>
+          {['Barranco','Chorrillos','La Molina','La Victoria','Lince','Magdalena del Mar','Miraflores',
+            'Pueblo Libre','San Borja','San Isidro','San Miguel','Santiago de Surco','Surquillo',
+            'Jesús María','Breña','Lima Cercado','Ate','San Juan de Miraflores',
+            'Villa María del Triunfo','Comas','Los Olivos'].sort().map(d => (
+            <option key={d} value={d}>{d}</option>
+          ))}
+        </select>
       </div>
 
       <div style={{ marginBottom: 20 }}>
@@ -561,6 +575,7 @@ const CheckoutONE: React.FC<Props> = ({
         items: [{
           productoId: producto.id,
           productoNombre: producto.nombre,
+          caficultorId: producto.caficultorId,
           caficultorNombre: producto.caficultorNombre,
           formato,
           cantidad,

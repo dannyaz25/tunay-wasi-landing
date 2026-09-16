@@ -10,23 +10,25 @@
     "items": [
       {
         "productoId": "producto-001",
-        "productoNombre": "Bourbon Lavado — Los Alisos",
-        "caficultorNombre": "María Huamán Díaz",
+        "productoNombre": "Bourbon Lavado — Finca La Coipa",
+        "caficultorId": "caficultor-001",
+        "caficultorNombre": "Segundo Rojas Herrera",
         "formato": "1kg",
         "cantidad": 2,
-        "precioUnitarioCents": 14500,
-        "subtotalCents": 29000
+        "precioUnitarioCents": 6600,
+        "subtotalCents": 13200
       }
     ],
-    "subtotalCents": 29000,
+    "subtotalCents": 13200,
     "deliveryCents": 1000,
-    "totalCents": 30000,
+    "totalCents": 14200,
     "metodoPago": "yape",
     "pagoStatus": "voucher_subido",
     "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
     "direccionEntrega": "Av. Larco 123, Miraflores, Lima",
     "logisticaStatus": "preparando",
     "kitGenerado": false,
+    "calificado": false,
     "esKitProveedor": true,
     "compromisoMeses": 3,
     "createdAt": "2026-09-14T10:30:00.000Z",
@@ -43,24 +45,26 @@
     "items": [
       {
         "productoId": "producto-002",
-        "productoNombre": "Caturra Natural — Finca Quispe",
-        "caficultorNombre": "Jorge Quispe Mamani",
+        "productoNombre": "Caturra Natural — Finca La Coipa",
+        "caficultorId": "caficultor-001",
+        "caficultorNombre": "Segundo Rojas Herrera",
         "formato": "5kg",
         "cantidad": 1,
-        "precioUnitarioCents": 60000,
-        "subtotalCents": 60000
+        "precioUnitarioCents": 25500,
+        "subtotalCents": 25500
       }
     ],
-    "subtotalCents": 60000,
+    "subtotalCents": 25500,
     "deliveryCents": 1000,
-    "totalCents": 61000,
+    "totalCents": 26500,
     "metodoPago": "transferencia",
     "pagoStatus": "verificado",
     "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
     "direccionEntrega": "Jr. Centenario 456, Barranco, Lima",
-    "logisticaStatus": "entregado",
+    "logisticaStatus": "despachado",
     "kitGenerado": true,
     "kitId": "kit-001",
+    "calificado": false,
     "esKitProveedor": false,
     "createdAt": "2026-09-08T09:00:00.000Z",
     "updatedAt": "2026-09-12T16:00:00.000Z"
@@ -76,25 +80,62 @@
     "items": [
       {
         "productoId": "producto-003",
-        "productoNombre": "Typica Honey — Alto Moyobamba",
-        "caficultorNombre": "Rosa Llanos Vega",
+        "productoNombre": "Bourbon Honey — Lote Alto",
+        "caficultorId": "caficultor-001",
+        "caficultorNombre": "Segundo Rojas Herrera",
         "formato": "250g",
         "cantidad": 3,
-        "precioUnitarioCents": 3900,
-        "subtotalCents": 11700
+        "precioUnitarioCents": 1650,
+        "subtotalCents": 4950
       }
     ],
-    "subtotalCents": 11700,
+    "subtotalCents": 4950,
     "deliveryCents": 1000,
-    "totalCents": 12700,
+    "totalCents": 5950,
     "metodoPago": "yape",
     "pagoStatus": "verificado",
     "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
     "direccionEntrega": "Av. Larco 123, Miraflores, Lima",
-    "logisticaStatus": "despachado",
+    "logisticaStatus": "entregado",
     "kitGenerado": false,
+    "calificado": false,
     "esKitProveedor": false,
-    "createdAt": "2026-09-11T14:00:00.000Z",
-    "updatedAt": "2026-09-13T10:00:00.000Z"
+    "createdAt": "2026-09-05T14:00:00.000Z",
+    "updatedAt": "2026-09-09T10:00:00.000Z"
+  },
+  {
+    "id": "ONE-2026-0887",
+    "emprendedorId": "user-emprendedor-003",
+    "emprendedorNombre": "Andrés Paredes",
+    "emprendedorEmail": "andres@elgranoperu.pe",
+    "emprendedorTelefono": "+51965432109",
+    "nombreLocal": "El Grano Peruano",
+    "distritoLocal": "San Isidro",
+    "items": [
+      {
+        "productoId": "producto-004",
+        "productoNombre": "Caturra Lavado — Parcela Baja",
+        "caficultorId": "caficultor-001",
+        "caficultorNombre": "Segundo Rojas Herrera",
+        "formato": "1kg",
+        "cantidad": 3,
+        "precioUnitarioCents": 5100,
+        "subtotalCents": 15300
+      }
+    ],
+    "subtotalCents": 15300,
+    "deliveryCents": 1000,
+    "totalCents": 16300,
+    "metodoPago": "yape",
+    "pagoStatus": "verificado",
+    "voucherUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg",
+    "direccionEntrega": "Calle Los Eucaliptos 789, San Isidro, Lima",
+    "logisticaStatus": "preparando",
+    "kitGenerado": false,
+    "calificado": false,
+    "esKitProveedor": true,
+    "compromisoMeses": 3,
+    "createdAt": "2026-09-13T08:00:00.000Z",
+    "updatedAt": "2026-09-13T09:00:00.000Z"
   }
 ]

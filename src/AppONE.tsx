@@ -23,15 +23,10 @@ import AuthScreen from '@/one/components/AuthScreen'
 import AdminONE from '@/one/components/AdminONE'
 import PortalEmprendedor from '@/one/components/PortalEmprendedor'
 import PortalCaficultor from '@/one/components/PortalCaficultor'
+import PerfilCaficultor from '@/one/components/PerfilCaficultor'
+import DirectorioCafeterias from '@/one/components/DirectorioCafeterias'
+import PerfilCafeteria from '@/one/components/PerfilCafeteria'
 import { DEMO_USER } from '@/one/demoService'
-
-// Placeholder para componentes no construidos aún
-const Placeholder: React.FC<{ nombre: string }> = ({ nombre }) => (
-  <div style={{ padding: 40, textAlign: 'center', color: '#1f3028', fontFamily: 'Montserrat, sans-serif' }}>
-    <h2>{nombre}</h2>
-    <p style={{ color: '#c4b297' }}>En construcción...</p>
-  </div>
-)
 
 // ─── Auth state ───────────────────────────────────────────────────────────────
 
@@ -88,7 +83,17 @@ const AppONE: React.FC = () => {
   const isDemo = new URLSearchParams(window.location.search).get('demo') === '1'
   const { user, usuarioONE, loading, isAdmin } = useAuthONE(isDemo)
   const hash = useHash()
-  const [carritoProducto, setCarritoProducto] = useState<ProductoONE | null>(null)
+  const [carritoProducto, setCarritoProducto] = useState<ProductoONE | null>(() => {
+    // Leer producto guardado en sessionStorage (desde PerfilCaficultor "Comprar →")
+    try {
+      const stored = sessionStorage.getItem('one_carrito_producto')
+      if (stored) {
+        sessionStorage.removeItem('one_carrito_producto')
+        return JSON.parse(stored) as ProductoONE
+      }
+    } catch { /* ok */ }
+    return null
+  })
 
   if (loading) {
     return (
@@ -106,7 +111,16 @@ const AppONE: React.FC = () => {
   // Rutas que coinciden con el hash
   if (hash.startsWith('#/caficultor/') && !hash.endsWith('/portal')) {
     const caficultorId = hash.replace('#/caficultor/', '')
-    return <Placeholder nombre={`Perfil Caficultor: ${caficultorId}`} />
+    return <PerfilCaficultor caficultorId={caficultorId} isDemo={isDemo} />
+  }
+
+  if (hash === '#/cafeterias') {
+    return <DirectorioCafeterias isDemo={isDemo} />
+  }
+
+  if (hash.startsWith('#/cafeteria/')) {
+    const cafeteriaId = hash.replace('#/cafeteria/', '')
+    return <PerfilCafeteria cafeteriaId={cafeteriaId} isDemo={isDemo} />
   }
 
   if (hash === '#/checkout') {

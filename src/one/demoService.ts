@@ -9,15 +9,21 @@ import type {
   CreatePedidoInput,
   ProductoONE,
   CaficultorONE,
+  UsuarioONE,
+  CalificacionCaficultor,
+  CalificacionCafeteria,
+  CreateCalificacionCaficultorInput,
+  CreateCalificacionCafeteriaInput,
 } from './types'
 import seedPedidos from './seed/one_pedidos.json'
 import seedKits from './seed/one_kits.json'
 import seedProductos from './seed/one_productos.json'
 import seedCaficultores from './seed/one_caficultores.json'
+import seedUsuarios from './seed/one_usuarios.json'
 
 // ─── Estado local mutable (simula Firestore en memoria) ──────────────────────
 
-let pedidosDemo: PedidoONE[] = (seedPedidos as PedidoONE[]).map(p => ({ ...p }))
+let pedidosDemo: PedidoONE[] = (seedPedidos as PedidoONE[]).map(p => ({ ...p, calificado: false }))
 let kitsDemo: KitIdentidadONE[] = (seedKits as unknown as KitIdentidadONE[]).map(k => ({ ...k }))
 let nextPedidoIdx = 9000
 
@@ -69,6 +75,7 @@ export function demoCreatePedido(input: CreatePedidoInput): Promise<string> {
     direccionEntrega: input.direccionEntrega,
     logisticaStatus: 'preparando',
     kitGenerado: false,
+    calificado: false,
     esKitProveedor: input.esKitProveedor,
     compromisoMeses: input.compromisoMeses,
     createdAt: new Date().toISOString(),
@@ -174,4 +181,117 @@ export async function demoUploadVoucher(_file: File): Promise<string> {
   // Simula 800ms de upload
   await new Promise(r => setTimeout(r, 800))
   return 'https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-voucher.jpg'
+}
+
+// ─── Calificaciones ───────────────────────────────────────────────────────────
+
+let calificacionesCaficultorDemo: CalificacionCaficultor[] = []
+let calificacionesCafeteriaDemo: CalificacionCafeteria[] = []
+
+export function demoCrearCalificacionCaficultor(
+  input: CreateCalificacionCaficultorInput
+): Promise<string> {
+  const id = `cal-caf-${Date.now()}`
+  const nueva: CalificacionCaficultor = {
+    id,
+    ...input,
+    createdAt: new Date().toISOString(),
+  }
+  calificacionesCaficultorDemo = [nueva, ...calificacionesCaficultorDemo]
+  // Marcar pedido como calificado
+  pedidosDemo = pedidosDemo.map(p =>
+    p.id === input.pedidoId ? { ...p, calificado: true, calificacionId: id } : p
+  )
+  return Promise.resolve(id)
+}
+
+export function demoFetchCalificacionesByCaficultor(
+  caficultorId: string
+): Promise<CalificacionCaficultor[]> {
+  return Promise.resolve(
+    calificacionesCaficultorDemo.filter(c => c.caficultorId === caficultorId)
+  )
+}
+
+export function demoCrearCalificacionCafeteria(
+  input: CreateCalificacionCafeteriaInput
+): Promise<string> {
+  const id = `cal-caf-${Date.now()}`
+  const nueva: CalificacionCafeteria = {
+    id,
+    ...input,
+    createdAt: new Date().toISOString(),
+  }
+  calificacionesCafeteriaDemo = [nueva, ...calificacionesCafeteriaDemo]
+  return Promise.resolve(id)
+}
+
+export function demoFetchCalificacionesCafeteria(
+  caficultorId: string
+): Promise<CalificacionCafeteria[]> {
+  return Promise.resolve(
+    calificacionesCafeteriaDemo.filter(c => c.caficultorId === caficultorId)
+  )
+}
+
+// Score agregado de demo (calcula sobre el estado actual en memoria)
+export function demoScoreCaficultor(caficultorId: string): { score: number; total: number } {
+  const cals = calificacionesCaficultorDemo.filter(c => c.caficultorId === caficultorId)
+  if (cals.length === 0) return { score: 0, total: 0 }
+  const promedio = cals.reduce((acc, c) => acc + c.estrellas, 0) / cals.length
+  return { score: Math.round(promedio * 10) / 10, total: cals.length }
+}
+
+// ─── Directorio de cafeterías (cliente final) ─────────────────────────────────
+
+export function demoFetchCafeterias(): Promise<UsuarioONE[]> {
+  const cafeterias = (seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'emprendedor')
+  return Promise.resolve(cafeterias)
+}
+
+export function demoFetchCafeteria(uid: string): Promise<UsuarioONE | null> {
+  const cafeteria = (seedUsuarios as UsuarioONE[]).find(u => u.uid === uid && u.rol === 'emprendedor') ?? null
+  return Promise.resolve(cafeteria)
+}
+
+// Obtiene los productos del menú de una cafetería a partir de sus pedidos
+export function demoFetchMenuCafeteria(emprendedorId: string): Promise<ProductoONE[]> {
+  const pedidos = (seedPedidos as PedidoONE[]).filter(p => p.emprendedorId === emprendedorId)
+  const productoIds = new Set(pedidos.flatMap(p => p.items.map(i => i.productoId)))
+  const productos = (seedProductos as ProductoONE[]).filter(p => productoIds.has(p.id))
+  return Promise.resolve(productos)
+}
+
+// ─── Stock ────────────────────────────────────────────────────────────────────
+
+let productosDemo: ProductoONE[] = (seedProductos as ProductoONE[]).map(p => ({ ...p }))
+
+export function demoUpdateStock(productoId: string, kgDisponibles: number): Promise<void> {
+  productosDemo = productosDemo.map(p =>
+    p.id === productoId ? { ...p, kgDisponibles, updatedAt: new Date().toISOString() } : p
+  )
+  return Promise.resolve()
+}
+
+export function demoFetchProductosByCaficultorLive(caficultorId: string): Promise<ProductoONE[]> {
+  return Promise.resolve(productosDemo.filter(p => p.caficultorId === caficultorId))
+}
+
+export function demoCrearProducto(data: Omit<ProductoONE, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  const id = `producto-demo-${Date.now()}`
+  const nuevo: ProductoONE = {
+    ...data,
+    id,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }
+  productosDemo = [nuevo, ...productosDemo]
+  return Promise.resolve(id)
+}
+
+export function demoUpdateProducto(productoId: string, data: Partial<Omit<ProductoONE, 'id' | 'createdAt'>>): Promise<void> {
+  productosDemo = productosDemo.map(p =>
+    p.id === productoId ? { ...p, ...data, updatedAt: new Date().toISOString() } : p
+  )
+  return Promise.resolve()
 }

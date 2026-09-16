@@ -359,16 +359,23 @@ const GridFiltrado: React.FC<{
 }> = ({ productos, caficultores, onSeleccionar }) => {
   const [filtroProceso, setFiltroProceso] = useState<ProcesoONE | 'todos'>('todos')
   const [filtroRegion, setFiltroRegion] = useState<string>('todas')
+  const [busqueda, setBusqueda] = useState('')
 
   const regiones = Array.from(new Set(
     productos.map(p => caficultores.get(p.caficultorId)?.region).filter(Boolean) as string[]
   )).sort()
 
+  const termino = busqueda.toLowerCase().trim()
   const filtrados = productos.filter(p => {
     const region = caficultores.get(p.caficultorId)?.region
     const pasaProceso = filtroProceso === 'todos' || p.proceso === filtroProceso
     const pasaRegion = filtroRegion === 'todas' || region === filtroRegion
-    return pasaProceso && pasaRegion
+    const pasaBusqueda = !termino
+      || p.nombre.toLowerCase().includes(termino)
+      || p.variedad.toLowerCase().includes(termino)
+      || p.caficultorNombre.toLowerCase().includes(termino)
+      || p.notasSabor.some(n => n.toLowerCase().includes(termino))
+    return pasaProceso && pasaRegion && pasaBusqueda
   })
 
   const procesos: { key: ProcesoONE | 'todos'; label: string }[] = [
@@ -382,12 +389,33 @@ const GridFiltrado: React.FC<{
   return (
     <div style={{ padding: '0 4% 60px' }}>
       <h2 style={{
-        margin: '0 0 16px',
+        margin: '0 0 14px',
         fontSize: 17, fontWeight: 700,
         color: C.cream, fontFamily: 'Montserrat, sans-serif',
       }}>
         Todo el catálogo
       </h2>
+
+      {/* Buscador */}
+      <div style={{ position: 'relative', marginBottom: 14 }}>
+        <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 14, color: C.tan, pointerEvents: 'none' }}>🔍</span>
+        <input
+          type="text"
+          placeholder="Buscar por café, variedad, productor, notas..."
+          value={busqueda}
+          onChange={e => setBusqueda(e.target.value)}
+          style={{
+            width: '100%', padding: '10px 12px 10px 36px',
+            borderRadius: 8, border: `1px solid #2a2a2a`,
+            background: C.bgCard, color: C.cream,
+            fontSize: 13, fontFamily: 'Montserrat, sans-serif',
+            outline: 'none', boxSizing: 'border-box',
+          }}
+        />
+        {busqueda && (
+          <button onClick={() => setBusqueda('')} style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: C.tan, cursor: 'pointer', fontSize: 16 }}>✕</button>
+        )}
+      </div>
 
       {/* Filtros por proceso */}
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 10 }}>

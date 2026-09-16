@@ -17,6 +17,10 @@ export interface CaficultorONE {
   }
   activo: boolean
   createdAt: string
+
+  // Score de confianza — agregado de calificaciones de emprendedores
+  scoreConfianza?: number         // Promedio 1-5, calculado al guardar calificación
+  totalCalificaciones?: number    // Conteo total para mostrar "basado en N pedidos"
 }
 
 // ─── PRODUCTO ────────────────────────────────────────────────────────────────
@@ -43,13 +47,14 @@ export interface ProductoONE {
   notaReferencial: string         // "Puntaje referencial — certificación independiente próximamente"
 
   // Precio base que fija el caficultor (por kg, en centavos)
+  // Ya incluye su costo de tueste, empaque y margen. TW no agrega costos.
   precioBaseKgCents: number       // Ej: 8000 = S/ 80/kg
 
-  // Precios finales al emprendedor = precioBase + tueste (S/5/kg) + bolsa (S/1/u)
+  // Precios finales al emprendedor = precioBase × fracción del formato
   precios: {
-    g250: number                  // precioBase*0.25 + tueste*0.25 + bolsa*4
-    kg1: number                   // precioBase*1   + tueste*1    + bolsa*1
-    kg5: number                   // precioBase*5   + tueste*5    + bolsa*5
+    g250: number                  // precioBase * 0.25
+    kg1: number                   // precioBase * 1
+    kg5: number                   // precioBase * 5
   }
 
   // Stock
@@ -72,6 +77,7 @@ export type LogisticaStatusONE = 'preparando' | 'despachado' | 'entregado'
 export interface ItemPedidoONE {
   productoId: string
   productoNombre: string
+  caficultorId: string            // FK → one_caficultores
   caficultorNombre: string
   formato: FormatoONE
   cantidad: number                // Número de unidades del formato
@@ -113,6 +119,10 @@ export interface PedidoONE {
   kitGenerado: boolean
   kitId?: string                  // FK → one_kits
 
+  // Calificación post-entrega
+  calificado: boolean             // true cuando el emprendedor ya calificó este pedido
+  calificacionId?: string         // FK → one_calificaciones_caficultor
+
   // Compromiso mensual (modelo atado)
   esKitProveedor: boolean
   compromisoMeses?: number        // 3 meses mínimo si esKitProveedor
@@ -137,6 +147,8 @@ export interface UsuarioONE {
   emprendedor?: {
     nombreLocal: string
     distritoLocal: string
+    fotoLocal?: string              // URL Cloudinary — foto del local
+    descripcion?: string            // ~20 palabras sobre la cafetería
     etapa: EtapaEmprendedor
     fechaAperturaEstimada?: string
     pedidoIds: string[]
@@ -206,4 +218,52 @@ export interface CreateUsuarioInput {
   telefono?: string
   emprendedor?: UsuarioONE['emprendedor']
   caficultor?: UsuarioONE['caficultor']
+}
+
+// ─── CALIFICACIONES ──────────────────────────────────────────────────────────
+
+// Emprendedor califica al caficultor después de recibir el pedido
+// Mide: calidad del producto entregado (consistencia, presentación)
+export interface CalificacionCaficultor {
+  id: string
+  pedidoId: string                // FK → one_pedidos (1 calificación por pedido)
+  caficultorId: string            // FK → one_caficultores
+  emprendedorId: string           // FK → one_usuarios
+  emprendedorNombre: string       // Desnormalizado
+  nombreLocal: string             // Cafetería que califica
+  estrellas: 1 | 2 | 3 | 4 | 5
+  comentario?: string             // Texto libre, opcional
+  createdAt: string
+}
+
+// Cliente final califica la cafetería desde PerfilCaficultor (QR en la mesa)
+// Mide: experiencia de taza — preparación del barista, no del caficultor
+export interface CalificacionCafeteria {
+  id: string
+  caficultorId: string            // Contexto: qué café estaba tomando
+  productoId?: string             // Producto específico si se puede inferir
+  nombreLocal: string             // Cafetería donde se tomó
+  distritoLocal: string
+  estrellas: 1 | 2 | 3 | 4 | 5
+  comentario?: string
+  createdAt: string
+}
+
+export interface CreateCalificacionCaficultorInput {
+  pedidoId: string
+  caficultorId: string
+  emprendedorId: string
+  emprendedorNombre: string
+  nombreLocal: string
+  estrellas: 1 | 2 | 3 | 4 | 5
+  comentario?: string
+}
+
+export interface CreateCalificacionCafeteriaInput {
+  caficultorId: string
+  productoId?: string
+  nombreLocal: string
+  distritoLocal: string
+  estrellas: 1 | 2 | 3 | 4 | 5
+  comentario?: string
 }

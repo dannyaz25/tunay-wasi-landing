@@ -1,13 +1,12 @@
 // TunayWasi ONE — constantes del modelo
+// Modelo: caficultor tuesta, empaca y envía directo al emprendedor.
+// TW es plataforma de conexión + pagos. No toca el café físicamente.
 
 export const ONE_CONFIG = {
-  // Costos de producción (se suman al precio del caficultor)
-  TUESTE_POR_KG_CENTS: 500,         // S/ 5 por kg tostado
-  BOLSA_POR_UNIDAD_CENTS: 100,      // S/ 1 por bolsa
-
-  // Sin delivery (corre por cuenta del emprendedor) ni comisión en fase 1
-  DELIVERY_CENTS: 0,
-  COMISION_PORCENTAJE: 0,
+  // El caficultor fija su precioBaseKgCents ya incluyendo tueste y empaque.
+  // TW no agrega costos de producción — ese costo es responsabilidad del caficultor.
+  COMISION_PORCENTAJE: 0,           // Sin comisión en fase 1 (gratis usar la plataforma)
+  DELIVERY_CENTS: 0,                // Envío coordina el caficultor directo al emprendedor
 
   // Compromiso mínimo Kit Proveedor
   COMPROMISO_MESES_MIN: 3,
@@ -26,22 +25,11 @@ export const ONE_CONFIG = {
   PEDIDO_YEAR: new Date().getFullYear(),
 } as const
 
-// Unidades por formato (para calcular costo de bolsas)
-export const UNIDADES_POR_FORMATO: Record<string, number> = {
-  '250g': 4,   // 4 bolsas de 250g = 1kg
-  '1kg': 1,    // 1 bolsa por kg
-  '5kg': 5,    // 5 bolsas de 1kg (o 1 saco, según empaque)
-}
-
-// Calcula el precio final al emprendedor dado el precio base del caficultor
-// precioBaseCents: precio del caficultor por kg en centavos
-// formato: '250g' | '1kg' | '5kg'
+// Precio al emprendedor = exactamente lo que fija el caficultor por kg × cantidad
+// El caficultor ya incluyó tueste, empaque y su margen en precioBaseKgCents.
 export function calcularPrecioFinal(precioBaseKgCents: number, formato: '250g' | '1kg' | '5kg'): number {
   const kgs = formato === '250g' ? 0.25 : formato === '1kg' ? 1 : 5
-  const unidades = UNIDADES_POR_FORMATO[formato]
-  const costoTueste = Math.round(ONE_CONFIG.TUESTE_POR_KG_CENTS * kgs)
-  const costoBolsas = ONE_CONFIG.BOLSA_POR_UNIDAD_CENTS * unidades
-  return Math.round(precioBaseKgCents * kgs) + costoTueste + costoBolsas
+  return Math.round(precioBaseKgCents * kgs)
 }
 
 // Colecciones Firestore
@@ -51,9 +39,34 @@ export const ONE_COLLECTIONS = {
   PEDIDOS: 'one_pedidos',
   USUARIOS: 'one_usuarios',
   KITS: 'one_kits',
+  CALIFICACIONES_CAFICULTOR: 'one_calificaciones_caficultor',
+  CALIFICACIONES_CAFETERIA: 'one_calificaciones_cafeteria',
 } as const
 
-// Etiquetas de proceso para UI
+// ─── Design system dark unificado ───────────────────────────────────────────
+// Netflix-style: bg oscuro #0a0a0a, cards #141414, crema, terra, sage
+export const C = {
+  bg: '#0a0a0a',
+  card: '#141414',
+  cardHover: '#1e1e1e',
+  border: '#2a2a2a',
+  cream: '#f2e0cc',
+  creamMuted: '#c4b297',
+  terra: '#c96e4b',
+  terraHover: '#b85d3a',
+  sage: '#8faf8a',
+  green: '#1f3028',
+  white: '#ffffff',
+  muted: '#666666',
+  yellow: '#f39c12',
+  red: '#e74c3c',
+  blue: '#4a90c4',
+  purple: '#9b59b6',
+  text: '#e8e0d8',
+  textSub: '#a09080',
+} as const
+
+// ─── Etiquetas de proceso para UI
 export const PROCESO_LABELS: Record<string, string> = {
   lavado: 'Lavado',
   natural: 'Natural',

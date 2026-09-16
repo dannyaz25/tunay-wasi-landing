@@ -8,8 +8,9 @@
     "emprendedor": {
       "nombreLocal": "Café El Origen",
       "distritoLocal": "Miraflores",
-      "etapa": "proxima_apertura",
-      "fechaAperturaEstimada": "2026-11-01",
+      "fotoLocal": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
+      "descripcion": "Cafetería de especialidad enfocada en cafés de origen único del Perú, con servicio de filter y espresso.",
+      "etapa": "abierto",
       "pedidoIds": ["ONE-2026-4821"]
     },
     "createdAt": "2026-09-10T00:00:00.000Z"
@@ -23,10 +24,62 @@
     "emprendedor": {
       "nombreLocal": "La Taza Verde",
       "distritoLocal": "Barranco",
+      "fotoLocal": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
+      "descripcion": "Espacio cultural y cafetería en el corazón de Barranco. Café de origen con menú de desayunos.",
       "etapa": "abierto",
       "pedidoIds": ["ONE-2026-3301"]
     },
     "createdAt": "2026-09-08T00:00:00.000Z"
+  },
+  {
+    "uid": "user-emprendedor-003",
+    "rol": "emprendedor",
+    "nombre": "Diego Paredes",
+    "email": "diego@altitudcafe.pe",
+    "telefono": "+51965432109",
+    "emprendedor": {
+      "nombreLocal": "Altitud Café",
+      "distritoLocal": "San Isidro",
+      "fotoLocal": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&q=80",
+      "descripcion": "Café de especialidad en San Isidro. Métodos de filter, cold brew y espresso de productores de altura.",
+      "etapa": "abierto",
+      "pedidoIds": ["ONE-2026-4821"]
+    },
+    "createdAt": "2026-09-05T00:00:00.000Z"
+  },
+  {
+    "uid": "user-emprendedor-004",
+    "rol": "emprendedor",
+    "nombre": "Valeria Quispe",
+    "email": "valeria@terracafe.pe",
+    "telefono": "+51954321098",
+    "emprendedor": {
+      "nombreLocal": "Terra Café",
+      "distritoLocal": "Surco",
+      "fotoLocal": "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80",
+      "descripcion": "Cafetería de barrio en Surco con enfoque en la trazabilidad del café y educación al consumidor.",
+      "etapa": "proxima_apertura",
+      "fechaAperturaEstimada": "2026-11-15",
+      "pedidoIds": []
+    },
+    "createdAt": "2026-09-12T00:00:00.000Z"
+  },
+  {
+    "uid": "user-emprendedor-005",
+    "rol": "emprendedor",
+    "nombre": "Andrés Flores",
+    "email": "andres@origencafe.pe",
+    "telefono": "+51943210987",
+    "emprendedor": {
+      "nombreLocal": "Origen & Taza",
+      "distritoLocal": "Pueblo Libre",
+      "fotoLocal": "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",
+      "descripcion": "Pequeña cafetería familiar en Pueblo Libre. Apostamos por los cafés naturales y honeys del sur del Perú.",
+      "etapa": "proxima_apertura",
+      "fechaAperturaEstimada": "2026-12-01",
+      "pedidoIds": []
+    },
+    "createdAt": "2026-09-14T00:00:00.000Z"
   },
   {
     "uid": "user-caficultor-001",

@@ -22,8 +22,12 @@ import type {
   PedidoONE,
   UsuarioONE,
   KitIdentidadONE,
+  CalificacionCaficultor,
+  CalificacionCafeteria,
   CreatePedidoInput,
   CreateUsuarioInput,
+  CreateCalificacionCaficultorInput,
+  CreateCalificacionCafeteriaInput,
 } from './types'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -136,6 +140,8 @@ export async function createPedido(input: CreatePedidoInput): Promise<string> {
     notasEntrega: undefined,
     kitGenerado: false,
     kitId: undefined,
+    calificado: false,
+    calificacionId: undefined,
     esKitProveedor: input.esKitProveedor,
     compromisoMeses: input.esKitProveedor ? (input.compromisoMeses ?? ONE_CONFIG.COMPROMISO_MESES_MIN) : undefined,
     createdAt: new Date().toISOString(),
@@ -235,10 +241,7 @@ export async function fetchPedidosByCaficultor(caficultorId: string): Promise<Pe
       const data = d.data()
       return { id: d.id, ...data, createdAt: normalizeDate(data.createdAt), updatedAt: normalizeDate(data.updatedAt) } as PedidoONE
     })
-    .filter((p) => p.items.some((item) => {
-      // Filtramos por caficultorNombre como proxy — en producción agregar caficultorId al item
-      return item.caficultorNombre !== '' && p.items.some(() => caficultorId !== '')
-    }))
+    .filter((p) => p.items.some((item) => item.caficultorId === caficultorId))
 }
 
 export async function fetchPedidosAdmin(): Promise<PedidoONE[]> {
@@ -292,6 +295,66 @@ export async function updateLogistica(
 }
 
 // ─── USUARIOS ─────────────────────────────────────────────────────────────────
+
+export async function fetchCafeterias(): Promise<UsuarioONE[]> {
+  const snap = await getDocs(
+    query(collection(db, ONE_COLLECTIONS.USUARIOS), where('rol', '==', 'emprendedor'))
+  )
+  return snap.docs.map(d => ({ uid: d.id, ...d.data() } as UsuarioONE))
+}
+
+export async function fetchCafeteria(uid: string): Promise<UsuarioONE | null> {
+  const snap = await getDoc(doc(db, ONE_COLLECTIONS.USUARIOS, uid))
+  if (!snap.exists()) return null
+  return { uid: snap.id, ...snap.data() } as UsuarioONE
+}
+
+export async function fetchMenuCafeteria(emprendedorId: string): Promise<ProductoONE[]> {
+  const pedidosSnap = await getDocs(
+    query(collection(db, ONE_COLLECTIONS.PEDIDOS), where('emprendedorId', '==', emprendedorId))
+  )
+  const productoIds = new Set(
+    pedidosSnap.docs.flatMap(d => (d.data().items as { productoId: string }[]).map(i => i.productoId))
+  )
+  if (productoIds.size === 0) return []
+  const productos: ProductoONE[] = []
+  for (const id of productoIds) {
+    const snap = await getDoc(doc(db, ONE_COLLECTIONS.PRODUCTOS, id))
+    if (snap.exists()) {
+      const data = snap.data()
+      productos.push({ id: snap.id, ...data, createdAt: normalizeDate(data.createdAt), updatedAt: normalizeDate(data.updatedAt) } as ProductoONE)
+    }
+  }
+  return productos
+}
+
+export async function updateStock(productoId: string, kgDisponibles: number): Promise<void> {
+  await updateDoc(doc(db, ONE_COLLECTIONS.PRODUCTOS, productoId), {
+    kgDisponibles,
+    updatedAt: serverTimestamp(),
+  })
+}
+
+export async function crearProducto(
+  data: Omit<ProductoONE, 'id' | 'createdAt' | 'updatedAt'>
+): Promise<string> {
+  const docRef = await addDoc(collection(db, ONE_COLLECTIONS.PRODUCTOS), {
+    ...data,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
+  return docRef.id
+}
+
+export async function updateProducto(
+  productoId: string,
+  data: Partial<Omit<ProductoONE, 'id' | 'createdAt'>>
+): Promise<void> {
+  await updateDoc(doc(db, ONE_COLLECTIONS.PRODUCTOS, productoId), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  })
+}
 
 export async function crearUsuario(
   uid: string,
@@ -385,4 +448,80 @@ export async function actualizarUrlsKit(
   urls: Partial<Pick<KitIdentidadONE, 'menuPdfUrl' | 'fichasUrl' | 'qrUrl' | 'instagramPackUrl'>>
 ): Promise<void> {
   await updateDoc(doc(db, ONE_COLLECTIONS.KITS, kitId), urls)
+}
+
+// ─── CALIFICACIONES ──────────────────────────────────────────────────────────
+
+export async function crearCalificacionCaficultor(
+  input: CreateCalificacionCaficultorInput
+): Promise<string> {
+  // Guardar la calificación
+  const docRef = await addDoc(collection(db, ONE_COLLECTIONS.CALIFICACIONES_CAFICULTOR), {
+    ...input,
+    createdAt: serverTimestamp(),
+  })
+
+  // Marcar pedido como calificado
+  await updateDoc(doc(db, ONE_COLLECTIONS.PEDIDOS, input.pedidoId), {
+    calificado: true,
+    calificacionId: docRef.id,
+    updatedAt: serverTimestamp(),
+  })
+
+  // Recalcular score del caficultor (promedio simple)
+  await recalcularScoreCaficultor(input.caficultorId)
+
+  return docRef.id
+}
+
+async function recalcularScoreCaficultor(caficultorId: string): Promise<void> {
+  const snap = await getDocs(
+    query(
+      collection(db, ONE_COLLECTIONS.CALIFICACIONES_CAFICULTOR),
+      where('caficultorId', '==', caficultorId)
+    )
+  )
+  if (snap.empty) return
+  const total = snap.docs.reduce((acc, d) => acc + (d.data().estrellas as number), 0)
+  const promedio = Math.round((total / snap.docs.length) * 10) / 10
+  await updateDoc(doc(db, ONE_COLLECTIONS.CAFICULTORES, caficultorId), {
+    scoreConfianza: promedio,
+    totalCalificaciones: snap.docs.length,
+  })
+}
+
+export async function fetchCalificacionesByCaficultor(
+  caficultorId: string
+): Promise<CalificacionCaficultor[]> {
+  const snap = await getDocs(
+    query(
+      collection(db, ONE_COLLECTIONS.CALIFICACIONES_CAFICULTOR),
+      where('caficultorId', '==', caficultorId),
+      orderBy('createdAt', 'desc')
+    )
+  )
+  return snap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) } as CalificacionCaficultor))
+}
+
+export async function crearCalificacionCafeteria(
+  input: CreateCalificacionCafeteriaInput
+): Promise<string> {
+  const docRef = await addDoc(collection(db, ONE_COLLECTIONS.CALIFICACIONES_CAFETERIA), {
+    ...input,
+    createdAt: serverTimestamp(),
+  })
+  return docRef.id
+}
+
+export async function fetchCalificacionesCafeteria(
+  caficultorId: string
+): Promise<CalificacionCafeteria[]> {
+  const snap = await getDocs(
+    query(
+      collection(db, ONE_COLLECTIONS.CALIFICACIONES_CAFETERIA),
+      where('caficultorId', '==', caficultorId),
+      orderBy('createdAt', 'desc')
+    )
+  )
+  return snap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) } as CalificacionCafeteria))
 }
