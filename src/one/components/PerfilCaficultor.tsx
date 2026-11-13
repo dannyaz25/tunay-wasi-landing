@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { fetchCaficultor, fetchProductos, crearCalificacionCafeteria } from '../service'
 import { demoFetchCaficultor, demoFetchProductosByCaficultor, demoCrearCalificacionCafeteria } from '../demoService'
 import type { CaficultorONE, ProductoONE } from '../types'
-import { PROCESO_LABELS } from '../config'
+import { PROCESO_LABELS, calcularPrecioFinal } from '../config'
 import seedCaficultores from '../seed/one_caficultores.json'
 import seedProductos from '../seed/one_productos.json'
 
@@ -281,7 +281,7 @@ const PerfilCaficultor: React.FC<Props> = ({ caficultorId, isDemo = false }) => 
                   </div>
                     <div style={{ textAlign: 'right', flexShrink: 0 }}>
                     <p style={{ margin: '0 0 2px', fontSize: 13, fontWeight: 700, color: C.terra }}>
-                      desde {formatCents(p.precios.g250)}
+                      desde {formatCents(calcularPrecioFinal(p.precioBaseKgCents, '1kg'))}
                     </p>
                     <button
                       onClick={() => {

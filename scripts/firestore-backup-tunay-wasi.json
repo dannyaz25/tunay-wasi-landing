@@ -1,0 +1,364 @@
+{
+  "productos": {
+    "bourbon-lavado-rosmell-2026": {
+      "code": "03",
+      "name": "Fusión 777 - Bourbon Lavado",
+      "sub": "Lavado · Amazonas",
+      "region": "Perú · Amazonas",
+      "alt": "1860 m",
+      "farm": "Fusión 777",
+      "producer": "Rosmell Andia Yuto",
+      "notes": [
+        "Caramelo",
+        "Cítrico",
+        "Panela"
+      ],
+      "body": "Medio",
+      "acidity": "Cítrica limpia",
+      "score": "82.5+ (referencial)",
+      "tag": "Bourbon Lavado · Lote limitado",
+      "tagTone": "sage",
+      "brews": [
+        "V60",
+        "French Press",
+        "Espresso"
+      ],
+      "weights": [
+        {
+          "label": "250g",
+          "cents": 2705
+        }
+      ],
+      "producerPct": 34.65,
+      "tone": "tan",
+      "stockKg": 40,
+      "stockReservedKg": 0,
+      "desc": "Microlote Bourbon Lavado de Rosmell Andia, Fusión 777 · 1860 msnm. 40 kg en cosecha. Entrega estimada agosto 2026. Precio final tras cata Q-Grader.",
+      "label": "PROXIMAMENTE"
+    },
+    "bourbon-lavado-jon-milan-2026": {
+      "code": "02",
+      "name": "Las Travesuras de Milán - Bourbon",
+      "sub": "Lavado · Cajamarca",
+      "region": "Perú · Cajamarca",
+      "alt": "1550 m",
+      "farm": "Finca Darlyn Sánchez",
+      "producer": "Darlyn John Sánchez Hilario",
+      "body": "Medio-alto",
+      "acidity": "Cítrica limpia",
+      "score": "86+",
+      "tag": "Bourbon Lavado",
+      "tagTone": "sage",
+      "tone": "tan",
+      "stockKg": 300,
+      "stockReservedKg": 0,
+      "producerPct": 42,
+      "desc": "Microlote Bourbon proceso Lavado de Jon Sánchez. En fermentación, disponible julio 2026. 300 kg.",
+      "notes": [
+        "Caramelo",
+        "Cítrico",
+        "Chocolate"
+      ],
+      "brews": [
+        "V60",
+        "French Press",
+        "Espresso"
+      ],
+      "weights": [
+        {
+          "label": "250g",
+          "cents": 7200
+        },
+        {
+          "label": "1kg",
+          "cents": 26000
+        },
+        {
+          "label": "3kg",
+          "cents": 75000
+        }
+      ],
+      "label": "PROXIMAMENTE"
+    },
+    "caturra-honey-aydee-2026": {
+      "code": "02",
+      "name": "Aydee Rojas - Caturra Honey",
+      "sub": "Honey · Cajamarca",
+      "region": "Perú · Cajamarca · Jaén",
+      "alt": "1500 m",
+      "farm": "Finca Vista Hermosa",
+      "producer": "Aydee Rojas Saldivar",
+      "notes": [
+        "Dulce",
+        "Caramelo",
+        "Frutal"
+      ],
+      "body": "Medio",
+      "acidity": "Suave",
+      "score": "82.5+ (referencial)",
+      "tag": "Caturra Honey · Lote limitado",
+      "tagTone": "terra",
+      "brews": [
+        "V60",
+        "Chemex",
+        "Aeropress"
+      ],
+      "weights": [
+        {
+          "label": "250g",
+          "cents": 2705
+        },
+        {
+          "label": "1kg",
+          "cents": 9700
+        }
+      ],
+      "producerPct": 38.6,
+      "tone": "green",
+      "stockKg": 12,
+      "stockReservedKg": 0,
+      "desc": "Microlote Caturra Honey de Aydee Rojas, Jaén. 12 kg disponibles. Notas provisionales — precio final confirmado tras cata Q-Grader en Lima.",
+      "label": "PREVENTA",
+      "photo": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1778767831/aydeFinca_rm5arr.jpg"
+    },
+    "geisha-honey-aydee-2026": {
+      "code": "01",
+      "name": "Aydee Rojas - Geisha Honey",
+      "sub": "Honey · Cajamarca",
+      "region": "Perú · Cajamarca · Jaén",
+      "alt": "1500 m",
+      "farm": "Finca Vista Hermosa",
+      "producer": "Aydee Rojas Saldivar",
+      "notes": [
+        "Frutal",
+        "Miel",
+        "Floral"
+      ],
+      "body": "Medio",
+      "acidity": "Brillante",
+      "score": "82.5+",
+      "tag": "Geisha Honey",
+      "tagTone": "terra",
+      "brews": [
+        "V60",
+        "Chemex",
+        "Aeropress"
+      ],
+      "weights": [
+        {
+          "label": "250g",
+          "cents": 2705
+        },
+        {
+          "label": "1kg",
+          "cents": 9700
+        }
+      ],
+      "producerPct": 38.6,
+      "tone": "green",
+      "stockReservedKg": 0,
+      "desc": "Microlote Geisha proceso Honey de Aydee Rojas, en secado. Cosecha 2026. Cantidad limitada: 24 kg.",
+      "label": "PREVENTA",
+      "photo": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1778767831/aydeFinca_rm5arr.jpg",
+      "stockKg": 12
+    }
+  },
+  "caficultores": {
+    "aydee-rojas-saldivar": {
+      "nombreProductor": "Aydee Rojas Saldivar",
+      "nombreFinca": "Finca Vista Hermosa",
+      "provincia": "Jaén",
+      "departamento": "Cajamarca",
+      "distrito": "San José del Alto",
+      "altitud": "1500",
+      "variedades": [
+        "Caturra",
+        "Geisha"
+      ],
+      "proceso": "Natural",
+      "puntajeSCA": "82.5+",
+      "resumen": "Productora de microlotes de especialidad en las alturas de Jaén. Aydee trabaja con proceso Honey y Natural, obteniendo perfiles frutales y florales únicos en su finca familiar.",
+      "historia": "Aydee Rojas Saldivar es una caficultora de la provincia de Jaén, Cajamarca. Su finca Vista Hermosa, situada a 1500 msnm, produce microlotes de alta calidad gracias a la dedicación familiar y un terroir privilegiado.",
+      "impactoSocial": "El 38.6% del precio neto de cada bolsa vendida va directo a Aydee, por encima del promedio de comercio justo, permitiéndole reinvertir en su finca y su familia.",
+      "experienciaAnos": "10",
+      "hectareas": "3",
+      "status": "activo",
+      "fotoPerfilUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1778767831/aydeFinca_rm5arr.jpg",
+      "fotosUrls": [
+        "https://res.cloudinary.com/dtc9meqbc/image/upload/v1778767976/AydeFinca_lgry4p.jpg",
+        "https://res.cloudinary.com/dtc9meqbc/image/upload/v1778768053/Screenshot_2026-05-14_at_9.13.55_AM_ppsgqu.png",
+        "https://res.cloudinary.com/dtc9meqbc/image/upload/v1778767939/finca6_ytusbx.jpg"
+      ]
+    },
+    "1cbeBA81OevZYNGSM94J": {
+      "waitlistId": "WRxArZPXLSgyELRa1PGc",
+      "telefono": "972597937",
+      "generacion": "3ra generación",
+      "email": "everjose@hotmail.com",
+      "variedades": [
+        "Geisha"
+      ],
+      "provincia": "Chanchamayo",
+      "historia": "Somos la tercera generación. La abuela María fue quien introdujo el café a la familia — tostaba en ollas y sartenes, tenía 50 árboles de Geisha bajo plátanos, naranjos y caña de azúcar, solo para uso familiar. Cuando llegábamos de visita nos servía café recién tostado en molino corona. La abuela era bajita, blanca, de ojos verdes e imponía autoridad. Con mi hija recorrimos el mundo buscando café. Mi padre dejó su trabajo y yo, luego de estudiar agricultura y administración, volví porque algo me llamaba desde el alma.",
+      "departamento": "Junín",
+      "proceso": "Lavado",
+      "experienciaAnos": 10,
+      "fecha": {
+        "_seconds": 1778338788,
+        "_nanoseconds": 700000000
+      },
+      "puntajeSCA": "",
+      "distrito": "Santa Ana de Perené",
+      "nombreFinca": "Don Pancho",
+      "altitud": "1800",
+      "nombre": "Jose Antonio Rever Cruz",
+      "status": "pendiente"
+    },
+    "amyyl09NwkYCngnNRcBJ": {
+      "nombreFinca": "Vista Alegre",
+      "waitlistId": "5JqEaTqULSVD67GOtGxj",
+      "altitud": "1900",
+      "variedades": [
+        "Geisha",
+        "Catimor",
+        "Típica",
+        "Borbón"
+      ],
+      "puntajesSCA": [
+        86,
+        86.5,
+        85,
+        84
+      ],
+      "telefono": "937554243",
+      "fecha": {
+        "_seconds": 1778336889,
+        "_nanoseconds": 256000000
+      },
+      "puntajeSCA": 86.5,
+      "historia": "Familia de segunda generación. Empezó a los 14 años, adquirió una finca de una hectárea y fue creciendo paulatinamente por pasión al campo y la producción.",
+      "generacion": "2da generación",
+      "email": "r7sm77ll7ndi7@gmail.com",
+      "distrito": "Echarati",
+      "nombre": "Rosmell Andia Yuto",
+      "departamento": "Cusco",
+      "proceso": "Lavado",
+      "experienciaAnos": 10,
+      "provincia": "La Convención",
+      "status": "pendiente"
+    },
+    "darlyn-sanchez-hilario": {
+      "nombreProductor": "Darlyn John Sánchez Hilario",
+      "nombreFinca": "Finca Bello Horizonte",
+      "provincia": "Chanchamayo",
+      "departamento": "Junín",
+      "distrito": "Pichanaki",
+      "altitud": "1550",
+      "variedades": [
+        "Bourbon"
+      ],
+      "proceso": "Lavado",
+      "puntajeSCA": "87.5+",
+      "resumen": "Productor de microlotes Bourbon Lavado en Pichanaki, Junín. 300 kg en fermentación, disponible julio 2026.",
+      "historia": "Jon Sánchez cultiva Bourbon en las laderas de Pichanaki, Chanchamayo. Su lote \"Las Travesuras de Milán\" combina altitud y proceso lavado clásico para lograr un perfil cítrico de gran claridad.",
+      "impactoSocial": "El 56% del precio neto va directo a Jon, por encima del promedio de comercio justo.",
+      "experienciaAnos": "8",
+      "hectareas": "5",
+      "variedad": "Bourbon",
+      "status": "pendiente"
+    },
+    "rosmell-andia-2026": {
+      "nombreProductor": "Rosmell Andia Yuto",
+      "nombreFinca": "Fusión 777",
+      "provincia": "Bagua",
+      "departamento": "Amazonas",
+      "distrito": "Bagua Grande",
+      "altitud": "1860",
+      "variedad": "Bourbon",
+      "proceso": "Lavado",
+      "puntajeSCA": "82.5+ (referencial)",
+      "resumen": "Productor de microlote Bourbon Lavado en Amazonas, 40 kg en cosecha. Entrega estimada agosto 2026.",
+      "historia": "Rosmell cultiva Bourbon en la finca Fusión 777 a 1860 msnm en Amazonas, con cosecha en proceso.",
+      "impactoSocial": "Producción familiar en Amazonas preservando variedades de especialidad en altura.",
+      "status": "pendiente"
+    }
+  },
+  "configurations": {
+    "ciclo_activo": {
+      "closeAt": "31 may.",
+      "deliverLima": "jun. (1a semana)",
+      "deliverProv": "jun. (2a semana)",
+      "cutoffTimestamp": 1780289999000
+    },
+    "comisiones": {
+      "producerShareFactor": 0.386,
+      "b2c": [
+        {
+          "key": "caficultor",
+          "pct": 38.6,
+          "label": "Caficultor",
+          "color": "#c96e4b",
+          "detail": "Pago directo a la finca antes de que el grano viaje."
+        },
+        {
+          "key": "tostador",
+          "pct": 14,
+          "label": "Tueste + Cata Q-Grader",
+          "color": "#8faf8a",
+          "detail": "Tostado artesanal y certificación de calidad SCA."
+        },
+        {
+          "key": "logistica",
+          "pct": 22.4,
+          "label": "Packaging y Envío",
+          "color": "#c4b297",
+          "detail": "Bolsa trilaminada, caja kraft, tissue, sticker, tarjeta de trazabilidad, mailer y flete desde origen."
+        },
+        {
+          "key": "plataforma",
+          "pct": 19,
+          "label": "Tunay Wasi",
+          "color": "#1f3028",
+          "detail": "Plataforma, tecnología y operación del marketplace."
+        }
+      ]
+    },
+    "landing": {
+      "heroMetrics": {
+        "producerPctDisplay": 38,
+        "farmCount": 1,
+        "altitudMedia": "1,500 m"
+      },
+      "contact": {
+        "email": "tunaywasi@gmail.com",
+        "whatsapp": "+51917959370",
+        "appUrl": "https://app.tunaywasi.pe",
+        "adminEmail": "tunaywasi@gmail.com",
+        "address": "Jr. El Greco 223, San Borja, Lima"
+      }
+    }
+  },
+  "pedidos": {},
+  "waitlist-caficultores": {
+    "WRxArZPXLSgyELRa1PGc": {
+      "nombre": "Jose Antonio Reyes Cruz",
+      "status": "confirmado",
+      "telefono": "972597937",
+      "email": "everjose@hotmail.com",
+      "fecha": {
+        "_seconds": 1778338787,
+        "_nanoseconds": 75000000
+      }
+    },
+    "5JqEaTqULSVD67GOtGxj": {
+      "nombre": "Rosmell Andia Yuto",
+      "fecha": {
+        "_seconds": 1778336887,
+        "_nanoseconds": 735000000
+      },
+      "email": "r7sm77ll7ndi7@gmail.com",
+      "telefono": "937554243",
+      "status": "confirmado"
+    }
+  }
+}

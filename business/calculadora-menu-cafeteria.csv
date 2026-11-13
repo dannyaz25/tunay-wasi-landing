@@ -1,0 +1,75 @@
+CALCULADORA DE COSTOS Y PUNTO DE EQUILIBRIO — Cafetería,,,,
+TunayWasi · Para emprendedores que abren su barra,,,,
+,,,,
+INSTRUCCIONES: Completa solo las celdas marcadas. Los resultados se calculan solos.,,,,
+,,,,
+=================================================,,,,
+1. COSTOS FIJOS MENSUALES DEL LOCAL,,,,
+=================================================,,,,
+Concepto,Costo mensual (S/),,
+Alquiler del local,2000,,
+Luz + agua + internet,300,,
+Sueldo barista (si tienes personal),1200,,
+Otros (limpieza / gas / consumibles),200,,
+TOTAL COSTOS FIJOS,=SUM(B9:B12),,
+,,,,
+=================================================,,,,
+2. TUS PREPARACIONES Y COSTOS,,,,
+=================================================,,,,
+"Preparación","Precio venta (S/)","Gramos de café","Costo café S/ por kg","Costo café por taza (S/)","Otros insumos (leche/azúcar S/)","Costo total por taza (S/)","Margen por taza (S/)","Margen %"
+Espresso,8,18,60,=C20*D20/1000,0.5,=E20+F20,=B20-G20,=H20/B20*100
+Americano,8,18,60,=C21*D21/1000,0,=E21+F21,=B21-G21,=H21/B21*100
+Cappuccino,12,18,60,=C22*D22/1000,2,=E22+F22,=B22-G22,=H22/B22*100
+Latte,12,18,60,=C23*D23/1000,2.5,=E23+F23,=B23-G23,=H23/B23*100
+V60,14,15,70,=C24*D24/1000,0,=E24+F24,=B24-G24,=H24/B24*100
+Prensa francesa,12,30,65,=C25*D25/1000,0,=E25+F25,=B25-G25,=H25/B25*100
+Cold brew,15,80,65,=C26*D26/1000,0,=E26+F26,=B26-G26,=H26/B26*100
+,,,,
+=================================================,,,,
+3. MIX DE VENTAS ESTIMADO (por día),,,,
+=================================================,,,,
+"Preparación","Tazas que esperas vender por día","Ingreso diario (S/)","Costo diario (S/)","Margen diario (S/)"
+Espresso,10,=B32*B20,=B32*G20,=C32-D32
+Americano,8,=B33*B21,=B33*G21,=C33-D33
+Cappuccino,6,=B34*B22,=B34*G22,=C34-D34
+Latte,6,=B35*B23,=B35*G23,=C35-D35
+V60,4,=B36*B24,=B36*G24,=C36-D36
+Prensa francesa,3,=B37*B25,=B37*G25,=C37-D37
+Cold brew,3,=B38*B26,=B38*G26,=C38-D38
+TOTAL POR DÍA,=SUM(B32:B38),=SUM(C32:C38),=SUM(D32:D38),=SUM(E32:E38)
+,,,,
+=================================================,,,,
+4. PUNTO DE EQUILIBRIO,,,,
+=================================================,,,,
+Concepto,Valor,Unidad,Notas,
+Total costos fijos al mes,=B13,S/,,
+Días que trabajas al mes,26,días,,
+Costos fijos por día,=B45/B46,S/ por día,,
+Margen promedio por taza,=E39/B39,S/ por taza,,
+,,,,
+TAZAS QUE NECESITAS VENDER POR DÍA PARA NO PERDER:,,,,
+,=CEILING(B47/B48,1),tazas/día,"Vende menos que esto y pierdes dinero",
+,,,,
+TAZAS QUE VENDES HOY (según tu estimado):,,,,
+,=B39,tazas/día,,
+,,,,
+¿LLEGAS AL PUNTO DE EQUILIBRIO?,,,,
+,=IF(B39>=B52,"SÍ — tu negocio cubre costos","NO — necesitas vender más o ajustar precios"),,,,
+,,,,
+=================================================,,,,
+5. PROYECCIÓN MENSUAL,,,,
+=================================================,,,,
+Concepto,Valor,Unidad,,
+Ingresos mensuales estimados,=C39*B46,S/,,
+Costos variables mensuales,=D39*B46,S/,,
+Costos fijos mensuales,=B13,S/,,
+UTILIDAD NETA MENSUAL,=B63-B64-B65,S/,,
+RENTABILIDAD,=B66/B63*100,%,,
+,,,,
+=================================================,,,,
+NOTAS,,,,
+=================================================,,,,
+- Ajusta el precio de café por kg según el caficultor que elijas en TunayWasi,,,,
+- El costo de leche referencial es S/ 4.5 por litro (aprox 150ml por cappuccino/latte),,,,
+- No incluye depreciación de equipos ni impuestos,,,,
+- Los gramos son referenciales — ajusta según tu receta y molino,,,,

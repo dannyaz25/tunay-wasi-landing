@@ -1,0 +1,167 @@
+[
+  {
+    "id": "caficultor-001",
+    "nombre": "Segundo Rojas Herrera",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cajamarca",
+    "distrito": "La Coipa",
+    "altitudMsnm": 1850,
+    "historia": "Llevo más de veinte años cultivando café en las laderas de La Coipa, donde mi padre me enseñó a leer el suelo y el clima antes de sembrar. Trabajo junto a mi familia en tres hectáreas de Bourbon y Caturra que heredamos hace dos generaciones. Cada cosecha la hago con cuidado para que el sabor llegue limpio a quien lo pruebe.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-002",
+    "nombre": "Nelly Díaz Castillo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cajamarca",
+    "distrito": "San Ignacio",
+    "altitudMsnm": 1760,
+    "historia": "Soy productora de café desde que tengo memoria, mi madre ya sembraba en estas mismas parcelas de San Ignacio. Empecé a aprender el proceso lavado hace cinco años con el apoyo de una cooperativa local y hoy exporto parte de mi producción. Me enorgullece que mi café represente el trabajo y la tradición de esta tierra cajamarquina.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-003",
+    "nombre": "Pedro Humberto Llatas Quiroz",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cajamarca",
+    "distrito": "Jaén",
+    "altitudMsnm": 1420,
+    "historia": "Produzco café en la provincia de Jaén desde hace quince años, en terrenos que compramos con mi esposa cuando recién nos casamos. He experimentado con proceso natural en los últimos tres años y los resultados en taza han superado todas mis expectativas. Sigo aprendiendo cada cosecha porque el café siempre tiene algo nuevo que enseñarme.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-004",
+    "nombre": "Inés Quispe Mamani",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cusco",
+    "distrito": "Quellouno",
+    "altitudMsnm": 1550,
+    "historia": "Nací en Quellouno y crecí entre cafetales en las yungas del Cusco, donde el microclima produce granos con una dulzura especial. Trabajo con mi comunidad en un modelo de producción limpia, sin químicos, respetando la sombra nativa del bosque. Mi sueño es que más personas en Lima y el mundo puedan probar lo que la tierra cusqueña sabe dar.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-005",
+    "nombre": "Eulogio Ccopa Huanca",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cusco",
+    "distrito": "Santa Ana",
+    "altitudMsnm": 1680,
+    "historia": "Tengo una finca de dos hectáreas en Santa Ana, La Convención, donde cultivo Typica bajo sombra de árboles frutales que también le dan notas únicas al café. Empecé a conocer el lenguaje de la cata hace tres años y fue una revelación entender lo que mis propios granos tenían para ofrecer. Cada lote lo proceso con mucho respeto por el trabajo que hay detrás.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-006",
+    "nombre": "Rosa Elvira Ramírez Torres",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "San Martín",
+    "distrito": "Moyobamba",
+    "altitudMsnm": 1310,
+    "historia": "Produzco café en las afueras de Moyobamba desde hace doce años, en una parcela familiar que mantenemos con mucho esfuerzo entre mis hermanos y yo. La altitud y la humedad de esta zona le dan al café un cuerpo y una acidez que siempre llaman la atención de los compradores. Me alegra mucho saber que mi trabajo llega directo a quienes valoran el café de calidad.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-007",
+    "nombre": "Juan Aurelio Pérez Saavedra",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "San Martín",
+    "distrito": "Lamas",
+    "altitudMsnm": 1200,
+    "historia": "Soy de Lamas y trabajo el café en la ladera baja de los Andes sanmartinos, donde la tradición cafetalera es muy antigua. Mi abuelo ya vendía café pergamino en el mercado de Tarapoto, y yo continúo ese legado pero ahora enfocado en calidad de taza. Comencé a experimentar con honey process hace dos años y el resultado fue un café suave y frutal que enamoró a mis primeros compradores.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-008",
+    "nombre": "Luz Marina Cóndor Palomino",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Junín",
+    "distrito": "Satipo",
+    "altitudMsnm": 1650,
+    "historia": "Cultivo café en Satipo desde los dieciocho años, cuando empecé a trabajar junto a mi madre en la finca familiar. La Selva Central tiene una diversidad de microclimas que nos permite producir cafés muy distintos según la parcela. Hoy tengo mi propio beneficio húmedo y proceso cada lote por separado para mantener la identidad de cada parcela.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-009",
+    "nombre": "Ángel Huamán Flores",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Junín",
+    "distrito": "Chanchamayo",
+    "altitudMsnm": 1780,
+    "historia": "La Chanchamayo es tierra de café de generaciones y yo soy parte de esa historia desde pequeño. Tengo tres hectáreas de Bourbon y Caturra a 1780 msnm, donde la brisa del Perené le da a los granos una acidez brillante y un cuerpo redondo. Trabajo en seco durante semanas para que los granos naturales desarrollen toda su dulzura antes de ser procesados.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-010",
+    "nombre": "Marleni Sangama Shupingahua",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Amazonas",
+    "distrito": "Bagua Grande",
+    "altitudMsnm": 1490,
+    "historia": "Soy productora de la cuenca del Utcubamba, en Bagua Grande, donde el café crece en un valle protegido por la cordillera. Aprendí a catar con una ONG que apoyó a nuestra asociación de mujeres productoras hace cuatro años, y desde entonces soy más exigente con mi propia selección de cerezas. Creo que el café de Amazonas tiene mucho potencial que todavía no ha sido descubierto por el mercado.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-011",
+    "nombre": "Carlos Efraín Valera Guevara",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Amazonas",
+    "distrito": "Rodríguez de Mendoza",
+    "altitudMsnm": 1920,
+    "historia": "Trabajo en Rodríguez de Mendoza, la zona más alta del Amazonas cafetalero, donde la temperatura fría hace que el fruto madure despacio y concentre más azúcares. Tengo parcelas de Geisha y Bourbon que cuido como si fueran hijos porque sé el potencial que tienen. Hace dos años saqué mi primer lote anaeróbico y fue la experiencia más emocionante de mi vida como productor.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-012",
+    "nombre": "Demetrio Apaza Condori",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Puno",
+    "distrito": "Sandia",
+    "altitudMsnm": 2100,
+    "historia": "Sandia es el corazón del café puneño, donde los Andes y la Amazonía se encuentran a más de dos mil metros. Soy productor de tercera generación y he visto cómo la calidad de nuestro café ha ido mejorando con más conocimiento y técnica. Mis granos a esta altitud maduran muy lentamente, lo que se traduce en una dulzura y complejidad poco comunes.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-013",
+    "nombre": "Felicitas Huamaní Ochoa",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Ayacucho",
+    "distrito": "Sivia",
+    "altitudMsnm": 1380,
+    "historia": "Produzco café en el Valle del Apurímac, en Sivia, una tierra que ha resurgido de la violencia para convertirse en una zona cafetalera de esperanza. Empecé con media hectárea hace ocho años y hoy tengo dos hectáreas productivas que me permiten sostener a mi familia. Cada taza de mi café es un símbolo de que esta tierra tiene mucho más que dar.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-014",
+    "nombre": "Wilmer Rodríguez Espinoza",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Huánuco",
+    "distrito": "Leoncio Prado",
+    "altitudMsnm": 1580,
+    "historia": "Soy de Tingo María, en Leoncio Prado, la ciudad que se conoce como la capital del café suave del Perú. Produzco en mi finca familiar donde además tengo cítricos y plátano que sirven de sombra y biodiversidad para el cafetal. Llevo diez años trabajando con proceso lavado y he aprendido que el agua limpia y el tiempo son los mejores aliados para un buen café.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "caficultor-015",
+    "nombre": "Griselda Núñez Tarrillo",
+    "foto": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-caficultor.jpg",
+    "region": "Cajamarca",
+    "distrito": "Chirinos",
+    "altitudMsnm": 1970,
+    "historia": "Nací y crecí en Chirinos, uno de los distritos más reconocidos del café cajamarquino por su altitud y suelo volcánico. Trabajo con mi esposo en cuatro hectáreas donde cultivamos Bourbon y Pache bajo un sistema de sombra diversificada. Hace tres años empezamos con el proceso honey y los compradores nos dicen que tiene una dulzura y suavidad que los enamora desde la primera taza.",
+    "activo": true,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]

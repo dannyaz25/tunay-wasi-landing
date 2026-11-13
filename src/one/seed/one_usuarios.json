@@ -1,43 +1,47 @@
 [
   {
     "uid": "user-emprendedor-001",
-    "rol": "emprendedor",
+    "rol": "negocio",
     "nombre": "Carlos Mendoza",
     "email": "carlos@cafeelorigenmiraflores.pe",
     "telefono": "+51987654321",
-    "emprendedor": {
+    "negocio": {
       "nombreLocal": "Café El Origen",
       "distritoLocal": "Miraflores",
       "fotoLocal": "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80",
       "descripcion": "Cafetería de especialidad enfocada en cafés de origen único del Perú, con servicio de filter y espresso.",
       "etapa": "abierto",
-      "pedidoIds": ["ONE-2026-4821"]
+      "pedidoIds": ["ONE-2026-4821"],
+      "scoreConfianza": 4.7,
+      "totalCalificaciones": 5
     },
     "createdAt": "2026-09-10T00:00:00.000Z"
   },
   {
     "uid": "user-emprendedor-002",
-    "rol": "emprendedor",
+    "rol": "negocio",
     "nombre": "Lucía Torres",
     "email": "lucia@latazaverde.pe",
     "telefono": "+51976543210",
-    "emprendedor": {
+    "negocio": {
       "nombreLocal": "La Taza Verde",
       "distritoLocal": "Barranco",
       "fotoLocal": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
       "descripcion": "Espacio cultural y cafetería en el corazón de Barranco. Café de origen con menú de desayunos.",
       "etapa": "abierto",
-      "pedidoIds": ["ONE-2026-3301"]
+      "pedidoIds": ["ONE-2026-3301"],
+      "scoreConfianza": 4.5,
+      "totalCalificaciones": 3
     },
     "createdAt": "2026-09-08T00:00:00.000Z"
   },
   {
     "uid": "user-emprendedor-003",
-    "rol": "emprendedor",
+    "rol": "negocio",
     "nombre": "Diego Paredes",
     "email": "diego@altitudcafe.pe",
     "telefono": "+51965432109",
-    "emprendedor": {
+    "negocio": {
       "nombreLocal": "Altitud Café",
       "distritoLocal": "San Isidro",
       "fotoLocal": "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=600&q=80",
@@ -49,11 +53,11 @@
   },
   {
     "uid": "user-emprendedor-004",
-    "rol": "emprendedor",
+    "rol": "negocio",
     "nombre": "Valeria Quispe",
     "email": "valeria@terracafe.pe",
     "telefono": "+51954321098",
-    "emprendedor": {
+    "negocio": {
       "nombreLocal": "Terra Café",
       "distritoLocal": "Surco",
       "fotoLocal": "https://images.unsplash.com/photo-1445116572660-236099ec97a0?w=600&q=80",
@@ -66,11 +70,11 @@
   },
   {
     "uid": "user-emprendedor-005",
-    "rol": "emprendedor",
+    "rol": "negocio",
     "nombre": "Andrés Flores",
     "email": "andres@origencafe.pe",
     "telefono": "+51943210987",
-    "emprendedor": {
+    "negocio": {
       "nombreLocal": "Origen & Taza",
       "distritoLocal": "Pueblo Libre",
       "fotoLocal": "https://images.unsplash.com/photo-1453614512568-c4024d13c247?w=600&q=80",

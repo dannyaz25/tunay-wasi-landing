@@ -4,8 +4,8 @@
  * Sin auth — accesible para el cliente final
  */
 import React, { useEffect, useState } from 'react'
-import { fetchCafeterias } from '../service'
-import { demoFetchCafeterias } from '../demoService'
+import { fetchNegocios } from '../service'
+import { demoFetchNegocios } from '../demoService'
 import type { UsuarioONE } from '../types'
 import seedUsuarios from '../seed/one_usuarios.json'
 
@@ -32,7 +32,7 @@ const DirectorioCafeterias: React.FC<Props> = ({ isDemo = false }) => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const fallback = (seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'emprendedor')
+      const fallback = (seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'negocio')
       setCafeterias(fallback)
       setLoading(false)
     }, 3000)
@@ -40,13 +40,13 @@ const DirectorioCafeterias: React.FC<Props> = ({ isDemo = false }) => {
     async function cargar() {
       try {
         const data = isDemo
-          ? await demoFetchCafeterias()
-          : await fetchCafeterias().catch(() => (seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'emprendedor'))
+          ? await demoFetchNegocios()
+          : await fetchNegocios().catch(() => (seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'negocio'))
         clearTimeout(timer)
         setCafeterias(data)
       } catch {
         clearTimeout(timer)
-        setCafeterias((seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'emprendedor'))
+        setCafeterias((seedUsuarios as UsuarioONE[]).filter(u => u.rol === 'negocio'))
       } finally {
         setLoading(false)
       }
@@ -119,10 +119,10 @@ const DirectorioCafeterias: React.FC<Props> = ({ isDemo = false }) => {
 
         {/* Filtros */}
         {!loading && cafeterias.length > 0 && (() => {
-          const distritos = Array.from(new Set(cafeterias.map(c => c.emprendedor?.distritoLocal).filter(Boolean) as string[])).sort()
+          const distritos = Array.from(new Set(cafeterias.map(c => c.negocio?.distritoLocal).filter(Boolean) as string[])).sort()
           const termino = busqueda.toLowerCase().trim()
           const filtradas = cafeterias.filter(c => {
-            const emp = c.emprendedor
+            const emp = c.negocio
             if (!emp) return false
             const pasaDistrito = filtroDistrito === 'todos' || emp.distritoLocal === filtroDistrito
             const pasaEtapa = filtroEtapa === 'todas' || emp.etapa === filtroEtapa
@@ -211,7 +211,7 @@ const DirectorioCafeterias: React.FC<Props> = ({ isDemo = false }) => {
 }
 
 const TarjetaCafeteria: React.FC<{ cafeteria: UsuarioONE }> = ({ cafeteria }) => {
-  const emp = cafeteria.emprendedor
+  const emp = cafeteria.negocio
   if (!emp) return null
   const abierto = emp.etapa === 'abierto'
 

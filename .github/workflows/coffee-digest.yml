@@ -1,0 +1,30 @@
+name: Coffee News Digest
+
+on:
+  # Lunes a viernes 7:00 am Lima (UTC-5 = 12:00 UTC)
+  schedule:
+    - cron: '0 12 * * 1-5'
+
+  # Permite dispararlo manualmente desde GitHub → Actions → Run workflow
+  workflow_dispatch:
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm install node-fetch@2 fast-xml-parser --no-save
+
+      - name: Run digest
+        env:
+          EMAILJS_PRIVATE_KEY: ${{ secrets.EMAILJS_PRIVATE_KEY }}
+        run: node scripts/coffee-news-digest.js

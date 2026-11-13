@@ -1,0 +1,93 @@
+[
+  {
+    "id": "menu-001",
+    "negocioId": "user-emprendedor-001",
+    "nombre": "Menú principal",
+    "descripcion": "Nuestra carta de espresso y preparaciones de barra. Tres orígenes distintos para ofrecer variedad.",
+    "cafesIds": ["producto-001", "producto-003", "producto-006"],
+    "preparaciones": [
+      {
+        "nombre": "Espresso",
+        "precio": 8,
+        "metodo": "Espresso",
+        "categoria": "ESPRESSO",
+        "caficultorNombre": "Segundo Rojas Herrera",
+        "origen": "Bourbon Lavado · Segundo Rojas · Cajamarca",
+        "notas": ["chocolate negro", "avellana", "mandarina"]
+      },
+      {
+        "nombre": "Americano",
+        "precio": 7,
+        "metodo": "Espresso + agua",
+        "categoria": "ESPRESSO",
+        "caficultorNombre": "Segundo Rojas Herrera",
+        "origen": "Bourbon Lavado · Segundo Rojas · Cajamarca",
+        "notas": ["chocolate negro", "avellana", "mandarina"]
+      },
+      {
+        "nombre": "Cappuccino",
+        "precio": 10,
+        "metodo": "Espresso + leche vaporizada",
+        "categoria": "ESPRESSO",
+        "caficultorNombre": "Segundo Rojas Herrera",
+        "origen": "Bourbon Lavado · Segundo Rojas · Cajamarca",
+        "notas": ["chocolate negro", "avellana", "mandarina"]
+      },
+      {
+        "nombre": "V60",
+        "precio": 12,
+        "metodo": "Filtrado V60",
+        "categoria": "FILTER",
+        "caficultorNombre": "Aydé Lloclla Díaz",
+        "origen": "Geisha Natural · Aydé Lloclla · Cajamarca",
+        "notas": ["durazno", "panela", "jazmín"]
+      },
+      {
+        "nombre": "Prensa Francesa",
+        "precio": 10,
+        "metodo": "Prensa francesa",
+        "categoria": "FILTER",
+        "caficultorNombre": "Carlos Quispe Mamani",
+        "origen": "Caturra Honey · Carlos Quispe · Junín",
+        "notas": ["caramelo", "nuez", "ciruela"]
+      },
+      {
+        "nombre": "Cold Brew",
+        "precio": 14,
+        "metodo": "Infusión en frío 12h",
+        "categoria": "FRÍO",
+        "caficultorNombre": "Carlos Quispe Mamani",
+        "origen": "Caturra Honey · Carlos Quispe · Junín",
+        "notas": ["caramelo", "nuez", "ciruela"]
+      }
+    ],
+    "activo": true,
+    "qrUrl": "#/cafeteria/user-emprendedor-001?menu=menu-001",
+    "createdAt": "2026-08-01T10:00:00.000Z",
+    "updatedAt": "2026-09-10T14:30:00.000Z"
+  },
+  {
+    "id": "menu-002",
+    "negocioId": "user-emprendedor-001",
+    "nombre": "Menú de filtros",
+    "descripcion": "Selección de cafés para preparaciones de filtro: V60, Chemex y prensa francesa.",
+    "cafesIds": ["producto-002", "producto-007"],
+    "preparaciones": [],
+    "activo": false,
+    "qrUrl": "#/cafeteria/user-emprendedor-001?menu=menu-002",
+    "createdAt": "2026-08-15T09:00:00.000Z",
+    "updatedAt": "2026-08-15T09:00:00.000Z"
+  },
+  {
+    "id": "menu-003",
+    "negocioId": "user-emprendedor-001",
+    "nombre": "Sin categorizar",
+    "descripcion": "Pedidos libres que no pertenecen a un menú específico.",
+    "cafesIds": [],
+    "preparaciones": [],
+    "activo": false,
+    "qrUrl": "#/cafeteria/user-emprendedor-001?menu=menu-003",
+    "createdAt": "2026-08-01T10:00:00.000Z",
+    "updatedAt": "2026-08-01T10:00:00.000Z"
+  }
+]

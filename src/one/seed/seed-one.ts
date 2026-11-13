@@ -93,7 +93,7 @@ async function main() {
   console.log('Datos cargados:')
   console.log(`  • ${caficultores.length} caficultores`)
   console.log(`  • ${productos.length} productos`)
-  console.log(`  • ${usuarios.length} usuarios (${usuarios.filter(u => u.rol === 'emprendedor').length} emprendedores, ${usuarios.filter(u => u.rol === 'caficultor').length} caficultores, ${usuarios.filter(u => u.rol === 'admin').length} admin)`)
+  console.log(`  • ${usuarios.length} usuarios (${usuarios.filter(u => u.rol === 'negocio').length} negocios, ${usuarios.filter(u => u.rol === 'caficultor').length} caficultores, ${usuarios.filter(u => u.rol === 'admin').length} admin)`)
   console.log(`  • ${pedidos.length} pedidos`)
   console.log(`  • ${kits.length} kits\n`)
 }

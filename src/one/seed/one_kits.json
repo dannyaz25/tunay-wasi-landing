@@ -2,7 +2,7 @@
   {
     "id": "kit-001",
     "pedidoId": "ONE-2026-3301",
-    "emprendedorId": "user-emprendedor-002",
+    "negocioId": "user-emprendedor-002",
     "nombreLocal": "La Taza Verde",
     "productos": [
       {
@@ -18,10 +18,10 @@
         "puntajeReferencial": 84
       }
     ],
-    "menuPdfUrl": null,
-    "fichasUrl": null,
-    "qrUrl": null,
-    "instagramPackUrl": null,
+    "menuPdfUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-kit.pdf",
+    "fichasUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-kit.pdf",
+    "qrUrl": "http://localhost:5173/?demo=1#/caficultor/caficultor-004",
+    "instagramPackUrl": "https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-kit.pdf",
     "createdAt": "2026-09-13T12:00:00.000Z"
   }
 ]

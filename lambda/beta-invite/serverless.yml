@@ -1,0 +1,26 @@
+service: tunaywasi-beta-invite
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  memorySize: 256
+  timeout: 15
+  environment:
+    GOOGLE_SERVICE_ACCOUNT: ${env:GOOGLE_SERVICE_ACCOUNT}
+    FIREBASE_APP_ID: ${env:FIREBASE_APP_ID}
+    GMAIL_USER: ${env:GMAIL_USER}
+    GMAIL_APP_PASSWORD: ${env:GMAIL_APP_PASSWORD}
+    FIREBASE_PROJECT_ID: ${env:FIREBASE_PROJECT_ID}
+    ALLOWED_ORIGIN: ${env:ALLOWED_ORIGIN, '*'}
+
+functions:
+  betaInvite:
+    handler: handler.betaInvite
+    events:
+      - httpApi:
+          path: /beta-invite
+          method: post
+      - httpApi:
+          path: /beta-invite
+          method: options

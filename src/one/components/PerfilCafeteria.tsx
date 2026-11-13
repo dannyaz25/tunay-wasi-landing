@@ -4,13 +4,11 @@
  * Sin auth — accesible para el cliente final
  */
 import React, { useEffect, useState } from 'react'
-import { fetchCafeteria, fetchMenuCafeteria } from '../service'
-import { demoFetchCafeteria, demoFetchMenuCafeteria } from '../demoService'
-import type { UsuarioONE, ProductoONE } from '../types'
-import { PROCESO_LABELS } from '../config'
+import { fetchNegocio, fetchMenuActivo } from '../service'
+import { demoFetchNegocio, demoFetchMenuActivo } from '../demoService'
+import type { UsuarioONE, PreparacionMenu, MenuONE } from '../types'
 import seedUsuarios from '../seed/one_usuarios.json'
-import seedProductos from '../seed/one_productos.json'
-import seedPedidos from '../seed/one_pedidos.json'
+import seedMenus from '../seed/one_menus.json'
 
 const C = {
   bg: '#0a0a0a',
@@ -20,14 +18,20 @@ const C = {
   sage: '#8faf8a',
   tan: '#c4b297',
   white: '#ffffff',
+  border: '#222222',
+  muted: '#555555',
 }
 
-const PROCESO_COLORS: Record<string, string> = {
-  lavado: '#4a90c4',
-  natural: '#c96e4b',
-  honey: '#d4a017',
-  anaerobico: '#9b59b6',
-}
+// ─── Preparaciones de demo (fallback si no hay menú activo) ───────────────────
+
+const MENU_DEMO_FALLBACK: PreparacionMenu[] = [
+  { nombre: 'Espresso', precio: 8, metodo: 'Espresso', categoria: 'ESPRESSO', caficultorNombre: 'Segundo Rojas Herrera', origen: 'Bourbon Lavado · Segundo Rojas · Cajamarca', notas: ['chocolate negro', 'avellana', 'mandarina'] },
+  { nombre: 'Americano', precio: 7, metodo: 'Espresso + agua', categoria: 'ESPRESSO', caficultorNombre: 'Segundo Rojas Herrera', origen: 'Bourbon Lavado · Segundo Rojas · Cajamarca', notas: ['chocolate negro', 'avellana', 'mandarina'] },
+  { nombre: 'Cappuccino', precio: 10, metodo: 'Espresso + leche vaporizada', categoria: 'ESPRESSO', caficultorNombre: 'Segundo Rojas Herrera', origen: 'Bourbon Lavado · Segundo Rojas · Cajamarca', notas: ['chocolate negro', 'avellana', 'mandarina'] },
+  { nombre: 'V60', precio: 12, metodo: 'Filtrado V60', categoria: 'FILTER', caficultorNombre: 'Aydé Lloclla Díaz', origen: 'Geisha Natural · Aydé Lloclla · Cajamarca', notas: ['durazno', 'panela', 'jazmín'] },
+  { nombre: 'Prensa Francesa', precio: 10, metodo: 'Prensa francesa', categoria: 'FILTER', caficultorNombre: 'Carlos Quispe Mamani', origen: 'Caturra Honey · Carlos Quispe · Junín', notas: ['caramelo', 'nuez', 'ciruela'] },
+  { nombre: 'Cold Brew', precio: 14, metodo: 'Infusión en frío 12h', categoria: 'FRÍO', caficultorNombre: 'Carlos Quispe Mamani', origen: 'Caturra Honey · Carlos Quispe · Junín', notas: ['caramelo', 'nuez', 'ciruela'] },
+]
 
 interface Props {
   cafeteriaId: string
@@ -36,44 +40,40 @@ interface Props {
 
 const PerfilCafeteria: React.FC<Props> = ({ cafeteriaId, isDemo = false }) => {
   const [cafeteria, setCafeteria] = useState<UsuarioONE | null>(null)
-  const [menu, setMenu] = useState<ProductoONE[]>([])
+  const [preparaciones, setPreparaciones] = useState<PreparacionMenu[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // Fallback seed
-      const c = (seedUsuarios as UsuarioONE[]).find(u => u.uid === cafeteriaId && u.rol === 'emprendedor') ?? null
-      const pedidoIds = c?.emprendedor?.pedidoIds ?? []
-      const productoIds = new Set(
-        (seedPedidos as { emprendedorId: string; items: { productoId: string }[] }[])
-          .filter(p => pedidoIds.includes(p.emprendedorId) || p.emprendedorId === cafeteriaId)
-          .flatMap(p => p.items.map(i => i.productoId))
-      )
-      const productos = (seedProductos as ProductoONE[]).filter(p => productoIds.has(p.id))
+      const c = (seedUsuarios as UsuarioONE[]).find(u => u.uid === cafeteriaId && u.rol === 'negocio') ?? null
       setCafeteria(c)
-      setMenu(productos)
+      // Usar preparaciones del menú activo del seed
+      const menuActivo = (seedMenus as MenuONE[]).find(m => m.negocioId === cafeteriaId && m.activo)
+      setPreparaciones(menuActivo?.preparaciones ?? MENU_DEMO_FALLBACK)
       setLoading(false)
     }, 3000)
 
     async function cargar() {
       try {
-        const [c, m] = await Promise.all([
-          isDemo
-            ? demoFetchCafeteria(cafeteriaId)
-            : fetchCafeteria(cafeteriaId).catch(() => null),
-          isDemo
-            ? demoFetchMenuCafeteria(cafeteriaId)
-            : fetchMenuCafeteria(cafeteriaId).catch(() => []),
-        ])
+        const c = isDemo
+          ? await demoFetchNegocio(cafeteriaId)
+          : await fetchNegocio(cafeteriaId).catch(() => null)
         clearTimeout(timer)
         setCafeteria(c)
-        setMenu(m)
+
+        // Cargar preparaciones del menú activo
+        if (isDemo) {
+          const menuActivo = await demoFetchMenuActivo(cafeteriaId)
+          setPreparaciones(menuActivo?.preparaciones?.length ? menuActivo.preparaciones : MENU_DEMO_FALLBACK)
+        } else {
+          const menuActivo = await fetchMenuActivo(cafeteriaId)
+          setPreparaciones(menuActivo?.preparaciones?.length ? menuActivo.preparaciones : MENU_DEMO_FALLBACK)
+        }
       } catch {
         clearTimeout(timer)
-        // fallback seed
         const c = (seedUsuarios as UsuarioONE[]).find(u => u.uid === cafeteriaId) ?? null
         setCafeteria(c)
-        setMenu([])
+        setPreparaciones(MENU_DEMO_FALLBACK)
       } finally {
         setLoading(false)
       }
@@ -90,7 +90,7 @@ const PerfilCafeteria: React.FC<Props> = ({ cafeteriaId, isDemo = false }) => {
     )
   }
 
-  if (!cafeteria || !cafeteria.emprendedor) {
+  if (!cafeteria || !cafeteria.negocio) {
     return (
       <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <p style={{ color: C.tan, fontFamily: 'Montserrat, sans-serif', fontSize: 14 }}>Cafetería no encontrada.</p>
@@ -98,147 +98,134 @@ const PerfilCafeteria: React.FC<Props> = ({ cafeteriaId, isDemo = false }) => {
     )
   }
 
-  const emp = cafeteria.emprendedor
+  const emp = cafeteria.negocio
   const abierto = emp.etapa === 'abierto'
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'Montserrat, sans-serif' }}>
 
-      {/* Header */}
+      {/* Header compacto — nombre del local + estado */}
       <header style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        padding: '14px 4%',
-        background: 'linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%)',
+        position: 'sticky', top: 0, zIndex: 100,
+        background: C.bg,
+        borderBottom: `1px solid ${C.border}`,
+        padding: '0 5%',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        height: 56,
       }}>
-        <a href="#/" style={{ textDecoration: 'none' }}>
-          <span style={{ fontSize: 18, fontWeight: 700, color: C.terra, fontFamily: 'Cormorant Garamond, serif', letterSpacing: '0.08em' }}>
-            TUNAY WASI
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: '50%',
+            background: abierto ? C.sage : C.tan,
+            flexShrink: 0,
+          }} />
+          <span style={{
+            fontSize: 15, fontWeight: 700,
+            color: C.cream, fontFamily: 'Cormorant Garamond, serif',
+          }}>
+            {emp.nombreLocal}
           </span>
-        </a>
+          <span style={{ fontSize: 11, color: C.muted }}>
+            · {emp.distritoLocal}
+          </span>
+          {emp.scoreConfianza && emp.totalCalificaciones ? (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 4 }}>
+              <span style={{ color: '#f39c12', fontSize: 12 }}>★</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: C.cream }}>{emp.scoreConfianza.toFixed(1)}</span>
+              <span style={{ fontSize: 11, color: C.muted }}>({emp.totalCalificaciones})</span>
+            </span>
+          ) : null}
+        </div>
         <a href="#/cafeterias" style={{
-          color: C.cream, fontSize: 12, textDecoration: 'none',
-          fontFamily: 'Montserrat, sans-serif', fontWeight: 600,
-          padding: '6px 16px', borderRadius: 4,
-          border: `1px solid ${C.tan + '55'}`,
+          fontSize: 11, color: C.muted,
+          textDecoration: 'none', fontFamily: 'Montserrat, sans-serif',
         }}>
           ← Cafeterías
         </a>
       </header>
 
-      {/* Hero */}
-      <div style={{
-        position: 'relative',
-        height: '60vw', maxHeight: 420, minHeight: 240,
-        background: C.bgCard, overflow: 'hidden',
-      }}>
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: emp.fotoLocal
-            ? `url(${emp.fotoLocal}) center/cover no-repeat`
-            : 'url(https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1400&q=80) center/cover no-repeat',
-          filter: 'brightness(0.4)',
-        }} />
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: `linear-gradient(to bottom, transparent 30%, ${C.bg} 100%)`,
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '10%', left: '5%', zIndex: 2,
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-            <span style={{
-              padding: '3px 10px', borderRadius: 20,
-              background: abierto ? C.sage : C.tan,
-              color: '#000', fontSize: 9, fontWeight: 700,
-              textTransform: 'uppercase', letterSpacing: '0.06em',
-            }}>
-              {abierto ? 'Abierto' : 'Próximamente'}
-            </span>
-          </div>
-          <p style={{
-            margin: '0 0 6px', fontSize: 11, fontWeight: 700,
-            color: C.terra, letterSpacing: '0.18em', textTransform: 'uppercase',
-          }}>
-            {emp.distritoLocal} · Lima
-          </p>
-          <h1 style={{
-            margin: 0,
-            fontSize: 'clamp(28px, 5vw, 48px)',
-            fontFamily: 'Cormorant Garamond, serif',
-            fontWeight: 700, color: C.white, lineHeight: 1.1,
-          }}>
-            {emp.nombreLocal}
-          </h1>
-          {emp.descripcion && (
-            <p style={{ margin: '8px 0 0', fontSize: 13, color: C.tan, maxWidth: 400, lineHeight: 1.5 }}>
-              {emp.descripcion}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Contenido */}
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '32px 5% 80px' }}>
+      {/* Contenido — carta directo, sin hero */}
+      <div style={{ maxWidth: 520, margin: '0 auto', padding: '24px 5% 80px' }}>
 
         {/* Menú */}
-        {abierto && menu.length > 0 && (
+        {abierto && (
           <section style={{ marginBottom: 40 }}>
+            {emp.descripcion && (
+              <p style={{ margin: '0 0 6px', fontSize: 13, color: C.tan, lineHeight: 1.6, fontStyle: 'italic' }}>
+                {emp.descripcion}
+              </p>
+            )}
+            {emp.scoreConfianza && emp.totalCalificaciones ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 24 }}>
+                <span style={{ color: '#f39c12', fontSize: 14 }}>
+                  {'★'.repeat(Math.round(emp.scoreConfianza))}{'☆'.repeat(5 - Math.round(emp.scoreConfianza))}
+                </span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: C.cream }}>{emp.scoreConfianza.toFixed(1)}</span>
+                <span style={{ fontSize: 11, color: C.muted }}>· {emp.totalCalificaciones} reseñas de clientes</span>
+              </div>
+            ) : <div style={{ marginBottom: 28 }} />}
             <h2 style={{
-              margin: '0 0 16px', fontSize: 13, fontWeight: 700,
+              margin: '0 0 6px', fontSize: 13, fontWeight: 700,
               color: C.tan, textTransform: 'uppercase', letterSpacing: '0.1em',
             }}>
-              Nuestro menú de cafés
+              Carta de preparaciones
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {menu.map(p => (
-                <div key={p.id} style={{
-                  background: C.bgCard, borderRadius: 10, padding: '16px 18px',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                    <span style={{
-                      padding: '2px 8px', borderRadius: 4,
-                      background: PROCESO_COLORS[p.proceso] ?? C.terra,
-                      color: C.white,
-                      fontSize: 9, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em',
-                    }}>
-                      {PROCESO_LABELS[p.proceso] ?? p.proceso}
-                    </span>
-                    {p.puntajeReferencial && (
-                      <span style={{ fontSize: 10, color: C.sage }}>
-                        ~{p.puntajeReferencial} pts
-                      </span>
-                    )}
-                  </div>
-                  <p style={{
-                    margin: '0 0 4px', fontSize: 15, fontWeight: 700,
-                    color: C.cream, fontFamily: 'Cormorant Garamond, serif',
-                  }}>
-                    {p.nombre}
-                  </p>
-                  <p style={{ margin: '0 0 6px', fontSize: 11, color: C.tan }}>
-                    {p.variedad} · {p.cosecha}
-                  </p>
-                  <p style={{ margin: '0 0 12px', fontSize: 12, color: C.cream + '99', fontStyle: 'italic' }}>
-                    {p.notasSabor.join(' · ')}
-                  </p>
-                  <a
-                    href={`#/caficultor/${p.caficultorId}`}
-                    style={{
-                      fontSize: 11, color: C.sage, textDecoration: 'none', fontWeight: 600,
-                    }}>
-                    Conocer al productor: {p.caficultorNombre} →
-                  </a>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+            <p style={{ margin: '0 0 28px', fontSize: 11, color: C.muted, fontStyle: 'italic' }}>
+              Origen del café visible en cada preparación
+            </p>
 
-        {abierto && menu.length === 0 && (
-          <section style={{ marginBottom: 40, textAlign: 'center', padding: '32px 0' }}>
-            <p style={{ fontSize: 32, marginBottom: 12 }}>☕</p>
-            <p style={{ color: C.tan, fontSize: 14 }}>El menú estará disponible pronto.</p>
+            {/* Agrupar por categoría */}
+            {(['ESPRESSO', 'FILTER', 'FRÍO'] as PreparacionMenu['categoria'][]).map(cat => {
+              const preps = preparaciones.filter(p => p.categoria === cat)
+              if (preps.length === 0) return null
+              return (
+                <div key={cat} style={{ marginBottom: 32 }}>
+                  {/* Label categoría */}
+                  <p style={{
+                    margin: '0 0 12px', fontSize: 10, fontWeight: 700,
+                    color: C.terra, letterSpacing: '0.15em',
+                    textTransform: 'uppercase', fontFamily: 'Montserrat, sans-serif',
+                  }}>
+                    {cat}
+                  </p>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    {preps.map((p, i) => (
+                      <div key={`${p.nombre}-${i}`} style={{
+                        padding: '14px 0',
+                        borderBottom: i < preps.length - 1 ? `1px solid ${C.border}` : 'none',
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+                        gap: 12,
+                      }}>
+                        <div style={{ flex: 1 }}>
+                          <p style={{
+                            margin: '0 0 3px', fontSize: 15, fontWeight: 700,
+                            color: C.cream, fontFamily: 'Cormorant Garamond, serif',
+                          }}>
+                            {p.nombre}
+                          </p>
+                          <p style={{ margin: '0 0 3px', fontSize: 10, color: C.sage }}>
+                            {p.origen || p.caficultorNombre}
+                          </p>
+                          {p.notas.length > 0 && (
+                            <p style={{ margin: 0, fontSize: 10, color: C.muted, fontStyle: 'italic' }}>
+                              {p.notas.join(' · ')}
+                            </p>
+                          )}
+                        </div>
+                        <p style={{
+                          margin: 0, fontSize: 18, fontWeight: 700,
+                          color: C.terra, fontFamily: 'Cormorant Garamond, serif',
+                          flexShrink: 0,
+                        }}>
+                          S/ {p.precio}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            })}
           </section>
         )}
 

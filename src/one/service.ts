@@ -1,4 +1,5 @@
 // TunayWasi ONE — operaciones Firestore
+// Noviembre 2026 — alineado al esquema Android
 import {
   collection,
   doc,
@@ -13,6 +14,7 @@ import {
   serverTimestamp,
   Timestamp,
   runTransaction,
+  deleteDoc,
 } from 'firebase/firestore'
 import { db } from '../shared/firebase'
 import { ONE_COLLECTIONS, ONE_CONFIG } from './config'
@@ -28,6 +30,14 @@ import type {
   CreateUsuarioInput,
   CreateCalificacionCaficultorInput,
   CreateCalificacionCafeteriaInput,
+  MenuONE,
+  CreateMenuInput,
+  FormatoONE,
+  MensajePedidoONE,
+  SendMensajeInput,
+  UbigeoONE,
+  LogisticaCaficultorONE,
+  SaveLogisticaInput,
 } from './types'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -44,10 +54,10 @@ function generarIdPedido(): string {
 }
 
 function calcularSubtotalCents(
-  precioUnitarioCents: number,
-  cantidad: number
+  unitCents: number,
+  qty: number
 ): number {
-  return precioUnitarioCents * cantidad
+  return unitCents * qty
 }
 
 // Convierte Timestamp de Firestore a string ISO o devuelve el string tal cual
@@ -58,22 +68,58 @@ function normalizeDate(value: unknown): string {
   return new Date().toISOString()
 }
 
+// Convierte presentación a kg equivalente para cálculo de stock
+function parseKgFromPresentacion(presentacion: FormatoONE, qty: number): number {
+  switch (presentacion) {
+    case '250g':  return 0.25 * qty
+    case '500g':  return 0.5  * qty
+    case '1kg':   return 1.0  * qty
+    case '5kg':   return 5.0  * qty
+    case '10kg':  return 10.0 * qty
+    case '25kg':  return 25.0 * qty
+    default:      return 0
+  }
+}
+
 // ─── CATÁLOGO ─────────────────────────────────────────────────────────────────
+// Los caficultores ahora viven en one_usuarios con rol='caficultor'
+// CaficultorONE se construye desde el sub-documento caficultor del usuario
+
+function usuarioToCaficultor(snap: { id: string; data: () => any }): CaficultorONE {
+  const data = snap.data()
+  const c = data.caficultor ?? {}
+  return {
+    id: snap.id,
+    nombre: data.nombre ?? '',
+    foto: c.foto ?? data.foto ?? '',
+    region: c.region ?? '',
+    distrito: c.distrito ?? '',
+    altitudMsnm: c.altitudMsnm ?? 0,
+    historia: c.historia ?? '',
+    coordenadas: c.coordenadas,
+    activo: c.activo ?? true,
+    createdAt: normalizeDate(data.createdAt),
+    scoreConfianza: c.scoreConfianza,
+    totalCalificaciones: c.totalCalificaciones,
+  }
+}
 
 export async function fetchCaficultores(): Promise<CaficultorONE[]> {
   const snap = await getDocs(
     query(
-      collection(db, ONE_COLLECTIONS.CAFICULTORES),
-      where('activo', '==', true)
+      collection(db, ONE_COLLECTIONS.USUARIOS),
+      where('rol', '==', 'caficultor')
     )
   )
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() } as CaficultorONE))
+  return snap.docs
+    .map((d) => usuarioToCaficultor({ id: d.id, data: d.data.bind(d) }))
+    .filter((c) => c.activo)
 }
 
 export async function fetchCaficultor(id: string): Promise<CaficultorONE> {
-  const snap = await getDoc(doc(db, ONE_COLLECTIONS.CAFICULTORES, id))
+  const snap = await getDoc(doc(db, ONE_COLLECTIONS.USUARIOS, id))
   if (!snap.exists()) throw new Error(`Caficultor ${id} no encontrado`)
-  return { id: snap.id, ...snap.data() } as CaficultorONE
+  return usuarioToCaficultor({ id: snap.id, data: snap.data.bind(snap) })
 }
 
 export async function fetchProductos(): Promise<ProductoONE[]> {
@@ -111,21 +157,29 @@ export async function fetchProducto(id: string): Promise<ProductoONE> {
 export async function createPedido(input: CreatePedidoInput): Promise<string> {
   const pedidoId = generarIdPedido()
 
-  // Calcular items con subtotales
+  // Calcular items con subtotales — omitir menuId si es undefined
   const items = input.items.map((item) => ({
-    ...item,
-    subtotalCents: calcularSubtotalCents(item.precioUnitarioCents, item.cantidad),
+    productoId: item.productoId,
+    productoNombre: item.productoNombre,
+    caficultorId: item.caficultorId,
+    caficultorNombre: item.caficultorNombre,
+    presentacion: item.presentacion,
+    qty: item.qty,
+    unitCents: item.unitCents,
+    subtotalCents: calcularSubtotalCents(item.unitCents, item.qty),
+    ...(item.menuId ? { menuId: item.menuId } : {}),
   }))
 
   const subtotalCents = items.reduce((acc, item) => acc + item.subtotalCents, 0)
   const deliveryCents = ONE_CONFIG.DELIVERY_CENTS
   const totalCents = subtotalCents + deliveryCents
 
-  const pedido: Omit<PedidoONE, 'id'> = {
-    emprendedorId: input.emprendedorId,
-    emprendedorNombre: input.emprendedorNombre,
-    emprendedorEmail: input.emprendedorEmail,
-    emprendedorTelefono: input.emprendedorTelefono,
+  // Construir pedido omitiendo campos undefined
+  const pedido = {
+    negocioId: input.negocioId,
+    negocioNombre: input.negocioNombre,
+    negocioEmail: input.negocioEmail,
+    negocioTelefono: input.negocioTelefono,
     nombreLocal: input.nombreLocal,
     distritoLocal: input.distritoLocal,
     items,
@@ -133,69 +187,60 @@ export async function createPedido(input: CreatePedidoInput): Promise<string> {
     deliveryCents,
     totalCents,
     metodoPago: input.metodoPago,
-    pagoStatus: 'pendiente',
-    voucherUrl: undefined,
-    direccionEntrega: input.direccionEntrega,
-    logisticaStatus: 'preparando',
-    notasEntrega: undefined,
+    pagoStatus: 'pendiente' as const,
+    logisticaStatus: 'preparando' as const,
     kitGenerado: false,
-    kitId: undefined,
     calificado: false,
-    calificacionId: undefined,
-    esKitProveedor: input.esKitProveedor,
-    compromisoMeses: input.esKitProveedor ? (input.compromisoMeses ?? ONE_CONFIG.COMPROMISO_MESES_MIN) : undefined,
+    recepcionConfirmada: false,
+    esKitProveedor: input.esKitProveedor ?? false,
+    ...(input.direccionEntrega ? { direccionEntrega: input.direccionEntrega } : {}),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }
 
   // Usar transacción para reservar kg de cada producto y guardar el pedido
   await runTransaction(db, async (tx) => {
-    // Verificar y reservar stock por cada producto
-    for (const item of items) {
-      const prodRef = doc(db, ONE_COLLECTIONS.PRODUCTOS, item.productoId)
-      const prodSnap = await tx.get(prodRef)
-      if (!prodSnap.exists()) throw new Error(`Producto ${item.productoId} no existe`)
+    // ── FASE 1: todas las lecturas ──────────────────────────────────────────
+    const prodRefs = items.map(item => doc(db, ONE_COLLECTIONS.PRODUCTOS, item.productoId))
+    const prodSnaps = await Promise.all(prodRefs.map(ref => tx.get(ref)))
 
-      const prod = prodSnap.data() as ProductoONE
-      const kgSolicitados = parseKgFromFormato(item.formato, item.cantidad)
+    const negocioRef = doc(db, ONE_COLLECTIONS.USUARIOS, input.negocioId)
+    const negocioSnap = await tx.get(negocioRef)
+
+    // ── FASE 2: validaciones ────────────────────────────────────────────────
+    for (let i = 0; i < items.length; i++) {
+      const snap = prodSnaps[i]
+      const item = items[i]
+      if (!snap.exists()) throw new Error(`Producto ${item.productoId} no existe`)
+      const prod = snap.data() as ProductoONE
+      const kgSolicitados = parseKgFromPresentacion(item.presentacion as FormatoONE, item.qty)
       const disponibles = prod.kgDisponibles - prod.kgReservados
+      if (disponibles < kgSolicitados) throw new Error(`Stock insuficiente para ${item.productoNombre}`)
+    }
 
-      if (disponibles < kgSolicitados) {
-        throw new Error(`Stock insuficiente para ${item.productoNombre}`)
-      }
-
-      tx.update(prodRef, {
+    // ── FASE 3: todas las escrituras ────────────────────────────────────────
+    for (let i = 0; i < items.length; i++) {
+      const snap = prodSnaps[i]
+      const item = items[i]
+      const prod = snap.data() as ProductoONE
+      const kgSolicitados = parseKgFromPresentacion(item.presentacion as FormatoONE, item.qty)
+      tx.update(prodRefs[i], {
         kgReservados: prod.kgReservados + kgSolicitados,
         updatedAt: serverTimestamp(),
       })
     }
 
-    // Guardar pedido con ID personalizado
     const pedidoRef = doc(db, ONE_COLLECTIONS.PEDIDOS, pedidoId)
     tx.set(pedidoRef, { ...pedido, createdAt: serverTimestamp(), updatedAt: serverTimestamp() })
 
-    // Agregar pedidoId al array del usuario
-    const usuarioRef = doc(db, ONE_COLLECTIONS.USUARIOS, input.emprendedorId)
-    const usuarioSnap = await tx.get(usuarioRef)
-    if (usuarioSnap.exists()) {
-      const usuarioData = usuarioSnap.data() as UsuarioONE
-      const pedidoIds = usuarioData.emprendedor?.pedidoIds ?? []
-      tx.update(usuarioRef, {
-        'emprendedor.pedidoIds': [...pedidoIds, pedidoId],
-      })
+    if (negocioSnap.exists()) {
+      const negocioData = negocioSnap.data() as UsuarioONE
+      const pedidoIds = negocioData.negocio?.pedidoIds ?? []
+      tx.update(negocioRef, { 'negocio.pedidoIds': [...pedidoIds, pedidoId] })
     }
   })
 
   return pedidoId
-}
-
-function parseKgFromFormato(formato: string, cantidad: number): number {
-  switch (formato) {
-    case '250g': return 0.25 * cantidad
-    case '1kg': return 1 * cantidad
-    case '5kg': return 5 * cantidad
-    default: return 0
-  }
 }
 
 export async function fetchPedido(id: string): Promise<PedidoONE> {
@@ -210,11 +255,11 @@ export async function fetchPedido(id: string): Promise<PedidoONE> {
   } as PedidoONE
 }
 
-export async function fetchPedidosByEmprendedor(uid: string): Promise<PedidoONE[]> {
+export async function fetchPedidosByNegocio(uid: string): Promise<PedidoONE[]> {
   const snap = await getDocs(
     query(
       collection(db, ONE_COLLECTIONS.PEDIDOS),
-      where('emprendedorId', '==', uid),
+      where('negocioId', '==', uid),
       orderBy('createdAt', 'desc')
     )
   )
@@ -294,24 +339,44 @@ export async function updateLogistica(
   })
 }
 
+export async function despacharAgencia(
+  pedidoId: string,
+  data: { codigoAgencia: string; fotoDespacho?: string }
+): Promise<void> {
+  await updateDoc(doc(db, ONE_COLLECTIONS.PEDIDOS, pedidoId), {
+    logisticaStatus: 'en_agencia',
+    codigoAgencia: data.codigoAgencia,
+    ...(data.fotoDespacho ? { fotoDespacho: data.fotoDespacho } : {}),
+    updatedAt: serverTimestamp(),
+  })
+}
+
+export async function confirmarRecepcion(pedidoId: string): Promise<void> {
+  await updateDoc(doc(db, ONE_COLLECTIONS.PEDIDOS, pedidoId), {
+    logisticaStatus: 'entregado',
+    recepcionConfirmada: true,
+    updatedAt: serverTimestamp(),
+  })
+}
+
 // ─── USUARIOS ─────────────────────────────────────────────────────────────────
 
-export async function fetchCafeterias(): Promise<UsuarioONE[]> {
+export async function fetchNegocios(): Promise<UsuarioONE[]> {
   const snap = await getDocs(
-    query(collection(db, ONE_COLLECTIONS.USUARIOS), where('rol', '==', 'emprendedor'))
+    query(collection(db, ONE_COLLECTIONS.USUARIOS), where('rol', '==', 'negocio'))
   )
   return snap.docs.map(d => ({ uid: d.id, ...d.data() } as UsuarioONE))
 }
 
-export async function fetchCafeteria(uid: string): Promise<UsuarioONE | null> {
+export async function fetchNegocio(uid: string): Promise<UsuarioONE | null> {
   const snap = await getDoc(doc(db, ONE_COLLECTIONS.USUARIOS, uid))
   if (!snap.exists()) return null
   return { uid: snap.id, ...snap.data() } as UsuarioONE
 }
 
-export async function fetchMenuCafeteria(emprendedorId: string): Promise<ProductoONE[]> {
+export async function fetchMenuNegocio(negocioId: string): Promise<ProductoONE[]> {
   const pedidosSnap = await getDocs(
-    query(collection(db, ONE_COLLECTIONS.PEDIDOS), where('emprendedorId', '==', emprendedorId))
+    query(collection(db, ONE_COLLECTIONS.PEDIDOS), where('negocioId', '==', negocioId))
   )
   const productoIds = new Set(
     pedidosSnap.docs.flatMap(d => (d.data().items as { productoId: string }[]).map(i => i.productoId))
@@ -382,19 +447,41 @@ export async function updateUsuario(
   })
 }
 
+export async function updateCaficultor(
+  caficultorId: string,
+  data: Partial<UsuarioONE['caficultor']>
+): Promise<void> {
+  // Los datos del caficultor ahora viven en one_usuarios sub-doc caficultor
+  const updates: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(data ?? {})) {
+    updates[`caficultor.${key}`] = value
+  }
+  await updateDoc(doc(db, ONE_COLLECTIONS.USUARIOS, caficultorId), updates)
+}
+
 // ─── KITS ─────────────────────────────────────────────────────────────────────
+
+const PLACEHOLDER_PDF = 'https://res.cloudinary.com/dtc9meqbc/image/upload/v1/tunaywasi/placeholder-kit.pdf'
 
 export async function generarKit(
   pedidoId: string,
   nombreLocal: string,
-  emprendedorId: string,
-  productos: KitIdentidadONE['productos']
+  negocioId: string,
+  productos: KitIdentidadONE['productos'],
+  caficultorId?: string
 ): Promise<string> {
+  const origin = typeof window !== 'undefined' ? window.location.origin + window.location.pathname : ''
+  const qrUrl = caficultorId ? `${origin}#/caficultor/${caficultorId}` : undefined
+
   const kitData: Omit<KitIdentidadONE, 'id'> = {
     pedidoId,
-    emprendedorId,
+    negocioId,
     nombreLocal,
     productos,
+    menuPdfUrl: PLACEHOLDER_PDF,
+    fichasUrl: PLACEHOLDER_PDF,
+    qrUrl,
+    instagramPackUrl: PLACEHOLDER_PDF,
     createdAt: new Date().toISOString(),
   }
 
@@ -403,7 +490,6 @@ export async function generarKit(
     createdAt: serverTimestamp(),
   })
 
-  // Marcar el pedido como kit generado
   await updateDoc(doc(db, ONE_COLLECTIONS.PEDIDOS, pedidoId), {
     kitGenerado: true,
     kitId: docRef.id,
@@ -450,25 +536,48 @@ export async function actualizarUrlsKit(
   await updateDoc(doc(db, ONE_COLLECTIONS.KITS, kitId), urls)
 }
 
+// ─── SOLICITUD CAFICULTOR (sin auth) ─────────────────────────────────────────
+
+export interface SolicitudCaficultorInput {
+  nombre: string
+  region: string
+  distrito: string
+  altitudMsnm: number
+  variedadPrincipal: string
+  kgDisponibles: number
+  email: string
+  telefono: string
+  fotoUrl?: string
+}
+
+export async function enviarSolicitudCaficultor(
+  data: SolicitudCaficultorInput
+): Promise<string> {
+  const docRef = await addDoc(collection(db, 'one_solicitudes_caficultor'), {
+    ...data,
+    activo: false,
+    solicitudPendiente: true,
+    createdAt: serverTimestamp(),
+  })
+  return docRef.id
+}
+
 // ─── CALIFICACIONES ──────────────────────────────────────────────────────────
 
 export async function crearCalificacionCaficultor(
   input: CreateCalificacionCaficultorInput
 ): Promise<string> {
-  // Guardar la calificación
   const docRef = await addDoc(collection(db, ONE_COLLECTIONS.CALIFICACIONES_CAFICULTOR), {
     ...input,
     createdAt: serverTimestamp(),
   })
 
-  // Marcar pedido como calificado
   await updateDoc(doc(db, ONE_COLLECTIONS.PEDIDOS, input.pedidoId), {
     calificado: true,
     calificacionId: docRef.id,
     updatedAt: serverTimestamp(),
   })
 
-  // Recalcular score del caficultor (promedio simple)
   await recalcularScoreCaficultor(input.caficultorId)
 
   return docRef.id
@@ -484,9 +593,10 @@ async function recalcularScoreCaficultor(caficultorId: string): Promise<void> {
   if (snap.empty) return
   const total = snap.docs.reduce((acc, d) => acc + (d.data().estrellas as number), 0)
   const promedio = Math.round((total / snap.docs.length) * 10) / 10
-  await updateDoc(doc(db, ONE_COLLECTIONS.CAFICULTORES, caficultorId), {
-    scoreConfianza: promedio,
-    totalCalificaciones: snap.docs.length,
+  // Actualizar score en sub-doc caficultor del usuario
+  await updateDoc(doc(db, ONE_COLLECTIONS.USUARIOS, caficultorId), {
+    'caficultor.scoreConfianza': promedio,
+    'caficultor.totalCalificaciones': snap.docs.length,
   })
 }
 
@@ -524,4 +634,132 @@ export async function fetchCalificacionesCafeteria(
     )
   )
   return snap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) } as CalificacionCafeteria))
+}
+
+// ─── Menús ────────────────────────────────────────────────────────────────────
+
+export async function fetchMenuActivo(negocioId: string): Promise<MenuONE | null> {
+  const menus = await fetchMenusByNegocio(negocioId)
+  return menus.find((m) => m.activo) ?? null
+}
+
+export async function fetchMenusByNegocio(negocioId: string): Promise<MenuONE[]> {  const snap = await getDocs(
+    query(
+      collection(db, ONE_COLLECTIONS.MENUS),
+      where('negocioId', '==', negocioId),
+      orderBy('createdAt', 'asc')
+    )
+  )
+  return snap.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+    createdAt: normalizeDate(d.data().createdAt),
+    updatedAt: normalizeDate(d.data().updatedAt),
+  } as MenuONE))
+}
+
+export async function createMenu(input: CreateMenuInput): Promise<string> {
+  const qrUrl = `${window.location.origin}${window.location.pathname}#/negocio/${input.negocioId}?menu=`
+  const docRef = await addDoc(collection(db, ONE_COLLECTIONS.MENUS), {
+    negocioId: input.negocioId,
+    nombre: input.nombre,
+    descripcion: input.descripcion ?? null,
+    cafesIds: input.cafesIds,
+    activo: false,
+    qrUrl: qrUrl + 'PLACEHOLDER',
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  })
+  await updateDoc(docRef, { qrUrl: qrUrl + docRef.id })
+  return docRef.id
+}
+
+export async function updateMenu(
+  menuId: string,
+  data: Partial<Omit<MenuONE, 'id' | 'createdAt'>>
+): Promise<void> {
+  await updateDoc(doc(db, ONE_COLLECTIONS.MENUS, menuId), {
+    ...data,
+    updatedAt: serverTimestamp(),
+  })
+}
+
+export async function deleteMenu(menuId: string): Promise<void> {
+  await deleteDoc(doc(db, ONE_COLLECTIONS.MENUS, menuId))
+}
+
+export async function setMenuActivo(negocioId: string, menuId: string): Promise<void> {
+  const menus = await fetchMenusByNegocio(negocioId)
+  await Promise.all(
+    menus.map((m) =>
+      updateDoc(doc(db, ONE_COLLECTIONS.MENUS, m.id), {
+        activo: m.id === menuId,
+        updatedAt: serverTimestamp(),
+      })
+    )
+  )
+}
+
+// ─── CHAT / MENSAJES ─────────────────────────────────────────────────────────
+
+export async function sendMensaje(input: SendMensajeInput): Promise<string> {
+  const docRef = await addDoc(collection(db, ONE_COLLECTIONS.MENSAJES), {
+    pedidoId: input.pedidoId,
+    autorId: input.autorId,
+    autorNombre: input.autorNombre,
+    autorRol: input.autorRol,
+    texto: input.texto,
+    tipo: input.tipo ?? 'texto',
+    createdAt: serverTimestamp(),
+  })
+  return docRef.id
+}
+
+export async function fetchMensajesByPedido(pedidoId: string): Promise<MensajePedidoONE[]> {
+  const snap = await getDocs(
+    query(
+      collection(db, ONE_COLLECTIONS.MENSAJES),
+      where('pedidoId', '==', pedidoId),
+      orderBy('createdAt', 'asc')
+    )
+  )
+  return snap.docs.map((d) => ({
+    id: d.id,
+    ...d.data(),
+    createdAt: normalizeDate(d.data().createdAt),
+  } as MensajePedidoONE))
+}
+
+// ─── LOGÍSTICA CAFICULTOR ────────────────────────────────────────────────────
+
+export async function fetchUbigeos(): Promise<UbigeoONE[]> {
+  const snap = await getDocs(collection(db, ONE_COLLECTIONS.UBIGEOS))
+  return snap.docs.map(d => ({ id: d.id, ...d.data() } as UbigeoONE))
+}
+
+export async function fetchLogisticaCaficultor(caficultorId: string): Promise<LogisticaCaficultorONE | null> {
+  const snap = await getDoc(doc(db, ONE_COLLECTIONS.USUARIOS, caficultorId))
+  if (!snap.exists()) return null
+  const data = snap.data()
+  // Soporte para estructura nueva (caficultor.logistica) y legacy (caficultor.direccion)
+  const logistica = data?.caficultor?.logistica ?? data?.caficultor?.direccion ?? null
+  if (!logistica?.ubigeo) return null
+  return logistica as LogisticaCaficultorONE
+}
+
+export async function saveLogisticaCaficultor(input: SaveLogisticaInput): Promise<void> {
+  const origenTexto = `${input.distrito}, ${input.provincia}, ${input.departamento}`
+  await updateDoc(doc(db, ONE_COLLECTIONS.USUARIOS, input.caficultorId), {
+    'caficultor.logistica': {
+      ubigeo: input.ubigeo,
+      departamento: input.departamento,
+      provincia: input.provincia,
+      distrito: input.distrito,
+      origenTexto,
+      agencias: input.agencias,
+      agenciasMap: input.agenciasMap,
+      agenciasActivas: input.agenciasActivas,
+      agenciasPermiteDomicilio: input.agenciasPermiteDomicilio,
+    },
+  })
 }

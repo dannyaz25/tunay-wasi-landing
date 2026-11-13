@@ -1,6 +1,6 @@
 # TunayWasi ONE — Modelo Simplificado
 
-> Versión 1.0 — Septiembre 2026
+> Versión 1.1 — Septiembre 2026
 > Este documento define el modelo de negocio simplificado para validar el mercado antes de activar el marketplace completo.
 
 ---
@@ -35,15 +35,27 @@ Tres caficultores reales desde el inicio:
 | Proveedor 2 | Por confirmar | Disponible |
 | Proveedor 3 | Por confirmar | Disponible |
 
-**Lo que hace:**
+**Lo que hace en el negocio:**
 - Vende café verde a Tunay Wasi a precio acordado
 - Provee foto, historia y datos de su finca
 - Garantiza abastecimiento mensual mínimo
 
-**Lo que NO hace todavía:**
-- No publica en plataforma
-- No interactúa con compradores directamente
-- No necesita portal propio en esta fase
+**Lo que hace en la plataforma — Portal del Caficultor (`#/caficultor-portal`):**
+
+| Sección | Contenido | Acción disponible |
+|---|---|---|
+| Mis pedidos | Lista de pedidos donde aparece su café — local, formato, cantidad, estado | Solo lectura |
+| Mis ganancias | Total generado este mes + proyección del próximo pago | Solo lectura |
+| Mi stock | Kg disponibles por producto | Solo lectura — actualización vía admin en fase 1 |
+
+**Lo que NO hace en la plataforma en fase 1:**
+- No publica lotes directamente
+- No fija precios (se acuerdan fuera de la plataforma)
+- No interactúa con emprendedores directamente
+- No gestiona certificaciones SCA
+
+**Por qué tiene portal de todas formas:**
+La promesa central de Tunay Wasi al caficultor es transparencia — "sabes cuánto te pagan y cuándo". Sin portal, esa promesa es solo palabras. El portal es la prueba visible de que el modelo cumple.
 
 ---
 
@@ -57,6 +69,8 @@ Una tostaduria aliada (Violet / Vicoffee / Narsacoffee) que:
 - Entrega listo para despachar
 
 **Tunay Wasi paga por kilo procesado.** Sin inversión en equipamiento.
+
+**No tiene portal en la plataforma.** La coordinación es por WhatsApp y llamada en fase 1.
 
 ---
 
@@ -430,6 +444,203 @@ Sin cambios en el stack. Solo simplificación de lo que se usa:
 | Pagos | Yape + Transferencia BCP (Izipay después) | ✅ Listo |
 | Notificaciones | WhatsApp manual → automatizar después | 🔄 Manual en fase 1 |
 | Kit identidad | Canva manual → generador automático después | 🔄 Manual en fase 1 |
+
+---
+
+## El caficultor ve el catálogo completo — y debe verlo
+
+**Decisión de negocio:** El portal del caficultor incluye acceso directo al catálogo público (`#/` con link "Ver catálogo →" en el sidebar).
+
+### Por qué es correcto
+
+| Razón | Justificación |
+|---|---|
+| **Inteligencia competitiva legítima** | El caficultor necesita saber qué otros cafés compiten con el suyo en precio, proceso y variedad para posicionarse |
+| **Referencia de precios de mercado** | Si su Bourbon lavado está en S/66/kg y el promedio del catálogo es S/55, debe saberlo para ajustar o justificar su premium |
+| **Señales de demanda** | Ver qué variedades y procesos tienen más pedidos orienta qué producir en la siguiente cosecha |
+| **Colaboración entre pares** | Ver a otros caficultores con 85+ pts SCA inspira a mejorar la calidad propia |
+| **Confianza en la plataforma** | Sin visibilidad del ecosistema, el caficultor no entiende el mercado en el que participa — la transparencia es la promesa central de Tunay Wasi |
+
+### Lo que SÍ ve
+
+- Todos los productos del catálogo: nombre, variedad, proceso, puntaje, precios de venta, foto
+- Historia y perfil de los otros caficultores (página pública `#/caficultor/:id`)
+
+### Lo que NO ve
+
+- **Costos privados** (`CostosProductoONE`: precio verde, costo tueste, margen) — solo visibles para el dueño del producto en su portal
+- **Datos de contacto directo** de otros caficultores — para evitar bypass de la plataforma
+
+### Implementación
+
+El catálogo público ya es accesible para cualquier visitante. El portal del caficultor agrega un link directo en el sidebar: **"Ver catálogo →"** que navega a `#/`.
+
+---
+
+## Capacidades por actor en la plataforma
+
+> Versión definitiva — septiembre 2026
+> Esta sección define exactamente qué puede ver y hacer cada tipo de usuario en la plataforma web.
+
+---
+
+### Actor: Caficultor (`#/portal` con rol `caficultor`)
+
+#### Tab 1 — Catálogo (pantalla de inicio)
+
+El caficultor **aterriza en el catálogo público**, no en un dashboard KPI.
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver todos los productos publicados | ✅ | Misma vista que cualquier visitante |
+| Ver detalle del producto (drawer) | ✅ | Foto, variedad, proceso, puntaje, notas de sabor |
+| Ver precios de venta de todos los productos | ✅ | Para referencia de mercado |
+| Ver el perfil público de otros caficultores | ✅ | `#/caficultor/:id` |
+| Ver costos privados de otros caficultores | ❌ | Solo el dueño ve sus márgenes |
+| Agregar productos al carrito | ❌ | El caficultor no compra, provee |
+| Ver aviso de pedidos pendientes de despacho | ✅ | Banner amarillo si hay pedidos en `preparando` |
+
+**Por qué el catálogo como inicio:** el caficultor necesita inteligencia de mercado — ver precios, variedades y procesos de sus pares para posicionar su propio café. Sin visibilidad del ecosistema, la promesa de transparencia de Tunay Wasi es solo palabras.
+
+#### Tab 2 — Mis pedidos
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver lista de pedidos donde aparece su café | ✅ | Filtrado por `items[].caficultorId` |
+| Filtrar pedidos por estado | ✅ | Todos / Preparando / En agencia / Entregado |
+| Despachar un pedido (`preparando` → `en_agencia`) | ✅ | Modal con código de tracking requerido + foto opcional |
+| Ingresar agencia (Olva / Shalom / Servientrega / Otra) | ✅ | Campo en modal de despacho |
+| Ingresar código de tracking | ✅ | Obligatorio para confirmar despacho |
+| Subir foto del paquete al despachar | ✅ | Opcional — URL Cloudinary |
+| Marcar pedido como entregado | ❌ | Solo el emprendedor puede confirmar recepción |
+| Ver estado de pago (pendiente / verificado / rechazado) | ✅ | Solo lectura |
+
+**Anti-fraude:** el caficultor ingresa el código de tracking al despachar. El emprendedor ve ese código y confirma recepción. Si el código no coincide con lo recibido, el emprendedor no confirma — la calificación queda bloqueada.
+
+#### Tab 3 — Mis lotes
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver sus productos publicados | ✅ | Solo los propios |
+| Ver stock disponible y reservado | ✅ | Solo lectura en fase 1 |
+| Ver puntaje referencial de sus productos | ✅ | |
+| Crear nuevos productos | ❌ | El admin crea — fase 1 |
+| Modificar precios | ❌ | Se acuerdan fuera de plataforma |
+| Publicar / despublicar productos | ❌ | El admin gestiona |
+
+#### Tab 4 — Mis ganancias
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver total generado este mes | ✅ | Calculado de pedidos `verificado` |
+| Ver proyección del próximo pago | ✅ | Estimado según stock reservado |
+| Ver historial de pagos anteriores | ✅ | Solo lectura |
+| Recibir pago desde la plataforma | ❌ | Pago coordinado fuera — transferencia BCP / Yape |
+
+#### Tab 5 — Mi perfil (finca)
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver su perfil público (igual que `#/caficultor/:id`) | ✅ | |
+| Editar nombre, región, historia, foto | ✅ | Datos que aparecen en el catálogo |
+| Editar altitud, variedad, proceso | ✅ | |
+| Ver qué cafeterías usan su café | ✅ | Lista de emprendedores que compraron |
+
+#### Lo que el caficultor NO hace en la plataforma (fase 1)
+
+- No fija precios (se acuerdan por llamada/WhatsApp)
+- No publica lotes directamente (el admin los crea)
+- No interactúa directamente con emprendedores
+- No gestiona certificaciones SCA
+- No solicita hub Lima
+
+---
+
+### Actor: Emprendedor (`#/portal` con rol `emprendedor`)
+
+#### Tab 1 — Catálogo (pantalla de inicio)
+
+El emprendedor **aterriza en el catálogo público**, no en un resumen financiero.
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver todos los productos publicados | ✅ | Misma vista que cualquier visitante |
+| Ver detalle del producto (drawer) | ✅ | Foto, variedad, proceso, puntaje, notas de sabor |
+| Agregar productos al carrito | ✅ | Abre checkout completo |
+| Ver perfil del caficultor del producto | ✅ | `#/caficultor/:id` |
+| Ver aviso de pago pendiente | ✅ | Banner amarillo si tiene pedido sin voucher |
+| Ver aviso de paquete en agencia | ✅ | Banner azul con código de tracking + CTA "Confirmar recepción" |
+
+**Por qué el catálogo como inicio:** el emprendedor necesita volver a comprar fácilmente. Ver el catálogo al entrar reduce el fricción de recompra — en vez de navegar a otra sección, encuentra directamente los productos disponibles.
+
+#### Tab 2 — Mis pedidos
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver lista de sus pedidos activos | ✅ | Estado actual + stepper de 5 pasos |
+| Filtrar por estado | ✅ | Todos / Pago pendiente / Verificado / En agencia |
+| Subir voucher de pago | ✅ | Foto de Yape / transferencia BCP |
+| Ver código de tracking cuando el pedido está en agencia | ✅ | Ingresado por el caficultor al despachar |
+| Confirmar recepción del pedido | ✅ | Solo disponible en estado `en_agencia` |
+| Calificar al caficultor | ✅ | Solo disponible si `recepcionConfirmada === true` |
+| Cancelar un pedido | ❌ | Coordinación manual vía WhatsApp |
+
+**Stepper de 5 pasos:** `Pendiente` → `Pago verificado` → `En agencia` → `Recibido` → `Calificado ✓`
+
+**Anti-fraude:** la calificación está bloqueada hasta que el emprendedor confirme recepción. El botón "Calificar" no aparece si `recepcionConfirmada === false` — el texto muestra "Confirma la recepción para calificar".
+
+#### Tab 3 — Historial
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver todos los pedidos entregados | ✅ | |
+| Buscar por texto (ID, caficultor, producto) | ✅ | |
+| Filtrar por fecha desde / hasta | ✅ | |
+| Ordenar por fecha (más reciente / más antiguo) | ✅ | |
+| Ver detalle de cada pedido antiguo | ✅ | |
+
+#### Tab 4 — Mi menú
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Crear menú personalizado | ✅ | Nombre + descripción + selección de cafés |
+| Activar un menú (uno activo a la vez) | ✅ | QR público apunta al menú activo |
+| Editar menú existente | ✅ | |
+| Eliminar menú | ✅ | |
+| Compartir menú vía QR | ✅ | URL: `#/cafeteria/:id?menu=:menuId` |
+| Ver menú como lo ven los clientes | ✅ | Link público |
+
+#### Tab 5 — Mi perfil
+
+| Acción | Disponible | Notas |
+|---|---|---|
+| Ver y editar nombre de local | ✅ | |
+| Ver y editar distrito | ✅ | |
+| Ver y editar teléfono | ✅ | |
+| Cerrar sesión | ✅ | |
+
+#### Lo que el emprendedor NO hace en la plataforma (fase 1)
+
+- No fija precios de compra
+- No ve los costos del caficultor (precio verde, tueste, margen)
+- No contacta directamente al caficultor (para evitar bypass)
+- No gestiona múltiples locales (una cuenta = un local en fase 1)
+
+---
+
+### Comparación rápida: ¿quién ve qué?
+
+| Información | Visitante anónimo | Emprendedor | Caficultor | Admin |
+|---|---|---|---|---|
+| Catálogo completo (productos, precios de venta) | ✅ | ✅ | ✅ | ✅ |
+| Perfil público del caficultor | ✅ | ✅ | ✅ | ✅ |
+| Costos privados del producto (precio verde, tueste, margen) | ❌ | ❌ | Solo los propios | ✅ |
+| Datos de contacto de otros caficultores | ❌ | ❌ | ❌ | ✅ |
+| Pedidos del emprendedor | ❌ | Solo los propios | Solo los que incluyen su café | ✅ |
+| Vouchers de pago | ❌ | Solo los propios | ❌ | ✅ |
+| Código de tracking | ❌ | Cuando aplica | Los que él ingresó | ✅ |
+| Ganancias del caficultor | ❌ | ❌ | Solo las propias | ✅ |
+| Menú de la cafetería (QR) | ✅ (link público) | Solo el propio | ✅ | ✅ |
 
 ---
 

@@ -1,15 +1,12 @@
 // TunayWasi ONE — constantes del modelo
-// Modelo: caficultor tuesta, empaca y envía directo al emprendedor.
+// Modelo: caficultor tuesta, empaca y envía directo al negocio.
 // TW es plataforma de conexión + pagos. No toca el café físicamente.
 
 export const ONE_CONFIG = {
   // El caficultor fija su precioBaseKgCents ya incluyendo tueste y empaque.
   // TW no agrega costos de producción — ese costo es responsabilidad del caficultor.
   COMISION_PORCENTAJE: 0,           // Sin comisión en fase 1 (gratis usar la plataforma)
-  DELIVERY_CENTS: 0,                // Envío coordina el caficultor directo al emprendedor
-
-  // Compromiso mínimo Kit Proveedor
-  COMPROMISO_MESES_MIN: 3,
+  DELIVERY_CENTS: 0,                // Envío coordina el caficultor directo al negocio
 
   // Datos de pago (completar antes de lanzar)
   YAPE_NUMERO: '+51 XXX XXX XXX',
@@ -25,11 +22,11 @@ export const ONE_CONFIG = {
   PEDIDO_YEAR: new Date().getFullYear(),
 } as const
 
-// Precio al emprendedor = exactamente lo que fija el caficultor por kg × cantidad
+// Precio al negocio = exactamente lo que fija el caficultor por kg × cantidad
 // El caficultor ya incluyó tueste, empaque y su margen en precioBaseKgCents.
-export function calcularPrecioFinal(precioBaseKgCents: number, formato: '250g' | '1kg' | '5kg'): number {
-  const kgs = formato === '250g' ? 0.25 : formato === '1kg' ? 1 : 5
-  return Math.round(precioBaseKgCents * kgs)
+export function calcularPrecioFinal(precioBaseKgCents: number, formato: '250g' | '500g' | '1kg' | '5kg' | '10kg' | '25kg'): number {
+  const kgs: Record<string, number> = { '250g': 0.25, '500g': 0.5, '1kg': 1, '5kg': 5, '10kg': 10, '25kg': 25 }
+  return Math.round(precioBaseKgCents * (kgs[formato] ?? 1))
 }
 
 // Colecciones Firestore
@@ -41,6 +38,9 @@ export const ONE_COLLECTIONS = {
   KITS: 'one_kits',
   CALIFICACIONES_CAFICULTOR: 'one_calificaciones_caficultor',
   CALIFICACIONES_CAFETERIA: 'one_calificaciones_cafeteria',
+  MENUS: 'one_menus',
+  MENSAJES: 'one_mensajes',
+  UBIGEOS: 'ubigeos',
 } as const
 
 // ─── Design system dark unificado ───────────────────────────────────────────
@@ -77,8 +77,11 @@ export const PROCESO_LABELS: Record<string, string> = {
 // Etiquetas de formato para UI
 export const FORMATO_LABELS: Record<string, string> = {
   '250g': '250 g',
+  '500g': '500 g',
   '1kg': '1 kg',
   '5kg': '5 kg',
+  '10kg': '10 kg',
+  '25kg': '25 kg',
 }
 
 // Etiquetas de estado de pago para UI

@@ -1,0 +1,20 @@
+{
+  "name": "tunaywasi-beta-invite",
+  "version": "1.0.0",
+  "description": "Lambda que agrega testers a Firebase App Distribution y envía email de bienvenida",
+  "main": "handler.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "deploy:prod": "serverless deploy --stage prod",
+    "logs": "serverless logs -f betaInvite --tail",
+    "remove": "serverless remove"
+  },
+  "dependencies": {
+    "google-auth-library": "^9.0.0",
+    "nodemailer": "^6.9.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "serverless": "^3.38.0"
+  }
+}

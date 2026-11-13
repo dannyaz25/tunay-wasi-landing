@@ -14,6 +14,8 @@ import {
   rechazarPago,
   updateLogistica,
   generarKit,
+  actualizarUrlsKit,
+  fetchKitByPedido,
   fetchCaficultor,
   fetchProducto,
 } from '../service'
@@ -23,8 +25,10 @@ import {
   demoRechazarPago,
   demoUpdateLogistica,
   demoGenerarKit,
+  demoActualizarUrlsKit,
+  demoFetchKitByPedido,
 } from '../demoService'
-import type { PedidoONE } from '../types'
+import type { PedidoONE, KitIdentidadONE } from '../types'
 import { PAGO_STATUS_LABELS } from '../config'
 import { logout } from '../authService'
 
@@ -46,6 +50,13 @@ const C = {
 }
 
 type Tab = 'pedidos' | 'pagos' | 'kits' | 'metricas'
+
+const NAV_ITEMS: { id: Tab; label: string; emoji: string }[] = [
+  { id: 'pedidos',  label: 'Pedidos',  emoji: '📦' },
+  { id: 'pagos',    label: 'Pagos',    emoji: '💳' },
+  { id: 'kits',     label: 'Kits',     emoji: '🎨' },
+  { id: 'metricas', label: 'Métricas', emoji: '📊' },
+]
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 
@@ -69,6 +80,37 @@ const Toast: React.FC<{ msgs: ToastMsg[]; onRemove: (id: number) => void }> = ({
 )
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
+
+const FilterBar: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 18, padding: '14px 16px', background: '#0d0d0d', borderRadius: 12, border: `1px solid ${C.border}`, alignItems: 'center' }}>
+    {children}
+  </div>
+)
+
+const FilterChip: React.FC<{ label: string; active: boolean; color?: string; onClick: () => void }> = ({ label, active, color, onClick }) => {
+  const col = color ?? C.terra
+  return (
+    <button onClick={onClick} style={{
+      padding: '5px 13px', borderRadius: 20, border: `1px solid ${active ? col : C.border}`,
+      background: active ? col + '22' : 'none', color: active ? col : C.textSub,
+      fontSize: 12, fontWeight: active ? 700 : 500, cursor: 'pointer',
+      fontFamily: 'Montserrat, sans-serif', transition: 'all 0.15s',
+    }}>
+      {label}
+    </button>
+  )
+}
+
+const SearchInput: React.FC<{ value: string; onChange: (v: string) => void; placeholder?: string }> = ({ value, onChange, placeholder }) => (
+  <input value={value} onChange={e => onChange(e.target.value)}
+    placeholder={placeholder ?? 'Buscar...'}
+    style={{
+      padding: '6px 12px', borderRadius: 8, border: `1px solid ${C.border}`,
+      background: '#141414', color: C.cream, fontSize: 12,
+      fontFamily: 'Montserrat, sans-serif', outline: 'none', width: 200,
+    }}
+  />
+)
 
 function formatCents(cents: number): string {
   return `S/ ${(cents / 100).toFixed(0)}`
@@ -121,35 +163,22 @@ const BtnAccion: React.FC<{
 
 // ─── Tab Pedidos (kanban) ─────────────────────────────────────────────────────
 
-const COLUMNAS: { key: string; label: string; color: string }[] = [
-  { key: 'pendiente_pago', label: 'Sin pago', color: C.muted },
-  { key: 'pago_verificado', label: 'Pago OK', color: C.yellow },
-  { key: 'en_camino', label: 'En camino', color: C.terra },
-  { key: 'entregado', label: 'Entregado', color: C.sage },
-]
-
-function columnaDePedido(p: PedidoONE): string {
-  if (p.logisticaStatus === 'entregado') return 'entregado'
-  if (p.logisticaStatus === 'despachado') return 'en_camino'
-  if (p.pagoStatus === 'verificado') return 'pago_verificado'
-  return 'pendiente_pago'
-}
-
 const TabPedidos: React.FC<{
   pedidos: PedidoONE[]; onAccion: () => void; isDemo: boolean
   onToast: (t: string, tipo?: 'ok' | 'error' | 'info') => void
 }> = ({ pedidos, onAccion, isDemo, onToast }) => {
   const [accionando, setAccionando] = useState<string | null>(null)
+  const [busqueda, setBusqueda] = useState('')
+  const [filtroEstado, setFiltroEstado] = useState<string>('todos')
 
   async function despachar(pedidoId: string) {
     setAccionando(pedidoId)
     try {
-      await (isDemo ? demoUpdateLogistica(pedidoId, 'despachado') : updateLogistica(pedidoId, 'despachado'))
+      await (isDemo ? demoUpdateLogistica(pedidoId, 'en_agencia') : updateLogistica(pedidoId, 'en_agencia'))
       onToast('Pedido marcado como despachado', 'ok')
       onAccion()
-    } catch {
-      onToast('Error al despachar pedido', 'error')
-    } finally { setAccionando(null) }
+    } catch { onToast('Error al despachar pedido', 'error') }
+    finally { setAccionando(null) }
   }
 
   async function entregar(pedidoId: string) {
@@ -158,55 +187,90 @@ const TabPedidos: React.FC<{
       await (isDemo ? demoUpdateLogistica(pedidoId, 'entregado') : updateLogistica(pedidoId, 'entregado'))
       onToast('Pedido marcado como entregado ✓', 'ok')
       onAccion()
-    } catch {
-      onToast('Error al marcar entregado', 'error')
-    } finally { setAccionando(null) }
+    } catch { onToast('Error al marcar entregado', 'error') }
+    finally { setAccionando(null) }
+  }
+
+  function estadoPedido(p: PedidoONE): string {
+    if (p.logisticaStatus === 'entregado') return 'entregado'
+    if (p.logisticaStatus === 'en_agencia') return 'en_camino'
+    if (p.pagoStatus === 'verificado') return 'pago_ok'
+    return 'sin_pago'
+  }
+
+  const filtrados = pedidos.filter(p => {
+    const estado = estadoPedido(p)
+    if (filtroEstado !== 'todos' && estado !== filtroEstado) return false
+    if (busqueda && !p.nombreLocal.toLowerCase().includes(busqueda.toLowerCase()) && !p.id.includes(busqueda)) return false
+    return true
+  })
+
+  const counts = {
+    sin_pago: pedidos.filter(p => estadoPedido(p) === 'sin_pago').length,
+    pago_ok:  pedidos.filter(p => estadoPedido(p) === 'pago_ok').length,
+    en_camino: pedidos.filter(p => estadoPedido(p) === 'en_camino').length,
+    entregado: pedidos.filter(p => estadoPedido(p) === 'entregado').length,
   }
 
   return (
-    <div style={{ overflowX: 'auto', paddingBottom: 8 }}>
-      <div style={{ display: 'flex', gap: 12, minWidth: 640, padding: '4px 0 16px' }}>
-        {COLUMNAS.map((col) => {
-          const items = pedidos.filter((p) => columnaDePedido(p) === col.key)
+    <div>
+      <FilterBar>
+        <SearchInput value={busqueda} onChange={setBusqueda} placeholder="Buscar cafetería o ID..." />
+        <FilterChip label={`Todos (${pedidos.length})`} active={filtroEstado === 'todos'} onClick={() => setFiltroEstado('todos')} />
+        <FilterChip label={`Sin pago (${counts.sin_pago})`} color={C.muted} active={filtroEstado === 'sin_pago'} onClick={() => setFiltroEstado('sin_pago')} />
+        <FilterChip label={`Pago OK (${counts.pago_ok})`} color={C.yellow} active={filtroEstado === 'pago_ok'} onClick={() => setFiltroEstado('pago_ok')} />
+        <FilterChip label={`En camino (${counts.en_camino})`} color={C.terra} active={filtroEstado === 'en_camino'} onClick={() => setFiltroEstado('en_camino')} />
+        <FilterChip label={`Entregado (${counts.entregado})`} color={C.sage} active={filtroEstado === 'entregado'} onClick={() => setFiltroEstado('entregado')} />
+      </FilterBar>
+
+      {filtrados.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px 0' }}>
+          <p style={{ fontSize: 13, color: C.textSub }}>Sin pedidos para este filtro</p>
+        </div>
+      ) : (
+        <div className="adm-grid-cards">
+          {filtrados.map(p => {
+          const estado = estadoPedido(p)
+          const colorBorde = estado === 'sin_pago' ? C.muted + '44' : estado === 'pago_ok' ? C.yellow + '44' : estado === 'en_camino' ? C.terra + '44' : C.sage + '44'
+          const colorChip  = estado === 'sin_pago' ? C.muted : estado === 'pago_ok' ? C.yellow : estado === 'en_camino' ? C.terra : C.sage
+          const labelChip  = estado === 'sin_pago' ? '⏳ Sin pago' : estado === 'pago_ok' ? '✓ Pago OK' : estado === 'en_camino' ? '🚚 En camino' : '✓ Entregado'
+
           return (
-            <div key={col.key} style={{ flex: 1, minWidth: 150 }}>
-              <div style={{
-                padding: '7px 12px', borderRadius: '8px 8px 0 0',
-                background: col.color + '18', borderBottom: `2px solid ${col.color}`,
-                marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-              }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: col.color, textTransform: 'uppercase' }}>
-                  {col.label}
-                </span>
-                <span style={{ fontSize: 12, color: col.color, fontWeight: 700 }}>{items.length}</span>
+            <div key={p.id} style={{ background: C.card, borderRadius: 14, padding: '18px', border: `1px solid ${colorBorde}` }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+                <div>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 3 }}>
+                    <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</p>
+                    <span style={{ fontSize: 10, padding: '2px 8px', borderRadius: 10, fontWeight: 700, background: colorChip + '22', color: colorChip }}>{labelChip}</span>
+                    {p.metodoPago === 'yape' && <span style={{ fontSize: 10, color: C.textSub }}>📱 Yape</span>}
+                  </div>
+                  <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{p.id} · {formatFecha(p.createdAt)}</p>
+                </div>
+                <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: C.terra, flexShrink: 0 }}>{formatCents(p.totalCents)}</p>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {items.map((p) => (
-                  <div key={p.id} style={{
-                    background: C.card, borderRadius: 8,
-                    padding: '10px 12px', border: `1px solid ${C.border}`,
-                  }}>
-                    <p style={{ margin: '0 0 2px', fontSize: 12, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</p>
-                    <p style={{ margin: '0 0 4px', fontSize: 11, color: C.textSub }}>
-                      {p.items.map(i => `${i.cantidad}×${i.formato}`).join(', ')} · {formatCents(p.totalCents)}
-                    </p>
-                    <p style={{ margin: '0 0 8px', fontSize: 10, color: C.muted }}>{p.id}</p>
-                    {col.key === 'pago_verificado' && (
-                      <BtnAccion label="→ Despachar" onClick={() => despachar(p.id)} disabled={accionando === p.id} />
-                    )}
-                    {col.key === 'en_camino' && (
-                      <BtnAccion label="✓ Entregado" onClick={() => entregar(p.id)} color={C.sage} disabled={accionando === p.id} />
-                    )}
+
+              <div style={{ marginBottom: 10 }}>
+                {p.items.map((i, idx) => (
+                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 10px', background: C.bg, borderRadius: 6, marginBottom: 4 }}>
+                    <span style={{ fontSize: 12, color: C.text }}>{i.qty} × {i.presentacion} — {i.productoNombre}</span>
+                    <span style={{ fontSize: 12, color: C.terra, fontWeight: 600 }}>{formatCents(i.subtotalCents)}</span>
                   </div>
                 ))}
-                {items.length === 0 && (
-                  <p style={{ fontSize: 11, color: C.muted, textAlign: 'center', padding: '16px 0' }}>—</p>
+              </div>
+
+              <div style={{ display: 'flex', gap: 8 }}>
+                {estado === 'pago_ok' && (
+                  <BtnAccion label="→ Despachar" onClick={() => despachar(p.id)} disabled={accionando === p.id} />
+                )}
+                {estado === 'en_camino' && (
+                  <BtnAccion label="✓ Entregado" onClick={() => entregar(p.id)} color={C.sage} disabled={accionando === p.id} />
                 )}
               </div>
             </div>
           )
         })}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -217,9 +281,10 @@ const TabPagos: React.FC<{
   pedidos: PedidoONE[]; onAccion: () => void; isDemo: boolean
   onToast: (t: string, tipo?: 'ok' | 'error' | 'info') => void
 }> = ({ pedidos, onAccion, isDemo, onToast }) => {
-  const pendientes = pedidos.filter((p) => p.pagoStatus === 'voucher_subido')
   const [accionando, setAccionando] = useState<string | null>(null)
   const [ampliada, setAmpliada] = useState<string | null>(null)
+  const [filtro, setFiltro] = useState<string>('voucher_subido')
+  const [busqueda, setBusqueda] = useState('')
 
   async function verificar(pedidoId: string) {
     setAccionando(pedidoId)
@@ -227,9 +292,8 @@ const TabPagos: React.FC<{
       await (isDemo ? demoVerificarPago(pedidoId) : verificarPago(pedidoId))
       onToast('Pago verificado', 'ok')
       onAccion()
-    } catch {
-      onToast('Error al verificar pago', 'error')
-    } finally { setAccionando(null) }
+    } catch { onToast('Error al verificar pago', 'error') }
+    finally { setAccionando(null) }
   }
 
   async function rechazar(pedidoId: string) {
@@ -238,69 +302,204 @@ const TabPagos: React.FC<{
       await (isDemo ? demoRechazarPago(pedidoId) : rechazarPago(pedidoId))
       onToast('Pago rechazado', 'info')
       onAccion()
-    } catch {
-      onToast('Error al rechazar pago', 'error')
-    } finally { setAccionando(null) }
+    } catch { onToast('Error al rechazar pago', 'error') }
+    finally { setAccionando(null) }
   }
 
-  if (pendientes.length === 0) {
-    return (
-      <div style={{ textAlign: 'center', padding: '60px 0' }}>
-        <p style={{ fontSize: 36, marginBottom: 12 }}>✓</p>
-        <p style={{ color: C.textSub, fontSize: 14 }}>No hay vouchers pendientes</p>
-      </div>
-    )
+  const conPago = pedidos.filter(p => p.pagoStatus !== 'pendiente')
+  const counts = {
+    voucher_subido: pedidos.filter(p => p.pagoStatus === 'voucher_subido').length,
+    verificado:     pedidos.filter(p => p.pagoStatus === 'verificado').length,
+    rechazado:      pedidos.filter(p => p.pagoStatus === 'rechazado').length,
   }
+
+  const filtrados = conPago.filter(p => {
+    if (filtro !== 'todos' && p.pagoStatus !== filtro) return false
+    if (busqueda && !p.nombreLocal.toLowerCase().includes(busqueda.toLowerCase()) && !p.id.includes(busqueda)) return false
+    return true
+  })
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      {pendientes.map((p) => (
-        <div key={p.id} style={{ background: C.card, borderRadius: 12, padding: '18px', border: `1px solid ${C.yellow}44` }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-            <div>
-              <p style={{ margin: 0, fontSize: 16, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</p>
-              <p style={{ margin: '3px 0 0', fontSize: 12, color: C.textSub }}>{p.id} · {p.metodoPago === 'yape' ? '📱 Yape' : '🏦 Transferencia'}</p>
-            </div>
-            <span style={{ fontSize: 18, fontWeight: 700, color: C.terra }}>{formatCents(p.totalCents)}</span>
-          </div>
-          <p style={{ margin: '0 0 14px', fontSize: 12, color: C.textSub }}>{p.items.map(i => `${i.cantidad}×${i.formato} ${i.productoNombre}`).join(', ')}</p>
+    <div>
+      <FilterBar>
+        <SearchInput value={busqueda} onChange={setBusqueda} placeholder="Buscar cafetería o ID..." />
+        <FilterChip label={`Vouchers (${counts.voucher_subido})`} color={C.yellow} active={filtro === 'voucher_subido'} onClick={() => setFiltro('voucher_subido')} />
+        <FilterChip label={`Verificados (${counts.verificado})`} color={C.sage} active={filtro === 'verificado'} onClick={() => setFiltro('verificado')} />
+        <FilterChip label={`Rechazados (${counts.rechazado})`} color={C.red} active={filtro === 'rechazado'} onClick={() => setFiltro('rechazado')} />
+        <FilterChip label={`Todos (${conPago.length})`} active={filtro === 'todos'} onClick={() => setFiltro('todos')} />
+      </FilterBar>
 
-          {p.voucherUrl && (
-            <div style={{ marginBottom: 14 }}>
-              <img
-                src={p.voucherUrl} alt="Voucher"
-                onClick={() => setAmpliada(ampliada === p.id ? null : p.id)}
-                style={{
-                  width: '100%', maxHeight: ampliada === p.id ? 400 : 120,
-                  objectFit: ampliada === p.id ? 'contain' : 'cover',
-                  borderRadius: 8, cursor: 'pointer', transition: 'max-height 0.25s',
-                  background: C.border, border: `1px solid ${C.border}`,
-                }}
-              />
-              <p style={{ margin: '4px 0 0', fontSize: 10, color: C.muted, textAlign: 'center' }}>
-                Toca para {ampliada === p.id ? 'reducir' : 'ampliar'}
-              </p>
-            </div>
-          )}
-
-          <div style={{ display: 'flex', gap: 10 }}>
-            <BtnAccion label="✓ Verificar" onClick={() => verificar(p.id)} color={C.sage} disabled={accionando === p.id} />
-            <BtnAccion label="✕ Rechazar" onClick={() => rechazar(p.id)} color={C.red} disabled={accionando === p.id} />
-          </div>
+      {filtrados.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px 0' }}>
+          <p style={{ fontSize: 36, marginBottom: 12 }}>✓</p>
+          <p style={{ color: C.textSub, fontSize: 14 }}>No hay pagos para este filtro</p>
         </div>
-      ))}
+      ) : (
+        <div className="adm-grid-cards">
+          {filtrados.map(p => (
+          <div key={p.id} style={{
+            background: C.card, borderRadius: 14, padding: '18px',
+            border: `1px solid ${p.pagoStatus === 'voucher_subido' ? C.yellow + '44' : p.pagoStatus === 'verificado' ? C.sage + '44' : C.red + '44'}`,
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+              <div>
+                <p style={{ margin: 0, fontSize: 15, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</p>
+                <p style={{ margin: '3px 0 0', fontSize: 12, color: C.textSub }}>
+                  {p.id} · {p.metodoPago === 'yape' ? '📱 Yape/Plin' : '🏦 Transferencia'} · {formatFecha(p.createdAt)}
+                </p>
+              </div>
+              <span style={{ fontSize: 18, fontWeight: 700, color: C.terra, flexShrink: 0 }}>{formatCents(p.totalCents)}</span>
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+              {p.items.map((i, idx) => (
+                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 10px', background: C.bg, borderRadius: 6, marginBottom: 4 }}>
+                  <span style={{ fontSize: 12, color: C.text }}>{i.qty} × {i.presentacion} — {i.productoNombre}</span>
+                  <span style={{ fontSize: 12, color: C.terra, fontWeight: 600 }}>{formatCents(i.subtotalCents)}</span>
+                </div>
+              ))}
+            </div>
+
+            {p.voucherUrl && (
+              <div style={{ marginBottom: 14 }}>
+                <img
+                  src={p.voucherUrl} alt="Voucher"
+                  onClick={() => setAmpliada(ampliada === p.id ? null : p.id)}
+                  style={{
+                    width: '100%', maxHeight: ampliada === p.id ? 400 : 120,
+                    objectFit: ampliada === p.id ? 'contain' : 'cover',
+                    borderRadius: 8, cursor: 'pointer', transition: 'max-height 0.25s',
+                    background: C.border, border: `1px solid ${C.border}`,
+                  }}
+                />
+                <p style={{ margin: '4px 0 0', fontSize: 10, color: C.muted, textAlign: 'center' }}>
+                  Toca para {ampliada === p.id ? 'reducir' : 'ampliar'}
+                </p>
+              </div>
+            )}
+
+            {p.pagoStatus === 'voucher_subido' && (
+              <div style={{ display: 'flex', gap: 10 }}>
+                <BtnAccion label="✓ Verificar" onClick={() => verificar(p.id)} color={C.sage} disabled={accionando === p.id} />
+                <BtnAccion label="✕ Rechazar" onClick={() => rechazar(p.id)} color={C.red} disabled={accionando === p.id} />
+              </div>
+            )}
+            {p.pagoStatus === 'verificado' && (
+              <span style={{ fontSize: 11, padding: '4px 10px', borderRadius: 8, background: C.sage + '22', color: C.sage, fontWeight: 700 }}>✓ Pago verificado</span>
+            )}
+            {p.pagoStatus === 'rechazado' && (
+              <span style={{ fontSize: 11, padding: '4px 10px', borderRadius: 8, background: C.red + '22', color: C.red, fontWeight: 700 }}>✕ Rechazado</span>
+            )}
+          </div>
+        ))}
+        </div>
+      )}
     </div>
   )
 }
 
 // ─── Tab Kits ─────────────────────────────────────────────────────────────────
 
+// Sub-componente: formulario inline de URLs para un kit ya generado
+const FormUrls: React.FC<{
+  kit: KitIdentidadONE; isDemo: boolean
+  onToast: (t: string, tipo?: 'ok' | 'error' | 'info') => void
+  onGuardado: () => void
+}> = ({ kit, isDemo, onToast, onGuardado }) => {
+  const [urls, setUrls] = useState({
+    menuPdfUrl: kit.menuPdfUrl ?? '',
+    fichasUrl: kit.fichasUrl ?? '',
+    qrUrl: kit.qrUrl ?? '',
+    instagramPackUrl: kit.instagramPackUrl ?? '',
+  })
+  const [guardando, setGuardando] = useState(false)
+
+  const campos: { key: keyof typeof urls; label: string; emoji: string }[] = [
+    { key: 'menuPdfUrl', label: 'Menú PDF', emoji: '📄' },
+    { key: 'fichasUrl', label: 'Fichas de mesa', emoji: '🃏' },
+    { key: 'qrUrl', label: 'QR trazabilidad', emoji: '📱' },
+    { key: 'instagramPackUrl', label: 'Pack Instagram', emoji: '📸' },
+  ]
+
+  async function handleGuardar() {
+    setGuardando(true)
+    try {
+      if (isDemo) {
+        await demoActualizarUrlsKit(kit.id, urls)
+      } else {
+        await actualizarUrlsKit(kit.id, urls)
+      }
+      onToast('URLs guardadas correctamente', 'ok')
+      onGuardado()
+    } catch {
+      onToast('Error al guardar URLs', 'error')
+    } finally { setGuardando(false) }
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', padding: '8px 10px', borderRadius: 6, fontSize: 12,
+    border: `1px solid ${C.border}`, background: '#1a1a1a', color: C.cream,
+    fontFamily: 'Montserrat, sans-serif', outline: 'none', boxSizing: 'border-box',
+  }
+
+  return (
+    <div style={{ marginTop: 14, borderTop: `1px solid ${C.border}`, paddingTop: 14 }}>
+      <p style={{ margin: '0 0 10px', fontSize: 11, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Cargar materiales del kit</p>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {campos.map(({ key, label, emoji }) => (
+          <div key={key}>
+            <label style={{ display: 'block', fontSize: 11, color: C.textSub, marginBottom: 3 }}>
+              {emoji} {label} {urls[key] && <span style={{ color: C.sage }}>✓</span>}
+            </label>
+            <input
+              type="url"
+              placeholder="https://..."
+              value={urls[key]}
+              onChange={e => setUrls(prev => ({ ...prev, [key]: e.target.value }))}
+              style={inputStyle}
+            />
+          </div>
+        ))}
+      </div>
+      <button
+        onClick={handleGuardar}
+        disabled={guardando}
+        style={{
+          marginTop: 12, padding: '10px 20px', borderRadius: 8,
+          background: guardando ? C.border : C.terra, color: C.white,
+          border: 'none', fontSize: 13, fontWeight: 700, cursor: guardando ? 'not-allowed' : 'pointer',
+          width: '100%',
+        }}
+      >
+        {guardando ? 'Guardando...' : 'Guardar URLs →'}
+      </button>
+    </div>
+  )
+}
+
 const TabKits: React.FC<{
   pedidos: PedidoONE[]; onAccion: () => void; isDemo: boolean
   onToast: (t: string, tipo?: 'ok' | 'error' | 'info') => void
 }> = ({ pedidos, onAccion, isDemo, onToast }) => {
-  const sinKit = pedidos.filter((p) => p.logisticaStatus === 'entregado' && !p.kitGenerado)
+  const sinKit = pedidos.filter((p) => p.logisticaStatus === 'entregado' && !p.kitGenerado && p.esKitProveedor)
+  const conKit = pedidos.filter((p) => p.kitGenerado)
   const [generando, setGenerando] = useState<string | null>(null)
+  const [kitsMap, setKitsMap] = useState<Map<string, KitIdentidadONE>>(new Map())
+
+  useEffect(() => {
+    async function cargarKits() {
+      const entries = await Promise.all(
+        conKit.map(async (p) => {
+          const k = isDemo
+            ? await demoFetchKitByPedido(p.id)
+            : await fetchKitByPedido(p.id)
+          return k ? ([p.id, k] as [string, KitIdentidadONE]) : null
+        })
+      )
+      setKitsMap(new Map(entries.filter((e): e is [string, KitIdentidadONE] => e !== null)))
+    }
+    if (conKit.length > 0) cargarKits()
+  }, [pedidos, isDemo]) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleGenerarKit(pedido: PedidoONE) {
     setGenerando(pedido.id)
@@ -321,7 +520,8 @@ const TabKits: React.FC<{
             }
           })
         )
-        await generarKit(pedido.id, pedido.nombreLocal, pedido.emprendedorId, productosKit)
+        const primerCaficultorId = (await fetchProducto(pedido.items[0].productoId)).caficultorId
+        await generarKit(pedido.id, pedido.nombreLocal, pedido.negocioId, productosKit, primerCaficultorId)
       }
       onToast(`Kit generado para ${pedido.nombreLocal}`, 'ok')
       onAccion()
@@ -330,7 +530,7 @@ const TabKits: React.FC<{
     } finally { setGenerando(null) }
   }
 
-  if (sinKit.length === 0) {
+  if (sinKit.length === 0 && conKit.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 0' }}>
         <p style={{ fontSize: 36, marginBottom: 12 }}>🎨</p>
@@ -341,14 +541,16 @@ const TabKits: React.FC<{
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      {/* Pedidos entregados sin kit → botón Generar */}
       {sinKit.map((p) => (
         <div key={p.id} style={{
-          background: C.card, borderRadius: 12, padding: '16px 18px', border: `1px solid ${C.border}`,
+          background: C.card, borderRadius: 12, padding: '16px 18px', border: `1px solid ${C.yellow}44`,
           display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12,
         }}>
           <div>
             <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</p>
             <p style={{ margin: '3px 0 0', fontSize: 12, color: C.textSub }}>{p.items.map(i => i.productoNombre).join(', ')}</p>
+            <p style={{ margin: '3px 0 0', fontSize: 10, color: C.yellow }}>Entregado · esperando kit</p>
           </div>
           <BtnAccion
             label={generando === p.id ? 'Generando...' : 'Generar Kit →'}
@@ -357,6 +559,51 @@ const TabKits: React.FC<{
           />
         </div>
       ))}
+
+      {/* Kits generados → formulario de URLs */}
+      {conKit.map((p) => {
+        const kit = kitsMap.get(p.id)
+        if (!kit) return null
+        const tieneUrls = kit.menuPdfUrl && kit.fichasUrl && kit.qrUrl && kit.instagramPackUrl
+        return (
+          <div key={p.id} style={{
+            background: C.card, borderRadius: 12, padding: '16px 18px',
+            border: `1px solid ${tieneUrls ? C.sage + '55' : C.border}`,
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</p>
+                <p style={{ margin: '3px 0 0', fontSize: 12, color: C.textSub }}>{p.items.map(i => i.productoNombre).join(', ')}</p>
+              </div>
+              <span style={{
+                fontSize: 11, padding: '4px 10px', borderRadius: 8, fontWeight: 700,
+                background: tieneUrls ? C.sage + '22' : C.yellow + '22',
+                color: tieneUrls ? C.sage : C.yellow,
+              }}>
+                {tieneUrls ? '✓ Listo' : 'Sin URLs'}
+              </span>
+            </div>
+            {!tieneUrls && (
+              <FormUrls kit={kit} isDemo={isDemo} onToast={onToast} onGuardado={onAccion} />
+            )}
+            {tieneUrls && (
+              <div style={{ marginTop: 10, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                {[
+                  { emoji: '📄', label: 'Menú PDF', url: kit.menuPdfUrl },
+                  { emoji: '🃏', label: 'Fichas', url: kit.fichasUrl },
+                  { emoji: '📱', label: 'QR', url: kit.qrUrl },
+                  { emoji: '📸', label: 'Instagram', url: kit.instagramPackUrl },
+                ].map(m => (
+                  <a key={m.label} href={m.url} target="_blank" rel="noopener noreferrer"
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 10px', borderRadius: 8, background: C.bg, border: `1px solid ${C.sage}33`, textDecoration: 'none', fontSize: 11, color: C.sage }}>
+                    <span>{m.emoji}</span> {m.label} →
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }
@@ -364,25 +611,28 @@ const TabKits: React.FC<{
 // ─── Tab Métricas ─────────────────────────────────────────────────────────────
 
 const TabMetricas: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
+  const [periodo, setPeriodo] = useState<'semana' | 'mes' | 'todo'>('mes')
+
   const ahora = new Date()
-  const inicioSemana = new Date(ahora)
-  inicioSemana.setDate(ahora.getDate() - ahora.getDay())
-  inicioSemana.setHours(0, 0, 0, 0)
+  const inicioSemana = new Date(ahora); inicioSemana.setDate(ahora.getDate() - ahora.getDay()); inicioSemana.setHours(0, 0, 0, 0)
   const inicioMes = new Date(ahora.getFullYear(), ahora.getMonth(), 1)
 
   function calcular(lista: PedidoONE[]) {
-    const facturacion = lista.filter((p) => p.pagoStatus === 'verificado').reduce((acc, p) => acc + p.totalCents, 0)
-    const clientesIds = new Set(lista.map((p) => p.emprendedorId))
+    const facturacion = lista.filter(p => p.pagoStatus === 'verificado').reduce((acc, p) => acc + p.totalCents, 0)
+    const clientesIds = new Set(lista.map(p => p.negocioId))
     const clientesNuevos = new Set(
-      lista.filter((p) => {
-        return pedidos.filter((o) => o.emprendedorId === p.emprendedorId && new Date(o.createdAt) < new Date(p.createdAt)).length === 0
-      }).map((p) => p.emprendedorId)
+      lista.filter(p => pedidos.filter(o => o.negocioId === p.negocioId && new Date(o.createdAt) < new Date(p.createdAt)).length === 0).map(p => p.negocioId)
     ).size
-    return { pedidos: lista.length, facturacion, clientes: clientesIds.size, clientesNuevos, clientesRecurrentes: clientesIds.size - clientesNuevos }
+    return { total: lista.length, facturacion, clientes: clientesIds.size, clientesNuevos, recurrentes: clientesIds.size - clientesNuevos }
   }
 
-  const semana = calcular(pedidos.filter((p) => new Date(p.createdAt) >= inicioSemana))
-  const mes = calcular(pedidos.filter((p) => new Date(p.createdAt) >= inicioMes))
+  const lista = periodo === 'semana'
+    ? pedidos.filter(p => new Date(p.createdAt) >= inicioSemana)
+    : periodo === 'mes'
+    ? pedidos.filter(p => new Date(p.createdAt) >= inicioMes)
+    : pedidos
+
+  const m = calcular(lista)
 
   const StatCard: React.FC<{ label: string; value: string; sub?: string; color?: string }> = ({ label, value, sub, color = C.cream }) => (
     <div style={{ background: C.card, borderRadius: 12, padding: '16px', border: `1px solid ${C.border}`, textAlign: 'center' }}>
@@ -394,31 +644,25 @@ const TabMetricas: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
 
   return (
     <div>
-      <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Esta semana</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
-        <StatCard label="Pedidos" value={String(semana.pedidos)} color={C.blue} />
-        <StatCard label="Facturación" value={formatCents(semana.facturacion)} sub="pagos verificados" color={C.terra} />
-        <StatCard label="Clientes nuevos" value={String(semana.clientesNuevos)} color={C.sage} />
-        <StatCard label="Recurrentes" value={String(semana.clientesRecurrentes)} color={C.cream} />
+      <FilterBar>
+        <FilterChip label="Esta semana" active={periodo === 'semana'} onClick={() => setPeriodo('semana')} />
+        <FilterChip label="Este mes"    active={periodo === 'mes'}    onClick={() => setPeriodo('mes')} />
+        <FilterChip label="Todo"        active={periodo === 'todo'}   onClick={() => setPeriodo('todo')} />
+      </FilterBar>
+
+      <div className="adm-grid-kpis" style={{ marginBottom: 24 }}>
+        <StatCard label="Pedidos"         value={String(m.total)}             color={C.blue} />
+        <StatCard label="Facturación"     value={formatCents(m.facturacion)}  sub="pagos verificados" color={C.terra} />
+        <StatCard label="Clientes nuevos" value={String(m.clientesNuevos)}    color={C.sage} />
+        <StatCard label="Recurrentes"     value={String(m.recurrentes)}       color={C.cream} />
       </div>
 
-      <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Este mes</p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 24 }}>
-        <StatCard label="Pedidos" value={String(mes.pedidos)} color={C.blue} />
-        <StatCard label="Facturación" value={formatCents(mes.facturacion)} sub="pagos verificados" color={C.terra} />
-        <StatCard label="Clientes totales" value={String(mes.clientes)} color={C.sage} />
-        <StatCard label="Nuevos este mes" value={String(mes.clientesNuevos)} color={C.cream} />
-      </div>
-
-      {pedidos.length > 0 && (
+      {lista.length > 0 && (
         <>
           <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Últimos pedidos</p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {pedidos.slice(0, 10).map((p) => (
-              <div key={p.id} style={{
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                background: C.card, borderRadius: 8, padding: '12px 14px', border: `1px solid ${C.border}`,
-              }}>
+          <div className="adm-grid-cards">
+            {lista.slice(0, 20).map(p => (
+              <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: C.card, borderRadius: 8, padding: '12px 14px', border: `1px solid ${C.border}` }}>
                 <div>
                   <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: C.cream }}>{p.nombreLocal}</p>
                   <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{p.id} · {formatFecha(p.createdAt)}</p>
@@ -436,6 +680,78 @@ const TabMetricas: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
   )
 }
 
+// ─── Sidebar ──────────────────────────────────────────────────────────────────
+
+const Sidebar: React.FC<{
+  tab: Tab; onChange: (t: Tab) => void
+  vouchersCount: number
+  onLogout: () => void
+  collapsed: boolean; onToggle: () => void
+}> = ({ tab, onChange, vouchersCount, onLogout, collapsed, onToggle }) => (
+  <nav style={{
+    position: 'fixed', left: 0, top: 0, bottom: 0, width: collapsed ? 56 : 220,
+    background: '#0d0d0d', borderRight: `1px solid ${C.border}`,
+    display: 'flex', flexDirection: 'column', zIndex: 100,
+    fontFamily: 'Montserrat, sans-serif', transition: 'width 0.2s ease', overflow: 'hidden',
+  }}>
+    {/* Toggle */}
+    <div style={{ padding: collapsed ? '14px 0' : '14px 16px 10px', display: 'flex', justifyContent: collapsed ? 'center' : 'flex-end', borderBottom: `1px solid ${C.border}` }}>
+      <button onClick={onToggle} style={{ background: 'transparent', border: `1px solid ${C.border}`, color: C.textSub, borderRadius: 6, padding: '5px 8px', cursor: 'pointer', fontSize: 14, lineHeight: 1 }}>
+        {collapsed ? '☰' : '←'}
+      </button>
+    </div>
+
+    {/* Header */}
+    {!collapsed && (
+      <div style={{ padding: '10px 20px 16px', borderBottom: `1px solid ${C.border}` }}>
+        <p style={{ margin: '0 0 2px', fontSize: 10, color: C.textSub, letterSpacing: '0.1em', textTransform: 'uppercase' }}>TUNAY WASI</p>
+        <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif' }}>Admin Panel</p>
+      </div>
+    )}
+
+    {/* Nav items */}
+    <div style={{ flex: 1, padding: '12px 0', overflowY: 'auto' }}>
+      {NAV_ITEMS.map(item => (
+        <button key={item.id} onClick={() => onChange(item.id)} style={{
+          width: '100%', display: 'flex', alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          gap: collapsed ? 0 : 12,
+          padding: collapsed ? '11px 0' : '11px 20px',
+          background: tab === item.id ? C.terra + '18' : 'none',
+          border: 'none', borderLeft: tab === item.id ? `3px solid ${C.terra}` : '3px solid transparent',
+          cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left', position: 'relative',
+        }}>
+          <span style={{ fontSize: 16 }}>{item.emoji}</span>
+          {!collapsed && (
+            <span style={{ fontSize: 13, fontWeight: tab === item.id ? 700 : 500, color: tab === item.id ? C.cream : C.textSub, flex: 1 }}>
+              {item.label}
+            </span>
+          )}
+          {/* Badge vouchers en tab Pagos */}
+          {item.id === 'pagos' && vouchersCount > 0 && (
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+              minWidth: 18, height: 18, borderRadius: 9,
+              background: C.terra, color: C.white, fontSize: 10, fontWeight: 700, padding: '0 4px',
+              position: collapsed ? 'absolute' : 'relative',
+              top: collapsed ? 6 : undefined, right: collapsed ? 6 : undefined,
+            }}>{vouchersCount}</span>
+          )}
+        </button>
+      ))}
+    </div>
+
+    {/* Logout */}
+    <div style={{ padding: collapsed ? '16px 8px' : '16px 20px', borderTop: `1px solid ${C.border}` }}>
+      {collapsed ? (
+        <button onClick={onLogout} style={{ width: '100%', padding: '8px 0', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 14, cursor: 'pointer', display: 'flex', justifyContent: 'center' }} title="Cerrar sesión">⏻</button>
+      ) : (
+        <button onClick={onLogout} style={{ width: '100%', padding: '10px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 13, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}>Cerrar sesión</button>
+      )}
+    </div>
+  </nav>
+)
+
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 const AdminONE: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) => {
@@ -443,6 +759,8 @@ const AdminONE: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) => {
   const [pedidos, setPedidos] = useState<PedidoONE[]>([])
   const [loading, setLoading] = useState(true)
   const [toasts, setToasts] = useState<ToastMsg[]>([])
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   function toast(text: string, tipo: 'ok' | 'error' | 'info' = 'ok') {
     const id = Date.now()
@@ -465,80 +783,95 @@ const AdminONE: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) => {
   useEffect(() => { cargar() }, [cargar])
 
   const vouchersCount = pedidos.filter((p) => p.pagoStatus === 'voucher_subido').length
-  const kitsCount = pedidos.filter((p) => p.logisticaStatus === 'entregado' && !p.kitGenerado).length
-
-  const TABS: { key: Tab; label: string; badge?: number; emoji: string }[] = [
-    { key: 'pedidos', label: 'Pedidos', emoji: '📦' },
-    { key: 'pagos', label: 'Pagos', badge: vouchersCount, emoji: '💳' },
-    { key: 'kits', label: 'Kits', badge: kitsCount, emoji: '🎨' },
-    { key: 'metricas', label: 'Métricas', emoji: '📊' },
-  ]
 
   return (
-    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'Montserrat, sans-serif' }}>
-      {/* Header */}
-      <header style={{
-        background: '#0d0d0d', padding: '14px 20px',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        borderBottom: `1px solid ${C.border}`, position: 'sticky', top: 0, zIndex: 50,
-      }}>
-        <div>
-          <p style={{ margin: 0, fontSize: 10, color: C.textSub, letterSpacing: '0.1em', textTransform: 'uppercase' }}>TUNAY WASI</p>
-          <h1 style={{ margin: 0, color: C.cream, fontSize: 18, fontFamily: 'Cormorant Garamond, serif', fontWeight: 700 }}>Admin Panel</h1>
+    <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'Montserrat, sans-serif', display: 'flex' }}>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg) } }
+        @media (max-width: 700px) {
+          .adm-sidebar       { display: none !important; }
+          .adm-main          { margin-left: 0 !important; }
+          .adm-mobile-header { display: flex !important; }
+        }
+        @media (min-width: 701px) {
+          .adm-sidebar       { display: flex !important; }
+          .adm-main          { margin-left: ${sidebarCollapsed ? 56 : 220}px !important; }
+          .adm-mobile-header { display: none !important; }
+        }
+        .adm-grid-cards { display: grid; gap: 14px; }
+        @media (min-width: 1100px) { .adm-grid-cards { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1099px) { .adm-grid-cards { grid-template-columns: 1fr; } }
+        .adm-grid-kpis { display: grid; gap: 10px; }
+        @media (min-width: 701px)  { .adm-grid-kpis { grid-template-columns: repeat(4, 1fr); } }
+        @media (max-width: 700px)  { .adm-grid-kpis { grid-template-columns: repeat(2, 1fr); } }
+      `}</style>
+
+      {/* Sidebar desktop */}
+      <div className="adm-sidebar" style={{ display: 'none' }}>
+        <Sidebar
+          tab={tab} onChange={setTab}
+          vouchersCount={vouchersCount}
+          onLogout={() => logout().then(() => { window.location.hash = '#/' })}
+          collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(prev => !prev)}
+        />
+      </div>
+
+      {/* Mobile header */}
+      <div className="adm-mobile-header" style={{ display: 'none', position: 'fixed', top: 0, left: 0, right: 0, zIndex: 150, background: '#0d0d0d', borderBottom: `1px solid ${C.border}`, padding: '12px 16px', justifyContent: 'space-between', alignItems: 'center' }}>
+        <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif' }}>Admin Panel</p>
+        <button onClick={() => setSidebarOpen(true)} style={{ background: 'none', border: `1px solid ${C.border}`, color: C.textSub, borderRadius: 6, padding: '6px 10px', cursor: 'pointer', fontSize: 16 }}>☰</button>
+      </div>
+
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(0,0,0,0.8)' }} onClick={() => setSidebarOpen(false)}>
+          <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 240, background: '#0d0d0d', borderRight: `1px solid ${C.border}` }} onClick={e => e.stopPropagation()}>
+            <div style={{ padding: '20px', borderBottom: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif' }}>Admin Panel</p>
+              <button onClick={() => setSidebarOpen(false)} style={{ background: 'none', border: 'none', color: C.textSub, cursor: 'pointer', fontSize: 20, padding: 0 }}>✕</button>
+            </div>
+            {NAV_ITEMS.map(item => (
+              <button key={item.id} onClick={() => { setTab(item.id); setSidebarOpen(false) }} style={{
+                width: '100%', display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px',
+                background: tab === item.id ? C.terra + '18' : 'none',
+                border: 'none', borderLeft: tab === item.id ? `3px solid ${C.terra}` : '3px solid transparent',
+                cursor: 'pointer', textAlign: 'left',
+              }}>
+                <span style={{ fontSize: 18 }}>{item.emoji}</span>
+                <span style={{ fontSize: 14, fontWeight: tab === item.id ? 700 : 500, color: tab === item.id ? C.cream : C.textSub }}>{item.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+      )}
+
+      {/* Main */}
+      <div className="adm-main" style={{ flex: 1, marginLeft: sidebarCollapsed ? 56 : 220, minHeight: '100vh' }}>
+        {/* Top bar */}
+        <div style={{ background: '#0d0d0d', borderBottom: `1px solid ${C.border}`, padding: '12px 20px', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 10, position: 'sticky', top: 0, zIndex: 50 }}>
           {isDemo && (
             <span style={{ fontSize: 10, padding: '4px 10px', borderRadius: 12, background: C.yellow + '22', color: C.yellow, fontWeight: 700 }}>DEMO</span>
           )}
           <button onClick={cargar} style={{ background: 'none', border: `1px solid ${C.border}`, color: C.textSub, borderRadius: 6, padding: '6px 12px', cursor: 'pointer', fontSize: 12 }}>↻ Actualizar</button>
-          <button onClick={logout} style={{ background: 'none', border: 'none', color: C.muted, cursor: 'pointer', fontSize: 12 }}>Salir</button>
         </div>
-      </header>
 
-      {/* Tabs */}
-      <div style={{
-        background: '#0d0d0d', display: 'flex',
-        borderBottom: `1px solid ${C.border}`, paddingLeft: 4,
-      }}>
-        {TABS.map((t) => (
-          <button key={t.key} onClick={() => setTab(t.key)} style={{
-            flex: 1, padding: '13px 4px', border: 'none',
-            background: 'none', cursor: 'pointer',
-            borderBottom: tab === t.key ? `2px solid ${C.terra}` : '2px solid transparent',
-            color: tab === t.key ? C.cream : C.textSub,
-            fontSize: 12, fontWeight: tab === t.key ? 700 : 500,
-            transition: 'all 0.15s', position: 'relative',
-          }}>
-            <span style={{ marginRight: 4 }}>{t.emoji}</span>
-            {t.label}
-            {t.badge != null && t.badge > 0 && (
-              <span style={{
-                display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                marginLeft: 6, minWidth: 18, height: 18, borderRadius: 9,
-                background: C.terra, color: C.white, fontSize: 10, fontWeight: 700, padding: '0 4px',
-              }}>{t.badge}</span>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Contenido */}
-      <div style={{ maxWidth: 820, margin: '0 auto', padding: '24px 16px 80px' }}>
-        {loading && (
-          <div style={{ textAlign: 'center', padding: '80px 0' }}>
-            <div style={{ width: 36, height: 36, border: `3px solid ${C.terra}`, borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 16px', animation: 'spin 0.8s linear infinite' }} />
-            <p style={{ color: C.textSub, fontSize: 13 }}>Cargando...</p>
-            <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-          </div>
-        )}
-        {!loading && (
-          <>
-            {tab === 'pedidos' && <TabPedidos pedidos={pedidos} onAccion={cargar} isDemo={isDemo} onToast={toast} />}
-            {tab === 'pagos' && <TabPagos pedidos={pedidos} onAccion={cargar} isDemo={isDemo} onToast={toast} />}
-            {tab === 'kits' && <TabKits pedidos={pedidos} onAccion={cargar} isDemo={isDemo} onToast={toast} />}
-            {tab === 'metricas' && <TabMetricas pedidos={pedidos} />}
-          </>
-        )}
+        {/* Contenido */}
+        <div style={{ padding: '24px 20px 80px' }}>
+          {loading && (
+            <div style={{ textAlign: 'center', padding: '80px 0' }}>
+              <div style={{ width: 36, height: 36, border: `3px solid ${C.terra}`, borderTopColor: 'transparent', borderRadius: '50%', margin: '0 auto 16px', animation: 'spin 0.8s linear infinite' }} />
+              <p style={{ color: C.textSub, fontSize: 13 }}>Cargando...</p>
+            </div>
+          )}
+          {!loading && (
+            <>
+              {tab === 'pedidos' && <TabPedidos pedidos={pedidos} onAccion={cargar} isDemo={isDemo} onToast={toast} />}
+              {tab === 'pagos' && <TabPagos pedidos={pedidos} onAccion={cargar} isDemo={isDemo} onToast={toast} />}
+              {tab === 'kits' && <TabKits pedidos={pedidos} onAccion={cargar} isDemo={isDemo} onToast={toast} />}
+              {tab === 'metricas' && <TabMetricas pedidos={pedidos} />}
+            </>
+          )}
+        </div>
       </div>
 
       <Toast msgs={toasts} onRemove={id => setToasts(prev => prev.filter(t => t.id !== id))} />

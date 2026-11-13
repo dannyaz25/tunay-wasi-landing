@@ -7,6 +7,8 @@
     "distrito": "La Coipa",
     "altitudMsnm": 1850,
     "historia": "Llevo más de veinte años cultivando café en las laderas de La Coipa, donde mi padre me enseñó a leer el suelo y el clima antes de sembrar. Trabajo junto a mi familia en tres hectáreas de Bourbon y Caturra que heredamos hace dos generaciones. Cada cosecha la hago con cuidado para que el sabor llegue limpio a quien lo pruebe.",
+    "scoreConfianza": 4.8,
+    "totalCalificaciones": 12,
     "activo": true,
     "createdAt": "2026-01-01T00:00:00.000Z"
   },
@@ -18,6 +20,8 @@
     "distrito": "San Ignacio",
     "altitudMsnm": 1760,
     "historia": "Soy productora de café desde que tengo memoria, mi madre ya sembraba en estas mismas parcelas de San Ignacio. Empecé a aprender el proceso lavado hace cinco años con el apoyo de una cooperativa local y hoy exporto parte de mi producción. Me enorgullece que mi café represente el trabajo y la tradición de esta tierra cajamarquina.",
+    "scoreConfianza": 4.6,
+    "totalCalificaciones": 8,
     "activo": true,
     "createdAt": "2026-01-01T00:00:00.000Z"
   },
@@ -29,6 +33,8 @@
     "distrito": "Jaén",
     "altitudMsnm": 1420,
     "historia": "Produzco café en la provincia de Jaén desde hace quince años, en terrenos que compramos con mi esposa cuando recién nos casamos. He experimentado con proceso natural en los últimos tres años y los resultados en taza han superado todas mis expectativas. Sigo aprendiendo cada cosecha porque el café siempre tiene algo nuevo que enseñarme.",
+    "scoreConfianza": 4.9,
+    "totalCalificaciones": 7,
     "activo": true,
     "createdAt": "2026-01-01T00:00:00.000Z"
   },

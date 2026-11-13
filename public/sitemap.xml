@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Catálogo principal -->
+  <url>
+    <loc>https://tunaywasi.com/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Landing caficultores -->
+  <url>
+    <loc>https://tunaywasi.com/#/para-caficultores</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Landing cafeterías / emprendedores -->
+  <url>
+    <loc>https://tunaywasi.com/#/para-cafeterias</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Directorio de cafeterías -->
+  <url>
+    <loc>https://tunaywasi.com/#/cafeterias</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Registro caficultor -->
+  <url>
+    <loc>https://tunaywasi.com/#/registro-caficultor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Registro emprendedor -->
+  <url>
+    <loc>https://tunaywasi.com/#/registro-emprendedor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Soporte -->
+  <url>
+    <loc>https://tunaywasi.com/#/soporte</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <!-- Documentación -->
+  <url>
+    <loc>https://tunaywasi.com/#/docs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+</urlset>
