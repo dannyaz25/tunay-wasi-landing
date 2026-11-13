@@ -82,6 +82,7 @@ const ProductoCard: React.FC<{
 
   return (
     <div
+      className="tw-card tw-card-enter"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onClick={() => !disabled && onSeleccionar?.(producto)}
@@ -90,7 +91,6 @@ const ProductoCard: React.FC<{
         borderRadius: 8,
         overflow: 'visible',
         position: 'relative',
-        transition: 'transform 0.2s ease',
         transform: hovered ? 'scale(1.04)' : 'scale(1)',
         zIndex: hovered ? 10 : 1,
         cursor: disabled ? 'not-allowed' : 'pointer',
@@ -161,7 +161,7 @@ const ProductoCard: React.FC<{
         )}
         {/* Badge "En tu pedido" */}
         {enCarrito && (
-          <span style={{
+          <span className="tw-badge-pop" style={{
             position: 'absolute', bottom: 8, left: 8,
             padding: '3px 8px', borderRadius: 4,
             background: '#1f3028', border: '1px solid #8faf8a55',
@@ -509,6 +509,7 @@ const DetalleDrawer: React.FC<{
 }> = ({ producto, caficultor, onCerrar, onAgregar, enCarrito, todosProductos = [], onVerOtroProducto }) => {
   const [cantidadKg, setCantidadKg] = useState(1)
   const [agregado, setAgregado] = useState(false)
+  const [btnPopKey, setBtnPopKey] = useState(0)
   const [fotoIdx, setFotoIdx] = useState(0)
   const [lightbox, setLightbox] = useState(false)
   const procesoColor = PROCESO_COLORS[producto.proceso] ?? C.terra
@@ -540,6 +541,7 @@ const DetalleDrawer: React.FC<{
   function handleAgregar() {
     onAgregar(producto, '1kg', cantidadKg)
     setAgregado(true)
+    setBtnPopKey(k => k + 1)
     setTimeout(() => setAgregado(false), 1800)
   }
 
@@ -626,14 +628,13 @@ const DetalleDrawer: React.FC<{
       />
 
       {/* Panel — drawer lateral derecho, ancho fijo, scroll vertical único */}
-      <div style={{
+      <div className="tw-drawer-in" style={{
         position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 201,
         width: 'min(520px, 100vw)',
         background: '#111111',
         borderLeft: `1px solid ${C.border}`,
         overflowY: 'auto',
         display: 'flex', flexDirection: 'column',
-        animation: 'slideIn 0.22s ease',
         fontFamily: 'Montserrat, sans-serif',
       }}>
         {/* Botón cerrar */}
@@ -844,12 +845,17 @@ const DetalleDrawer: React.FC<{
             <span style={{ fontSize: 13, color: C.tan }}>{cantidadKg} kg × S/ {(precioPorKgCents / 100).toFixed(0)}/kg</span>
             <span style={{ fontSize: 30, fontWeight: 800, color: C.terra, letterSpacing: '-0.02em' }}>S/ {(totalCents / 100).toFixed(0)}</span>
           </div>
-          <button onClick={handleAgregar} style={{
+          <button
+            key={btnPopKey}
+            onClick={handleAgregar}
+            className={btnPopKey > 0 ? 'tw-btn-pop' : ''}
+            style={{
             width: '100%', padding: '15px',
             borderRadius: 10, border: 'none',
             background: agregado ? C.sage : C.terra,
             color: C.white, fontSize: 15, fontWeight: 700,
-            cursor: 'pointer', transition: 'background 0.3s',
+            cursor: 'pointer',
+            transition: 'background 0.3s',
             letterSpacing: '0.02em',
           }}>
             {agregado ? '✓ Agregado al carrito' : (enCarrito ? '+ Agregar más' : 'Agregar al carrito →')}
@@ -1251,10 +1257,11 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar, modoSeleccion, carrit
                   const precio = calcularPrecioFinal(item.producto.precioBaseKgCents, item.formato)
                   const nombreCorto = item.producto.nombre.split(' ').slice(0, 2).join(' ')
                   return (
-                    <span key={i} style={{
+                    <span key={i} className="tw-chip-in" style={{
                       fontSize: 11, padding: '4px 10px', borderRadius: 10, fontWeight: 600,
                       background: C.terra + '22', border: `1px solid ${C.terra}44`,
                       color: C.cream, whiteSpace: 'nowrap',
+                      animationDelay: `${i * 0.06}s`,
                     }}>
                       {nombreCorto} · S/{((precio * item.qty) / 100).toFixed(0)}
                     </span>
@@ -1294,9 +1301,112 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar, modoSeleccion, carrit
 
       <style>{`
         div::-webkit-scrollbar { display: none; }
+
+        /* ── Barra flotante ── */
         @keyframes slideUp {
-          from { transform: translateY(20px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
+          from { transform: translateY(40px); opacity: 0; }
+          to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        /* ── Cards del catálogo: entrada escalonada ── */
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(18px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-card-enter {
+          animation: fadeInUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        /* ── Shimmer skeleton mientras carga ── */
+        @keyframes shimmer {
+          0%   { background-position: -400px 0; }
+          100% { background-position: 400px 0; }
+        }
+        .tw-shimmer {
+          background: linear-gradient(90deg, #1a1a1a 25%, #242424 50%, #1a1a1a 75%);
+          background-size: 400px 100%;
+          animation: shimmer 1.4s ease-in-out infinite;
+          border-radius: 8px;
+        }
+
+        /* ── Botón "Agregar": scale al click ── */
+        @keyframes btnPop {
+          0%   { transform: scale(1); }
+          40%  { transform: scale(0.94); }
+          70%  { transform: scale(1.04); }
+          100% { transform: scale(1); }
+        }
+        .tw-btn-pop { animation: btnPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+        /* ── Badge "✓ Agregado": aparece con bounce ── */
+        @keyframes badgePop {
+          0%   { transform: scale(0) translateY(4px); opacity: 0; }
+          60%  { transform: scale(1.15) translateY(-1px); opacity: 1; }
+          100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .tw-badge-pop { animation: badgePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+        /* ── Chip del carrito: entra desde la izquierda ── */
+        @keyframes chipIn {
+          from { opacity: 0; transform: translateX(-8px) scale(0.9); }
+          to   { opacity: 1; transform: translateX(0)    scale(1); }
+        }
+        .tw-chip-in { animation: chipIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+        /* ── Precio del carrito: pulso cuando cambia ── */
+        @keyframes pricePulse {
+          0%, 100% { opacity: 1; }
+          40%       { opacity: 0.5; transform: scale(0.96); }
+          70%       { transform: scale(1.03); }
+        }
+        .tw-price-pulse { animation: pricePulse 0.45s ease; }
+
+        /* ── Hover en card: glow sutil ── */
+        .tw-card:hover { box-shadow: 0 0 0 1px #c96e4b33, 0 8px 32px rgba(201,110,75,0.12); }
+        .tw-card { transition: transform 0.22s cubic-bezier(0.22,1,0.36,1), box-shadow 0.22s ease; }
+
+        /* ── Drawer: entrada suave desde la derecha ── */
+        @keyframes drawerIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to   { transform: translateX(0);    opacity: 1; }
+        }
+        .tw-drawer-in { animation: drawerIn 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        /* ── Overlay del drawer: fade in ── */
+        @keyframes overlayIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        .tw-overlay-in { animation: overlayIn 0.25s ease; }
+
+        /* ── Step indicator checkout: fill ── */
+        @keyframes stepFill {
+          from { width: 0%; }
+          to   { width: 100%; }
+        }
+
+        /* ── Confirmación: check bounce ── */
+        @keyframes checkBounce {
+          0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+          50%  { transform: scale(1.2) rotate(3deg); opacity: 1; }
+          75%  { transform: scale(0.95) rotate(-1deg); }
+          100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .tw-check-bounce { animation: checkBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both; }
+
+        /* ── Número step badge: pop escalonado ── */
+        @keyframes stepBadgeIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-step-1 { animation: stepBadgeIn 0.35s cubic-bezier(0.22,1,0.36,1) 0.2s both; }
+        .tw-step-2 { animation: stepBadgeIn 0.35s cubic-bezier(0.22,1,0.36,1) 0.35s both; }
+        .tw-step-3 { animation: stepBadgeIn 0.35s cubic-bezier(0.22,1,0.36,1) 0.5s both; }
+
+        /* ── Spinner de carga: fade out suave ── */
+        @keyframes fadeOut {
+          from { opacity: 1; }
+          to   { opacity: 0; pointer-events: none; }
         }
       `}</style>
 

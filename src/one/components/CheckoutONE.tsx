@@ -994,7 +994,7 @@ const Paso2Form: React.FC<Paso2FormProps> = ({
 const Paso3Screen: React.FC<{ pedidoId: string; nombreLocal: string }> = ({ pedidoId, nombreLocal }) => (
   <div style={{ textAlign: 'center' }}>
     {/* Check animado */}
-    <div style={{
+    <div className="tw-check-bounce" style={{
       width: 80, height: 80, borderRadius: '50%',
       background: `linear-gradient(135deg, ${C.terra}, ${C.terraLight})`,
       margin: '0 auto 24px',
@@ -1019,7 +1019,7 @@ const Paso3Screen: React.FC<{ pedidoId: string; nombreLocal: string }> = ({ pedi
         { n: '2', titulo: 'Te escribimos por WhatsApp', sub: 'Coordinamos la entrega y los detalles de tu kit', color: C.terra },
         { n: '3', titulo: 'Recibes tu café y tu kit', sub: 'Directo del caficultor peruano a tu local', color: C.sage },
       ].map(({ n, titulo, sub, color }) => (
-        <div key={n} style={{
+        <div key={n} className={`tw-step-${n}`} style={{
           display: 'flex', gap: 14, marginBottom: 16, alignItems: 'flex-start',
           padding: '14px', borderRadius: 10,
           background: C.bgCard, border: `1px solid ${C.border}`,
@@ -1039,6 +1039,7 @@ const Paso3Screen: React.FC<{ pedidoId: string; nombreLocal: string }> = ({ pedi
       ))}
     </div>
 
+    <div className="tw-confirm-ctas">
     <a
       href={`https://wa.me/${ONE_CONFIG.ADMIN_WHATSAPP.replace(/\s+/g, '')}?text=Hola%2C%20soy%20${encodeURIComponent(nombreLocal)}%20%E2%80%94%20pedido%20${encodeURIComponent(pedidoId)}`}
       target="_blank" rel="noopener noreferrer"
@@ -1063,6 +1064,7 @@ const Paso3Screen: React.FC<{ pedidoId: string; nombreLocal: string }> = ({ pedi
     <a href="#/" style={{ fontSize: 12, color: C.muted, fontFamily: 'Montserrat, sans-serif', textDecoration: 'none' }}>
       Volver al catálogo
     </a>
+    </div>
   </div>
 )
 
@@ -1344,6 +1346,27 @@ const CheckoutONE: React.FC<Props> = ({
           .checkout-grid { grid-template-columns: 1fr !important; }
           .checkout-summary { position: static !important; }
         }
+        @keyframes checkBounce {
+          0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+          50%  { transform: scale(1.2) rotate(3deg);  opacity: 1; }
+          75%  { transform: scale(0.95) rotate(-1deg); }
+          100% { transform: scale(1) rotate(0deg);    opacity: 1; }
+        }
+        .tw-check-bounce { animation: checkBounce 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both; }
+        @keyframes stepFadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-step-1 { animation: stepFadeUp 0.35s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
+        .tw-step-2 { animation: stepFadeUp 0.35s cubic-bezier(0.22,1,0.36,1) 0.45s both; }
+        .tw-step-3 { animation: stepFadeUp 0.35s cubic-bezier(0.22,1,0.36,1) 0.6s both; }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-confirm-title { animation: fadeSlideUp 0.4s ease 0.6s both; }
+        .tw-confirm-code  { animation: fadeSlideUp 0.4s ease 0.75s both; }
+        .tw-confirm-ctas  { animation: fadeSlideUp 0.4s ease 1.0s both; }
       `}</style>
     </div>
   )
