@@ -1,7 +1,6 @@
 'use strict'
 
 const { GoogleAuth } = require('google-auth-library')
-const nodemailer = require('nodemailer')
 const fetch = require('node-fetch')
 
 const PLAY_STORE_URL = 'https://appdistribution.firebase.google.com/testerapps/1:399522765847:android:98ef173a366e5ba6ddd052/releases/72urpb3ctnosg'
@@ -104,79 +103,78 @@ async function agregarTesterAppDistribution(email) {
 // ─── Email de bienvenida ──────────────────────────────────────────────────────
 
 async function enviarEmailBienvenida(nombre, email, rol) {
-  const gmailUser = process.env.GMAIL_USER
-  const gmailPass = process.env.GMAIL_APP_PASSWORD
-  if (!gmailUser || !gmailPass) {
-    console.warn('Gmail no configurado — saltando email')
+  const serviceId  = process.env.EMAILJS_SERVICE_ID
+  const templateId = process.env.EMAILJS_TEMPLATE_ID
+  const privateKey = process.env.EMAILJS_PRIVATE_KEY
+  const publicKey  = process.env.EMAILJS_PUBLIC_KEY
+
+  if (!serviceId || !templateId || !privateKey || !publicKey) {
+    console.warn('EmailJS no configurado — saltando email')
     return
   }
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: gmailUser, pass: gmailPass },
-  })
-
   const rolLabel = rol === 'caficultor' ? 'caficultor' : 'emprendedor de cafetería'
-  const acento = rol === 'caficultor' ? '#8faf8a' : '#c96e4b'
+  const acento   = rol === 'caficultor' ? '#8faf8a'   : '#c96e4b'
 
-  await transporter.sendMail({
-    from: '"TunayWasi" <tunaywasi@gmail.com>',
-    to: email,
-    subject: '☕ Tu acceso a la beta de TunayWasi ya está listo',
-    html: `
-      <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; background: #0a0a0a; color: #f2e0cc; border-radius: 12px; overflow: hidden;">
-        <div style="background: linear-gradient(135deg, #1f3028, #0a0a0a); padding: 32px 28px 24px;">
-          <h1 style="font-family: Georgia, serif; font-size: 28px; color: #f2e0cc; margin: 0 0 8px;">
-            TunayWasi
-          </h1>
-          <p style="color: ${acento}; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">
-            Beta · Café de especialidad peruano
-          </p>
-        </div>
-
-        <div style="padding: 28px;">
-          <p style="font-size: 16px; color: #f2e0cc; margin: 0 0 12px;">
-            Hola <strong>${nombre}</strong>,
-          </p>
-          <p style="font-size: 14px; color: #c4b297; line-height: 1.7; margin: 0 0 24px;">
-            Estás registrado como <strong style="color: #f2e0cc;">${rolLabel}</strong> en la beta de TunayWasi.
-            Te agregamos como tester — ya puedes descargar la app desde el siguiente enlace:
-          </p>
-
-          <div style="text-align: center; margin: 24px 0;">
-            <a href="${PLAY_STORE_URL}"
-               style="display: inline-block; background: ${acento}; color: #ffffff;
-                      padding: 14px 32px; border-radius: 8px; text-decoration: none;
-                      font-weight: bold; font-size: 15px;">
-              Descargar app (Android)
-            </a>
-          </div>
-
-          <div style="background: #141414; border-radius: 8px; padding: 16px 18px; margin: 20px 0;">
-            <p style="font-size: 12px; color: #c4b297; margin: 0 0 8px; font-weight: bold;">
-              Requisitos:
-            </p>
-            <ul style="font-size: 13px; color: #c4b297; margin: 0; padding-left: 18px; line-height: 1.8;">
-              <li>Android 8.0 o superior</li>
-              <li>El link solo funciona si aceptas la invitación de Firebase App Distribution</li>
-              <li>Puede pedirte iniciar sesión con tu cuenta Google la primera vez</li>
-            </ul>
-          </div>
-
-          <p style="font-size: 13px; color: #777; line-height: 1.7; margin: 0 0 8px;">
-            ¿Tienes problemas para descargar? Escríbenos por WhatsApp:
-            <a href="https://wa.me/51917959370" style="color: ${acento};">+51 917 959 370</a>
-          </p>
-        </div>
-
-        <div style="border-top: 1px solid #222; padding: 16px 28px;">
-          <p style="font-size: 11px; color: #555; margin: 0;">
-            TunayWasi · Café peruano de especialidad · Beta privada
-          </p>
-        </div>
+  const htmlBody = `
+    <div style="font-family: Arial, sans-serif; max-width: 520px; margin: 0 auto; background: #0a0a0a; color: #f2e0cc; border-radius: 12px; overflow: hidden;">
+      <div style="background: linear-gradient(135deg, #1f3028, #0a0a0a); padding: 32px 28px 24px;">
+        <h1 style="font-family: Georgia, serif; font-size: 28px; color: #f2e0cc; margin: 0 0 8px;">TunayWasi</h1>
+        <p style="color: ${acento}; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; margin: 0;">Beta · Café de especialidad peruano</p>
       </div>
-    `,
+      <div style="padding: 28px;">
+        <p style="font-size: 16px; color: #f2e0cc; margin: 0 0 12px;">Hola <strong>${nombre}</strong>,</p>
+        <p style="font-size: 14px; color: #c4b297; line-height: 1.7; margin: 0 0 24px;">
+          Estás registrado como <strong style="color: #f2e0cc;">${rolLabel}</strong> en la beta de TunayWasi.
+          Te agregamos como tester — ya puedes descargar la app desde el siguiente enlace:
+        </p>
+        <div style="text-align: center; margin: 24px 0;">
+          <a href="${PLAY_STORE_URL}" style="display: inline-block; background: ${acento}; color: #ffffff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 15px;">
+            Descargar app (Android)
+          </a>
+        </div>
+        <div style="background: #141414; border-radius: 8px; padding: 16px 18px; margin: 20px 0;">
+          <p style="font-size: 12px; color: #c4b297; margin: 0 0 8px; font-weight: bold;">Requisitos:</p>
+          <ul style="font-size: 13px; color: #c4b297; margin: 0; padding-left: 18px; line-height: 1.8;">
+            <li>Android 8.0 o superior</li>
+            <li>El link solo funciona si aceptas la invitación de Firebase App Distribution</li>
+            <li>Puede pedirte iniciar sesión con tu cuenta Google la primera vez</li>
+          </ul>
+        </div>
+        <p style="font-size: 13px; color: #777; line-height: 1.7; margin: 0 0 8px;">
+          ¿Tienes problemas? Escríbenos por WhatsApp:
+          <a href="https://wa.me/51917959370" style="color: ${acento};">+51 917 959 370</a>
+        </p>
+      </div>
+      <div style="border-top: 1px solid #222; padding: 16px 28px;">
+        <p style="font-size: 11px; color: #555; margin: 0;">TunayWasi · Café peruano de especialidad · Beta privada</p>
+      </div>
+    </div>
+  `
+
+  // EmailJS REST API — usa private key, no expira
+  const res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      service_id:  serviceId,
+      template_id: templateId,
+      user_id:     publicKey,
+      accessToken: privateKey,
+      template_params: {
+        to_email:     email,
+        to_name:      nombre,
+        subject:      '☕ Tu acceso a la beta de TunayWasi ya está listo',
+        html_content: htmlBody,
+        reply_to:     'tunaywasi@gmail.com',
+      },
+    }),
   })
+
+  if (!res.ok) {
+    const err = await res.text()
+    throw new Error(`EmailJS error ${res.status}: ${err}`)
+  }
 }
 
 // ─── Guardar en Firestore via REST API ────────────────────────────────────────
