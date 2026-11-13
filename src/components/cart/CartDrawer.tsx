@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { CartItem } from '@/shared/types/cart';
 import { Money } from '@/shared/money';
 import {
@@ -82,10 +82,12 @@ export default function CartDrawer() {
   const { data: comisiones } = useComisiones();
   const producerShareFactor = comisiones?.producerShareFactor ?? 0.421;
   const producerSharePct = Math.round(producerShareFactor * 100);
+  const [openKey, setOpenKey] = useState(0);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
     if (isOpen) {
+      setOpenKey(k => k + 1);
       document.body.style.overflow = 'hidden';
       window.addEventListener('keydown', onKey);
     }
@@ -100,6 +102,13 @@ export default function CartDrawer() {
       <style>{`
         @keyframes tw-logo-hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
         @keyframes tw-logo-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        @keyframes tw-cartitem-in {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-cart-item-enter {
+          animation: tw-cartitem-in 220ms cubic-bezier(0.23, 1, 0.32, 1) var(--cart-item-delay, 0ms) both;
+        }
       `}</style>
       <div onClick={close} style={{ position: 'fixed', inset: 0, zIndex: 90, background: '#1f3028', opacity: isOpen ? 0.5 : 0, pointerEvents: isOpen ? 'auto' : 'none', transition: 'opacity .35s ease', backdropFilter: 'blur(2px)' }} />
       <aside aria-hidden={!isOpen} style={{ position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 100, width: 'min(460px, 100vw)', background: '#1f3028', color: '#f2e0cc', transform: isOpen ? 'translateX(0)' : 'translateX(100%)', transition: 'transform .55s cubic-bezier(.2,.7,.2,1)', display: 'flex', flexDirection: 'column', boxShadow: '-30px 0 80px -30px #000000aa', borderLeft: '1px solid #c96e4b33' }}>
@@ -132,7 +141,19 @@ export default function CartDrawer() {
         )}
 
         <div style={{ flex: 1, overflowY: 'auto', padding: items.length ? '18px 28px' : 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {items.length === 0 ? <EmptyCart /> : items.map((it) => <CartItemRow key={it.id} item={it} />)}
+          {items.length === 0 ? (
+            <EmptyCart />
+          ) : (
+            items.map((it, i) => (
+              <div
+                key={`${openKey}-${it.id}`}
+                className="tw-cart-item-enter"
+                style={{ '--cart-item-delay': `${Math.min(i, 3) * 45}ms` } as React.CSSProperties}
+              >
+                <CartItemRow item={it} />
+              </div>
+            ))
+          )}
         </div>
 
         {items.length > 0 && (

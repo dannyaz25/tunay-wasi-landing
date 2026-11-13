@@ -86,7 +86,7 @@ export default function SupplyNav() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div style={{
+        <div className="tw-sup-mobile-panel" style={{
           padding: '20px 36px 28px',
           borderTop: '1px solid #f2e0cc11',
           background: 'rgba(24, 37, 32, 0.97)',
@@ -123,6 +123,13 @@ export default function SupplyNav() {
         .tw-sup-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -10px #c96e4bcc !important; color: #f2e0cc !important; }
         .tw-sup-cta-arrow { display: inline-block; transition: transform .25s ease; }
         .tw-sup-cta-btn:hover .tw-sup-cta-arrow { transform: translateX(3px); }
+        @keyframes tw-sup-nav-in {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-sup-mobile-panel {
+          animation: tw-sup-nav-in 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
         @media (max-width: 880px) {
           .tw-sup-navlink { display: none !important; }
           .tw-sup-cta-btn { display: none !important; }

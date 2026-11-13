@@ -1364,9 +1364,9 @@ const CheckoutONE: React.FC<Props> = ({
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .tw-confirm-title { animation: fadeSlideUp 0.4s ease 0.6s both; }
-        .tw-confirm-code  { animation: fadeSlideUp 0.4s ease 0.75s both; }
-        .tw-confirm-ctas  { animation: fadeSlideUp 0.4s ease 1.0s both; }
+        .tw-confirm-title { animation: fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.6s both; }
+        .tw-confirm-code  { animation: fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) 0.75s both; }
+        .tw-confirm-ctas  { animation: fadeSlideUp 0.4s cubic-bezier(0.22,1,0.36,1) 1.0s both; }
       `}</style>
     </div>
   )

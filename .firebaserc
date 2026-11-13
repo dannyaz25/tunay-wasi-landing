@@ -16,7 +16,8 @@
       "hosting": {
         "clientes": ["tunay-wasi"],
         "caficultores": ["tunay-wasi-caficultores"],
-        "negocios": ["tunay-wasi-negocios"]
+        "negocios": ["tunay-wasi-negocios"],
+        "mvp": ["tunay-wasi-mvp"]
       }
     }
   }

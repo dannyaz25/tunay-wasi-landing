@@ -92,7 +92,7 @@ export default function CafiNav() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div style={{
+        <div className="tw-cafi-mobile-panel" style={{
           padding: '20px 36px 28px',
           borderTop: '1px solid #f2e0cc11',
           background: 'rgba(24, 37, 32, 0.97)',
@@ -133,6 +133,13 @@ export default function CafiNav() {
         .tw-cafi-register-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -10px #c96e4bcc !important; }
         .tw-cafi-register-arrow { display: inline-block; transition: transform .25s ease; }
         .tw-cafi-register-btn:hover .tw-cafi-register-arrow { transform: translateX(3px); }
+        @keyframes tw-cafi-nav-in {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-cafi-mobile-panel {
+          animation: tw-cafi-nav-in 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
         @media (max-width: 880px) {
           .tw-cafi-navlink { display: none !important; }
           .tw-cafi-register-btn { display: none !important; }

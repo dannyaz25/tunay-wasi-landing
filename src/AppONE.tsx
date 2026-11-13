@@ -82,7 +82,11 @@ function useAuthONE(isDemo = false) {
     return unsub
   }, [isDemo])
 
-  const isAdmin = isDemo ? false : (user?.email?.endsWith('@tunaywasi.pe') ?? false)
+  const ADMIN_EMAILS = ['tunaywasi@gmail.com']
+  const isAdmin = isDemo ? false : (
+    (user?.email?.endsWith('@tunaywasi.pe') ?? false) ||
+    ADMIN_EMAILS.includes(user?.email ?? '')
+  )
 
   return { user, usuarioONE, loading, isAdmin }
 }
@@ -501,7 +505,7 @@ const AppONE: React.FC = () => {
       // Sin carrito: redirigir al portal según rol
       if (usuarioONE.rol === 'caficultor') {
         window.location.hash = '#/caficultor-portal'
-      } else if (usuarioONE.rol === 'admin') {
+      } else if (usuarioONE.rol === 'admin' || isAdmin) {
         window.location.hash = '#/admin'
       } else {
         window.location.hash = '#/portal'

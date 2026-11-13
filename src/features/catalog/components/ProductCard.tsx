@@ -163,6 +163,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
             {GRIND_OPTIONS.map(({ label, coarse }) => (
               <button
                 key={label}
+                className="tw-pc-btn-selector"
                 onClick={() => setGrindType(label)}
                 style={{
                   padding: '6px 10px', borderRadius: 8, cursor: 'pointer', border: 'none',
@@ -190,6 +191,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
           {(['Grano', 'Molido'] as GrindMode[]).map((mode) => (
             <button
               key={mode}
+              className="tw-pc-btn-selector"
               onClick={() => setGrindMode(mode)}
               style={{
                 flex: 1, padding: '8px 10px', borderRadius: 8, cursor: 'pointer', border: 'none',
@@ -214,6 +216,7 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
             return (
               <button
                 key={wl}
+                className="tw-pc-btn-selector"
                 onClick={() => { setWeightIdx(i); setQty(1); }}
                 disabled={wAgotado}
                 style={{
@@ -262,9 +265,9 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
           </div>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #1f302833', borderRadius: 999, overflow: 'hidden', background: '#f2e0cc', opacity: isAgotado ? 0.4 : 1 }}>
-          <button onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={isAgotado} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: isAgotado ? 'not-allowed' : 'pointer', fontSize: 16, color: '#1f3028' }}>−</button>
+          <button onClick={() => setQty((q) => Math.max(1, q - 1))} disabled={isAgotado} className="tw-pc-btn-qty" style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: isAgotado ? 'not-allowed' : 'pointer', fontSize: 16, color: '#1f3028' }}>−</button>
           <span style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 13, fontWeight: 600, minWidth: 28, textAlign: 'center', color: '#1f3028' }}>{qty}</span>
-          <button onClick={() => setQty((q) => Math.min(computedMaxQty, q + 1))} disabled={isAgotado || qty >= computedMaxQty} style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: isAgotado || qty >= computedMaxQty ? 'not-allowed' : 'pointer', fontSize: 16, color: '#1f3028' }}>+</button>
+          <button onClick={() => setQty((q) => Math.min(computedMaxQty, q + 1))} disabled={isAgotado || qty >= computedMaxQty} className="tw-pc-btn-qty" style={{ width: 36, height: 40, border: 'none', background: 'transparent', cursor: isAgotado || qty >= computedMaxQty ? 'not-allowed' : 'pointer', fontSize: 16, color: '#1f3028' }}>+</button>
         </div>
       </div>
 
@@ -293,7 +296,13 @@ export default function ProductCard({ p, onRequestBreakdown }: { p: Producto; on
         )}
       </button>
 
-      <style>{`@keyframes tw-pulse-mini { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }`}</style>
+      <style>{`
+        @keyframes tw-pulse-mini { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.85); } }
+        .tw-pc-btn-qty { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+        .tw-pc-btn-qty:active:not(:disabled) { transform: scale(0.90); transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); }
+        .tw-pc-btn-selector { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+        .tw-pc-btn-selector:active { transform: scale(0.95); transition: transform 120ms cubic-bezier(0.23, 1, 0.32, 1); }
+      `}</style>
     </article>
   );
 }

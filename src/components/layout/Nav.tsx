@@ -91,7 +91,7 @@ export default function Nav() {
 
       {/* Mobile dropdown */}
       {menuOpen && (
-        <div className="tw-mobile-nav">
+        <div className="tw-mobile-nav-panel tw-mobile-nav">
           {LINKS.map(([label, href]) => (
             <a
               key={href}
@@ -125,6 +125,13 @@ export default function Nav() {
         .tw-navlink::after { content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px; background: #c96e4b; transition: right .35s ease; }
         .tw-navlink:hover::after { right: 0; }
         .tw-navlink:hover { color: #c96e4b; }
+        @keyframes tw-mobile-nav-in {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .tw-mobile-nav-panel {
+          animation: tw-mobile-nav-in 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
         @media (max-width: 880px) {
           .tw-navlink { display: none; }
           .tw-cta-btn { display: none; }
