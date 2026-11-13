@@ -20,7 +20,7 @@
     },
     {
       "target": "mvp",
-      "public": "dist/negocios",
+      "public": "dist/mvp",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [{ "source": "**", "destination": "/index.html" }]
     }
