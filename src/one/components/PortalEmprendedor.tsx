@@ -17,9 +17,8 @@ import {
   demoFetchUsuario,
 } from '../demoService'
 import { logout } from '../authService'
-import { ONE_CONFIG } from '../config'
-import type { PedidoONE, UsuarioONE } from '../types'
-import MenusEmprendedor from './MenusEmprendedor'
+import { ONE_CONFIG, calcularPrecioFinal } from '../config'
+import type { PedidoONE, UsuarioONE, FormatoONE } from '../types'
 import CatalogoPublico from './CatalogoPublico'
 import ChatPedido from './ChatPedido'
 
@@ -72,7 +71,8 @@ function stepDePedido(p: PedidoONE): number {
 
 const STEPS = ['Pendiente', 'Pago verificado', 'En agencia', 'Recibido', 'Calificado ✓']
 
-type Tab = 'catalogo' | 'pedidos' | 'menus' | 'historial' | 'calculadora' | 'guia' | 'perfil'
+type Tab = 'catalogo' | 'mis_compras' | 'carrito' | 'perfil'
+type SubTab = 'pedidos' | 'mensajes' | 'resenias'
 
 // ─── Filter bar shared ─────────────────────────────────────────────────────────
 
@@ -310,13 +310,10 @@ const ModalEditarPerfil: React.FC<{
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: { id: Tab; emoji: string; label: string }[] = [
-  { id: 'catalogo',     emoji: '☕', label: 'Catálogo' },
-  { id: 'pedidos',      emoji: '📦', label: 'Mis pedidos' },
-  { id: 'menus',        emoji: '📋', label: 'Mis menús' },
-  { id: 'historial',    emoji: '🕓', label: 'Historial' },
-  { id: 'calculadora',  emoji: '📊', label: 'Calculadora' },
-  { id: 'guia',         emoji: '☕', label: 'Guía café' },
-  { id: 'perfil',       emoji: '⚙️', label: 'Perfil' },
+  { id: 'catalogo',    emoji: '☕', label: 'Catálogo' },
+  { id: 'mis_compras', emoji: '📦', label: 'Mis Compras' },
+  { id: 'carrito',     emoji: '🛒', label: 'Carrito' },
+  { id: 'perfil',      emoji: '⚙️', label: 'Perfil' },
 ]
 
 const Sidebar: React.FC<{ tab: Tab; onChange: (t: Tab) => void; nombreLocal: string; onLogout: () => void; collapsed?: boolean; onToggle: () => void }> = ({ tab, onChange, nombreLocal, onLogout, collapsed = false, onToggle }) => (
@@ -376,6 +373,31 @@ const Sidebar: React.FC<{ tab: Tab; onChange: (t: Tab) => void; nombreLocal: str
   </nav>
 )
 
+// ─── Carrito local (sincronizado con localStorage) ───────────────────────────
+
+interface ItemCarritoLocal {
+  producto: { id: string; nombre: string; precioBaseKgCents: number }
+  formato: FormatoONE
+  qty: number
+}
+
+const CARRITO_KEY = 'one_carrito_items'
+
+function leerCarrito(): ItemCarritoLocal[] {
+  try {
+    const s = localStorage.getItem(CARRITO_KEY)
+    if (s) return JSON.parse(s) as ItemCarritoLocal[]
+  } catch { /* ok */ }
+  return []
+}
+
+function guardarCarrito(items: ItemCarritoLocal[]) {
+  try {
+    if (items.length > 0) localStorage.setItem(CARRITO_KEY, JSON.stringify(items))
+    else localStorage.removeItem(CARRITO_KEY)
+  } catch { /* ok */ }
+}
+
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 interface Props {
@@ -386,6 +408,7 @@ interface Props {
 
 const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo = false }) => {
   const [tab, setTab] = useState<Tab>('catalogo')
+  const [subTab, setSubTab] = useState<SubTab>('pedidos')
   const [pedidos, setPedidos] = useState<PedidoONE[]>([])
   const [usuario, setUsuario] = useState<UsuarioONE | null>(null)
   const [loading, setLoading] = useState(true)
@@ -396,24 +419,31 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [accionando, setAccionando] = useState<string | null>(null)
 
+  // Carrito — sincronizado con localStorage
+  const [carritoItems, setCarritoItems] = useState<ItemCarritoLocal[]>(leerCarrito)
+  useEffect(() => { guardarCarrito(carritoItems) }, [carritoItems])
+
+  // Sincronizar cuando el usuario vuelve al tab catálogo (carrito puede haber cambiado afuera)
+  useEffect(() => {
+    if (tab === 'catalogo' || tab === 'carrito') setCarritoItems(leerCarrito())
+  }, [tab])
+
+  function agregarAlCarrito(producto: { id: string; nombre: string; precioBaseKgCents: number }, formato: FormatoONE = '1kg') {
+    setCarritoItems(prev => {
+      const idx = prev.findIndex(i => i.producto.id === producto.id && i.formato === formato)
+      if (idx >= 0) {
+        const next = [...prev]
+        next[idx] = { ...next[idx], qty: next[idx].qty + 1 }
+        return next
+      }
+      return [...prev, { producto, formato, qty: 1 }]
+    })
+  }
+
   // Filtros pedidos
   const [filtroPedidoEstado, setFiltroPedidoEstado] = useState<'todos' | 'pendiente' | 'voucher_subido' | 'verificado' | 'en_agencia'>('todos')
   const [busquedaPedido, setBusquedaPedido] = useState('')
   const [pedidoDetalle, setPedidoDetalle] = useState<PedidoONE | null>(null)
-
-  // Filtros historial
-  const [busquedaHistorial, setBusquedaHistorial] = useState('')
-  const [historialDesde, setHistorialDesde] = useState('')
-  const [historialOrden, setHistorialOrden] = useState<'desc' | 'asc'>('desc')
-
-  // Calculadora rentabilidad
-  const [calcKgMes, setCalcKgMes] = useState(5)
-  const [calcPrecioKg, setCalcPrecioKg] = useState(18900)
-  const [calcPrecioTaza, setCalcPrecioTaza] = useState(1200)
-  const [calcGrTaza, setCalcGrTaza] = useState(12)
-
-  // Guía preparaciones
-  const [guiaMetodo, setGuiaMetodo] = useState<'espresso' | 'v60' | 'prensa' | 'chemex'>('espresso')
 
   function toast(text: string, tipo: 'ok' | 'error' | 'info' = 'ok') {
     const id = Date.now()
@@ -430,8 +460,7 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
         ? { ...p, logisticaStatus: 'entregado', recepcionConfirmada: true }
         : p
       ))
-      toast('¡Pedido recibido! Pasó a tu historial. Ya puedes calificarlo ★', 'ok')
-      setTimeout(() => setTab('historial'), 1800)
+      toast('¡Pedido recibido! Ya puedes calificarlo ★', 'ok')
     } catch {
       toast('Error al confirmar recepción', 'error')
     } finally { setAccionando(null) }
@@ -462,7 +491,6 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
   }, [usuarioId, isDemo])
 
   const pedidosActivos = pedidos.filter(p => p.logisticaStatus !== 'entregado')
-  const historial = pedidos.filter(p => p.logisticaStatus === 'entregado')
   const nombreLocal = usuario?.negocio?.nombreLocal ?? pedidos[0]?.nombreLocal ?? nombreUsuario
   const distritoLocal = usuario?.negocio?.distritoLocal ?? pedidos[0]?.distritoLocal ?? ''
 
@@ -481,7 +509,23 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
   // ─── Contenido por tab ───────────────────────────────────────────────────────
 
   function renderCatalogo() {
-    return <CatalogoPublico isDemo={isDemo} sidebarOffset={sidebarCollapsed ? 56 : 220} />
+    const totalCarritoCents = carritoItems.reduce((s, i) => {
+      return s + calcularPrecioFinal(i.producto.precioBaseKgCents, i.formato) * i.qty
+    }, 0)
+    const carritoProductoIds = new Set(carritoItems.map(i => i.producto.id))
+
+    return (
+      <CatalogoPublico
+        isDemo={isDemo}
+        sidebarOffset={sidebarCollapsed ? 56 : 220}
+        onSeleccionar={(producto, fmt) => agregarAlCarrito(producto, fmt ?? '1kg')}
+        carritoCount={carritoItems.length}
+        totalCarritoCents={totalCarritoCents}
+        carritoProductoIds={carritoProductoIds}
+        carritoLineas={carritoItems}
+        onIrAlCheckout={() => { window.location.hash = '#/checkout' }}
+      />
+    )
   }
 
   function renderPedidos() {
@@ -746,112 +790,85 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
     )
   }
 
-  function renderHistorial() {
-    let histFiltrado = [...historial]
-    if (busquedaHistorial) {
-      histFiltrado = histFiltrado.filter(p =>
-        p.items.some(i => i.productoNombre.toLowerCase().includes(busquedaHistorial.toLowerCase()) || i.caficultorNombre.toLowerCase().includes(busquedaHistorial.toLowerCase())) ||
-        p.id.includes(busquedaHistorial)
-      )
-    }
-    if (historialDesde) {
-      const desde = new Date(historialDesde).getTime()
-      histFiltrado = histFiltrado.filter(p => new Date(p.updatedAt).getTime() >= desde)
-    }
-    histFiltrado.sort((a, b) => {
-      const diff = new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
-      return historialOrden === 'desc' ? -diff : diff
-    })
+  // ─── Nuevas funciones: Mensajes, Reseñas, Carrito, Mis Compras ──────────────
 
-    const totalFiltrado = histFiltrado.reduce((s, p) => s + p.totalCents, 0)
-    const sinCalificar = histFiltrado.filter(p => !p.calificado).length
+  function renderMensajes() {
+    const [catMensajes, setCatMensajes] = React.useState<'pedidos' | 'promos'>('pedidos')
+
+    type EventoNotif = {
+      pedidoId: string; orderId: string; titulo: string; descripcion: string
+      fotoUrl: string; timestamp: number; accion: string | null
+    }
+
+    function generarEventos(p: PedidoONE): EventoNotif[] {
+      const foto = (p.items[0] as any)?.fotoUrl ?? ''
+      const ts = new Date(p.createdAt).getTime() || Date.now()
+      if (p.logisticaStatus === 'entregado')
+        return [{ pedidoId: p.id, orderId: p.id, titulo: '✅ Pedido entregado', descripcion: 'Tu pedido fue entregado. ¡Esperamos que disfrutes el café!', fotoUrl: foto, timestamp: ts, accion: 'Ver pedido' }]
+      if (p.logisticaStatus === 'en_agencia')
+        return [{ pedidoId: p.id, orderId: p.id, titulo: '📦 Pedido en camino', descripcion: 'El caficultor envió tu pedido. Confirma la recepción cuando llegue.', fotoUrl: foto, timestamp: ts, accion: 'Confirmar recepción' }]
+      if (['verificado', 'confirmado_auto', 'confirmado_manual'].includes(p.pagoStatus))
+        return [{ pedidoId: p.id, orderId: p.id, titulo: '✓ Pago confirmado', descripcion: 'Tu pago fue verificado. El caficultor está preparando tu pedido.', fotoUrl: foto, timestamp: ts, accion: 'Ver pedido' }]
+      if (p.pagoStatus === 'voucher_subido')
+        return [{ pedidoId: p.id, orderId: p.id, titulo: '⏳ Verificando pago', descripcion: 'Recibimos tu voucher. Estamos verificando el pago.', fotoUrl: foto, timestamp: ts, accion: null }]
+      return [{ pedidoId: p.id, orderId: p.id, titulo: '🆕 Pedido creado', descripcion: 'Tu pedido fue registrado. Sube el voucher de pago para continuar.', fotoUrl: foto, timestamp: ts, accion: 'Subir voucher' }]
+    }
+
+    const eventos = pedidos.flatMap(generarEventos).sort((a, b) => b.timestamp - a.timestamp)
+    const chipActive: React.CSSProperties = { padding: '6px 16px', borderRadius: 20, border: 'none', background: C.terra, color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', whiteSpace: 'nowrap' }
+    const chipInactive: React.CSSProperties = { ...chipActive, background: 'transparent', border: `1px solid ${C.border}`, color: C.textSub, fontWeight: 500 }
 
     return (
       <div>
-        {/* Resumen */}
-        {historial.length > 0 && (
-          <div className="grid-kpis-3" style={{ marginBottom: 16 }}>
-            {[
-              { label: 'Entregas', value: String(historial.length), color: C.sage },
-              { label: histFiltrado.length < historial.length ? 'Total filtrado' : 'Total invertido', value: formatCents(totalFiltrado), color: C.terra },
-              { label: 'Por calificar', value: String(sinCalificar), color: sinCalificar > 0 ? C.yellow : C.muted },
-            ].map(({ label, value, color }) => (
-              <div key={label} style={{ background: C.card, borderRadius: 12, padding: '12px 14px', border: `1px solid ${C.border}`, textAlign: 'center' }}>
-                <p style={{ margin: '0 0 3px', fontSize: 9, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</p>
-                <p style={{ margin: 0, fontSize: 20, fontWeight: 700, color, fontFamily: 'Cormorant Garamond, serif' }}>{value}</p>
-              </div>
-            ))}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, overflowX: 'auto', paddingBottom: 4 }}>
+          {(['pedidos', 'promos'] as const).map(s => (
+            <button key={s} onClick={() => setCatMensajes(s)} style={catMensajes === s ? chipActive : chipInactive}>
+              {s === 'pedidos' ? 'Pedidos y envíos' : 'Promociones'}
+            </button>
+          ))}
+        </div>
+        <div style={{ padding: '10px 14px', borderRadius: 10, background: `${C.sage}11`, border: `1px solid ${C.sage}22`, marginBottom: 16, fontSize: 12, color: C.sage }}>
+          🛡️ Nunca pagues fuera de la app. Ignora mensajes que soliciten pagos extra.
+        </div>
+        {catMensajes === 'promos' ? (
+          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+            <p style={{ fontSize: 32, marginBottom: 12 }}>🎁</p>
+            <p style={{ fontSize: 15, color: C.textSub }}>No hay promociones disponibles</p>
           </div>
-        )}
-
-        {/* Filtros */}
-        <FilterBar>
-          <SearchInput value={busquedaHistorial} onChange={setBusquedaHistorial} placeholder="Buscar producto o caficultor..." />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <label style={{ fontSize: 11, color: C.textSub }}>Desde:</label>
-            <input type="date" value={historialDesde} onChange={e => setHistorialDesde(e.target.value)}
-              style={{ padding: '5px 8px', borderRadius: 6, border: `1px solid ${C.border}`, background: '#141414', color: C.cream, fontSize: 12, fontFamily: 'Montserrat, sans-serif', outline: 'none' }}
-            />
+        ) : eventos.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+            <p style={{ fontSize: 32, marginBottom: 12 }}>💬</p>
+            <p style={{ fontSize: 15, color: C.textSub }}>Sin notificaciones por ahora</p>
           </div>
-          {historialDesde && (
-            <button onClick={() => setHistorialDesde('')} style={{ padding: '4px 10px', borderRadius: 6, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 11, cursor: 'pointer' }}>✕</button>
-          )}
-          <button onClick={() => setHistorialOrden(o => o === 'desc' ? 'asc' : 'desc')}
-            style={{ marginLeft: 'auto', padding: '5px 12px', borderRadius: 6, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 11, cursor: 'pointer' }}>
-            {historialOrden === 'desc' ? '↓ Recientes' : '↑ Antiguos'}
-          </button>
-        </FilterBar>
-
-        {historial.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-            <p style={{ fontSize: 36, marginBottom: 12 }}>📦</p>
-            <p style={{ fontSize: 16, color: C.cream, fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, marginBottom: 8 }}>Aún no tienes entregas</p>
-            <p style={{ fontSize: 13, color: C.textSub }}>Las entregas completadas aparecerán aquí</p>
-          </div>
-        ) : histFiltrado.length === 0 ? (
-          <p style={{ color: C.textSub, fontSize: 13, textAlign: 'center', padding: '30px 0' }}>Sin resultados para estos filtros</p>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {histFiltrado.map(p => (
-              <div key={p.id} style={{ background: C.card, borderRadius: 14, padding: '16px 18px', border: `1px solid ${C.border}` }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
-                  <div>
-                    <p style={{ margin: '0 0 2px', fontSize: 13, fontWeight: 600, color: C.cream }}>
-                      {p.items.map(i => i.caficultorNombre).filter((v, i, a) => a.indexOf(v) === i).join(', ')}
-                    </p>
-                    <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{p.id} · {formatFecha(p.updatedAt)}</p>
-                  </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 12 }}>
-                    <span style={{ fontSize: 11, color: C.sage, fontWeight: 700, display: 'block', marginBottom: 2 }}>✓ Entregado</span>
-                    <span style={{ fontSize: 15, color: C.terra, fontWeight: 700 }}>{formatCents(p.totalCents)}</span>
-                  </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {eventos.map((ev, idx) => (
+              <div key={idx} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, overflow: 'hidden' }}>
+                <div style={{ padding: '10px 14px 0', fontSize: 11, color: C.textSub }}>
+                  {new Date(ev.timestamp).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                 </div>
-
-                {/* Items */}
-                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
-                  {p.items.map((item, i) => (
-                    <span key={i} style={{ fontSize: 10, color: C.textSub, padding: '3px 8px', background: C.bg, borderRadius: 6, border: `1px solid ${C.border}` }}>
-                      {item.productoNombre} · {item.qty}×{item.presentacion}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Calificación */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  {p.calificado ? (
-                    <span style={{ fontSize: 11, color: C.sage }}>★ Calificado — gracias por tu reseña</span>
-                  ) : !p.recepcionConfirmada ? (
-                    <span style={{ fontSize: 11, color: C.muted }}>Confirma la recepción para calificar</span>
-                  ) : (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <span style={{ fontSize: 11, color: C.muted }}>Sin calificar aún</span>
-                      <button onClick={() => setPedidoACalificar(p)} style={{
-                        padding: '4px 12px', borderRadius: 6,
-                        border: `1px solid ${C.terra}`, background: 'none',
-                        fontSize: 11, fontWeight: 700, color: C.terra, cursor: 'pointer',
-                      }}>★ Calificar</button>
+                <div style={{ padding: '8px 14px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream }}>{ev.titulo}</p>
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                    {ev.fotoUrl
+                      ? <img src={ev.fotoUrl} alt="" style={{ width: 64, height: 64, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+                      : <div style={{ width: 64, height: 64, borderRadius: 8, background: C.border, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>☕</div>
+                    }
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: '0 0 4px', fontSize: 12, color: C.textSub, lineHeight: 1.4 }}>{ev.descripcion}</p>
+                      <p style={{ margin: 0, fontSize: 11, color: C.muted, fontFamily: 'monospace' }}>#{ev.orderId}</p>
+                      {ev.accion && (
+                        <button onClick={() => setPedidoDetalle(pedidos.find(p => p.id === ev.pedidoId) ?? null)}
+                          style={{ marginTop: 8, padding: '5px 14px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.cream, fontSize: 12, cursor: 'pointer' }}>
+                          {ev.accion}
+                        </button>
+                      )}
                     </div>
-                  )}
+                  </div>
+                  <button onClick={() => setPedidoDetalle(pedidos.find(p => p.id === ev.pedidoId) ?? null)}
+                    style={{ background: 'none', border: 'none', color: C.textSub, fontSize: 12, cursor: 'pointer', textAlign: 'left', padding: '6px 0 0', borderTop: `1px solid ${C.border}` }}>
+                    Ver detalles del pedido  ›
+                  </button>
                 </div>
               </div>
             ))}
@@ -861,7 +878,189 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
     )
   }
 
+  function renderResenias() {
+    const entregados = pedidos.filter(p => p.logisticaStatus === 'entregado')
+    const pendientes = entregados.filter(p => !p.calificado && p.recepcionConfirmada)
+    const yaResenados = entregados.filter(p => p.calificado)
+
+    return (
+      <div>
+        {pendientes.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+            <p style={{ fontSize: 36, marginBottom: 12 }}>⭐</p>
+            <p style={{ fontSize: 16, color: C.cream, fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, marginBottom: 8 }}>Todo calificado</p>
+            <p style={{ fontSize: 13, color: C.textSub }}>No tienes pedidos pendientes de reseña</p>
+          </div>
+        ) : (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+              <span style={{ padding: '4px 12px', borderRadius: 20, background: `${C.yellow}22`, color: C.yellow, fontSize: 12, fontWeight: 700, border: `1px solid ${C.yellow}44` }}>
+                {pendientes.length} pendiente{pendientes.length > 1 ? 's' : ''}
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 28 }}>
+              {pendientes.map(p => {
+                const item = p.items[0]
+                return (
+                  <div key={p.id} style={{ background: C.card, borderRadius: 14, padding: '16px', border: `1px solid ${C.border}`, display: 'flex', gap: 14, alignItems: 'center' }}>
+                    <div style={{ width: 72, height: 72, borderRadius: 10, background: C.border, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>☕</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: '0 0 2px', fontSize: 14, fontWeight: 700, color: C.cream }}>{item?.productoNombre ?? 'Producto'}</p>
+                      <p style={{ margin: '0 0 2px', fontSize: 12, color: C.textSub }}>{item?.presentacion} · {item?.caficultorNombre}</p>
+                      <p style={{ margin: '0 0 10px', fontSize: 11, color: C.muted }}>{formatFecha(p.updatedAt)}</p>
+                      <div style={{ display: 'flex', gap: 2, marginBottom: 10 }}>
+                        {[1,2,3,4,5].map(n => (
+                          <button key={n} onClick={() => setPedidoACalificar(p)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 22, color: C.yellow, opacity: 0.35, padding: 0 }}>★</button>
+                        ))}
+                      </div>
+                      <button onClick={() => setPedidoACalificar(p)} style={{ padding: '7px 18px', borderRadius: 8, border: 'none', background: C.terra, color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
+                        Reseñar
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </>
+        )}
+        {yaResenados.length > 0 && (
+          <div>
+            <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Ya reseñados</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {yaResenados.map(p => (
+                <div key={p.id} style={{ padding: '12px 14px', background: C.card, borderRadius: 10, border: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <p style={{ margin: '0 0 2px', fontSize: 13, fontWeight: 600, color: C.cream }}>{p.items[0]?.productoNombre ?? '—'}</p>
+                    <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{p.items[0]?.caficultorNombre} · {formatFecha(p.updatedAt)}</p>
+                  </div>
+                  <span style={{ color: C.yellow, fontSize: 14, flexShrink: 0 }}>★ Calificado</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  function renderCarrito() {
+    const subtotalCents = carritoItems.reduce((s, i) =>
+      s + calcularPrecioFinal(i.producto.precioBaseKgCents, i.formato) * i.qty, 0)
+    const faltaCents = 8000 - subtotalCents
+
+    function quitarItem(idx: number) { setCarritoItems(prev => prev.filter((_, i) => i !== idx)) }
+    function cambiarQty(idx: number, delta: number) {
+      setCarritoItems(prev => {
+        const next = [...prev]
+        const nuevo = next[idx].qty + delta
+        if (nuevo <= 0) return prev.filter((_, i) => i !== idx)
+        next[idx] = { ...next[idx], qty: nuevo }
+        return next
+      })
+    }
+
+    return (
+      <div style={{ maxWidth: 600 }}>
+        <div style={{ padding: '12px 16px', borderRadius: 12, marginBottom: 20, background: faltaCents <= 0 ? `${C.sage}18` : `${C.terra}11`, border: `1px solid ${faltaCents <= 0 ? C.sage : C.terra}33`, fontSize: 13, color: faltaCents <= 0 ? C.sage : C.creamMuted, fontWeight: 600 }}>
+          {faltaCents <= 0 ? '🚚 ¡Envío gratis en tu pedido!' : `🚚 Agrega S/ ${(faltaCents / 100).toFixed(0)} más para envío gratis`}
+        </div>
+
+        {carritoItems.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+            <p style={{ fontSize: 36, marginBottom: 12 }}>🛒</p>
+            <p style={{ fontSize: 16, color: C.cream, fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, marginBottom: 8 }}>Tu carrito está vacío</p>
+            <p style={{ fontSize: 13, color: C.textSub, marginBottom: 20 }}>Explora el catálogo y agrega cafés</p>
+            <button onClick={() => setTab('catalogo')} style={{ padding: '12px 28px', borderRadius: 10, border: 'none', background: C.terra, color: '#fff', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>Ver catálogo →</button>
+          </div>
+        ) : (
+          <>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
+              {carritoItems.map((item, idx) => {
+                const precioCents = calcularPrecioFinal(item.producto.precioBaseKgCents, item.formato)
+                return (
+                  <div key={idx} style={{ background: C.card, borderRadius: 14, padding: '14px 16px', border: `1px solid ${C.border}`, display: 'flex', gap: 14, alignItems: 'center' }}>
+                    <div style={{ width: 56, height: 56, borderRadius: 10, background: C.border, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>☕</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ margin: '0 0 2px', fontSize: 14, fontWeight: 700, color: C.cream, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.producto.nombre}</p>
+                      <p style={{ margin: '0 0 6px', fontSize: 12, color: C.textSub }}>{item.formato}</p>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, border: `1px solid ${C.border}`, borderRadius: 8, overflow: 'hidden' }}>
+                          <button onClick={() => cambiarQty(idx, -1)} style={{ width: 28, height: 28, background: 'none', border: 'none', color: C.textSub, cursor: 'pointer', fontSize: 16, lineHeight: '1' }}>−</button>
+                          <span style={{ width: 24, textAlign: 'center', fontSize: 14, fontWeight: 700, color: C.cream }}>{item.qty}</span>
+                          <button onClick={() => cambiarQty(idx, +1)} style={{ width: 28, height: 28, background: 'none', border: 'none', color: C.textSub, cursor: 'pointer', fontSize: 16, lineHeight: '1' }}>+</button>
+                        </div>
+                        <span style={{ fontSize: 14, fontWeight: 700, color: C.terra }}>{formatCents(precioCents * item.qty)}</span>
+                      </div>
+                    </div>
+                    <button onClick={() => quitarItem(idx)} style={{ background: 'none', border: 'none', color: C.muted, cursor: 'pointer', fontSize: 18, flexShrink: 0, padding: '4px' }}>✕</button>
+                  </div>
+                )
+              })}
+            </div>
+            <div style={{ position: 'sticky', bottom: 0, background: C.bg, padding: '16px 0 8px', borderTop: `1px solid ${C.border}` }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <span style={{ fontSize: 13, color: C.textSub }}>Subtotal ({carritoItems.reduce((s, i) => s + i.qty, 0)} productos)</span>
+                <span style={{ fontSize: 20, fontWeight: 700, color: C.terra, fontFamily: 'Cormorant Garamond, serif' }}>{formatCents(subtotalCents)}</span>
+              </div>
+              <a href="#/checkout" style={{ display: 'block', textAlign: 'center', padding: '14px', borderRadius: 12, background: C.terra, color: '#fff', textDecoration: 'none', fontSize: 15, fontWeight: 700 }}>
+                Confirmar pedido →
+              </a>
+            </div>
+          </>
+        )}
+
+        <div style={{ marginTop: 32 }}>
+          <p style={{ margin: '0 0 14px', fontSize: 12, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Más cafés disponibles</p>
+          <div style={{ padding: '16px', background: C.card, borderRadius: 12, border: `1px solid ${C.border}`, textAlign: 'center' }}>
+            <button onClick={() => setTab('catalogo')} style={{ background: 'none', border: 'none', color: C.terra, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+              Explorar catálogo completo →
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  function renderMisCompras() {
+    const SUB_TABS: { id: SubTab; label: string }[] = [
+      { id: 'pedidos',  label: 'Tus pedidos' },
+      { id: 'mensajes', label: 'Mensajes' },
+      { id: 'resenias', label: 'Reseñas' },
+    ]
+    const pendientesReseña = pedidos.filter(p => p.logisticaStatus === 'entregado' && !p.calificado && p.recepcionConfirmada).length
+
+    const tabStyle = (active: boolean): React.CSSProperties => ({
+      padding: '8px 16px', borderRadius: 0, border: 'none',
+      borderBottom: active ? `2px solid ${C.terra}` : '2px solid transparent',
+      background: 'none', color: active ? C.cream : C.textSub,
+      fontSize: 14, fontWeight: active ? 700 : 500, cursor: 'pointer',
+      fontFamily: 'Montserrat, sans-serif', whiteSpace: 'nowrap',
+    })
+
+    return (
+      <div>
+        <div style={{ display: 'flex', borderBottom: `1px solid ${C.border}`, marginBottom: 24, overflowX: 'auto' }}>
+          {SUB_TABS.map(s => (
+            <button key={s.id} onClick={() => setSubTab(s.id)} style={tabStyle(subTab === s.id)}>
+              {s.label}
+              {s.id === 'mensajes' && pedidos.length > 0 && (
+                <span style={{ marginLeft: 6, padding: '1px 6px', borderRadius: 10, background: C.terra, color: '#fff', fontSize: 10, fontWeight: 700 }}>{pedidos.length}</span>
+              )}
+              {s.id === 'resenias' && pendientesReseña > 0 && (
+                <span style={{ marginLeft: 6, padding: '1px 6px', borderRadius: 10, background: C.yellow, color: '#000', fontSize: 10, fontWeight: 700 }}>{pendientesReseña}</span>
+              )}
+            </button>
+          ))}
+        </div>
+        {subTab === 'pedidos'  && renderPedidos()}
+        {subTab === 'mensajes' && renderMensajes()}
+        {subTab === 'resenias' && renderResenias()}
+      </div>
+    )
+  }
+
   function renderPerfil() {
+    const historial = pedidos.filter(p => p.logisticaStatus === 'entregado')
     const emp = usuario?.negocio ?? {
       nombreLocal: pedidos[0]?.nombreLocal ?? nombreUsuario,
       distritoLocal: pedidos[0]?.distritoLocal ?? '',
@@ -873,48 +1072,27 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
 
     return (
       <div>
-        {/* Foto del local */}
         {emp.fotoLocal && (
           <div style={{ width: '100%', height: 180, borderRadius: 14, overflow: 'hidden', marginBottom: 20, border: `1px solid ${C.border}` }}>
             <img src={emp.fotoLocal} alt={emp.nombreLocal} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
         )}
-
-        {/* Info principal */}
         <div style={{ background: C.card, borderRadius: 16, padding: '20px', marginBottom: 14, border: `1px solid ${C.border}` }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
             <div>
               <h2 style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif' }}>{emp.nombreLocal}</h2>
               {emp.distritoLocal && <p style={{ margin: 0, fontSize: 13, color: C.textSub }}>{emp.distritoLocal} · Lima</p>}
-              {emp.scoreConfianza && emp.totalCalificaciones ? (
-                <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6 }}>
-                  <span style={{ color: '#f39c12', fontSize: 14 }}>
-                    {'★'.repeat(Math.round(emp.scoreConfianza))}{'☆'.repeat(5 - Math.round(emp.scoreConfianza))}
-                  </span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: C.cream }}>{emp.scoreConfianza.toFixed(1)}</span>
-                  <span style={{ fontSize: 11, color: C.textSub }}>· {emp.totalCalificaciones} reseñas de clientes</span>
-                </div>
-              ) : null}
             </div>
             <button onClick={() => setEditandoPerfil(true)} style={{ fontSize: 12, color: C.terra, background: 'none', border: `1px solid ${C.terra}44`, borderRadius: 6, padding: '6px 14px', cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', flexShrink: 0 }}>Editar</button>
           </div>
-
           {emp.descripcion && <p style={{ margin: '0 0 14px', fontSize: 13, color: C.creamMuted, lineHeight: 1.6 }}>{emp.descripcion}</p>}
-
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 20, background: etapaColor + '22', color: etapaColor, fontWeight: 700, border: `1px solid ${etapaColor}44` }}>
-              {etapaLabel}
-            </span>
+            <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 20, background: etapaColor + '22', color: etapaColor, fontWeight: 700, border: `1px solid ${etapaColor}44` }}>{etapaLabel}</span>
             {emp.etapa === 'abierto' && (
-              <a href={`#/cafeteria/${usuarioId === 'demo-user' ? 'user-emprendedor-001' : usuarioId}`}
-                style={{ fontSize: 12, color: C.terra, textDecoration: 'none', fontWeight: 600 }}>
-                Ver perfil público →
-              </a>
+              <a href={`#/cafeteria/${usuarioId === 'demo-user' ? 'user-emprendedor-001' : usuarioId}`} style={{ fontSize: 12, color: C.terra, textDecoration: 'none', fontWeight: 600 }}>Ver perfil público →</a>
             )}
           </div>
         </div>
-
-        {/* Estadísticas rápidas */}
         <div className="grid-kpis-3" style={{ marginBottom: 14 }}>
           {[
             { label: 'Pedidos totales', value: String(pedidos.length) },
@@ -927,49 +1105,19 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
             </div>
           ))}
         </div>
-
-        {/* Mis reseñas a caficultores */}
-        {historial.length > 0 && (
-          <div style={{ background: C.card, borderRadius: 14, padding: '18px', marginBottom: 14, border: `1px solid ${C.border}` }}>
-            <p style={{ margin: '0 0 14px', fontSize: 11, fontWeight: 700, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              ★ Mis calificaciones a caficultores
+        {historial.length > 0 && historial.filter(p => !p.calificado && p.recepcionConfirmada).length > 0 && (
+          <div style={{ padding: '12px 14px', background: C.yellow + '11', borderRadius: 10, border: `1px solid ${C.yellow}33`, marginBottom: 14 }}>
+            <p style={{ margin: 0, fontSize: 12, color: C.yellow }}>
+              Tienes {historial.filter(p => !p.calificado && p.recepcionConfirmada).length} entrega(s) sin calificar —{' '}
+              <button onClick={() => { setTab('mis_compras'); setSubTab('resenias') }} style={{ background: 'none', border: 'none', color: C.terra, fontSize: 12, fontWeight: 700, cursor: 'pointer', padding: 0 }}>
+                ir a reseñas →
+              </button>
             </p>
-            {historial.filter(p => p.calificado).length === 0 ? (
-              <p style={{ margin: 0, fontSize: 13, color: C.textSub }}>Aún no has calificado ningún pedido. Hazlo desde el Historial.</p>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                {historial.filter(p => p.calificado).map(p => (
-                  <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 12px', background: C.bg, borderRadius: 8 }}>
-                    <div>
-                      <p style={{ margin: '0 0 2px', fontSize: 13, fontWeight: 600, color: C.cream }}>
-                        {p.items.map(i => i.caficultorNombre).filter((v, i, a) => a.indexOf(v) === i).join(', ')}
-                      </p>
-                      <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>
-                        {p.items.map(i => i.productoNombre).join(' · ')} · {p.id}
-                      </p>
-                    </div>
-                    <span style={{ color: C.yellow, fontSize: 14, flexShrink: 0 }}>★ Calificado</span>
-                  </div>
-                ))}
-                {historial.filter(p => !p.calificado && p.recepcionConfirmada).length > 0 && (
-                  <div style={{ padding: '10px 12px', background: C.yellow + '11', borderRadius: 8, border: `1px solid ${C.yellow}33` }}>
-                    <p style={{ margin: 0, fontSize: 12, color: C.yellow }}>
-                      Tienes {historial.filter(p => !p.calificado && p.recepcionConfirmada).length} entrega(s) sin calificar —{' '}
-                      <button onClick={() => setTab('historial')} style={{ background: 'none', border: 'none', color: C.terra, fontSize: 12, fontWeight: 700, cursor: 'pointer', padding: 0 }}>
-                        ir al historial →
-                      </button>
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         )}
-
-        {/* Ayuda */}
         <div style={{ background: C.card, borderRadius: 14, padding: '16px 18px', border: `1px solid ${C.border}` }}>
           <p style={{ margin: '0 0 12px', fontSize: 11, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>¿Necesitas ayuda?</p>
-          <a href={`https://wa.me/${ONE_CONFIG.ADMIN_WHATSAPP.replace(/\s/g, '')}?text=Hola, soy ${emp.nombreLocal} y necesito ayuda con mi portal`}
+          <a href={`https://wa.me/${ONE_CONFIG.ADMIN_WHATSAPP.replace(/\s/g, '')}?text=Hola, soy ${emp.nombreLocal} y necesito ayuda`}
             target="_blank" rel="noopener noreferrer"
             style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '12px 14px', borderRadius: 10, background: '#25D36622', border: `1px solid #25D36644`, textDecoration: 'none' }}>
             <span style={{ fontSize: 20 }}>💬</span>
@@ -978,263 +1126,6 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
               <p style={{ margin: '2px 0 0', fontSize: 11, color: C.textSub }}>WhatsApp directo con TunayWasi</p>
             </div>
           </a>
-        </div>
-      </div>
-    )
-  }
-
-  // ─── Calculadora de rentabilidad ─────────────────────────────────────────────
-
-  function renderCalculadora() {
-    const kgMes = calcKgMes
-    const precioKg = calcPrecioKg
-    const precioTaza = calcPrecioTaza
-    const grTaza = calcGrTaza
-
-    const tazasPorKg = Math.floor(1000 / grTaza)
-    const tazasMes = tazasPorKg * kgMes
-    const ingresoBruto = tazasMes * precioTaza
-    const costoCafe = kgMes * precioKg
-    const ganancia = ingresoBruto - costoCafe
-    const margen = ingresoBruto > 0 ? Math.round((ganancia / ingresoBruto) * 100) : 0
-    const kgParaPuntoCero = precioTaza * tazasPorKg > 0 ? costoCafe / (precioTaza * tazasPorKg) : 0
-
-    function SliderRow({ label, sub, value, min, max, step, format, onChange }: {
-      label: string; sub: string; value: number; min: number; max: number; step: number
-      format: (v: number) => string; onChange: (v: number) => void
-    }) {
-      return (
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
-            <div>
-              <span style={{ fontSize: 14, fontWeight: 600, color: C.cream }}>{label}</span>
-              <span style={{ fontSize: 11, color: C.textSub, marginLeft: 8 }}>{sub}</span>
-            </div>
-            <span style={{ fontSize: 18, fontWeight: 700, color: C.terra, fontFamily: 'Cormorant Garamond, serif' }}>{format(value)}</span>
-          </div>
-          <input type="range" min={min} max={max} step={step} value={value}
-            onChange={e => onChange(Number(e.target.value))}
-            style={{ width: '100%', accentColor: C.terra, height: 4 }}
-          />
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 3 }}>
-            <span style={{ fontSize: 10, color: C.muted }}>{format(min)}</span>
-            <span style={{ fontSize: 10, color: C.muted }}>{format(max)}</span>
-          </div>
-        </div>
-      )
-    }
-
-    return (
-      <div>
-        <p style={{ margin: '0 0 20px', fontSize: 14, color: C.textSub }}>
-          Ajusta los parámetros de tu cafetería para ver la rentabilidad estimada.
-        </p>
-        <div className="grid-calc">
-          {/* Sliders */}
-          <div style={{ background: C.card, borderRadius: 14, padding: '24px 20px', border: `1px solid ${C.border}` }}>
-            <h3 style={{ margin: '0 0 20px', fontSize: 15, fontWeight: 700, color: C.cream }}>Parámetros de tu negocio</h3>
-            <SliderRow label="Café / mes" sub="kilogramos" value={kgMes} min={1} max={30} step={0.5}
-              format={v => `${v} kg`} onChange={setCalcKgMes} />
-            <SliderRow label="Precio del café" sub="por kg (S/)" value={precioKg} min={12000} max={35000} step={500}
-              format={v => `S/ ${Math.round(v/100)}`} onChange={setCalcPrecioKg} />
-            <SliderRow label="Precio por taza" sub="lo que cobras" value={precioTaza} min={500} max={2500} step={50}
-              format={v => `S/ ${(v/100).toFixed(0)}`} onChange={setCalcPrecioTaza} />
-            <SliderRow label="Gramos por taza" sub="extracción" value={grTaza} min={8} max={22} step={1}
-              format={v => `${v} g`} onChange={setCalcGrTaza} />
-          </div>
-
-          {/* Resultados */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {[
-              { label: 'Tazas al mes', value: tazasMes.toLocaleString(), sub: `${tazasPorKg} tazas/kg`, color: C.cream },
-              { label: 'Ingreso bruto', value: `S/ ${Math.round(ingresoBruto/100).toLocaleString()}`, sub: 'ventas de café', color: C.sage },
-              { label: 'Costo del café', value: `S/ ${Math.round(costoCafe/100).toLocaleString()}`, sub: `${kgMes} kg × S/ ${Math.round(precioKg/100)}`, color: C.terra },
-              { label: 'Ganancia neta', value: `S/ ${Math.round(ganancia/100).toLocaleString()}`, sub: `margen ${margen}%`, color: ganancia > 0 ? '#4caf50' : C.red },
-            ].map(({ label, value, sub, color }) => (
-              <div key={label} style={{ background: C.card, borderRadius: 12, padding: '16px 18px', border: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <p style={{ margin: 0, fontSize: 11, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</p>
-                  <p style={{ margin: '2px 0 0', fontSize: 11, color: C.muted }}>{sub}</p>
-                </div>
-                <p style={{ margin: 0, fontSize: 22, fontWeight: 700, fontFamily: 'Cormorant Garamond, serif', color }}>{value}</p>
-              </div>
-            ))}
-            <div style={{ background: `${C.terra}11`, border: `1px solid ${C.terra}44`, borderRadius: 12, padding: '14px 18px' }}>
-              <p style={{ margin: 0, fontSize: 12, color: C.terra, fontWeight: 700 }}>
-                Punto de equilibrio: {kgParaPuntoCero.toFixed(1)} kg
-              </p>
-              <p style={{ margin: '4px 0 0', fontSize: 11, color: C.textSub }}>
-                Necesitas vender {Math.ceil(kgParaPuntoCero * tazasPorKg)} tazas para cubrir el café de este mes
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // ─── Guía de preparaciones ────────────────────────────────────────────────────
-
-  function renderGuia() {
-    const metodo = guiaMetodo
-
-    const METODOS = [
-      { id: 'espresso' as const, label: 'Espresso', emoji: '☕' },
-      { id: 'v60'      as const, label: 'V60',      emoji: '▽' },
-      { id: 'prensa'   as const, label: 'Prensa',   emoji: '⬇' },
-      { id: 'chemex'   as const, label: 'Chemex',   emoji: '⌛' },
-    ]
-
-    const FICHAS: Record<typeof metodo, {
-      ratio: string; agua: string; tiempo: string; temperatura: string; molido: string
-      pasos: string[]; tazasKg: number; precioSugerido: number
-    }> = {
-      espresso: {
-        ratio: '1:2', agua: '36 ml', tiempo: '25–30 s', temperatura: '92–94 °C', molido: 'Fino',
-        pasos: [
-          'Muele 18 g en fino. Distribuye parejo en el portafiltro.',
-          'Tampa con 15–20 kg de presión.',
-          'Pre-infusión 5 s a baja presión.',
-          'Extrae 36 ml en 25–30 s.',
-          'Control visual: flujo miel dorada uniforme.',
-        ],
-        tazasKg: 55, precioSugerido: 1200,
-      },
-      v60: {
-        ratio: '1:15', agua: '300 ml', tiempo: '3:00–3:30 min', temperatura: '93–96 °C', molido: 'Medio–grueso',
-        pasos: [
-          'Muele 20 g en medio–grueso. Pre-humedece el filtro.',
-          'Bloom: vierte 40 ml, espera 45 s.',
-          'Vierte en espiral hasta 200 ml (1:30 min).',
-          'Termina con 300 ml en versiones lentas, uniforme.',
-          'Tiempo total: 3:00–3:30 min.',
-        ],
-        tazasKg: 50, precioSugerido: 1000,
-      },
-      prensa: {
-        ratio: '1:12', agua: '480 ml', tiempo: '4:00 min', temperatura: '96 °C', molido: 'Grueso',
-        pasos: [
-          'Muele 40 g grueso. Precalienta la prensa.',
-          'Vierte 480 ml de agua a 96 °C.',
-          'Revuelve suavemente 10 s.',
-          'Tapa sin presionar. Espera 4 minutos.',
-          'Presiona lento (20 s) hasta el fondo.',
-        ],
-        tazasKg: 25, precioSugerido: 900,
-      },
-      chemex: {
-        ratio: '1:16', agua: '480 ml', tiempo: '3:30–4:00 min', temperatura: '94–96 °C', molido: 'Medio',
-        pasos: [
-          'Muele 30 g en medio. Pre-humedece el filtro grueso.',
-          'Bloom: 60 ml, espera 45 s.',
-          'Vierte en espiral continua hasta 480 ml.',
-          'Controla que gotee parejo, sin corrientes fuertes.',
-          'Tiempo total: 3:30–4:00 min.',
-        ],
-        tazasKg: 33, precioSugerido: 1000,
-      },
-    }
-
-    const ficha = FICHAS[metodo]
-    const rentTaza = ficha.precioSugerido
-    const costoCafeTaza = Math.round(18900 / ficha.tazasKg)
-    const margenTaza = rentTaza - costoCafeTaza
-    const margenPct = Math.round((margenTaza / rentTaza) * 100)
-
-    return (
-      <div>
-        <p style={{ margin: '0 0 20px', fontSize: 14, color: C.textSub }}>
-          Fichas técnicas por método de extracción con rentabilidad estimada para tu carta.
-        </p>
-
-        {/* Selector método */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 24, flexWrap: 'wrap' }}>
-          {METODOS.map(m => (
-            <button key={m.id} onClick={() => setGuiaMetodo(m.id)} style={{
-              padding: '9px 18px', borderRadius: 20,
-              background: metodo === m.id ? C.terra : 'transparent',
-              border: `1px solid ${metodo === m.id ? C.terra : C.border}`,
-              color: metodo === m.id ? C.white : C.textSub,
-              fontSize: 13, fontWeight: 700, cursor: 'pointer',
-              fontFamily: 'Montserrat, sans-serif',
-            }}>
-              {m.emoji} {m.label}
-            </button>
-          ))}
-        </div>
-
-        <div className="grid-guia">
-          {/* Ficha técnica + pasos */}
-          <div>
-            <div style={{ background: C.card, borderRadius: 14, padding: '20px', border: `1px solid ${C.border}`, marginBottom: 16 }}>
-              <h3 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 700, color: C.cream }}>Parámetros técnicos</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                {[
-                  { label: 'Ratio', value: ficha.ratio },
-                  { label: 'Agua', value: ficha.agua },
-                  { label: 'Tiempo', value: ficha.tiempo },
-                  { label: 'Temperatura', value: ficha.temperatura },
-                  { label: 'Molido', value: ficha.molido },
-                  { label: 'Tazas/kg', value: `~${ficha.tazasKg}` },
-                ].map(({ label, value }) => (
-                  <div key={label} style={{ background: '#0d0d0d', borderRadius: 8, padding: '10px 12px' }}>
-                    <p style={{ margin: 0, fontSize: 10, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</p>
-                    <p style={{ margin: '3px 0 0', fontSize: 14, fontWeight: 700, color: C.cream }}>{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ background: C.card, borderRadius: 14, padding: '20px', border: `1px solid ${C.border}` }}>
-              <h3 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 700, color: C.cream }}>Pasos de extracción</h3>
-              {ficha.pasos.map((paso, i) => (
-                <div key={i} style={{ display: 'flex', gap: 12, marginBottom: i < ficha.pasos.length - 1 ? 12 : 0 }}>
-                  <div style={{ width: 24, height: 24, borderRadius: '50%', background: C.terra, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: C.white }}>{i + 1}</span>
-                  </div>
-                  <p style={{ margin: 0, fontSize: 13, color: C.text, lineHeight: 1.5 }}>{paso}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Rentabilidad */}
-          <div style={{ background: C.card, borderRadius: 14, padding: '20px', border: `1px solid ${C.border}` }}>
-            <h3 style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 700, color: C.cream }}>Rentabilidad por taza</h3>
-            {[
-              { label: 'Precio sugerido', value: `S/ ${(rentTaza/100).toFixed(0)}`, color: C.sage },
-              { label: 'Costo café', value: `S/ ${(costoCafeTaza/100).toFixed(2)}`, color: C.terra },
-              { label: 'Ganancia/taza', value: `S/ ${(margenTaza/100).toFixed(2)}`, color: '#4caf50' },
-              { label: 'Margen', value: `${margenPct}%`, color: C.cream },
-            ].map(({ label, value, color }) => (
-              <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: `1px solid ${C.border}` }}>
-                <span style={{ fontSize: 13, color: C.textSub }}>{label}</span>
-                <span style={{ fontSize: 16, fontWeight: 700, color, fontFamily: 'Cormorant Garamond, serif' }}>{value}</span>
-              </div>
-            ))}
-            <div style={{ marginTop: 16, padding: '12px', background: `${C.sage}11`, borderRadius: 8, border: `1px solid ${C.sage}33` }}>
-              <p style={{ margin: 0, fontSize: 12, color: C.sage, fontWeight: 600 }}>
-                A {ficha.tazasKg} tazas/kg con café Tunay Wasi (S/ 189/kg)
-              </p>
-            </div>
-
-            <div style={{ marginTop: 20 }}>
-              <h4 style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 700, color: C.cream }}>Precios sugeridos para tu carta</h4>
-              {[
-                { size: 'Pequeño', ml: metodo === 'espresso' ? '30 ml' : '150 ml', precio: Math.round(rentTaza * 0.8) },
-                { size: 'Estándar', ml: metodo === 'espresso' ? '60 ml' : '250 ml', precio: rentTaza },
-                { size: 'Grande',   ml: metodo === 'espresso' ? '90 ml' : '350 ml', precio: Math.round(rentTaza * 1.3) },
-              ].map(({ size, ml, precio }) => (
-                <div key={size} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 0', borderBottom: `1px solid ${C.border}` }}>
-                  <div>
-                    <span style={{ fontSize: 13, color: C.cream, fontWeight: 600 }}>{size}</span>
-                    <span style={{ fontSize: 11, color: C.textSub, marginLeft: 8 }}>{ml}</span>
-                  </div>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: C.terra }}>S/ {(precio/100).toFixed(0)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     )
@@ -1345,21 +1236,9 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
           </div>
 
           {/* Tabs */}
-          {tab === 'pedidos' && renderPedidos()}
-          {tab === 'menus' && (
-            <MenusEmprendedor
-              usuarioId={usuarioId}
-              isDemo={isDemo}
-              onPedirReposicion={(menuId, cafesIds) => {
-                sessionStorage.setItem('one_reposicion', JSON.stringify({ menuId, cafesIds }))
-                window.location.hash = '#/checkout'
-              }}
-            />
-          )}
-          {tab === 'historial' && renderHistorial()}
-          {tab === 'calculadora' && renderCalculadora()}
-          {tab === 'guia' && renderGuia()}
-          {tab === 'perfil' && renderPerfil()}
+          {tab === 'mis_compras' && renderMisCompras()}
+          {tab === 'carrito'     && renderCarrito()}
+          {tab === 'perfil'      && renderPerfil()}
         </div>
         )}
 

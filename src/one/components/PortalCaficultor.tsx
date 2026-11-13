@@ -3,7 +3,6 @@
  * Dark mode Netflix-style con sidebar navigation, CRUD de productos, toast
  */
 import React, { useEffect, useState } from 'react'
-import CatalogoPublico from './CatalogoPublico'
 import {
   fetchPedidosByCaficultor, fetchProductos, fetchCaficultor,
   fetchCalificacionesByCaficultor, updateStock,
@@ -45,7 +44,7 @@ const PROCESO_COLORS: Record<string, string> = {
   lavado: C.blue, natural: C.terra, honey: C.yellow, anaerobico: '#9b59b6',
 }
 
-type Tab = 'catalogo' | 'pedidos' | 'productos' | 'historial' | 'perfil'
+type Tab = 'productos' | 'pedidos' | 'historial' | 'perfil'
 
 // ─── Filter bar shared component ──────────────────────────────────────────────
 
@@ -575,10 +574,9 @@ const StepperPedido: React.FC<{ pedido: PedidoONE }> = ({ pedido }) => {
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: { id: Tab; emoji: string; label: string }[] = [
-  { id: 'catalogo',   emoji: '☕', label: 'Catálogo' },
+  { id: 'productos',  emoji: '🌱', label: 'Mis cafés' },
   { id: 'pedidos',    emoji: '📦', label: 'Pedidos' },
-  { id: 'productos',  emoji: '🌱', label: 'Mis productos' },
-  { id: 'historial',  emoji: '📋', label: 'Historial' },
+  { id: 'historial',  emoji: '📋', label: 'Mis ventas' },
   { id: 'perfil',     emoji: '⚙️', label: 'Perfil' },
 ]
 
@@ -645,7 +643,7 @@ interface Props {
 }
 
 const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId, isDemo = false }) => {
-  const [tab, setTab] = useState<Tab>('catalogo')
+  const [tab, setTab] = useState<Tab>('productos')
   const [caficultor, setCaficultor] = useState<CaficultorONE | null>(null)
   const [pedidos, setPedidos] = useState<PedidoONE[]>([])
   const [productos, setProductos] = useState<ProductoONE[]>([])
@@ -837,9 +835,6 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
 
   // ─── Tabs ─────────────────────────────────────────────────────────────────
 
-  function renderCatalogo() {
-    return <CatalogoPublico isDemo={isDemo} sidebarOffset={sidebarCollapsed ? 56 : 220} />
-  }
 
   function renderPedidos() {
     const todos = pedidos.filter(p => p.logisticaStatus !== 'entregado')
@@ -1879,9 +1874,6 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
 
       {/* Main content */}
       <div className="caf-main" style={{ flex: 1, marginLeft: sidebarCollapsed ? 56 : 220, minHeight: '100vh' }}>
-        {tab === 'catalogo' ? (
-          renderCatalogo()
-        ) : (
         <div style={{ padding: '16px 24px 40px', paddingTop: 'clamp(60px, 8vw, 16px)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
             <div>
@@ -1903,7 +1895,6 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
           {tab === 'historial' && renderHistorial()}
           {tab === 'perfil' && renderPerfil()}
         </div>
-        )}
       </div>
 
       {/* Modal despacho por agencia */}
