@@ -4,7 +4,7 @@ const { GoogleAuth } = require('google-auth-library')
 const nodemailer = require('nodemailer')
 const fetch = require('node-fetch')
 
-const PLAY_STORE_URL = 'https://appdistribution.firebase.google.com/testerapps/1:399522765847:android:98ef173a366e5ba6ddd052/releases/3snss7d78jr78'
+const PLAY_STORE_URL = 'https://appdistribution.firebase.google.com/testerapps/1:399522765847:android:98ef173a366e5ba6ddd052/releases/72urpb3ctnosg'
 
 // ─── CORS headers ────────────────────────────────────────────────────────────
 
@@ -33,6 +33,25 @@ async function getGoogleAccessToken() {
   return tokenResponse.token
 }
 
+// ─── Obtener el release ID más reciente ──────────────────────────────────────
+
+async function getLatestReleaseId(projectNumber, appId, token) {
+  const url = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/apps/${appId}/releases?pageSize=1&orderBy=createTime%20desc`
+  const res = await fetch(url, {
+    headers: { 'Authorization': `Bearer ${token}` },
+  })
+  if (!res.ok) {
+    const err = await res.text()
+    console.error('Releases list error:', res.status, err)
+    return null
+  }
+  const data = await res.json()
+  const release = data.releases?.[0]
+  if (!release) return null
+  // name = "projects/N/apps/APP_ID/releases/RELEASE_ID"
+  return release.name.split('/').pop()
+}
+
 // ─── Agregar tester a Firebase App Distribution ───────────────────────────────
 
 async function agregarTesterAppDistribution(email) {
@@ -40,45 +59,44 @@ async function agregarTesterAppDistribution(email) {
   if (!appId) throw new Error('FIREBASE_APP_ID env var no configurada')
 
   const token = await getGoogleAccessToken()
+  const projectNumber = appId.split(':')[1]
 
-  // API v1: batch add testers (usa project number, no project ID string)
-  const projectNumber = process.env.FIREBASE_APP_ID.split(':')[1]
+  // 1. Agregar tester al proyecto
   const url = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/testers:batchAdd`
-
   const res = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ emails: [email] }),
   })
 
   if (!res.ok) {
     const err = await res.text()
-    console.error('App Distribution API error:', res.status, err)
-    // No lanzamos error — si falla el invite igual guardamos el registro
+    console.error('App Distribution batchAdd error:', res.status, err)
     return { ok: false, error: err }
   }
 
-  // Agregar a la release específica también
-  const releaseUrl = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/apps/${appId}/releases/-/testers:batchAdd`
+  // 2. Obtener el release más reciente y asignar el tester
+  const releaseId = await getLatestReleaseId(projectNumber, appId, token)
+  if (!releaseId) {
+    console.warn('No se pudo obtener el release ID — tester agregado al proyecto pero no al release')
+    return { ok: true, releaseAssigned: false }
+  }
+
+  const releaseUrl = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/apps/${appId}/releases/${releaseId}/testers:batchAdd`
   const resRelease = await fetch(releaseUrl, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ emails: [email] }),
   })
 
   if (!resRelease.ok) {
     const err = await resRelease.text()
-    console.error('App Distribution release API error:', resRelease.status, err)
-    return { ok: false, error: err }
+    console.error('Release batchAdd error:', resRelease.status, err)
+    // Tester ya está en el proyecto, solo falló el release — no es crítico
+    return { ok: true, releaseAssigned: false, releaseError: err }
   }
 
-  return { ok: true }
+  return { ok: true, releaseAssigned: true, releaseId }
 }
 
 // ─── Email de bienvenida ──────────────────────────────────────────────────────

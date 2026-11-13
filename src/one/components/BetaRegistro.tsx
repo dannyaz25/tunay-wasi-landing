@@ -22,7 +22,7 @@ const C = {
 // En desarrollo apunta a localhost con serverless-offline si quieres probar.
 const LAMBDA_URL = import.meta.env.VITE_BETA_INVITE_URL || ''
 
-const PLAY_STORE_URL = 'https://appdistribution.firebase.google.com/testerapps/1:399522765847:android:98ef173a366e5ba6ddd052/releases/3snss7d78jr78'
+const PLAY_STORE_URL = 'https://appdistribution.firebase.google.com/testerapps/1:399522765847:android:98ef173a366e5ba6ddd052/releases/72urpb3ctnosg'
 
 type Rol = 'emprendedor' | 'caficultor'
 type Estado = 'idle' | 'loading' | 'success' | 'error'
