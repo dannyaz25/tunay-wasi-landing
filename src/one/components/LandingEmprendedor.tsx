@@ -239,7 +239,7 @@ const Hero: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
       </div>
 
       {/* ── Derecha — formulario beta ── */}
-      <div className="emp-hero-card" style={{ boxShadow: '0 16px 64px rgba(0,0,0,0.7)' }}>
+      <div id="beta-form" className="emp-hero-card" style={{ boxShadow: '0 16px 64px rgba(0,0,0,0.7)' }}>
         <BetaRegistro
           rolDefecto="emprendedor"
           acento={C.terra}
@@ -533,17 +533,26 @@ const SeccionCTA: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 const LandingEmprendedor: React.FC = () => {
-  function irAPlayStore() {
-    window.open(PLAY_STORE_URL, '_blank', 'noopener,noreferrer')
+  function irAFormulario() {
+    const el = document.getElementById('beta-form')
+    if (!el) { window.location.hash = '#/para-cafeterias'; return }
+    // En mobile el card está oculto — lo mostramos temporalmente
+    const esMovil = window.matchMedia('(max-width: 720px)').matches
+    if (esMovil) {
+      el.style.display = 'block'
+      el.style.marginTop = '24px'
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    setTimeout(() => el.querySelector('input')?.focus(), 400)
   }
 
   return (
     <div style={{ background: C.bg, minHeight: '100vh' }}>
-      <Nav onEmpezar={irAPlayStore} />
-      <Hero onEmpezar={irAPlayStore} />
-      <SeccionInstalacion onDescargar={irAPlayStore} />
+      <Nav onEmpezar={irAFormulario} />
+      <Hero onEmpezar={irAFormulario} />
+      <SeccionInstalacion onDescargar={irAFormulario} />
       <SeccionFAQ />
-      <SeccionCTA onEmpezar={irAPlayStore} />
+      <SeccionCTA onEmpezar={irAFormulario} />
     </div>
   )
 }

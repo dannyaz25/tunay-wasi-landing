@@ -235,7 +235,7 @@ const Hero: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => {
       </div>
 
       {/* Columna derecha — formulario beta */}
-      <div className="cafi-hero-card">
+      <div id="beta-form" className="cafi-hero-card">
         <BetaRegistro
           rolDefecto="caficultor"
           acento={C.sage}
@@ -573,18 +573,26 @@ const SeccionCTA: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => (
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 const LandingCaficultores: React.FC = () => {
-  function irAPlayStore() {
-    window.open(PLAY_STORE_URL, '_blank', 'noopener,noreferrer')
+  function irAFormulario() {
+    const el = document.getElementById('beta-form')
+    if (!el) { window.location.hash = '#/para-caficultores'; return }
+    const esMovil = window.matchMedia('(max-width: 720px)').matches
+    if (esMovil) {
+      el.style.display = 'block'
+      el.style.marginTop = '24px'
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    setTimeout(() => el.querySelector('input')?.focus(), 400)
   }
 
   return (
     <div style={{ background: '#0a0a0a', minHeight: '100vh' }}>
-      <Nav onRegistrar={irAPlayStore} />
-      <Hero onRegistrar={irAPlayStore} />
-      <SeccionInstalacion onDescargar={irAPlayStore} />
+      <Nav onRegistrar={irAFormulario} />
+      <Hero onRegistrar={irAFormulario} />
+      <SeccionInstalacion onDescargar={irAFormulario} />
       <SeccionBeneficios />
       <SeccionFAQ />
-      <SeccionCTA onRegistrar={irAPlayStore} />
+      <SeccionCTA onRegistrar={irAFormulario} />
     </div>
   )
 }
