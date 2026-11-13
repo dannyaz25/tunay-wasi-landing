@@ -484,14 +484,23 @@ const AppONE: React.FC = () => {
       // Ya hay sesión activa — redirigir según rol
       if (hayCarrito) {
         window.location.hash = '#/checkout'
-      } else if (usuarioONE?.rol === 'caficultor') {
-        window.location.hash = '#/caficultor-portal'
-      } else if (usuarioONE?.rol === 'negocio') {
-        window.location.hash = '#/portal'
-      } else if (usuarioONE?.rol === 'admin') {
-        window.location.hash = '#/admin'
+        return null
       }
-      // Si usuarioONE aún no cargó, esperar — no redirigir a '/'
+      if (!usuarioONE) {
+        // Rol aún no cargó — mostrar loading en lugar de pantalla en blanco
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: '#0a0a0a' }}>
+            <div style={{ color: '#8faf8a', fontFamily: 'Montserrat, sans-serif' }}>Cargando...</div>
+          </div>
+        )
+      }
+      if (usuarioONE.rol === 'caficultor') {
+        window.location.hash = '#/caficultor-portal'
+      } else if (usuarioONE.rol === 'admin') {
+        window.location.hash = '#/admin'
+      } else {
+        window.location.hash = '#/portal'
+      }
       return null
     }
     return (

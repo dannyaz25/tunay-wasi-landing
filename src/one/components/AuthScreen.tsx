@@ -67,9 +67,9 @@ const AuthScreen: React.FC<Props> = ({ mensajePrevia }) => {
   }
 
   function redirigirSegunRol(rol: RolONE) {
-    // Si hay carrito guardado (localStorage), retomar el checkout
+    // Si hay carrito guardado (localStorage), retomar el checkout — cualquier rol
     try {
-      if (rol !== 'caficultor' && rol !== 'admin' && localStorage.getItem('one_carrito_items')) {
+      if (localStorage.getItem('one_carrito_items')) {
         window.location.hash = '#/checkout'
         return
       }
