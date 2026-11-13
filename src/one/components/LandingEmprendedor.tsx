@@ -114,19 +114,19 @@ const Nav: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
       TunayWasi
     </button>
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button onClick={() => { window.location.hash = '#/' }} style={{
+      <button onClick={() => { window.location.hash = '#/' }} className="emp-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.mutedLight,
       }}>
         Ver catálogo
       </button>
-      <button onClick={() => { window.location.hash = '#/docs' }} style={{
+      <button onClick={() => { window.location.hash = '#/docs' }} className="emp-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.mutedLight,
       }}>
         Docs
       </button>
-      <button onClick={() => { window.location.hash = '#/soporte' }} style={{
+      <button onClick={() => { window.location.hash = '#/soporte' }} className="emp-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.sage,
         fontWeight: 600,
@@ -144,6 +144,7 @@ const Nav: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
         Descargar app
       </button>
     </div>
+    <style>{`@media (max-width: 640px) { .emp-nav-link { display: none !important; } }`}</style>
   </nav>
 )
 
@@ -169,7 +170,7 @@ const Hero: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
     }} />
 
     {/* Grid de dos columnas */}
-    <div style={{
+    <div className="emp-hero-grid" style={{
       position: 'relative', zIndex: 1,
       boxSizing: 'border-box',
       width: '100%',
@@ -238,8 +239,8 @@ const Hero: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
         </p>
       </div>
 
-      {/* ── Derecha — formulario beta ── */}
-      <div id="beta-form" className="emp-hero-card" style={{ boxShadow: '0 16px 64px rgba(0,0,0,0.7)' }}>
+      {/* ── Derecha — formulario beta (desktop) ── */}
+      <div className="emp-hero-card" style={{ boxShadow: '0 16px 64px rgba(0,0,0,0.7)' }}>
         <BetaRegistro
           rolDefecto="emprendedor"
           acento={C.terra}
@@ -251,9 +252,32 @@ const Hero: React.FC<{ onEmpezar: () => void }> = ({ onEmpezar }) => (
 
     </div>
 
+    {/* ── Formulario beta mobile (solo se muestra en pantallas pequeñas) ── */}
+    <div id="beta-form" className="emp-form-mobile" style={{
+      position: 'relative', zIndex: 1,
+      padding: '0 20px 48px',
+      maxWidth: 480, margin: '0 auto',
+    }}>
+      <BetaRegistro
+        rolDefecto="emprendedor"
+        acento={C.terra}
+        titulo="Únete a la beta"
+        subtitulo="Regístrate y te enviamos el link de descarga directo a tu correo."
+        origen="landing-emprendedor-mobile"
+      />
+    </div>
+
     <style>{`
+      @media (min-width: 781px) {
+        .emp-form-mobile { display: none !important; }
+      }
       @media (max-width: 780px) {
         .emp-hero-card { display: none !important; }
+        .emp-hero-grid {
+          grid-template-columns: 1fr !important;
+          padding: 48px 20px 24px !important;
+          min-height: auto !important;
+        }
       }
     `}</style>
   </section>

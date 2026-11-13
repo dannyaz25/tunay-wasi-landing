@@ -10,10 +10,12 @@ const PLAY_STORE_URL = 'https://appdistribution.firebase.google.com/testerapps/1
 
 function corsHeaders(origin) {
   const allowed = process.env.ALLOWED_ORIGIN || '*'
+  const allowOrigin = allowed === '*' ? '*' : (origin || allowed)
   return {
-    'Access-Control-Allow-Origin': allowed === '*' ? '*' : origin || allowed,
+    'Access-Control-Allow-Origin': allowOrigin,
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Max-Age': '86400',
   }
 }
 
@@ -215,8 +217,9 @@ module.exports.betaInvite = async (event) => {
   const origin = event.headers?.origin || event.headers?.Origin || ''
   const headers = corsHeaders(origin)
 
-  // Preflight CORS
-  if (event.requestContext?.http?.method === 'OPTIONS') {
+  // Preflight CORS — API Gateway v1 usa event.httpMethod, v2 usa event.requestContext.http.method
+  const method = event.requestContext?.http?.method || event.httpMethod || ''
+  if (method === 'OPTIONS') {
     return { statusCode: 204, headers, body: '' }
   }
 

@@ -129,25 +129,25 @@ const Nav: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => (
       TunayWasi
     </button>
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <button onClick={() => { window.location.hash = '#/para-cafeterias' }} style={{
+      <button onClick={() => { window.location.hash = '#/para-cafeterias' }} className="cafi-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.mutedLight,
       }}>
         Soy negocio
       </button>
-      <button onClick={() => { window.location.hash = '#/' }} style={{
+      <button onClick={() => { window.location.hash = '#/' }} className="cafi-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.mutedLight,
       }}>
         Ver catálogo
       </button>
-      <button onClick={() => { window.location.hash = '#/docs' }} style={{
+      <button onClick={() => { window.location.hash = '#/docs' }} className="cafi-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.mutedLight,
       }}>
         Docs
       </button>
-      <button onClick={() => { window.location.hash = '#/soporte' }} style={{
+      <button onClick={() => { window.location.hash = '#/soporte' }} className="cafi-nav-link" style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 13, color: C.sage,
         fontWeight: 600,
@@ -165,6 +165,7 @@ const Nav: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => (
         Descargar app
       </button>
     </div>
+    <style>{`@media (max-width: 640px) { .cafi-nav-link { display: none !important; } }`}</style>
   </nav>
 )
 
@@ -188,7 +189,7 @@ const Hero: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => {
       background: `linear-gradient(135deg, ${C.bg} 0%, ${C.green}88 60%, transparent 100%)`,
     }} />
 
-    <div style={{
+    <div className="cafi-hero-grid" style={{
       position: 'relative', zIndex: 1,
       boxSizing: 'border-box',
       width: '100%',
@@ -234,8 +235,8 @@ const Hero: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => {
 
       </div>
 
-      {/* Columna derecha — formulario beta */}
-      <div id="beta-form" className="cafi-hero-card">
+      {/* Columna derecha — formulario beta (desktop) */}
+      <div className="cafi-hero-card">
         <BetaRegistro
           rolDefecto="caficultor"
           acento={C.sage}
@@ -245,7 +246,35 @@ const Hero: React.FC<{ onRegistrar: () => void }> = ({ onRegistrar }) => {
         />
       </div>
     </div>
-    <style>{`@media (max-width: 720px) { .cafi-hero-card { display: none !important; } }`}</style>
+
+    {/* Formulario beta mobile */}
+    <div id="beta-form" className="cafi-form-mobile" style={{
+      position: 'relative', zIndex: 1,
+      padding: '0 20px 48px',
+      maxWidth: 480, margin: '0 auto',
+    }}>
+      <BetaRegistro
+        rolDefecto="caficultor"
+        acento={C.sage}
+        titulo="Únete a la beta"
+        subtitulo="Regístrate y te enviamos el link de descarga directo a tu correo."
+        origen="landing-caficultores-mobile"
+      />
+    </div>
+
+    <style>{`
+      @media (min-width: 721px) {
+        .cafi-form-mobile { display: none !important; }
+      }
+      @media (max-width: 720px) {
+        .cafi-hero-card { display: none !important; }
+        .cafi-hero-grid {
+          grid-template-columns: 1fr !important;
+          padding: 48px 20px 24px !important;
+          min-height: auto !important;
+        }
+      }
+    `}</style>
   </section>
   )
 }
