@@ -481,6 +481,10 @@ const AppONE: React.FC = () => {
   if (hash === '#/login') {
     track('login_iniciado', { itemCount: carritoItems.length })
     if (user || isDemo) {
+      // Verificar que el hash real siga siendo #/login (puede haber cambiado por AuthScreen)
+      const hashActual = window.location.hash
+      if (hashActual !== '#/login') return null
+
       // Ya hay sesión activa — redirigir según rol
       if (hayCarrito) {
         window.location.hash = '#/checkout'
@@ -494,6 +498,7 @@ const AppONE: React.FC = () => {
           </div>
         )
       }
+      // Sin carrito: redirigir al portal según rol
       if (usuarioONE.rol === 'caficultor') {
         window.location.hash = '#/caficultor-portal'
       } else if (usuarioONE.rol === 'admin') {
