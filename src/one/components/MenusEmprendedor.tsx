@@ -218,11 +218,12 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
       }}>
         <button
           onClick={onClose}
+          className="modal-topbar-back"
           style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', color: C.textSub, fontSize: 13, cursor: 'pointer', padding: 0 }}
         >
-          ← Volver a mis menús
+          ← <span>Volver a mis menús</span>
         </button>
-        <h2 style={{ margin: 0, fontSize: 16, fontFamily: 'Cormorant Garamond, serif', color: C.cream, fontWeight: 700 }}>
+        <h2 className="modal-topbar-title" style={{ margin: 0, fontSize: 16, fontFamily: 'Cormorant Garamond, serif', color: C.cream, fontWeight: 700 }}>
           {menu ? 'Editar menú' : 'Nuevo menú'}
         </h2>
         <button
@@ -238,7 +239,7 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
       <div style={{ flex: 1, overflow: 'hidden', display: 'flex' }}>
 
         {/* ── Columna izquierda: formulario ── */}
-        <div style={{ flex: '0 0 min(520px, 55%)', overflowY: 'auto', padding: '24px 28px', borderRight: `1px solid ${C.border}` }}>
+        <div className="modal-col-form" style={{ flex: '0 0 min(520px, 55%)', overflowY: 'auto', padding: '24px 28px', borderRight: `1px solid ${C.border}` }}>
 
           {/* Nombre del menú */}
           <div style={{ marginBottom: 20 }}>
@@ -291,7 +292,7 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
                             // ── Form inline en la posición del item que se edita ──
                             <div key={p._idx} style={{ padding: '14px', background: '#0f0f0f', borderRadius: 10, border: `1.5px solid ${C.terra}` }}>
                               <p style={{ margin: '0 0 12px', fontSize: 10, fontWeight: 700, color: C.terra, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Editar preparación</p>
-                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: 8, marginBottom: 8 }}>
+                              <div className="form-grid-name-price" style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: 8, marginBottom: 8 }}>
                                 <div>
                                   <label style={{ fontSize: 10, color: C.textSub, display: 'block', marginBottom: 3 }}>Nombre *</label>
                                   <input value={formPrep.nombre} onChange={e => setFormPrep(f => f ? { ...f, nombre: e.target.value } : f)} placeholder="Espresso, V60..." style={inputStyle} autoFocus />
@@ -301,7 +302,7 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
                                   <input value={formPrep.precio} onChange={e => setFormPrep(f => f ? { ...f, precio: e.target.value } : f)} placeholder="12" type="number" min="0" style={inputStyle} />
                                 </div>
                               </div>
-                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+                              <div className="form-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
                                 <div>
                                   <label style={{ fontSize: 10, color: C.textSub, display: 'block', marginBottom: 3 }}>Método</label>
                                   <input value={formPrep.metodo} onChange={e => setFormPrep(f => f ? { ...f, metodo: e.target.value } : f)} placeholder="Filtrado V60..." style={inputStyle} />
@@ -369,7 +370,7 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
                     Nueva preparación
                   </p>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: 10, marginBottom: 10 }}>
+                  <div className="form-grid-name-price" style={{ display: 'grid', gridTemplateColumns: '1fr 100px', gap: 10, marginBottom: 10 }}>
                     <div>
                       <label style={{ fontSize: 10, color: C.textSub, display: 'block', marginBottom: 3 }}>Nombre *</label>
                       <input value={formPrep.nombre} onChange={e => setFormPrep(f => f ? { ...f, nombre: e.target.value } : f)} placeholder="Espresso, V60..." style={inputStyle} autoFocus />
@@ -380,7 +381,7 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
                     </div>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+                  <div className="form-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
                     <div>
                       <label style={{ fontSize: 10, color: C.textSub, display: 'block', marginBottom: 3 }}>Método</label>
                       <input value={formPrep.metodo} onChange={e => setFormPrep(f => f ? { ...f, metodo: e.target.value } : f)} placeholder="Filtrado V60..." style={inputStyle} />
@@ -534,10 +535,25 @@ const ModalMenu: React.FC<ModalMenuProps> = ({ menu, negocioId, isDemo, producto
         </div>
       </div>
 
-      {/* CSS responsive — ocultar preview en mobile */}
       <style>{`
         @media (max-width: 720px) {
           .modal-menu-preview { display: none !important; }
+          .modal-col-form {
+            flex: 1 1 100% !important;
+            min-width: 0 !important;
+            border-right: none !important;
+            padding: 16px !important;
+          }
+        }
+        @media (max-width: 640px) {
+          .modal-topbar-title { display: none !important; }
+          .modal-topbar-back span { display: none !important; }
+          .form-grid-2col {
+            grid-template-columns: 1fr !important;
+          }
+          .form-grid-name-price {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </div>

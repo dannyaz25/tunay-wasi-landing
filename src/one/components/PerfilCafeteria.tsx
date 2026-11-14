@@ -111,9 +111,9 @@ const PerfilCafeteria: React.FC<Props> = ({ cafeteriaId, isDemo = false }) => {
         borderBottom: `1px solid ${C.border}`,
         padding: '0 5%',
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        height: 56,
+        height: 56, gap: 12,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0, flex: 1 }}>
           <span style={{
             width: 8, height: 8, borderRadius: '50%',
             background: abierto ? C.sage : C.tan,
@@ -122,26 +122,34 @@ const PerfilCafeteria: React.FC<Props> = ({ cafeteriaId, isDemo = false }) => {
           <span style={{
             fontSize: 15, fontWeight: 700,
             color: C.cream, fontFamily: 'Cormorant Garamond, serif',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           }}>
             {emp.nombreLocal}
           </span>
-          <span style={{ fontSize: 11, color: C.muted }}>
+          <span className="caf-header-distrito" style={{ fontSize: 11, color: C.muted, whiteSpace: 'nowrap' }}>
             · {emp.distritoLocal}
           </span>
           {emp.scoreConfianza && emp.totalCalificaciones ? (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 4 }}>
+            <span className="caf-header-score" style={{ display: 'flex', alignItems: 'center', gap: 4, marginLeft: 4, flexShrink: 0 }}>
               <span style={{ color: '#f39c12', fontSize: 12 }}>★</span>
               <span style={{ fontSize: 12, fontWeight: 700, color: C.cream }}>{emp.scoreConfianza.toFixed(1)}</span>
-              <span style={{ fontSize: 11, color: C.muted }}>({emp.totalCalificaciones})</span>
+              <span className="caf-header-count" style={{ fontSize: 11, color: C.muted }}>({emp.totalCalificaciones})</span>
             </span>
           ) : null}
         </div>
         <a href="#/cafeterias" style={{
           fontSize: 11, color: C.muted,
           textDecoration: 'none', fontFamily: 'Montserrat, sans-serif',
+          flexShrink: 0,
         }}>
           ← Cafeterías
         </a>
+        <style>{`
+          @media (max-width: 400px) {
+            .caf-header-distrito { display: none !important; }
+            .caf-header-score { display: none !important; }
+          }
+        `}</style>
       </header>
 
       {/* Contenido — carta directo, sin hero */}

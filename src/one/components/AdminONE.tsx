@@ -21,6 +21,7 @@ import {
 } from '../demoService'
 import type { PedidoONE } from '../types'
 import { logout } from '../authService'
+import ChatPedido from './ChatPedido'
 
 // ─── Design system dark ───────────────────────────────────────────────────────
 const C = {
@@ -400,6 +401,7 @@ function esMismoOAntes(a: Date, b: Date): boolean {
 const TabSoporte: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
   const [busqueda, setBusqueda] = useState('')
   const [filtro, setFiltro] = useState<FiltroSoporte>('todos')
+  const [chatPedidoId, setChatPedidoId] = useState<string | null>(null)
   const [dia, setDia] = useState(() => {
     const d = new Date(); d.setHours(0, 0, 0, 0); return d
   })
@@ -511,6 +513,7 @@ const TabSoporte: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <a
                   href={`#/soporte-chat/${p.id}`}
+                  onClick={e => { e.preventDefault(); setChatPedidoId(p.id) }}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 6,
                     padding: '7px 14px', borderRadius: 8,
@@ -540,6 +543,37 @@ const TabSoporte: React.FC<{ pedidos: PedidoONE[] }> = ({ pedidos }) => {
           ))}
         </div>
       )}
+
+      {/* Modal chat admin */}
+      {chatPedidoId && (() => {
+        const pedido = pedidos.find(p => p.id === chatPedidoId)
+        return (
+          <div style={{ position: 'fixed', inset: 0, zIndex: 500, display: 'flex' }} onClick={() => setChatPedidoId(null)}>
+            <div style={{ flex: 1, background: 'rgba(0,0,0,0.75)' }} />
+            <div
+              style={{ width: 'min(480px, 100vw)', background: C.card, borderLeft: `1px solid ${C.border}`, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}
+              onClick={e => e.stopPropagation()}
+            >
+              <div style={{ padding: '16px 20px', borderBottom: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexShrink: 0 }}>
+                <div>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: C.cream }}>Chat del pedido</p>
+                  {pedido && <p style={{ margin: '2px 0 0', fontSize: 11, color: C.textSub }}>{pedido.nombreLocal} · {pedido.id.slice(-8).toUpperCase()}</p>}
+                </div>
+                <button onClick={() => setChatPedidoId(null)} style={{ background: 'none', border: 'none', color: C.textSub, fontSize: 22, cursor: 'pointer', lineHeight: 1 }}>×</button>
+              </div>
+              <div style={{ flex: 1, padding: '16px 20px', overflowY: 'auto' }}>
+                <ChatPedido
+                  pedidoId={chatPedidoId}
+                  usuarioId="admin"
+                  usuarioNombre="TunayWasi Admin"
+                  usuarioRol="negocio"
+                  isDemo={false}
+                />
+              </div>
+            </div>
+          </div>
+        )
+      })()}
     </div>
   )
 }

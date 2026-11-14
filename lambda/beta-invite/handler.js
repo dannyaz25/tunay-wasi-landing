@@ -38,15 +38,17 @@ async function getGoogleAccessToken() {
 
 async function getLatestReleaseId(projectNumber, appId, token) {
   const url = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/apps/${appId}/releases?pageSize=1&orderBy=createTime%20desc`
+  console.log('getLatestReleaseId URL:', url)
   const res = await fetch(url, {
     headers: { 'Authorization': `Bearer ${token}` },
   })
   if (!res.ok) {
     const err = await res.text()
-    console.error('Releases list error:', res.status, err)
+    console.error('Releases list error:', res.status, err.slice(0, 200))
     return null
   }
   const data = await res.json()
+  console.log('Releases response:', JSON.stringify(data).slice(0, 300))
   const release = data.releases?.[0]
   if (!release) return null
   // name = "projects/N/apps/APP_ID/releases/RELEASE_ID"
@@ -56,11 +58,11 @@ async function getLatestReleaseId(projectNumber, appId, token) {
 // ─── Agregar tester a Firebase App Distribution ───────────────────────────────
 
 async function agregarTesterAppDistribution(email) {
-  const appId = process.env.FIREBASE_APP_ID
+  const appId = process.env.FIREBASE_APP_ID  // 1:399522765847:android:98ef173a366e5ba6ddd052
   if (!appId) throw new Error('FIREBASE_APP_ID env var no configurada')
 
   const token = await getGoogleAccessToken()
-  const projectNumber = appId.split(':')[1]
+  const projectNumber = appId.split(':')[1]  // 399522765847
 
   // 1. Agregar tester al proyecto
   const url = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/testers:batchAdd`
@@ -76,27 +78,29 @@ async function agregarTesterAppDistribution(email) {
     return { ok: false, error: err }
   }
 
-  // 2. Obtener el release más reciente y asignar el tester
+  // 2. Obtener el release más reciente — appId completo tal como está
   const releaseId = await getLatestReleaseId(projectNumber, appId, token)
   if (!releaseId) {
-    console.warn('No se pudo obtener el release ID — tester agregado al proyecto pero no al release')
+    console.warn('No se pudo obtener el release ID — tester en proyecto pero no en release')
     return { ok: true, releaseAssigned: false }
   }
 
-  const releaseUrl = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/apps/${appId}/releases/${releaseId}/testers:batchAdd`
+  // 3. Asignar tester al release via :distribute
+  const releaseUrl = `https://firebaseappdistribution.googleapis.com/v1/projects/${projectNumber}/apps/${appId}/releases/${releaseId}:distribute`
+  console.log('Release distribute URL:', releaseUrl)
   const resRelease = await fetch(releaseUrl, {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ emails: [email] }),
+    body: JSON.stringify({ testerEmails: [email] }),
   })
 
   if (!resRelease.ok) {
     const err = await resRelease.text()
-    console.error('Release batchAdd error:', resRelease.status, err)
-    // Tester ya está en el proyecto, solo falló el release — no es crítico
-    return { ok: true, releaseAssigned: false, releaseError: err }
+    console.error('Release batchAdd error:', resRelease.status, err.slice(0, 200))
+    return { ok: true, releaseAssigned: false, releaseError: err.slice(0, 200) }
   }
 
+  console.log('Tester asignado al release:', releaseId)
   return { ok: true, releaseAssigned: true, releaseId }
 }
 

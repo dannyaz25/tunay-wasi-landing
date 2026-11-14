@@ -72,11 +72,11 @@ const ProductoCard: React.FC<{
   producto: ProductoONE
   caficultor: CaficultorONE | undefined
   onSeleccionar: (p: ProductoONE) => void
-  width?: number
+  width?: number | string
   seleccionado?: boolean
   disabled?: boolean
   enCarrito?: boolean
-}> = ({ producto, caficultor, onSeleccionar, width = 200, seleccionado, disabled, enCarrito }) => {
+}> = ({ producto, caficultor, onSeleccionar, width = '100%', seleccionado, disabled, enCarrito }) => {
   const [hovered, setHovered] = useState(false)
   const procesoColor = PROCESO_COLORS[producto.proceso] ?? C.terra
 
@@ -87,7 +87,7 @@ const ProductoCard: React.FC<{
       onMouseLeave={() => setHovered(false)}
       onClick={() => !disabled && onSeleccionar?.(producto)}
       style={{
-        width,
+        width: typeof width === 'number' ? width : '100%',
         borderRadius: 8,
         overflow: 'visible',
         position: 'relative',
@@ -204,41 +204,44 @@ const ProductoCard: React.FC<{
           {caficultor?.nombre ?? producto.caficultorNombre} · {caficultor?.region ?? ''}
         </p>
 
-        {/* Panel expandido al hover */}
-        {hovered && (
-          <div style={{ marginTop: 8 }}>
-            <p style={{
-              margin: '0 0 8px',
-              fontSize: 10, color: C.cream + 'aa',
-              fontFamily: 'Montserrat, sans-serif', fontStyle: 'italic',
-            }}>
-              {producto.notasSabor.join(' · ')}
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-              <span style={{ fontSize: 13, fontWeight: 700, color: C.terra, fontFamily: 'Montserrat, sans-serif' }}>
-                desde {formatCents(calcularPrecioFinal(producto.precioBaseKgCents, '1kg'))}
-              </span>
-              <span style={{ fontSize: 10, color: C.tan, fontFamily: 'Montserrat, sans-serif' }}>
-                {producto.variedad}
-              </span>
-            </div>
-            <button
-              onClick={(e) => { e.stopPropagation(); !disabled && onSeleccionar?.(producto) }}
-              style={{
-                width: '100%', padding: '7px 0', borderRadius: 5,
-                border: 'none',
-                background: seleccionado ? C.terra + '88' : C.terra,
-                color: C.white,
-                fontSize: 11, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
-                cursor: disabled ? 'not-allowed' : 'pointer', marginBottom: 4,
-              }}>
-              {seleccionado !== undefined
-                ? (seleccionado ? '✓ Seleccionado' : 'Agregar a mi carta')
-                : 'Quiero este café →'
-              }
-            </button>
-          </div>
+        {/* Precio siempre visible */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 6, marginBottom: 4 }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: C.terra, fontFamily: 'Montserrat, sans-serif' }}>
+            desde {formatCents(calcularPrecioFinal(producto.precioBaseKgCents, '1kg'))}
+          </span>
+          <span style={{ fontSize: 9, color: C.tan, fontFamily: 'Montserrat, sans-serif' }}>
+            {producto.variedad}
+          </span>
+        </div>
+
+        {/* Notas de sabor — siempre visible */}
+        {producto.notasSabor.length > 0 && (
+          <p style={{
+            margin: '0 0 6px',
+            fontSize: 10, color: C.cream + 'aa',
+            fontFamily: 'Montserrat, sans-serif', fontStyle: 'italic',
+            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>
+            {producto.notasSabor.join(' · ')}
+          </p>
         )}
+
+        {/* CTA siempre visible */}
+        <button
+          onClick={(e) => { e.stopPropagation(); !disabled && onSeleccionar?.(producto) }}
+          style={{
+            width: '100%', padding: '7px 0', borderRadius: 5,
+            border: 'none',
+            background: seleccionado ? C.terra + '88' : C.terra,
+            color: C.white,
+            fontSize: 11, fontWeight: 700, fontFamily: 'Montserrat, sans-serif',
+            cursor: disabled ? 'not-allowed' : 'pointer', marginBottom: 4,
+          }}>
+          {seleccionado !== undefined
+            ? (seleccionado ? '✓ Seleccionado' : 'Agregar a mi carta')
+            : 'Quiero este café →'
+          }
+        </button>
       </div>
     </div>
   )
@@ -302,6 +305,7 @@ const CarruselRow: React.FC<{
         <div
           ref={scrollRef}
           onScroll={onScroll}
+          className="tw-carrusel-scroll"
           style={{
             display: 'flex', gap: 10,
             overflowX: 'auto', overflowY: 'visible',
@@ -310,12 +314,12 @@ const CarruselRow: React.FC<{
             scrollSnapType: 'x mandatory',
           }}>
           {productos.map((p) => (
-            <div key={p.id} style={{ scrollSnapAlign: 'start' }}>
+            <div key={p.id} className="tw-carrusel-item" style={{ scrollSnapAlign: 'start', width: 200, flexShrink: 0 }}>
               <ProductoCard
                 producto={p}
                 caficultor={caficultores.get(p.caficultorId)}
                 onSeleccionar={onSeleccionar}
-                width={200}
+                width="100%"
                 seleccionado={seleccionados ? seleccionados.has(p.id) : undefined}
                 disabled={seleccionados ? (seleccionados.size >= 3 && !seleccionados.has(p.id)) : false}
               />
@@ -491,6 +495,33 @@ const GridFiltrado: React.FC<{
           />
         ))}
       </div>
+
+      {/* Empty state */}
+      {filtrados.length === 0 && (
+        <div style={{
+          textAlign: 'center', padding: '60px 20px',
+          fontFamily: 'Montserrat, sans-serif',
+        }}>
+          <div style={{ fontSize: 40, marginBottom: 12, opacity: 0.3 }}>☕</div>
+          <p style={{ fontSize: 14, color: C.tan, margin: 0 }}>
+            {productos.length === 0
+              ? 'Aún no hay productos disponibles en el catálogo.'
+              : 'No hay cafés que coincidan con los filtros seleccionados.'}
+          </p>
+          {productos.length > 0 && (
+            <button
+              onClick={() => { setBusqueda(''); setFiltroProceso('todos'); setFiltroRegion('todas') }}
+              style={{
+                marginTop: 12, background: 'none', border: `1px solid ${C.border}`,
+                color: C.tan, fontSize: 12, padding: '6px 16px', borderRadius: 6,
+                cursor: 'pointer', fontFamily: 'Montserrat, sans-serif',
+              }}
+            >
+              Limpiar filtros
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -766,7 +797,12 @@ const DetalleDrawer: React.FC<{
               background: `linear-gradient(135deg, ${C.green}18, #141414)`,
               display: 'flex', alignItems: 'center', gap: 12,
             }}>
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: C.green, border: `2px solid ${C.sage}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>🧑‍🌾</div>
+              <div style={{ width: 40, height: 40, borderRadius: '50%', background: C.green, border: `2px solid ${C.sage}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0, overflow: 'hidden' }}>
+                {caficultor.foto
+                  ? <img src={caficultor.foto} alt={caficultor.nombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <span>🧑‍🌾</span>
+                }
+              </div>
               <div>
                 <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: C.cream }}>{caficultor.nombre}</p>
                 <p style={{ margin: '2px 0 0', fontSize: 11, color: C.sage }}>{caficultor.distrito}, {caficultor.region} · {caficultor.altitudMsnm?.toLocaleString()} msnm</p>
@@ -942,48 +978,37 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar, modoSeleccion, carrit
   const [loading, setLoading] = useState(true)
   const [productoDetalle, setProductoDetalle] = useState<ProductoONE | null>(null)
   const [modalRegistro, setModalRegistro] = useState(false)
+  const [menuAbierto, setMenuAbierto] = useState(false)
 
   // Cerrar drawer estable como callback
   const cerrarDetalle = useCallback(() => setProductoDetalle(null), [])
 
   useEffect(() => {
-    const usarSeed = () => {
-      console.log('[CatalogoPublico] Usando datos seed (fallback)')
+    if (isDemo) {
+      console.log('[CatalogoPublico] Modo demo — seed')
       setProductos(seedProductos as ProductoONE[])
       setCaficultores(new Map((seedCaficultores as CaficultorONE[]).map((c) => [c.id, c])))
       setLoading(false)
-    }
-
-    if (isDemo) {
-      console.log('[CatalogoPublico] Modo demo — seed')
-      usarSeed()
       return
     }
 
     console.log('[CatalogoPublico] Cargando desde Firestore...')
-    const timer = setTimeout(usarSeed, 3000)
 
     async function cargar() {
       try {
         const [prods, cafics] = await Promise.all([fetchProductos(), fetchCaficultores()])
-        clearTimeout(timer)
         console.log(`[CatalogoPublico] Firestore OK — ${prods.length} productos, ${cafics.length} caficultores`)
-        const productosFinales = prods.length > 0 ? prods : (seedProductos as ProductoONE[])
-        const caficsFinales = cafics.length > 0 ? cafics : (seedCaficultores as CaficultorONE[])
-        if (prods.length === 0) console.warn('[CatalogoPublico] Productos vacíos en Firestore — usando seed')
-        if (cafics.length === 0) console.warn('[CatalogoPublico] Caficultores vacíos en Firestore — usando seed')
-        setProductos(productosFinales)
-        setCaficultores(new Map(caficsFinales.map((c) => [c.id, c])))
+        setProductos(prods)
+        setCaficultores(new Map(cafics.map((c) => [c.id, c])))
       } catch (err) {
-        clearTimeout(timer)
-        console.error('[CatalogoPublico] Error al cargar Firestore — usando seed', err)
-        usarSeed()
+        console.error('[CatalogoPublico] Error al cargar Firestore — sin productos', err)
+        setProductos([])
+        setCaficultores(new Map())
       } finally {
         setLoading(false)
       }
     }
     cargar()
-    return () => clearTimeout(timer)
   }, [isDemo])
 
   // Agrupar productos por caficultor (excluir kit-inicio-001 del catálogo)
@@ -1021,57 +1046,80 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar, modoSeleccion, carrit
       {!modoSeleccion && sidebarOffset === 0 && (
         <header style={{
           position: 'fixed', top: 0, left: sidebarOffset, right: 0, zIndex: 100,
-          padding: '14px 4%',
           background: 'linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 100%)',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
-          <div>
-            <span style={{
-              fontSize: 20, fontWeight: 700, letterSpacing: '0.08em',
-              color: C.terra, fontFamily: 'Cormorant Garamond, serif',
+          {/* Barra principal */}
+          <div style={{
+            padding: '14px 4%',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          }}>
+            <div style={{ flexShrink: 0 }}>
+              <span style={{
+                fontSize: 20, fontWeight: 700, letterSpacing: '0.08em',
+                color: C.terra, fontFamily: 'Cormorant Garamond, serif',
+              }}>
+                TUNAY WASI
+              </span>
+              <span className="cat-nav-subtitle" style={{
+                marginLeft: 12, fontSize: 11, color: C.tan,
+                letterSpacing: '0.1em', fontFamily: 'Montserrat, sans-serif',
+              }}>
+                CAFÉ PERUANO
+              </span>
+            </div>
+
+            {/* Desktop links */}
+            <div className="cat-nav-desktop" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+              <a href="#/para-caficultores" style={{ color: C.tan, fontSize: 13, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif', padding: '7px 14px' }}>
+                Soy caficultor
+              </a>
+              <a href="#/para-cafeterias" style={{ color: C.tan, fontSize: 13, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif', padding: '7px 14px' }}>
+                Soy negocio
+              </a>
+              <button onClick={() => setModalRegistro(true)} style={{ color: C.cream, fontSize: 13, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, padding: '7px 16px', borderRadius: 4, border: `1px solid ${C.terra}`, background: 'none', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                Registrarse
+              </button>
+              <a href="#/portal" style={{ color: C.cream, fontSize: 13, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, padding: '7px 18px', borderRadius: 4, background: C.terra }}>
+                Mi portal
+              </a>
+            </div>
+
+            {/* Hamburger mobile */}
+            <button className="cat-nav-hamburger" onClick={() => setMenuAbierto(o => !o)} style={{
+              display: 'none', background: 'none', border: 'none', cursor: 'pointer',
+              padding: 8, color: C.cream,
             }}>
-              TUNAY WASI
-            </span>
-            <span style={{
-              marginLeft: 12, fontSize: 11, color: C.tan,
-              letterSpacing: '0.1em', fontFamily: 'Montserrat, sans-serif',
-            }}>
-              CAFÉ PERUANO
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-            <a href="#/para-caficultores" style={{
-              color: C.tan, fontSize: 13, textDecoration: 'none',
-              fontFamily: 'Montserrat, sans-serif',
-              padding: '7px 14px',
-            }}>
-              Soy caficultor
-            </a>
-            <a href="#/para-cafeterias" style={{
-              color: C.tan, fontSize: 13, textDecoration: 'none',
-              fontFamily: 'Montserrat, sans-serif',
-              padding: '7px 14px',
-            }}>
-              Soy negocio
-            </a>
-            <button onClick={() => setModalRegistro(true)} style={{
-              color: C.cream, fontSize: 13,
-              fontFamily: 'Montserrat, sans-serif', fontWeight: 600,
-              padding: '7px 16px', borderRadius: 4,
-              border: `1px solid ${C.terra}`,
-              background: 'none', cursor: 'pointer',
-            }}>
-              Registrarse
+              {menuAbierto
+                ? <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                : <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+              }
             </button>
-            <a href="#/portal" style={{
-              color: C.cream, fontSize: 13, textDecoration: 'none',
-              fontFamily: 'Montserrat, sans-serif', fontWeight: 600,
-              padding: '7px 18px', borderRadius: 4,
-              background: C.terra,
-            }}>
-              Mi portal
-            </a>
           </div>
+
+          {/* Mobile menu desplegable */}
+          {menuAbierto && (
+            <div className="cat-nav-mobile-menu" style={{
+              display: 'none',
+              flexDirection: 'column',
+              padding: '8px 20px 20px',
+              background: 'rgba(0,0,0,0.92)',
+              gap: 4,
+            }}>
+              <a href="#/para-caficultores" onClick={() => setMenuAbierto(false)} style={{ color: C.tan, fontSize: 15, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'block' }}>Soy caficultor</a>
+              <a href="#/para-cafeterias" onClick={() => setMenuAbierto(false)} style={{ color: C.tan, fontSize: 15, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'block' }}>Soy negocio</a>
+              <button onClick={() => { setModalRegistro(true); setMenuAbierto(false) }} style={{ color: C.cream, fontSize: 15, fontFamily: 'Montserrat, sans-serif', fontWeight: 600, padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left' }}>Registrarse</button>
+              <a href="#/portal" onClick={() => setMenuAbierto(false)} style={{ display: 'block', marginTop: 12, padding: '13px', borderRadius: 4, background: C.terra, color: C.cream, fontSize: 14, textDecoration: 'none', fontFamily: 'Montserrat, sans-serif', fontWeight: 600, textAlign: 'center' }}>Mi portal</a>
+            </div>
+          )}
+
+          <style>{`
+            @media (max-width: 640px) {
+              .cat-nav-desktop { display: none !important; }
+              .cat-nav-subtitle { display: none !important; }
+              .cat-nav-hamburger { display: flex !important; }
+              .cat-nav-mobile-menu { display: flex !important; }
+            }
+          `}</style>
         </header>
       )}
 
@@ -1301,6 +1349,27 @@ const CatalogoPublico: React.FC<Props> = ({ onSeleccionar, modoSeleccion, carrit
 
       <style>{`
         div::-webkit-scrollbar { display: none; }
+
+        /* ── Carrusel mobile: grid vertical en lugar de scroll horizontal ── */
+        @media (max-width: 640px) {
+          .tw-carrusel-scroll {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            overflow-x: visible !important;
+            padding-bottom: 8px !important;
+            scroll-snap-type: none !important;
+            gap: 12px !important;
+          }
+          .tw-carrusel-item {
+            width: 100% !important;
+            flex-shrink: 0 !important;
+            scroll-snap-align: none !important;
+          }
+          /* La ProductoCard tiene width inline — override con !important */
+          .tw-carrusel-item > div[style] {
+            width: 100% !important;
+          }
+        }
 
         /* ── Barra flotante ── */
         @keyframes slideUp {

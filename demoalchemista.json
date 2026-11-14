@@ -1,0 +1,4962 @@
+[
+    {
+        "id": 4,
+        "name": "Arara ASD Natural",
+        "slug": "arara-asd-natural-3",
+        "farm": {
+            "id": 3,
+            "name": "La Chacra D' Dago",
+            "farmer": {
+                "id": 3,
+                "name": "Dagoberto Marín e hijos Héctor, César y Eduardo"
+            },
+            "region": "Junín",
+            "city": "Palomar",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Arara",
+        "notes": [
+            "Arándano ligero",
+            "Azúcar morena",
+            "Mora"
+        ],
+        "altitude_masl": 1700,
+        "fermentation_style": "Anaeróbica",
+        "fermentation_hours": 120,
+        "drying_type": "Natural en camas africanas",
+        "drying_hours": 792,
+        "cupping_score": "87.50",
+        "price_green_per_kg": 70.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2026-04-09",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "6.10",
+                    "pre_tax": "33.91",
+                    "cost_base": "27.13",
+                    "final_price": 40.01,
+                    "platform_fee_amt": "6.78"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "22.72",
+                    "pre_tax": "126.24",
+                    "cost_base": "100.99",
+                    "final_price": 148.96,
+                    "platform_fee_amt": "25.25"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "66.43",
+                    "pre_tax": "369.05",
+                    "cost_base": "302.50",
+                    "final_price": 435.48,
+                    "platform_fee_amt": "66.55"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.81",
+                    "pre_tax": "32.26",
+                    "cost_base": "26.88",
+                    "final_price": 38.07,
+                    "platform_fee_amt": "5.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "22.22",
+                    "pre_tax": "123.45",
+                    "cost_base": "101.19",
+                    "final_price": 145.67,
+                    "platform_fee_amt": "22.26"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "64.04",
+                    "pre_tax": "355.80",
+                    "cost_base": "296.50",
+                    "final_price": 419.84,
+                    "platform_fee_amt": "59.30"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "421.69",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "100.05",
+                    "pre_tax": "555.83",
+                    "cost_base": "483.33",
+                    "final_price": 655.88,
+                    "platform_fee_amt": "72.50"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "6.10",
+                    "pre_tax": "33.91",
+                    "cost_base": "27.13",
+                    "final_price": 40.01,
+                    "platform_fee_amt": "6.78"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "22.72",
+                    "pre_tax": "126.24",
+                    "cost_base": "100.99",
+                    "final_price": 148.96,
+                    "platform_fee_amt": "25.25"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "66.43",
+                    "pre_tax": "369.05",
+                    "cost_base": "302.50",
+                    "final_price": 435.48,
+                    "platform_fee_amt": "66.55"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.81",
+                    "pre_tax": "32.26",
+                    "cost_base": "26.88",
+                    "final_price": 38.07,
+                    "platform_fee_amt": "5.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "22.22",
+                    "pre_tax": "123.45",
+                    "cost_base": "101.19",
+                    "final_price": 145.67,
+                    "platform_fee_amt": "22.26"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "64.04",
+                    "pre_tax": "355.80",
+                    "cost_base": "296.50",
+                    "final_price": 419.84,
+                    "platform_fee_amt": "59.30"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "421.69",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "100.05",
+                    "pre_tax": "555.83",
+                    "cost_base": "483.33",
+                    "final_price": 655.88,
+                    "platform_fee_amt": "72.50"
+                }
+            }
+        },
+        "level": "conocedor",
+        "roast_profile": "medio_claro",
+        "intensity": "complejo",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "espresso",
+            "aeropress",
+            "filter_home",
+            "siphon"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 19,
+            "bg": "#0D0710",
+            "accent": "#A20F6D",
+            "accent_2": "#C76A12",
+            "accent_3": "#21121D",
+            "border": "#3A1630",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "yellow",
+                "harvest": "rose",
+                "process": "purple",
+                "variety": "green",
+                "altitude": "blue",
+                "fermentation": "amber"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "9e09e17a0dafc1a8b4bfd7d67f12334f",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0D0911",
+                    "visual_glow_1": "#C34947",
+                    "visual_glow_2": "#9E5412",
+                    "visual_surface_0": "#A20F6D",
+                    "visual_surface_1": "#C76A12",
+                    "visual_surface_2": "#21121D",
+                    "visual_panel_border": "#B33A87"
+                },
+                "palette_seed": "baf08b263df60d16a5f8da0e"
+            },
+            "created_at": "2025-12-16T18:41:35.419018-05:00",
+            "updated_at": "2026-02-19T16:06:35.789057-05:00",
+            "generated_at": "2026-02-19T16:06:35.788796-05:00",
+            "visual_bg": "#0D0710",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#A20F6D",
+            "visual_accent_2": "#C76A12",
+            "visual_accent_3": "#21121D",
+            "visual_border": "#3A1630",
+            "visual_badge": "#FFB400",
+            "visual_icons": [],
+            "visual_reason": "Anaeróbico natural: arándano y mora brillante sobre azúcar morena, con una base densa y aterciopelada.",
+            "visual_fingerprint": "baf08b263df60d16a5f8da0e",
+            "visual_updated_at": "2026-02-19T16:06:35.788789-05:00",
+            "lot": 4
+        },
+        "freshness_info": {
+            "roast_date": "2026-04-09",
+            "days_since_roast": 36,
+            "status": "ultimo_tramo",
+            "message": "Tostado hace 36 dias -- todavia delicioso, mejor consumir pronto",
+            "peak_window": "Estara en su punto optimo entre 7 y 30 dias post-tueste"
+        },
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "✨ En su punto óptimo — máxima claridad y dulzor",
+            "method_scores": {
+                "v60": 10,
+                "moka": 4,
+                "turca": 3,
+                "chemex": 9,
+                "siphon": 7,
+                "espresso": 8,
+                "aeropress": 9,
+                "cold_brew": 6,
+                "filter_home": 8,
+                "french_press": 5,
+                "clever_dripper": 6
+            },
+            "profile_summary": "Café natural de fermentación anaeróbica con notas de arándano y azúcar morena",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "filter_home",
+                    "label": "Filtro en casa"
+                }
+            ]
+        }
+    },
+    {
+        "id": 5,
+        "name": "Amarillos DP",
+        "slug": "arara-asd-natural-4",
+        "farm": {
+            "id": 3,
+            "name": "La Chacra D' Dago",
+            "farmer": {
+                "id": 3,
+                "name": "Dagoberto Marín e hijos Héctor, César y Eduardo"
+            },
+            "region": "Junín",
+            "city": "Palomar",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Blend (Obata Amarillo y Arara)",
+        "notes": [
+            "Papaya",
+            "Toques a Carambola"
+        ],
+        "altitude_masl": 1600,
+        "fermentation_style": "Doble proceso (Natural 3 días + Despulpado 2 días)",
+        "fermentation_hours": 72,
+        "drying_type": "Semilavado",
+        "drying_hours": 432,
+        "cupping_score": "87.00",
+        "price_green_per_kg": 70.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2025-11-10",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "6.10",
+                    "pre_tax": "33.91",
+                    "cost_base": "27.13",
+                    "final_price": 40.01,
+                    "platform_fee_amt": "6.78"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "22.72",
+                    "pre_tax": "126.24",
+                    "cost_base": "100.99",
+                    "final_price": 148.96,
+                    "platform_fee_amt": "25.25"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "66.43",
+                    "pre_tax": "369.05",
+                    "cost_base": "302.50",
+                    "final_price": 435.48,
+                    "platform_fee_amt": "66.55"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.81",
+                    "pre_tax": "32.26",
+                    "cost_base": "26.88",
+                    "final_price": 38.07,
+                    "platform_fee_amt": "5.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "22.22",
+                    "pre_tax": "123.45",
+                    "cost_base": "101.19",
+                    "final_price": 145.67,
+                    "platform_fee_amt": "22.26"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "64.04",
+                    "pre_tax": "355.80",
+                    "cost_base": "296.50",
+                    "final_price": 419.84,
+                    "platform_fee_amt": "59.30"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "421.69",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "100.05",
+                    "pre_tax": "555.83",
+                    "cost_base": "483.33",
+                    "final_price": 655.88,
+                    "platform_fee_amt": "72.50"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "6.10",
+                    "pre_tax": "33.91",
+                    "cost_base": "27.13",
+                    "final_price": 40.01,
+                    "platform_fee_amt": "6.78"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "22.72",
+                    "pre_tax": "126.24",
+                    "cost_base": "100.99",
+                    "final_price": 148.96,
+                    "platform_fee_amt": "25.25"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "66.43",
+                    "pre_tax": "369.05",
+                    "cost_base": "302.50",
+                    "final_price": 435.48,
+                    "platform_fee_amt": "66.55"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.81",
+                    "pre_tax": "32.26",
+                    "cost_base": "26.88",
+                    "final_price": 38.07,
+                    "platform_fee_amt": "5.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "22.22",
+                    "pre_tax": "123.45",
+                    "cost_base": "101.19",
+                    "final_price": 145.67,
+                    "platform_fee_amt": "22.26"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "64.04",
+                    "pre_tax": "355.80",
+                    "cost_base": "296.50",
+                    "final_price": 419.84,
+                    "platform_fee_amt": "59.30"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "421.69",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "100.05",
+                    "pre_tax": "555.83",
+                    "cost_base": "483.33",
+                    "final_price": 655.88,
+                    "platform_fee_amt": "72.50"
+                }
+            }
+        },
+        "level": "explorador",
+        "roast_profile": "medio_claro",
+        "intensity": "balanceado",
+        "recommended_methods": [
+            "french_press",
+            "moka",
+            "cold_brew",
+            "aeropress"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 20,
+            "bg": "#0B1221",
+            "accent": "#FF6A00",
+            "accent_2": "#FFD100",
+            "accent_3": "#8A4B00",
+            "border": "#FFD100",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "blue",
+                "harvest": "green",
+                "process": "purple",
+                "variety": "yellow",
+                "altitude": "slate",
+                "fermentation": "amber"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "367745f0dbc61192d0ef324ddf299615",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0B111E",
+                    "visual_glow_1": "#A6854C",
+                    "visual_glow_2": "#C9A707",
+                    "visual_surface_0": "#FF6A00",
+                    "visual_surface_1": "#FFD100",
+                    "visual_surface_2": "#8A4B00",
+                    "visual_panel_border": "#FF852E"
+                },
+                "palette_seed": "bf7fdf50d7714a8606e647fa"
+            },
+            "created_at": "2025-12-16T18:42:09.515457-05:00",
+            "updated_at": "2026-03-18T12:52:41.202741-05:00",
+            "generated_at": "2026-03-18T12:52:41.202493-05:00",
+            "visual_bg": "#0B1221",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#FF6A00",
+            "visual_accent_2": "#FFD100",
+            "visual_accent_3": "#8A4B00",
+            "visual_border": "#FFD100",
+            "visual_badge": "#00B8D9",
+            "visual_icons": [],
+            "visual_reason": "Papaya jugosa y carambola chispeante: dulce tropical brillante con un fondo cálido y denso.",
+            "visual_fingerprint": "bf7fdf50d7714a8606e647fa",
+            "visual_updated_at": "2026-03-18T12:52:41.202486-05:00",
+            "lot": 5
+        },
+        "freshness_info": null,
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "Este café ha pasado su mejor momento, considera métodos de inmersión larga para disfrutarlo.",
+            "method_scores": {
+                "v60": 6,
+                "moka": 7,
+                "turca": 4,
+                "chemex": 5,
+                "siphon": 6,
+                "espresso": 2,
+                "aeropress": 7,
+                "cold_brew": 8,
+                "filter_home": 5,
+                "french_press": 8,
+                "clever_dripper": 5
+            },
+            "profile_summary": "Café tropical con notas de papaya y carambola, ideal para disfrutar en métodos de inmersión.",
+            "espresso_suitable": false,
+            "recommended_methods_full": [
+                {
+                    "code": "french_press",
+                    "label": "French Press"
+                },
+                {
+                    "code": "cold_brew",
+                    "label": "Cold Brew"
+                },
+                {
+                    "code": "moka",
+                    "label": "Moka"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "v60",
+                    "label": "V60"
+                }
+            ]
+        }
+    },
+    {
+        "id": 14,
+        "name": "Blend Cusi",
+        "slug": "blend-cusi",
+        "farm": {
+            "id": 13,
+            "name": "Finca Rosal",
+            "farmer": {
+                "id": 8,
+                "name": "Misael Cusi"
+            },
+            "region": "Pasco",
+            "city": "Villa Rica",
+            "country": "Perú"
+        },
+        "harvest_year": 2026,
+        "variety": "Blend de Caturras",
+        "notes": [
+            "Caramelo",
+            "chocolate",
+            "Frutos secos",
+            "Lima dulce",
+            "Rosas"
+        ],
+        "altitude_masl": 1600,
+        "fermentation_style": "Lavado",
+        "fermentation_hours": 48,
+        "drying_type": "Solar",
+        "drying_hours": 70,
+        "cupping_score": "84.00",
+        "price_green_per_kg": 38.0,
+        "stock_kg": 6.25,
+        "is_active": true,
+        "immediate_roasted_bags": 4,
+        "immediate_roast_date": "2026-05-12",
+        "roasted_availability": true,
+        "green_availability": true,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "11.45",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "3.94",
+                    "pre_tax": "21.88",
+                    "cost_base": "17.50",
+                    "final_price": 25.82,
+                    "platform_fee_amt": "4.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "45.78",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "14.05",
+                    "pre_tax": "78.04",
+                    "cost_base": "62.43",
+                    "final_price": 92.09,
+                    "platform_fee_amt": "15.61"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "137.35",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "41.03",
+                    "pre_tax": "227.94",
+                    "cost_base": "186.84",
+                    "final_price": 268.97,
+                    "platform_fee_amt": "41.10"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "11.45",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "3.73",
+                    "pre_tax": "20.70",
+                    "cost_base": "17.25",
+                    "final_price": 24.43,
+                    "platform_fee_amt": "3.45"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "45.78",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "13.75",
+                    "pre_tax": "76.41",
+                    "cost_base": "62.63",
+                    "final_price": 90.16,
+                    "platform_fee_amt": "13.78"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "137.35",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "39.06",
+                    "pre_tax": "217.01",
+                    "cost_base": "180.84",
+                    "final_price": 256.07,
+                    "platform_fee_amt": "36.17"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "228.92",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "60.15",
+                    "pre_tax": "334.14",
+                    "cost_base": "290.56",
+                    "final_price": 394.29,
+                    "platform_fee_amt": "43.58"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "11.45",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "3.94",
+                    "pre_tax": "21.88",
+                    "cost_base": "17.50",
+                    "final_price": 25.82,
+                    "platform_fee_amt": "4.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "45.78",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "14.05",
+                    "pre_tax": "78.04",
+                    "cost_base": "62.43",
+                    "final_price": 92.09,
+                    "platform_fee_amt": "15.61"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "137.35",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "41.03",
+                    "pre_tax": "227.94",
+                    "cost_base": "186.84",
+                    "final_price": 268.97,
+                    "platform_fee_amt": "41.10"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "11.45",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "3.73",
+                    "pre_tax": "20.70",
+                    "cost_base": "17.25",
+                    "final_price": 24.43,
+                    "platform_fee_amt": "3.45"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "45.78",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "13.75",
+                    "pre_tax": "76.41",
+                    "cost_base": "62.63",
+                    "final_price": 90.16,
+                    "platform_fee_amt": "13.78"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "137.35",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "39.06",
+                    "pre_tax": "217.01",
+                    "cost_base": "180.84",
+                    "final_price": 256.07,
+                    "platform_fee_amt": "36.17"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "228.92",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "60.15",
+                    "pre_tax": "334.14",
+                    "cost_base": "290.56",
+                    "final_price": 394.29,
+                    "platform_fee_amt": "43.58"
+                }
+            }
+        },
+        "level": "explorador",
+        "roast_profile": "medio_claro",
+        "intensity": "balanceado",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "espresso",
+            "aeropress"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 28,
+            "bg": "#0E0B09",
+            "accent": "#C46A08",
+            "accent_2": "#9CCB12",
+            "accent_3": "#2B1610",
+            "border": "#6F3F20",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "amber",
+                "harvest": "purple",
+                "process": "blue",
+                "variety": "rose",
+                "altitude": "green",
+                "fermentation": "slate"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "4dc370dd8c3a9ef056f3dc2ba9280db7",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0D0C0B",
+                    "visual_glow_1": "#CB4E27",
+                    "visual_glow_2": "#7DA110",
+                    "visual_surface_0": "#C46A08",
+                    "visual_surface_1": "#9CCB12",
+                    "visual_surface_2": "#2B1610",
+                    "visual_panel_border": "#CF8534"
+                },
+                "palette_seed": "6935f38b221bc71a51f1f4ec"
+            },
+            "created_at": "2026-02-22T15:13:29.040079-05:00",
+            "updated_at": "2026-04-07T12:48:17.108698-05:00",
+            "generated_at": "2026-04-07T12:48:17.108461-05:00",
+            "visual_bg": "#0E0B09",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#C46A08",
+            "visual_accent_2": "#9CCB12",
+            "visual_accent_3": "#2B1610",
+            "visual_border": "#6F3F20",
+            "visual_badge": "#D81B60",
+            "visual_icons": [],
+            "visual_reason": "Miel y caramelo brillante, toque de lima dulce, fondo de cacao con flores de rosa.",
+            "visual_fingerprint": "6935f38b221bc71a51f1f4ec",
+            "visual_updated_at": "2026-04-07T12:48:17.108454-05:00",
+            "lot": 14
+        },
+        "freshness_info": {
+            "roast_date": "2026-05-12",
+            "days_since_roast": 3,
+            "status": "recien_tostado",
+            "message": "Recien tostado -- necesita desgasificar, mejorara cada dia",
+            "peak_window": "Estara en su punto optimo entre 7 y 30 dias post-tueste"
+        },
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "✨ En su punto óptimo — máxima claridad y dulzor",
+            "method_scores": {
+                "v60": 8,
+                "moka": 5,
+                "turca": 3,
+                "chemex": 8,
+                "siphon": 6,
+                "espresso": 7,
+                "aeropress": 7,
+                "cold_brew": 4,
+                "filter_home": 5,
+                "french_press": 6,
+                "clever_dripper": 5
+            },
+            "profile_summary": "Café balanceado con notas de caramelo y chocolate, y un toque floral de rosas.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "french_press",
+                    "label": "French Press"
+                }
+            ]
+        }
+    },
+    {
+        "id": 7,
+        "name": "Clásico Lavado Ddago",
+        "slug": "blend-general",
+        "farm": {
+            "id": 3,
+            "name": "La Chacra D' Dago",
+            "farmer": {
+                "id": 3,
+                "name": "Dagoberto Marín e hijos Héctor, César y Eduardo"
+            },
+            "region": "Junín",
+            "city": "Palomar",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Blend de Sarchimores",
+        "notes": [
+            "chocolate",
+            "Lima",
+            "manzana verde",
+            "nuez",
+            "Té negro"
+        ],
+        "altitude_masl": 1550,
+        "fermentation_style": "Lavado",
+        "fermentation_hours": 36,
+        "drying_type": "Lavado",
+        "drying_hours": 300,
+        "cupping_score": "84.00",
+        "price_green_per_kg": 40.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2025-11-10",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.07",
+                    "pre_tax": "22.63",
+                    "cost_base": "18.10",
+                    "final_price": 26.7,
+                    "platform_fee_amt": "4.53"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "14.59",
+                    "pre_tax": "81.05",
+                    "cost_base": "64.84",
+                    "final_price": 95.64,
+                    "platform_fee_amt": "16.21"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "42.62",
+                    "pre_tax": "236.77",
+                    "cost_base": "194.07",
+                    "final_price": 279.39,
+                    "platform_fee_amt": "42.70"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "3.86",
+                    "pre_tax": "21.42",
+                    "cost_base": "17.85",
+                    "final_price": 25.28,
+                    "platform_fee_amt": "3.57"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "14.28",
+                    "pre_tax": "79.35",
+                    "cost_base": "65.04",
+                    "final_price": 93.63,
+                    "platform_fee_amt": "14.31"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "40.62",
+                    "pre_tax": "225.68",
+                    "cost_base": "188.07",
+                    "final_price": 266.3,
+                    "platform_fee_amt": "37.61"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "240.96",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "62.64",
+                    "pre_tax": "347.99",
+                    "cost_base": "302.60",
+                    "final_price": 410.63,
+                    "platform_fee_amt": "45.39"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.07",
+                    "pre_tax": "22.63",
+                    "cost_base": "18.10",
+                    "final_price": 26.7,
+                    "platform_fee_amt": "4.53"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "14.59",
+                    "pre_tax": "81.05",
+                    "cost_base": "64.84",
+                    "final_price": 95.64,
+                    "platform_fee_amt": "16.21"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "42.62",
+                    "pre_tax": "236.77",
+                    "cost_base": "194.07",
+                    "final_price": 279.39,
+                    "platform_fee_amt": "42.70"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "3.86",
+                    "pre_tax": "21.42",
+                    "cost_base": "17.85",
+                    "final_price": 25.28,
+                    "platform_fee_amt": "3.57"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "14.28",
+                    "pre_tax": "79.35",
+                    "cost_base": "65.04",
+                    "final_price": 93.63,
+                    "platform_fee_amt": "14.31"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "40.62",
+                    "pre_tax": "225.68",
+                    "cost_base": "188.07",
+                    "final_price": 266.3,
+                    "platform_fee_amt": "37.61"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "240.96",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "62.64",
+                    "pre_tax": "347.99",
+                    "cost_base": "302.60",
+                    "final_price": 410.63,
+                    "platform_fee_amt": "45.39"
+                }
+            }
+        },
+        "level": "explorador",
+        "roast_profile": "medio_claro",
+        "intensity": "balanceado",
+        "recommended_methods": [
+            "french_press",
+            "moka",
+            "espresso",
+            "cold_brew"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 22,
+            "bg": "#0B0F10",
+            "accent": "#3E2213",
+            "accent_2": "#C7EA00",
+            "accent_3": "#0B0B0C",
+            "border": "#9B4F24",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "amber",
+                "harvest": "yellow",
+                "process": "blue",
+                "variety": "purple",
+                "altitude": "green",
+                "fermentation": "slate"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "35961a04995eb25531a43b7bc3ed9858",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0B0F11",
+                    "visual_glow_1": "#6F670C",
+                    "visual_glow_2": "#9EBA04",
+                    "visual_surface_0": "#3E2213",
+                    "visual_surface_1": "#C7EA00",
+                    "visual_surface_2": "#0B0B0C",
+                    "visual_panel_border": "#614A3D"
+                },
+                "palette_seed": "8f0335ea4316a6438d3351e5"
+            },
+            "created_at": "2025-12-16T18:43:08.310155-05:00",
+            "updated_at": "2026-03-18T12:53:50.254179-05:00",
+            "generated_at": "2026-03-18T12:53:50.254053-05:00",
+            "visual_bg": "#0B0F10",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#3E2213",
+            "visual_accent_2": "#C7EA00",
+            "visual_accent_3": "#0B0B0C",
+            "visual_border": "#9B4F24",
+            "visual_badge": "#C9E600",
+            "visual_icons": [],
+            "visual_reason": "Chocolate profundo con acidez de lima y manzana verde, sostenido por seco té negro.",
+            "visual_fingerprint": "8f0335ea4316a6438d3351e5",
+            "visual_updated_at": "2026-03-18T12:53:50.254048-05:00",
+            "lot": 7
+        },
+        "freshness_info": null,
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "Con 128 días desde el tueste, este café está maduro. Ideal para métodos de inmersión larga como French Press o Cold Brew.",
+            "method_scores": {
+                "v60": 6,
+                "moka": 8,
+                "turca": 4,
+                "chemex": 5,
+                "siphon": 5,
+                "espresso": 7,
+                "aeropress": 5,
+                "cold_brew": 9,
+                "filter_home": 6,
+                "french_press": 9,
+                "clever_dripper": 6
+            },
+            "profile_summary": "Café balanceado con notas de chocolate y manzana verde, ideal para disfrutar en cualquier momento.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "french_press",
+                    "label": "French Press"
+                },
+                {
+                    "code": "moka",
+                    "label": "Moka"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "cold_brew",
+                    "label": "Cold Brew"
+                },
+                {
+                    "code": "v60",
+                    "label": "V60"
+                }
+            ]
+        }
+    },
+    {
+        "id": 12,
+        "name": "Geisha Cusi",
+        "slug": "geisha-cusi",
+        "farm": {
+            "id": 13,
+            "name": "Finca Rosal",
+            "farmer": {
+                "id": 8,
+                "name": "Misael Cusi"
+            },
+            "region": "Pasco",
+            "city": "Villa Rica",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Geisha",
+        "notes": [
+            "Caramelo",
+            "Floral",
+            "Guindones",
+            "Naranja"
+        ],
+        "altitude_masl": 1600,
+        "fermentation_style": "Aeróbica Lavado",
+        "fermentation_hours": 48,
+        "drying_type": "Solar",
+        "drying_hours": 70,
+        "cupping_score": "85.70",
+        "price_green_per_kg": 40.0,
+        "stock_kg": 12.25,
+        "is_active": true,
+        "immediate_roasted_bags": 18,
+        "immediate_roast_date": "2026-05-12",
+        "roasted_availability": true,
+        "green_availability": true,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.07",
+                    "pre_tax": "22.63",
+                    "cost_base": "18.10",
+                    "final_price": 26.7,
+                    "platform_fee_amt": "4.53"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "14.59",
+                    "pre_tax": "81.05",
+                    "cost_base": "64.84",
+                    "final_price": 95.64,
+                    "platform_fee_amt": "16.21"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "42.62",
+                    "pre_tax": "236.77",
+                    "cost_base": "194.07",
+                    "final_price": 279.39,
+                    "platform_fee_amt": "42.70"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "3.86",
+                    "pre_tax": "21.42",
+                    "cost_base": "17.85",
+                    "final_price": 25.28,
+                    "platform_fee_amt": "3.57"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "14.28",
+                    "pre_tax": "79.35",
+                    "cost_base": "65.04",
+                    "final_price": 93.63,
+                    "platform_fee_amt": "14.31"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "40.62",
+                    "pre_tax": "225.68",
+                    "cost_base": "188.07",
+                    "final_price": 266.3,
+                    "platform_fee_amt": "37.61"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "240.96",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "62.64",
+                    "pre_tax": "347.99",
+                    "cost_base": "302.60",
+                    "final_price": 410.63,
+                    "platform_fee_amt": "45.39"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.07",
+                    "pre_tax": "22.63",
+                    "cost_base": "18.10",
+                    "final_price": 26.7,
+                    "platform_fee_amt": "4.53"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "14.59",
+                    "pre_tax": "81.05",
+                    "cost_base": "64.84",
+                    "final_price": 95.64,
+                    "platform_fee_amt": "16.21"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "42.62",
+                    "pre_tax": "236.77",
+                    "cost_base": "194.07",
+                    "final_price": 279.39,
+                    "platform_fee_amt": "42.70"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "12.05",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "3.86",
+                    "pre_tax": "21.42",
+                    "cost_base": "17.85",
+                    "final_price": 25.28,
+                    "platform_fee_amt": "3.57"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "48.19",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "14.28",
+                    "pre_tax": "79.35",
+                    "cost_base": "65.04",
+                    "final_price": 93.63,
+                    "platform_fee_amt": "14.31"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "144.58",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "40.62",
+                    "pre_tax": "225.68",
+                    "cost_base": "188.07",
+                    "final_price": 266.3,
+                    "platform_fee_amt": "37.61"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "240.96",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "62.64",
+                    "pre_tax": "347.99",
+                    "cost_base": "302.60",
+                    "final_price": 410.63,
+                    "platform_fee_amt": "45.39"
+                }
+            }
+        },
+        "level": "explorador",
+        "roast_profile": "medio_claro",
+        "intensity": "balanceado",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "espresso",
+            "aeropress",
+            "filter_home"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 26,
+            "bg": "#0B1020",
+            "accent": "#8E2BFF",
+            "accent_2": "#FF6A00",
+            "accent_3": "#8C4B00",
+            "border": "#2B1B36",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "yellow",
+                "harvest": "rose",
+                "process": "blue",
+                "variety": "purple",
+                "altitude": "green",
+                "fermentation": "slate"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "486a05d9a2ac906b8143e0cad54a5fd1",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0B101D",
+                    "visual_glow_1": "#B665A6",
+                    "visual_glow_2": "#C95607",
+                    "visual_surface_0": "#8E2BFF",
+                    "visual_surface_1": "#FF6A00",
+                    "visual_surface_2": "#8C4B00",
+                    "visual_panel_border": "#A251FF"
+                },
+                "palette_seed": "ad42295591da1db7a7cadc6b"
+            },
+            "created_at": "2026-02-22T15:08:15.196784-05:00",
+            "updated_at": "2026-02-22T15:09:12.206157-05:00",
+            "generated_at": "2026-02-22T15:09:12.206040-05:00",
+            "visual_bg": "#0B1020",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#8E2BFF",
+            "visual_accent_2": "#FF6A00",
+            "visual_accent_3": "#8C4B00",
+            "visual_border": "#2B1B36",
+            "visual_badge": "#FFD000",
+            "visual_icons": [],
+            "visual_reason": "Floral y luminoso — naranja jugosa y guindones sobre un fondo de caramelo.",
+            "visual_fingerprint": "ad42295591da1db7a7cadc6b",
+            "visual_updated_at": "2026-02-22T15:09:12.206036-05:00",
+            "lot": 12
+        },
+        "freshness_info": {
+            "roast_date": "2026-05-12",
+            "days_since_roast": 3,
+            "status": "recien_tostado",
+            "message": "Recien tostado -- necesita desgasificar, mejorara cada dia",
+            "peak_window": "Estara en su punto optimo entre 7 y 30 dias post-tueste"
+        },
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "✨ En su punto óptimo — máxima claridad y dulzor",
+            "method_scores": {
+                "v60": 9,
+                "moka": 4,
+                "turca": 2,
+                "chemex": 9,
+                "siphon": 6,
+                "espresso": 8,
+                "aeropress": 7,
+                "cold_brew": 3,
+                "filter_home": 8,
+                "french_press": 5,
+                "clever_dripper": 5
+            },
+            "profile_summary": "Café Geisha con notas florales y de caramelo, acidez brillante y un toque de guindones.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "filter_home",
+                    "label": "Filtro en casa"
+                }
+            ]
+        }
+    },
+    {
+        "id": 10,
+        "name": "Geisha El Bendito",
+        "slug": "geisha-el-bendito",
+        "farm": {
+            "id": 4,
+            "name": "Finca El Bendito",
+            "farmer": {
+                "id": 4,
+                "name": "Alexander Burga"
+            },
+            "region": "Cajamarca",
+            "city": "Chirinos, San Ignacio",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Geisha",
+        "notes": [
+            "Floral",
+            "Lima",
+            "Manzana",
+            "Vainilla"
+        ],
+        "altitude_masl": 1850,
+        "fermentation_style": "Natural",
+        "fermentation_hours": 12,
+        "drying_type": "Natural",
+        "drying_hours": 840,
+        "cupping_score": "86.50",
+        "price_green_per_kg": 50.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2026-01-08",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.75",
+                    "pre_tax": "26.39",
+                    "cost_base": "21.11",
+                    "final_price": 31.14,
+                    "platform_fee_amt": "5.28"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "17.30",
+                    "pre_tax": "96.11",
+                    "cost_base": "76.89",
+                    "final_price": 113.41,
+                    "platform_fee_amt": "19.22"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "50.55",
+                    "pre_tax": "280.86",
+                    "cost_base": "230.21",
+                    "final_price": 331.41,
+                    "platform_fee_amt": "50.65"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "4.51",
+                    "pre_tax": "25.03",
+                    "cost_base": "20.86",
+                    "final_price": 29.54,
+                    "platform_fee_amt": "4.17"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "16.93",
+                    "pre_tax": "94.05",
+                    "cost_base": "77.09",
+                    "final_price": 110.98,
+                    "platform_fee_amt": "16.96"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "48.43",
+                    "pre_tax": "269.05",
+                    "cost_base": "224.21",
+                    "final_price": 317.48,
+                    "platform_fee_amt": "44.84"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "301.20",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "75.11",
+                    "pre_tax": "417.27",
+                    "cost_base": "362.84",
+                    "final_price": 492.38,
+                    "platform_fee_amt": "54.43"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.75",
+                    "pre_tax": "26.39",
+                    "cost_base": "21.11",
+                    "final_price": 31.14,
+                    "platform_fee_amt": "5.28"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "17.30",
+                    "pre_tax": "96.11",
+                    "cost_base": "76.89",
+                    "final_price": 113.41,
+                    "platform_fee_amt": "19.22"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "50.55",
+                    "pre_tax": "280.86",
+                    "cost_base": "230.21",
+                    "final_price": 331.41,
+                    "platform_fee_amt": "50.65"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "4.51",
+                    "pre_tax": "25.03",
+                    "cost_base": "20.86",
+                    "final_price": 29.54,
+                    "platform_fee_amt": "4.17"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "16.93",
+                    "pre_tax": "94.05",
+                    "cost_base": "77.09",
+                    "final_price": 110.98,
+                    "platform_fee_amt": "16.96"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "48.43",
+                    "pre_tax": "269.05",
+                    "cost_base": "224.21",
+                    "final_price": 317.48,
+                    "platform_fee_amt": "44.84"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "301.20",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "75.11",
+                    "pre_tax": "417.27",
+                    "cost_base": "362.84",
+                    "final_price": 492.38,
+                    "platform_fee_amt": "54.43"
+                }
+            }
+        },
+        "level": "conocedor",
+        "roast_profile": "claro",
+        "intensity": "complejo",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "moka",
+            "espresso",
+            "aeropress",
+            "siphon",
+            "clever_dripper"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 24,
+            "bg": "#0E1B20",
+            "accent": "#C63DFF",
+            "accent_2": "#B8FF2D",
+            "accent_3": "#A85C00",
+            "border": "#1F2B33",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "yellow",
+                "harvest": "green",
+                "process": "rose",
+                "variety": "purple",
+                "altitude": "blue",
+                "fermentation": "amber"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "547e078e0b9ebadcdd67291cc5414aba",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0D181D",
+                    "visual_glow_1": "#DA67A6",
+                    "visual_glow_2": "#93CD2A",
+                    "visual_surface_0": "#C63DFF",
+                    "visual_surface_1": "#B8FF2D",
+                    "visual_surface_2": "#A85C00",
+                    "visual_panel_border": "#D060FF"
+                },
+                "palette_seed": "b49040ae79feb767f4dddf95"
+            },
+            "created_at": "2025-12-16T18:44:14.325328-05:00",
+            "updated_at": "2025-12-17T14:08:13.598066-05:00",
+            "generated_at": "2025-12-17T14:08:13.597065-05:00",
+            "visual_bg": "#0E1B20",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#C63DFF",
+            "visual_accent_2": "#B8FF2D",
+            "visual_accent_3": "#A85C00",
+            "visual_border": "#1F2B33",
+            "visual_badge": "#FFB400",
+            "visual_icons": [],
+            "visual_reason": "Geisha floral y etérea, lima chispeante y manzana fresca sobre fondo de vainilla miel y cuerpo natural.",
+            "visual_fingerprint": "b49040ae79feb767f4dddf95",
+            "visual_updated_at": "2025-12-17T14:08:13.597065-05:00",
+            "lot": 10
+        },
+        "freshness_info": null,
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "Cuerpo más desarrollado. Ideal para métodos de inmersión larga como Moka o French Press.",
+            "method_scores": {
+                "v60": 9,
+                "moka": 7,
+                "turca": 3,
+                "chemex": 9,
+                "siphon": 8,
+                "espresso": 8,
+                "aeropress": 8,
+                "cold_brew": 5,
+                "filter_home": 6,
+                "french_press": 6,
+                "clever_dripper": 7
+            },
+            "profile_summary": "Café Geisha de altura con notas florales y un toque de vainilla.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "siphon",
+                    "label": "Siphon"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                }
+            ]
+        }
+    },
+    {
+        "id": 9,
+        "name": "Geisha Lavado DAES",
+        "slug": "geisha-lavado-daes",
+        "farm": {
+            "id": 5,
+            "name": "Finca DAES",
+            "farmer": {
+                "id": 6,
+                "name": "Damian Espinoza"
+            },
+            "region": "Cajamarca",
+            "city": "Chirinos, San Ignacio",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Geisha",
+        "notes": [
+            "Azúcar morena",
+            "Bayas",
+            "Floral"
+        ],
+        "altitude_masl": 1850,
+        "fermentation_style": "Anaeróbico Lavado",
+        "fermentation_hours": 40,
+        "drying_type": "Secado en camas",
+        "drying_hours": 360,
+        "cupping_score": "86.50",
+        "price_green_per_kg": 50.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2026-04-09",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.75",
+                    "pre_tax": "26.39",
+                    "cost_base": "21.11",
+                    "final_price": 31.14,
+                    "platform_fee_amt": "5.28"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "17.30",
+                    "pre_tax": "96.11",
+                    "cost_base": "76.89",
+                    "final_price": 113.41,
+                    "platform_fee_amt": "19.22"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "50.55",
+                    "pre_tax": "280.86",
+                    "cost_base": "230.21",
+                    "final_price": 331.41,
+                    "platform_fee_amt": "50.65"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "4.51",
+                    "pre_tax": "25.03",
+                    "cost_base": "20.86",
+                    "final_price": 29.54,
+                    "platform_fee_amt": "4.17"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "16.93",
+                    "pre_tax": "94.05",
+                    "cost_base": "77.09",
+                    "final_price": 110.98,
+                    "platform_fee_amt": "16.96"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "48.43",
+                    "pre_tax": "269.05",
+                    "cost_base": "224.21",
+                    "final_price": 317.48,
+                    "platform_fee_amt": "44.84"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "301.20",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "75.11",
+                    "pre_tax": "417.27",
+                    "cost_base": "362.84",
+                    "final_price": 492.38,
+                    "platform_fee_amt": "54.43"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.75",
+                    "pre_tax": "26.39",
+                    "cost_base": "21.11",
+                    "final_price": 31.14,
+                    "platform_fee_amt": "5.28"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "17.30",
+                    "pre_tax": "96.11",
+                    "cost_base": "76.89",
+                    "final_price": 113.41,
+                    "platform_fee_amt": "19.22"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "50.55",
+                    "pre_tax": "280.86",
+                    "cost_base": "230.21",
+                    "final_price": 331.41,
+                    "platform_fee_amt": "50.65"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "4.51",
+                    "pre_tax": "25.03",
+                    "cost_base": "20.86",
+                    "final_price": 29.54,
+                    "platform_fee_amt": "4.17"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "16.93",
+                    "pre_tax": "94.05",
+                    "cost_base": "77.09",
+                    "final_price": 110.98,
+                    "platform_fee_amt": "16.96"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "48.43",
+                    "pre_tax": "269.05",
+                    "cost_base": "224.21",
+                    "final_price": 317.48,
+                    "platform_fee_amt": "44.84"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "301.20",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "75.11",
+                    "pre_tax": "417.27",
+                    "cost_base": "362.84",
+                    "final_price": 492.38,
+                    "platform_fee_amt": "54.43"
+                }
+            }
+        },
+        "level": "conocedor",
+        "roast_profile": "claro",
+        "intensity": "complejo",
+        "recommended_methods": [
+            "v60",
+            "chemex"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 23,
+            "bg": "#0B1220",
+            "accent": "#9B4DFF",
+            "accent_2": "#D07A1F",
+            "accent_3": "#6E0A3B",
+            "border": "#2B1A2F",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "slate",
+                "harvest": "yellow",
+                "process": "blue",
+                "variety": "purple",
+                "altitude": "green",
+                "fermentation": "amber"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "7f305976cc3419bd3bd95ef4e6d503b6",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#0B111D",
+                    "visual_glow_1": "#BE63AF",
+                    "visual_glow_2": "#A5631F",
+                    "visual_surface_0": "#9B4DFF",
+                    "visual_surface_1": "#D07A1F",
+                    "visual_surface_2": "#6E0A3B",
+                    "visual_panel_border": "#AD6DFF"
+                },
+                "palette_seed": "ca5668177a246455d1f12ec3"
+            },
+            "created_at": "2025-12-16T18:43:36.511255-05:00",
+            "updated_at": "2026-03-12T11:03:11.166121-05:00",
+            "generated_at": "2026-03-12T11:03:11.165943-05:00",
+            "visual_bg": "#0B1220",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#9B4DFF",
+            "visual_accent_2": "#D07A1F",
+            "visual_accent_3": "#6E0A3B",
+            "visual_border": "#2B1A2F",
+            "visual_badge": "#FF8C1A",
+            "visual_icons": [],
+            "visual_reason": "Floral perfumado, azúcar morena y fondo de bayas negras.",
+            "visual_fingerprint": "ca5668177a246455d1f12ec3",
+            "visual_updated_at": "2026-03-12T11:03:11.165940-05:00",
+            "lot": 9
+        },
+        "freshness_info": {
+            "roast_date": "2026-04-09",
+            "days_since_roast": 36,
+            "status": "ultimo_tramo",
+            "message": "Tostado hace 36 dias -- todavia delicioso, mejor consumir pronto",
+            "peak_window": "Estara en su punto optimo entre 7 y 30 dias post-tueste"
+        },
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "✨ En su punto óptimo — máxima claridad y dulzor",
+            "method_scores": {
+                "v60": 10,
+                "moka": 4,
+                "turca": 2,
+                "chemex": 9,
+                "siphon": 8,
+                "espresso": 8,
+                "aeropress": 9,
+                "cold_brew": 3,
+                "filter_home": 6,
+                "french_press": 5,
+                "clever_dripper": 7
+            },
+            "profile_summary": "Café Geisha de altura con notas florales y dulzura de azúcar morena",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "siphon",
+                    "label": "Siphon"
+                }
+            ]
+        }
+    },
+    {
+        "id": 15,
+        "name": "Geisha Natural DAES",
+        "slug": "geisha-natural-daes",
+        "farm": {
+            "id": 5,
+            "name": "Finca DAES",
+            "farmer": {
+                "id": 6,
+                "name": "Damian Espinoza"
+            },
+            "region": "Cajamarca",
+            "city": "Chirinos, San Ignacio",
+            "country": "Perú"
+        },
+        "harvest_year": 2026,
+        "variety": "Geisha",
+        "notes": [
+            "Cacao",
+            "frambuesa",
+            "Panela",
+            "Piña"
+        ],
+        "altitude_masl": 1850,
+        "fermentation_style": "Natural",
+        "fermentation_hours": 40,
+        "drying_type": "Secado en camas",
+        "drying_hours": 360,
+        "cupping_score": "87.00",
+        "price_green_per_kg": 50.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2026-04-09",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.75",
+                    "pre_tax": "26.39",
+                    "cost_base": "21.11",
+                    "final_price": 31.14,
+                    "platform_fee_amt": "5.28"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "17.30",
+                    "pre_tax": "96.11",
+                    "cost_base": "76.89",
+                    "final_price": 113.41,
+                    "platform_fee_amt": "19.22"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "50.55",
+                    "pre_tax": "280.86",
+                    "cost_base": "230.21",
+                    "final_price": 331.41,
+                    "platform_fee_amt": "50.65"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "4.51",
+                    "pre_tax": "25.03",
+                    "cost_base": "20.86",
+                    "final_price": 29.54,
+                    "platform_fee_amt": "4.17"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "16.93",
+                    "pre_tax": "94.05",
+                    "cost_base": "77.09",
+                    "final_price": 110.98,
+                    "platform_fee_amt": "16.96"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "48.43",
+                    "pre_tax": "269.05",
+                    "cost_base": "224.21",
+                    "final_price": 317.48,
+                    "platform_fee_amt": "44.84"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "301.20",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "75.11",
+                    "pre_tax": "417.27",
+                    "cost_base": "362.84",
+                    "final_price": 492.38,
+                    "platform_fee_amt": "54.43"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "4.75",
+                    "pre_tax": "26.39",
+                    "cost_base": "21.11",
+                    "final_price": 31.14,
+                    "platform_fee_amt": "5.28"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "17.30",
+                    "pre_tax": "96.11",
+                    "cost_base": "76.89",
+                    "final_price": 113.41,
+                    "platform_fee_amt": "19.22"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "50.55",
+                    "pre_tax": "280.86",
+                    "cost_base": "230.21",
+                    "final_price": 331.41,
+                    "platform_fee_amt": "50.65"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "15.06",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "4.51",
+                    "pre_tax": "25.03",
+                    "cost_base": "20.86",
+                    "final_price": 29.54,
+                    "platform_fee_amt": "4.17"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "60.24",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "16.93",
+                    "pre_tax": "94.05",
+                    "cost_base": "77.09",
+                    "final_price": 110.98,
+                    "platform_fee_amt": "16.96"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "180.72",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "48.43",
+                    "pre_tax": "269.05",
+                    "cost_base": "224.21",
+                    "final_price": 317.48,
+                    "platform_fee_amt": "44.84"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "301.20",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "75.11",
+                    "pre_tax": "417.27",
+                    "cost_base": "362.84",
+                    "final_price": 492.38,
+                    "platform_fee_amt": "54.43"
+                }
+            }
+        },
+        "level": "excepcional",
+        "roast_profile": "medio_claro",
+        "intensity": "complejo",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "espresso",
+            "aeropress",
+            "siphon",
+            "clever_dripper"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 29,
+            "bg": "#081018",
+            "accent": "#C21F62",
+            "accent_2": "#FF8C18",
+            "accent_3": "#3A2418",
+            "border": "#273033",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "yellow",
+                "harvest": "rose",
+                "process": "purple",
+                "variety": "green",
+                "altitude": "blue",
+                "fermentation": "amber"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "d78073645068d9a0f6c8bb9b9b07e856",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#091017",
+                    "visual_glow_1": "#D75E54",
+                    "visual_glow_2": "#C97118",
+                    "visual_surface_0": "#C21F62",
+                    "visual_surface_1": "#FF8C18",
+                    "visual_surface_2": "#3A2418",
+                    "visual_panel_border": "#CD477E"
+                },
+                "palette_seed": "6258da7a6cc6f69275e397bb"
+            },
+            "created_at": "2026-02-22T15:21:05.123376-05:00",
+            "updated_at": "2026-02-22T15:23:12.981846-05:00",
+            "generated_at": "2026-02-22T15:23:12.981718-05:00",
+            "visual_bg": "#081018",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#C21F62",
+            "visual_accent_2": "#FF8C18",
+            "visual_accent_3": "#3A2418",
+            "visual_border": "#273033",
+            "visual_badge": "#FFD23A",
+            "visual_icons": [],
+            "visual_reason": "Frambuesa vibrante y piña caramelizada sobre una base densa de cacao y panela.",
+            "visual_fingerprint": "6258da7a6cc6f69275e397bb",
+            "visual_updated_at": "2026-02-22T15:23:12.981713-05:00",
+            "lot": 15
+        },
+        "freshness_info": {
+            "roast_date": "2026-04-09",
+            "days_since_roast": 36,
+            "status": "ultimo_tramo",
+            "message": "Tostado hace 36 dias -- todavia delicioso, mejor consumir pronto",
+            "peak_window": "Estara en su punto optimo entre 7 y 30 dias post-tueste"
+        },
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "✨ En su punto óptimo — máxima claridad y dulzor",
+            "method_scores": {
+                "v60": 10,
+                "moka": 5,
+                "turca": 3,
+                "chemex": 10,
+                "siphon": 9,
+                "espresso": 8,
+                "aeropress": 9,
+                "cold_brew": 4,
+                "filter_home": 6,
+                "french_press": 6,
+                "clever_dripper": 7
+            },
+            "profile_summary": "Café Geisha natural con notas de cacao, frambuesa y piña, equilibrado y complejo.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "siphon",
+                    "label": "Siphon"
+                }
+            ]
+        }
+    },
+    {
+        "id": 11,
+        "name": "Gesha Cabeza Azul",
+        "slug": "gesha-cabeza-zul",
+        "farm": {
+            "id": 6,
+            "name": "Cabeza Azul",
+            "farmer": {
+                "id": 7,
+                "name": "Juan Carlos Cueva"
+            },
+            "region": "Pasco",
+            "city": "Villa Rica",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Gesha",
+        "notes": [
+            "Jazmín",
+            "Mandarina",
+            "Vainilla"
+        ],
+        "altitude_masl": 1670,
+        "fermentation_style": "Desmucilaginado",
+        "fermentation_hours": null,
+        "drying_type": "Secado al sol y mecánico",
+        "drying_hours": null,
+        "cupping_score": "87.00",
+        "price_green_per_kg": 65.0,
+        "stock_kg": 12.75,
+        "is_active": true,
+        "immediate_roasted_bags": 21,
+        "immediate_roast_date": "2026-05-12",
+        "roasted_availability": true,
+        "green_availability": true,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "19.58",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "5.77",
+                    "pre_tax": "32.04",
+                    "cost_base": "25.63",
+                    "final_price": 37.81,
+                    "platform_fee_amt": "6.41"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "78.31",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "21.37",
+                    "pre_tax": "118.70",
+                    "cost_base": "94.96",
+                    "final_price": 140.07,
+                    "platform_fee_amt": "23.74"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "234.94",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "62.46",
+                    "pre_tax": "347.00",
+                    "cost_base": "284.43",
+                    "final_price": 409.46,
+                    "platform_fee_amt": "62.57"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "19.58",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.48",
+                    "pre_tax": "30.46",
+                    "cost_base": "25.38",
+                    "final_price": 35.94,
+                    "platform_fee_amt": "5.08"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "78.31",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "20.90",
+                    "pre_tax": "116.10",
+                    "cost_base": "95.16",
+                    "final_price": 137.0,
+                    "platform_fee_amt": "20.94"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "234.94",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "60.14",
+                    "pre_tax": "334.12",
+                    "cost_base": "278.43",
+                    "final_price": 394.26,
+                    "platform_fee_amt": "55.69"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "391.57",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "93.81",
+                    "pre_tax": "521.19",
+                    "cost_base": "453.21",
+                    "final_price": 615.0,
+                    "platform_fee_amt": "67.98"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "19.58",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "5.77",
+                    "pre_tax": "32.04",
+                    "cost_base": "25.63",
+                    "final_price": 37.81,
+                    "platform_fee_amt": "6.41"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "78.31",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "21.37",
+                    "pre_tax": "118.70",
+                    "cost_base": "94.96",
+                    "final_price": 140.07,
+                    "platform_fee_amt": "23.74"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "234.94",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "62.46",
+                    "pre_tax": "347.00",
+                    "cost_base": "284.43",
+                    "final_price": 409.46,
+                    "platform_fee_amt": "62.57"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "19.58",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.48",
+                    "pre_tax": "30.46",
+                    "cost_base": "25.38",
+                    "final_price": 35.94,
+                    "platform_fee_amt": "5.08"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "78.31",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "20.90",
+                    "pre_tax": "116.10",
+                    "cost_base": "95.16",
+                    "final_price": 137.0,
+                    "platform_fee_amt": "20.94"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "234.94",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "60.14",
+                    "pre_tax": "334.12",
+                    "cost_base": "278.43",
+                    "final_price": 394.26,
+                    "platform_fee_amt": "55.69"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "391.57",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "93.81",
+                    "pre_tax": "521.19",
+                    "cost_base": "453.21",
+                    "final_price": 615.0,
+                    "platform_fee_amt": "67.98"
+                }
+            }
+        },
+        "level": "conocedor",
+        "roast_profile": "medio_claro",
+        "intensity": "complejo",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "espresso",
+            "aeropress",
+            "filter_home"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 25,
+            "bg": "#07122B",
+            "accent": "#A24BFF",
+            "accent_2": "#FF6A2D",
+            "accent_3": "#7A3B00",
+            "border": "#0F2A48",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "slate",
+                "harvest": "yellow",
+                "process": "amber",
+                "variety": "purple",
+                "altitude": "green",
+                "fermentation": "blue"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "cbf5ee546d73fcd3617acd7aa163862e",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#081126",
+                    "visual_glow_1": "#C370A6",
+                    "visual_glow_2": "#C8572D",
+                    "visual_surface_0": "#A24BFF",
+                    "visual_surface_1": "#FF6A2D",
+                    "visual_surface_2": "#7A3B00",
+                    "visual_panel_border": "#B36BFF"
+                },
+                "palette_seed": "5e42f4caf0a1f498629dc24a"
+            },
+            "created_at": "2026-02-11T17:27:21.783559-05:00",
+            "updated_at": "2026-02-11T18:13:46.136676-05:00",
+            "generated_at": "2026-02-11T18:13:46.136535-05:00",
+            "visual_bg": "#07122B",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#A24BFF",
+            "visual_accent_2": "#FF6A2D",
+            "visual_accent_3": "#7A3B00",
+            "visual_border": "#0F2A48",
+            "visual_badge": "#FFB400",
+            "visual_icons": [],
+            "visual_reason": "Jazmín luminoso sobre mandarina jugosa con base de vainilla mielada.",
+            "visual_fingerprint": "5e42f4caf0a1f498629dc24a",
+            "visual_updated_at": "2026-02-11T18:13:46.136527-05:00",
+            "lot": 11
+        },
+        "freshness_info": {
+            "roast_date": "2026-05-12",
+            "days_since_roast": 3,
+            "status": "recien_tostado",
+            "message": "Recien tostado -- necesita desgasificar, mejorara cada dia",
+            "peak_window": "Estara en su punto optimo entre 7 y 30 dias post-tueste"
+        },
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "✨ En su punto óptimo — máxima claridad y dulzor",
+            "method_scores": {
+                "v60": 9,
+                "moka": 4,
+                "turca": 2,
+                "chemex": 9,
+                "siphon": 6,
+                "espresso": 8,
+                "aeropress": 7,
+                "cold_brew": 3,
+                "filter_home": 8,
+                "french_press": 5,
+                "clever_dripper": 5
+            },
+            "profile_summary": "Café Gesha con notas florales de jazmín y mandarina, con un toque de vainilla y una acidez brillante.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "filter_home",
+                    "label": "Filtro en casa"
+                }
+            ]
+        }
+    },
+    {
+        "id": 6,
+        "name": "Obata Rojo ASD Natural",
+        "slug": "obata-rojo-asd-natural",
+        "farm": {
+            "id": 3,
+            "name": "La Chacra D' Dago",
+            "farmer": {
+                "id": 3,
+                "name": "Dagoberto Marín e hijos Héctor, César y Eduardo"
+            },
+            "region": "Junín",
+            "city": "Palomar",
+            "country": "Perú"
+        },
+        "harvest_year": 2025,
+        "variety": "Obata Rojo",
+        "notes": [
+            "Frutos del bosque",
+            "Manzana ligero"
+        ],
+        "altitude_masl": 1550,
+        "fermentation_style": "Anaeróbica en tanques Infinity",
+        "fermentation_hours": 120,
+        "drying_type": "Natural camas elevadas",
+        "drying_hours": 672,
+        "cupping_score": "87.00",
+        "price_green_per_kg": 70.0,
+        "stock_kg": 0.0,
+        "is_active": true,
+        "immediate_roasted_bags": 0,
+        "immediate_roast_date": "2025-12-30",
+        "roasted_availability": false,
+        "green_availability": false,
+        "available_sizes": [
+            {
+                "id": 1,
+                "grams": 250,
+                "code": "250g",
+                "label": "250 g",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 2,
+                "grams": 1000,
+                "code": "1kg",
+                "label": "1 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 3,
+                "grams": 3000,
+                "code": "3kg",
+                "label": "3 kg",
+                "enabled_immediate": true,
+                "enabled_cofradia": true
+            },
+            {
+                "id": 4,
+                "grams": 5000,
+                "code": "5kg",
+                "label": "5 kg",
+                "enabled_immediate": false,
+                "enabled_cofradia": true
+            }
+        ],
+        "pricing": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "6.10",
+                    "pre_tax": "33.91",
+                    "cost_base": "27.13",
+                    "final_price": 40.01,
+                    "platform_fee_amt": "6.78"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "22.72",
+                    "pre_tax": "126.24",
+                    "cost_base": "100.99",
+                    "final_price": 148.96,
+                    "platform_fee_amt": "25.25"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "66.43",
+                    "pre_tax": "369.05",
+                    "cost_base": "302.50",
+                    "final_price": 435.48,
+                    "platform_fee_amt": "66.55"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.81",
+                    "pre_tax": "32.26",
+                    "cost_base": "26.88",
+                    "final_price": 38.07,
+                    "platform_fee_amt": "5.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "22.22",
+                    "pre_tax": "123.45",
+                    "cost_base": "101.19",
+                    "final_price": 145.67,
+                    "platform_fee_amt": "22.26"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "64.04",
+                    "pre_tax": "355.80",
+                    "cost_base": "296.50",
+                    "final_price": 419.84,
+                    "platform_fee_amt": "59.30"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "421.69",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "100.05",
+                    "pre_tax": "555.83",
+                    "cost_base": "483.33",
+                    "final_price": 655.88,
+                    "platform_fee_amt": "72.50"
+                }
+            }
+        },
+        "pricing_snapshot": {
+            "immediate": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.75",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "6.10",
+                    "pre_tax": "33.91",
+                    "cost_base": "27.13",
+                    "final_price": 40.01,
+                    "platform_fee_amt": "6.78"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.05",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2500"
+                    },
+                    "igv_amt": "22.72",
+                    "pre_tax": "126.24",
+                    "cost_base": "100.99",
+                    "final_price": 148.96,
+                    "platform_fee_amt": "25.25"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "30.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "66.43",
+                    "pre_tax": "369.05",
+                    "cost_base": "302.50",
+                    "final_price": 435.48,
+                    "platform_fee_amt": "66.55"
+                }
+            },
+            "cofradia": {
+                "1": {
+                    "detail": {
+                        "grams": 250,
+                        "freight": "1.10",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.20",
+                        "green_cost": "21.08",
+                        "roast_cost": "2.50",
+                        "roasted_kg": "0.25",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "0.30",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "5.81",
+                    "pre_tax": "32.26",
+                    "cost_base": "26.88",
+                    "final_price": 38.07,
+                    "platform_fee_amt": "5.38"
+                },
+                "2": {
+                    "detail": {
+                        "grams": 1000,
+                        "freight": "4.25",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "2.60",
+                        "green_cost": "84.34",
+                        "roast_cost": "10.00",
+                        "roasted_kg": "1",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "1.20",
+                        "platform_fee_pct": "0.2200"
+                    },
+                    "igv_amt": "22.22",
+                    "pre_tax": "123.45",
+                    "cost_base": "101.19",
+                    "final_price": 145.67,
+                    "platform_fee_amt": "22.26"
+                },
+                "3": {
+                    "detail": {
+                        "grams": 3000,
+                        "freight": "11.69",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "7.80",
+                        "green_cost": "253.01",
+                        "roast_cost": "24.00",
+                        "roasted_kg": "3",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "3.61",
+                        "platform_fee_pct": "0.2000"
+                    },
+                    "igv_amt": "64.04",
+                    "pre_tax": "355.80",
+                    "cost_base": "296.50",
+                    "final_price": 419.84,
+                    "platform_fee_amt": "59.30"
+                },
+                "4": {
+                    "detail": {
+                        "grams": 5000,
+                        "freight": "19.64",
+                        "igv_pct": "0.1800",
+                        "handling": "0.00",
+                        "packaging": "13.00",
+                        "green_cost": "421.69",
+                        "roast_cost": "29.00",
+                        "roasted_kg": "5",
+                        "override_id": null,
+                        "roast_yield": "0.8300",
+                        "override_used": false,
+                        "green_needed_kg": "6.02",
+                        "platform_fee_pct": "0.1500"
+                    },
+                    "igv_amt": "100.05",
+                    "pre_tax": "555.83",
+                    "cost_base": "483.33",
+                    "final_price": 655.88,
+                    "platform_fee_amt": "72.50"
+                }
+            }
+        },
+        "level": "conocedor",
+        "roast_profile": "medio_claro",
+        "intensity": "complejo",
+        "recommended_methods": [
+            "v60",
+            "chemex",
+            "french_press",
+            "moka",
+            "espresso",
+            "aeropress"
+        ],
+        "is_favorite_of_week": false,
+        "favorite_comment": "",
+        "visual": {
+            "id": 21,
+            "bg": "#12040A",
+            "accent": "#B01663",
+            "accent_2": "#95C200",
+            "accent_3": "#22060C",
+            "border": "#3A0E19",
+            "text": "#F8FAFC",
+            "muted_text": "#F8FAFC",
+            "chip_tones": {
+                "drying": "amber",
+                "harvest": "yellow",
+                "process": "purple",
+                "variety": "rose",
+                "altitude": "blue",
+                "fermentation": "slate"
+            },
+            "version": "v3",
+            "source": "openai",
+            "prompt_hash": "35b1ebd706af5c5a453e400701c59bdc",
+            "meta": {
+                "gradient": {
+                    "visual_panel": "#10060C",
+                    "visual_glow_1": "#CC5740",
+                    "visual_glow_2": "#789802",
+                    "visual_surface_0": "#B01663",
+                    "visual_surface_1": "#95C200",
+                    "visual_surface_2": "#22060C",
+                    "visual_panel_border": "#BE407F"
+                },
+                "palette_seed": "57d926924ca5b545a7a209f7"
+            },
+            "created_at": "2025-12-16T18:42:39.273151-05:00",
+            "updated_at": "2026-03-18T12:53:14.301744-05:00",
+            "generated_at": "2026-03-18T12:53:14.301601-05:00",
+            "visual_bg": "#12040A",
+            "visual_fg": "#F8FAFC",
+            "visual_accent": "#B01663",
+            "visual_accent_2": "#95C200",
+            "visual_accent_3": "#22060C",
+            "visual_border": "#3A0E19",
+            "visual_badge": "#FFD100",
+            "visual_icons": [],
+            "visual_reason": "Frutos del bosque intensos con manzana ligera; anaeróbico natural que entrega cuerpo denso y jugoso.",
+            "visual_fingerprint": "57d926924ca5b545a7a209f7",
+            "visual_updated_at": "2026-03-18T12:53:14.301595-05:00",
+            "lot": 6
+        },
+        "freshness_info": null,
+        "ai_profile": {
+            "model_used": "gpt-4o-mini",
+            "freshness_tip": "Este café tiene un cuerpo más desarrollado. Ideal para métodos de inmersión como Moka o French Press.",
+            "method_scores": {
+                "v60": 9,
+                "moka": 8,
+                "turca": 4,
+                "chemex": 9,
+                "siphon": 6,
+                "espresso": 8,
+                "aeropress": 7,
+                "cold_brew": 5,
+                "filter_home": 6,
+                "french_press": 7,
+                "clever_dripper": 5
+            },
+            "profile_summary": "Café natural con notas de frutos del bosque y manzana, con complejidad y dulzura.",
+            "espresso_suitable": true,
+            "recommended_methods_full": [
+                {
+                    "code": "v60",
+                    "label": "V60"
+                },
+                {
+                    "code": "chemex",
+                    "label": "Chemex"
+                },
+                {
+                    "code": "aeropress",
+                    "label": "Aeropress"
+                },
+                {
+                    "code": "espresso",
+                    "label": "Espresso"
+                },
+                {
+                    "code": "french_press",
+                    "label": "French Press"
+                }
+            ]
+        }
+    }
+]

@@ -240,6 +240,7 @@ const RegistroCaficultor: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) 
         @media (max-width: 700px) {
           .registro-caf-grid { grid-template-columns: 1fr !important; }
           .panel-propuesta-caf { display: none !important; }
+          .reg-caf-grid-2col { grid-template-columns: 1fr !important; }
         }
         input::placeholder, textarea::placeholder, select option { color: #555; }
         select { appearance: none; }
@@ -303,7 +304,7 @@ const RegistroCaficultor: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) 
                     onFocus={() => setFocused('email')} onBlur={() => setFocused(null)}
                     style={inputStyle('email')} />
                 </Field>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="reg-caf-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <Field label="Contraseña" required>
                     <input type="password" placeholder="Mínimo 6 caracteres" value={password}
                       onChange={e => setPassword(e.target.value)}
@@ -340,7 +341,7 @@ const RegistroCaficultor: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) 
               <p style={{ margin: '0 0 28px', fontSize: 13, color: C.textSub }}>Cuéntanos sobre tu producción. Puedes actualizar esto después.</p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div className="reg-caf-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                   <Field label="Región" required>
                     <select value={region} onChange={e => setRegion(e.target.value)}
                       onFocus={() => setFocused('region')} onBlur={() => setFocused(null)}
@@ -357,7 +358,7 @@ const RegistroCaficultor: React.FC<{ isDemo?: boolean }> = ({ isDemo = false }) 
                   </Field>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                <div className="reg-caf-grid-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                   <Field label="Altitud aprox. (msnm)">
                     <input type="number" placeholder="1800" value={altitudMsnm || ''}
                       onChange={e => setAltitudMsnm(Number(e.target.value))}

@@ -62,18 +62,19 @@ const NavBar: React.FC = () => (
     background: `${C.bg}f0`, backdropFilter: 'blur(12px)',
     borderBottom: `1px solid ${C.border}`,
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '0 32px', height: 56,
+    padding: '0 5%', height: 56,
   }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
       <button onClick={() => { window.location.hash = '#/' }} style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Cormorant Garamond, serif',
         fontSize: 20, fontWeight: 700, color: C.cream,
+        whiteSpace: 'nowrap', flexShrink: 0,
       }}>
         TunayWasi
       </button>
-      <span style={{ color: C.border, fontSize: 20 }}>·</span>
-      <span style={{
+      <span style={{ color: C.border, fontSize: 20, flexShrink: 0 }}>·</span>
+      <span className="sop-nav-label" style={{
         fontFamily: 'Montserrat, sans-serif',
         fontSize: 13, fontWeight: 600, color: C.sage,
         letterSpacing: '0.05em',
@@ -81,21 +82,28 @@ const NavBar: React.FC = () => (
         Soporte
       </span>
     </div>
-    <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+    <div className="sop-nav-links" style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
       <button onClick={() => { window.location.hash = '#/docs' }} style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: C.terra,
-        fontWeight: 600,
+        fontWeight: 600, whiteSpace: 'nowrap',
       }}>
         Documentación
       </button>
       <button onClick={() => { window.location.hash = '#/' }} style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: C.mutedLight,
+        whiteSpace: 'nowrap',
       }}>
         Catálogo
       </button>
     </div>
+    <style>{`
+      @media (max-width: 480px) {
+        .sop-nav-links { display: none !important; }
+        .sop-nav-label { display: none !important; }
+      }
+    `}</style>
   </nav>
 )
 

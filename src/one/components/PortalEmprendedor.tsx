@@ -316,7 +316,7 @@ const NAV_ITEMS: { id: Tab; emoji: string; label: string }[] = [
   { id: 'perfil',      emoji: '⚙️', label: 'Perfil' },
 ]
 
-const Sidebar: React.FC<{ tab: Tab; onChange: (t: Tab) => void; nombreLocal: string; onLogout: () => void; collapsed?: boolean; onToggle: () => void }> = ({ tab, onChange, nombreLocal, onLogout, collapsed = false, onToggle }) => (
+const Sidebar: React.FC<{ tab: Tab; onChange: (t: Tab) => void; nombreLocal: string; onLogout: () => void; collapsed?: boolean; onToggle: () => void; pedidosPendientes?: number; carritoCount?: number }> = ({ tab, onChange, nombreLocal, onLogout, collapsed = false, onToggle, pedidosPendientes = 0, carritoCount = 0 }) => (
   <nav style={{
     position: 'fixed', left: 0, top: 0, bottom: 0, width: collapsed ? 56 : 220,
     background: '#0d0d0d', borderRight: `1px solid ${C.border}`,
@@ -341,20 +341,36 @@ const Sidebar: React.FC<{ tab: Tab; onChange: (t: Tab) => void; nombreLocal: str
       </div>
     )}
     <div style={{ flex: 1, padding: '12px 0', overflowY: 'auto' }}>
-      {NAV_ITEMS.map(item => (
-        <button key={item.id} onClick={() => onChange(item.id)} style={{
-          width: '100%', display: 'flex', alignItems: 'center',
-          gap: collapsed ? 0 : 12,
-          justifyContent: collapsed ? 'center' : 'flex-start',
-          padding: collapsed ? '11px 0' : '11px 20px',
-          background: tab === item.id ? C.terra + '18' : 'none',
-          border: 'none', borderLeft: tab === item.id ? `3px solid ${C.terra}` : '3px solid transparent',
-          cursor: 'pointer', transition: 'all 0.15s', textAlign: collapsed ? 'center' : 'left',
-        }}>
-          <span style={{ fontSize: 16 }}>{item.emoji}</span>
-          {!collapsed && <span style={{ fontSize: 13, fontWeight: tab === item.id ? 700 : 500, color: tab === item.id ? C.cream : C.textSub }}>{item.label}</span>}
-        </button>
-      ))}
+      {NAV_ITEMS.map(item => {
+        const badge = item.id === 'mis_compras' ? pedidosPendientes : item.id === 'carrito' ? carritoCount : 0
+        return (
+          <button key={item.id} onClick={() => onChange(item.id)} style={{
+            width: '100%', display: 'flex', alignItems: 'center',
+            gap: collapsed ? 0 : 12,
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            padding: collapsed ? '11px 0' : '11px 20px',
+            background: tab === item.id ? C.terra + '18' : 'none',
+            border: 'none', borderLeft: tab === item.id ? `3px solid ${C.terra}` : '3px solid transparent',
+            cursor: 'pointer', transition: 'all 0.15s', textAlign: collapsed ? 'center' : 'left',
+            position: 'relative',
+          }}>
+            <span style={{ fontSize: 16 }}>{item.emoji}</span>
+            {!collapsed && <span style={{ fontSize: 13, fontWeight: tab === item.id ? 700 : 500, color: tab === item.id ? C.cream : C.textSub }}>{item.label}</span>}
+            {badge > 0 && (
+              <span style={{
+                marginLeft: collapsed ? 0 : 'auto',
+                position: collapsed ? 'absolute' : 'static',
+                top: collapsed ? 6 : undefined, right: collapsed ? 6 : undefined,
+                padding: '1px 6px', borderRadius: 10,
+                background: item.id === 'carrito' ? C.terra : C.yellow,
+                color: item.id === 'carrito' ? '#fff' : '#000',
+                fontSize: 10, fontWeight: 700, lineHeight: '16px',
+                minWidth: 16, textAlign: 'center',
+              }}>{badge}</span>
+            )}
+          </button>
+        )
+      })}
     </div>
     {!collapsed && (
       <div style={{ padding: '16px 20px', borderTop: `1px solid ${C.border}` }}>
@@ -406,6 +422,97 @@ interface Props {
   isDemo?: boolean
 }
 
+// ─── MensajesTab — subcomponente para evitar hooks en función normal ──────────
+const MensajesTab: React.FC<{
+  pedidos: import('../types').PedidoONE[]
+  C: Record<string, string>
+  setPedidoDetalle: (p: import('../types').PedidoONE | null) => void
+}> = ({ pedidos, C, setPedidoDetalle }) => {
+  const [catMensajes, setCatMensajes] = React.useState<'pedidos' | 'promos'>('pedidos')
+
+  type EventoNotif = {
+    pedidoId: string; orderId: string; titulo: string; descripcion: string
+    fotoUrl: string; timestamp: number; accion: string | null
+  }
+
+  function generarEventos(p: import('../types').PedidoONE): EventoNotif[] {
+    const foto = (p.items[0] as any)?.fotoUrl ?? ''
+    const ts = new Date(p.createdAt).getTime() || Date.now()
+    if (p.logisticaStatus === 'entregado')
+      return [{ pedidoId: p.id, orderId: p.id, titulo: '✅ Pedido entregado', descripcion: 'Tu pedido fue entregado. ¡Esperamos que disfrutes el café!', fotoUrl: foto, timestamp: ts, accion: 'Ver pedido' }]
+    if (p.logisticaStatus === 'en_agencia')
+      return [{ pedidoId: p.id, orderId: p.id, titulo: '📦 Pedido en camino', descripcion: 'El caficultor envió tu pedido. Confirma la recepción cuando llegue.', fotoUrl: foto, timestamp: ts, accion: 'Confirmar recepción' }]
+    if (['verificado', 'confirmado_auto', 'confirmado_manual'].includes(p.pagoStatus))
+      return [{ pedidoId: p.id, orderId: p.id, titulo: '✓ Pago confirmado', descripcion: 'Tu pago fue verificado. El caficultor está preparando tu pedido.', fotoUrl: foto, timestamp: ts, accion: 'Ver pedido' }]
+    if (p.pagoStatus === 'voucher_subido')
+      return [{ pedidoId: p.id, orderId: p.id, titulo: '⏳ Verificando pago', descripcion: 'Recibimos tu voucher. Estamos verificando el pago.', fotoUrl: foto, timestamp: ts, accion: null }]
+    return [{ pedidoId: p.id, orderId: p.id, titulo: '🆕 Pedido creado', descripcion: 'Tu pedido fue registrado. Sube el voucher de pago para continuar.', fotoUrl: foto, timestamp: ts, accion: 'Subir voucher' }]
+  }
+
+  const eventos = pedidos.flatMap(generarEventos).sort((a, b) => b.timestamp - a.timestamp)
+  const chipActive: React.CSSProperties = { padding: '6px 16px', borderRadius: 20, border: 'none', background: C.terra, color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', whiteSpace: 'nowrap' }
+  const chipInactive: React.CSSProperties = { ...chipActive, background: 'transparent', border: `1px solid ${C.border}`, color: C.textSub, fontWeight: 500 }
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16, overflowX: 'auto', paddingBottom: 4 }}>
+        {(['pedidos', 'promos'] as const).map(s => (
+          <button key={s} onClick={() => setCatMensajes(s)} style={catMensajes === s ? chipActive : chipInactive}>
+            {s === 'pedidos' ? 'Pedidos y envíos' : 'Promociones'}
+          </button>
+        ))}
+      </div>
+      <div style={{ padding: '10px 14px', borderRadius: 10, background: `${C.sage}11`, border: `1px solid ${C.sage}22`, marginBottom: 16, fontSize: 12, color: C.sage }}>
+        🛡️ Nunca pagues fuera de la app. Ignora mensajes que soliciten pagos extra.
+      </div>
+      {catMensajes === 'promos' ? (
+        <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+          <p style={{ fontSize: 32, marginBottom: 12 }}>🎁</p>
+          <p style={{ fontSize: 15, color: C.textSub }}>No hay promociones disponibles</p>
+        </div>
+      ) : eventos.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '48px 20px' }}>
+          <p style={{ fontSize: 32, marginBottom: 12 }}>💬</p>
+          <p style={{ fontSize: 15, color: C.textSub }}>Sin notificaciones por ahora</p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {eventos.map((ev, idx) => (
+            <div key={idx} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, overflow: 'hidden' }}>
+              <div style={{ padding: '10px 14px 0', fontSize: 11, color: C.textSub }}>
+                {new Date(ev.timestamp).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+              </div>
+              <div style={{ padding: '8px 14px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream }}>{ev.titulo}</p>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  {ev.fotoUrl
+                    ? <img src={ev.fotoUrl} alt="" style={{ width: 64, height: 64, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
+                    : <div style={{ width: 64, height: 64, borderRadius: 8, background: C.border, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>☕</div>
+                  }
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ margin: '0 0 4px', fontSize: 12, color: C.textSub, lineHeight: 1.4 }}>{ev.descripcion}</p>
+                    <p style={{ margin: 0, fontSize: 11, color: C.muted, fontFamily: 'monospace' }}>#{ev.orderId}</p>
+                    {ev.accion && (
+                      <button onClick={() => setPedidoDetalle(pedidos.find(p => p.id === ev.pedidoId) ?? null)}
+                        style={{ marginTop: 8, padding: '5px 14px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.cream, fontSize: 12, cursor: 'pointer' }}>
+                        {ev.accion}
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <button onClick={() => setPedidoDetalle(pedidos.find(p => p.id === ev.pedidoId) ?? null)}
+                  style={{ background: 'none', border: 'none', color: C.textSub, fontSize: 12, cursor: 'pointer', textAlign: 'left', padding: '6px 0 0', borderTop: `1px solid ${C.border}` }}>
+                  Ver detalles del pedido  ›
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo = false }) => {
   const [tab, setTab] = useState<Tab>('catalogo')
   const [subTab, setSubTab] = useState<SubTab>('pedidos')
@@ -416,6 +523,12 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
   const [editandoPerfil, setEditandoPerfil] = useState(false)
   const [toasts, setToasts] = useState<ToastMsg[]>([])
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 700)
+  useEffect(() => {
+    const handler = () => setIsMobile(window.innerWidth < 700)
+    window.addEventListener('resize', handler)
+    return () => window.removeEventListener('resize', handler)
+  }, [])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [accionando, setAccionando] = useState<string | null>(null)
 
@@ -513,18 +626,45 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
       return s + calcularPrecioFinal(i.producto.precioBaseKgCents, i.formato) * i.qty
     }, 0)
     const carritoProductoIds = new Set(carritoItems.map(i => i.producto.id))
+    const countPendientePago = pedidos.filter(p => p.pagoStatus === 'pendiente' && p.logisticaStatus !== 'entregado').length
+    const countEnCamino = pedidos.filter(p => p.logisticaStatus === 'en_agencia').length
 
     return (
-      <CatalogoPublico
-        isDemo={isDemo}
-        sidebarOffset={sidebarCollapsed ? 56 : 220}
-        onSeleccionar={(producto, fmt) => agregarAlCarrito(producto, fmt ?? '1kg')}
-        carritoCount={carritoItems.length}
-        totalCarritoCents={totalCarritoCents}
-        carritoProductoIds={carritoProductoIds}
-        carritoLineas={carritoItems}
-        onIrAlCheckout={() => { window.location.hash = '#/checkout' }}
-      />
+      <>
+        {/* Banner re-engagement pedidos activos */}
+        {(countPendientePago > 0 || countEnCamino > 0) && (
+          <div style={{
+            position: 'fixed', top: 0, left: sidebarCollapsed ? 56 : 220, right: 0, zIndex: 90,
+            background: countPendientePago > 0 ? C.yellow + 'ee' : C.blue + 'ee',
+            color: countPendientePago > 0 ? '#000' : C.white,
+            padding: '10px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            backdropFilter: 'blur(6px)', gap: 12,
+          }}>
+            <span style={{ fontSize: 13, fontWeight: 700 }}>
+              {countPendientePago > 0
+                ? `⏳ ${countPendientePago} pedido${countPendientePago > 1 ? 's' : ''} esperando tu voucher de pago`
+                : `🚚 ${countEnCamino} pedido${countEnCamino > 1 ? 's' : ''} en camino`
+              }
+            </span>
+            <button
+              onClick={() => setTab('mis_compras')}
+              style={{ padding: '6px 14px', borderRadius: 8, border: '1px solid rgba(0,0,0,0.2)', background: 'rgba(0,0,0,0.15)', cursor: 'pointer', fontSize: 12, fontWeight: 700, fontFamily: 'Montserrat, sans-serif', color: 'inherit' }}
+            >
+              Ver mis pedidos →
+            </button>
+          </div>
+        )}
+        <CatalogoPublico
+          isDemo={isDemo}
+          sidebarOffset={sidebarCollapsed ? 56 : 220}
+          onSeleccionar={(producto, fmt) => agregarAlCarrito(producto, fmt ?? '1kg')}
+          carritoCount={carritoItems.length}
+          totalCarritoCents={totalCarritoCents}
+          carritoProductoIds={carritoProductoIds}
+          carritoLineas={carritoItems}
+          onIrAlCheckout={() => { window.location.hash = '#/checkout' }}
+        />
+      </>
     )
   }
 
@@ -541,6 +681,34 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
       if (filtroPedidoEstado === 'en_agencia') return p.logisticaStatus === 'en_agencia'
       return true
     }).filter(p => !busquedaPedido || p.id.toLowerCase().includes(busquedaPedido.toLowerCase()))
+
+    function getStatusInfo(pedido: PedidoONE): { label: string; sublabel: string; color: string; icon: string } {
+      if (pedido.logisticaStatus === 'entregado')
+        return { label: 'Entregado', sublabel: 'Pedido recibido', color: C.sage, icon: '✅' }
+      if (pedido.recepcionConfirmada)
+        return { label: 'Recibido', sublabel: 'Confirmaste la recepción', color: C.sage, icon: '✓' }
+      if (pedido.logisticaStatus === 'en_agencia')
+        return { label: 'En camino', sublabel: pedido.agencia ? `Enviado por ${pedido.agencia.toUpperCase()}` : 'En agencia de envío', color: C.blue, icon: '🚚' }
+      if (pedido.pagoStatus === 'verificado')
+        return { label: 'Pago confirmado', sublabel: 'El caficultor prepara tu pedido', color: C.sage, icon: '✓' }
+      if (pedido.pagoStatus === 'voucher_subido')
+        return { label: 'Verificando pago', sublabel: 'Recibimos tu voucher', color: C.yellow, icon: '🔎' }
+      if (pedido.pagoStatus === 'rechazado')
+        return { label: 'Pago rechazado', sublabel: 'Contáctanos para resolver', color: '#e05c5c', icon: '✕' }
+      return { label: 'Pendiente de pago', sublabel: 'Sube el voucher para continuar', color: C.yellow, icon: '⏳' }
+    }
+
+    function getFechaEstimada(pedido: PedidoONE): string | null {
+      const created = new Date(pedido.createdAt)
+      if (isNaN(created.getTime())) return null
+      if (pedido.logisticaStatus === 'entregado') return null
+      const diasMin = pedido.pagoStatus === 'verificado' ? 3 : 5
+      const diasMax = pedido.pagoStatus === 'verificado' ? 7 : 10
+      const desde = new Date(created); desde.setDate(desde.getDate() + diasMin)
+      const hasta = new Date(created); hasta.setDate(hasta.getDate() + diasMax)
+      const fmt = (d: Date) => d.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' })
+      return `${fmt(desde)} – ${fmt(hasta)}`
+    }
 
     return (
       <div>
@@ -567,69 +735,126 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
             )}
           </div>
         ) : (
-          <div className="grid-pedidos-emp">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {filtrados.map(pedido => {
-              const statusColor = pedido.pagoStatus === 'pendiente' ? C.yellow
-                : pedido.pagoStatus === 'voucher_subido' ? C.yellow
-                : pedido.logisticaStatus === 'en_agencia' ? C.blue : C.sage
-              const statusLabel = pedido.pagoStatus === 'pendiente' ? '⏳ Sin pago'
-                : pedido.pagoStatus === 'voucher_subido' ? '🔎 Verificando pago'
-                : pedido.pagoStatus === 'rechazado' ? '✕ Rechazado'
-                : pedido.logisticaStatus === 'en_agencia' ? '🚚 En agencia'
-                : '✓ Pago OK — preparando'
+              const st = getStatusInfo(pedido)
+              const fechaEst = getFechaEstimada(pedido)
+              const fechaPedido = new Date(pedido.createdAt).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })
 
               return (
                 <div key={pedido.id} style={{
-                  background: C.card, borderRadius: 14, overflow: 'hidden',
-                  border: `1px solid ${statusColor}33`,
-                  display: 'flex', flexDirection: 'column',
+                  background: C.card, borderRadius: 12, overflow: 'hidden',
+                  border: `1px solid ${C.border}`,
                 }}>
-                  {/* Cabecera coloreada */}
-                  <div style={{ padding: '10px 14px', background: statusColor + '11', borderBottom: `1px solid ${statusColor}22`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: statusColor, padding: '2px 8px', borderRadius: 10, background: statusColor + '22', border: `1px solid ${statusColor}44` }}>
-                      {statusLabel}
-                    </span>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: C.terra }}>{formatCents(pedido.totalCents)}</span>
+                  {/* ── Header: estado + meta del pedido ── */}
+                  <div style={{
+                    padding: '12px 16px',
+                    borderBottom: `1px solid ${C.border}`,
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    gap: 12, flexWrap: 'wrap',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{
+                        fontSize: 11, fontWeight: 700, color: st.color,
+                        padding: '3px 10px', borderRadius: 20,
+                        background: st.color + '20', border: `1px solid ${st.color}40`,
+                        textTransform: 'uppercase', letterSpacing: '0.06em',
+                      }}>
+                        {st.icon} {st.label}
+                      </span>
+                      <span style={{ fontSize: 11, color: C.textSub }}>{st.sublabel}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 11, color: C.textSub }}>
+                        Pedido: <span style={{ color: C.cream, fontFamily: 'JetBrains Mono, monospace', fontSize: 10 }}>{pedido.id.slice(-12).toUpperCase()}</span>
+                      </span>
+                      <span style={{ fontSize: 11, color: C.textSub }}>{fechaPedido}</span>
+                      {fechaEst && (
+                        <span style={{ fontSize: 11, color: C.cream }}>
+                          📅 Entrega: <strong>{fechaEst}</strong>
+                        </span>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Contenido */}
-                  <div style={{ padding: '12px 14px', flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <div>
-                      <p style={{ margin: '0 0 1px', fontSize: 10, color: C.muted, fontFamily: 'JetBrains Mono, monospace' }}>{pedido.id}</p>
-                      <p style={{ margin: '0 0 2px', fontSize: 11, color: C.textSub }}>{formatFecha(pedido.createdAt)}</p>
+                  {/* ── Tracking si aplica ── */}
+                  {pedido.logisticaStatus === 'en_agencia' && pedido.codigoAgencia && (
+                    <div style={{ padding: '8px 16px', background: C.blue + '10', borderBottom: `1px solid ${C.blue}25`, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 12, color: C.blue, fontWeight: 700 }}>📦 {pedido.agencia?.toUpperCase()}</span>
+                      <span style={{ width: 1, height: 12, background: C.border }} />
+                      <span style={{ fontSize: 11, color: C.blue, fontFamily: 'JetBrains Mono, monospace' }}>{pedido.codigoAgencia}</span>
                     </div>
+                  )}
 
-                    {/* Items compactos */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {/* ── Layout principal: productos + acciones ── */}
+                  <div style={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 0 }}>
+
+                    {/* Lista de productos */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       {pedido.items.map((item, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 8px', background: C.bg, borderRadius: 6 }}>
-                          <div>
-                            <p style={{ margin: '0 0 1px', fontSize: 12, fontWeight: 600, color: C.cream }}>{item.productoNombre}</p>
-                            <p style={{ margin: 0, fontSize: 10, color: C.textSub }}>{item.qty}×{item.presentacion} · {item.caficultorNombre}</p>
+                        <div key={i} style={{
+                          display: 'flex', gap: 12, padding: '14px 16px',
+                          borderBottom: i < pedido.items.length - 1 ? `1px solid ${C.border}` : 'none',
+                          alignItems: 'flex-start',
+                        }}>
+                          {/* Foto */}
+                          <div style={{
+                            width: 80, height: 80, borderRadius: 8, overflow: 'hidden', flexShrink: 0,
+                            background: '#111', border: `1px solid ${C.border}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          }}>
+                            {(item as any).fotoUrl
+                              ? <img src={(item as any).fotoUrl} alt={item.productoNombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              : <span style={{ fontSize: 32 }}>☕</span>
+                            }
                           </div>
-                          <span style={{ fontSize: 11, color: C.terra, fontWeight: 600, flexShrink: 0, marginLeft: 6 }}>{formatCents(item.subtotalCents)}</span>
+                          {/* Info */}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: C.cream, lineHeight: 1.3 }}>
+                              {item.productoNombre}
+                            </p>
+                            <p style={{ margin: '0 0 2px', fontSize: 12, color: C.textSub }}>
+                              {item.presentacion} · {item.caficultorNombre}
+                            </p>
+                            <p style={{ margin: 0, fontSize: 12, color: C.textSub }}>
+                              Cantidad: <strong style={{ color: C.cream }}>{item.qty}</strong>
+                            </p>
+                          </div>
+                          {/* Precio */}
+                          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                            <p style={{ margin: '0 0 2px', fontSize: 15, fontWeight: 700, color: C.terra }}>
+                              {formatCents(item.subtotalCents)}
+                            </p>
+                            {item.qty > 1 && (
+                              <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>
+                                {formatCents(item.unitCents)} c/u
+                              </p>
+                            )}
+                          </div>
                         </div>
                       ))}
+
+                      {/* Total */}
+                      <div style={{ padding: '10px 16px', borderTop: `1px solid ${C.border}`, display: 'flex', justifyContent: 'flex-end', gap: 16, alignItems: 'center' }}>
+                        <span style={{ fontSize: 12, color: C.textSub }}>
+                          {pedido.items.reduce((s, i) => s + i.qty, 0)} unidad{pedido.items.reduce((s, i) => s + i.qty, 0) !== 1 ? 'es' : ''}
+                        </span>
+                        <span style={{ fontSize: 14, color: C.textSub }}>Total del pedido:</span>
+                        <span style={{ fontSize: 18, fontWeight: 700, color: C.terra }}>{formatCents(pedido.totalCents)}</span>
+                      </div>
                     </div>
 
-                    {pedido.logisticaStatus === 'en_agencia' && pedido.codigoAgencia && (
-                      <p style={{ margin: 0, fontSize: 11, color: C.blue, fontWeight: 600 }}>
-                        📦 {pedido.agencia?.toUpperCase()} · <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>{pedido.codigoAgencia}</span>
-                      </p>
-                    )}
-
-                    <StepperPedido pedido={pedido} />
-
-                    {/* Botones */}
-                    <div style={{ display: 'flex', gap: 6, marginTop: 'auto' }}>
-                      <button
-                        onClick={() => setPedidoDetalle(pedido)}
-                        style={{ flex: 1, padding: '7px', borderRadius: 6, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 11, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
-                      >
-                        Ver detalle
-                      </button>
+                    {/* ── Columna acciones (desktop) / fila acciones (mobile) ── */}
+                    <div style={{
+                      width: isMobile ? '100%' : 160, flexShrink: 0, padding: isMobile ? '10px 16px 14px' : '14px 12px',
+                      borderLeft: isMobile ? 'none' : `1px solid ${C.border}`,
+                      borderTop: isMobile ? `1px solid ${C.border}` : 'none',
+                      display: 'flex', flexDirection: isMobile ? 'row' : 'column',
+                      gap: 8, flexWrap: 'wrap',
+                    }}>
+                      {/* Acción primaria */}
                       {pedido.pagoStatus === 'pendiente' && (
-                        <a href="#/" style={{ flex: 2, padding: '7px', borderRadius: 6, border: 'none', background: C.yellow, color: '#000', fontSize: 11, fontWeight: 700, cursor: 'pointer', textDecoration: 'none', textAlign: 'center', fontFamily: 'Montserrat, sans-serif' }}>
+                        <a href="#/" style={{ display: 'block', padding: '10px 0', borderRadius: 8, border: 'none', background: C.yellow, color: '#000', fontSize: 12, fontWeight: 700, cursor: 'pointer', textDecoration: 'none', textAlign: 'center', fontFamily: 'Montserrat, sans-serif', flex: isMobile ? 1 : undefined, minWidth: isMobile ? 120 : undefined }}>
                           Subir voucher →
                         </a>
                       )}
@@ -637,11 +862,40 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
                         <button
                           onClick={() => handleConfirmarRecepcion(pedido.id)}
                           disabled={accionando === pedido.id}
-                          style={{ flex: 2, padding: '7px', borderRadius: 6, border: 'none', background: C.sage, color: '#000', fontSize: 11, fontWeight: 700, cursor: accionando === pedido.id ? 'not-allowed' : 'pointer', fontFamily: 'Montserrat, sans-serif' }}
+                          style={{ padding: '10px 0', borderRadius: 8, border: 'none', background: C.sage, color: '#000', fontSize: 12, fontWeight: 700, cursor: accionando === pedido.id ? 'not-allowed' : 'pointer', fontFamily: 'Montserrat, sans-serif', flex: isMobile ? 1 : undefined, width: isMobile ? undefined : '100%', minWidth: isMobile ? 120 : undefined }}
                         >
                           {accionando === pedido.id ? '...' : '✓ Confirmar recepción'}
                         </button>
                       )}
+                      {pedido.logisticaStatus === 'entregado' && !pedido.calificado && (
+                        <button
+                          onClick={() => setPedidoACalificar(pedido)}
+                          style={{ padding: '10px 0', borderRadius: 8, border: 'none', background: C.terra, color: C.white, fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', flex: isMobile ? 1 : undefined, width: isMobile ? undefined : '100%', minWidth: isMobile ? 100 : undefined }}
+                        >
+                          ⭐ Calificar
+                        </button>
+                      )}
+                      {/* Acciones secundarias */}
+                      <button
+                        onClick={() => {
+                          pedido.items.forEach(item => {
+                            const kgPorUnidad: Record<string, number> = { '250g': 0.25, '500g': 0.5, '1kg': 1.0, '5kg': 5.0 }
+                            const kg = kgPorUnidad[item.presentacion] ?? 1.0
+                            const precioBaseKgCents = kg > 0 ? Math.round(item.unitCents / kg) : item.unitCents
+                            agregarAlCarrito({ id: item.productoId, nombre: item.productoNombre, precioBaseKgCents }, item.presentacion)
+                          })
+                          setTab('carrito')
+                        }}
+                        style={{ padding: '9px 0', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.cream, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', flex: isMobile ? 1 : undefined, width: isMobile ? undefined : '100%' }}
+                      >
+                        Comprar de nuevo
+                      </button>
+                      <button
+                        onClick={() => setPedidoDetalle(pedido)}
+                        style={{ padding: '9px 0', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', flex: isMobile ? 1 : undefined, width: isMobile ? undefined : '100%' }}
+                      >
+                        Ver detalle
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -661,8 +915,9 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
 
           return (
             <div style={{ position: 'fixed', inset: 0, zIndex: 400, display: 'flex' }} onClick={() => setPedidoDetalle(null)}>
-              <div style={{ flex: 1, background: 'rgba(0,0,0,0.7)' }} />
+              <div className="detalle-overlay" style={{ flex: 1, background: 'rgba(0,0,0,0.7)' }} />
               <div
+                className="detalle-panel"
                 style={{ width: 'min(480px, 100vw)', background: C.card, borderLeft: `1px solid ${C.border}`, overflowY: 'auto', display: 'flex', flexDirection: 'column' }}
                 onClick={e => e.stopPropagation()}
               >
@@ -792,92 +1047,6 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
 
   // ─── Nuevas funciones: Mensajes, Reseñas, Carrito, Mis Compras ──────────────
 
-  function renderMensajes() {
-    const [catMensajes, setCatMensajes] = React.useState<'pedidos' | 'promos'>('pedidos')
-
-    type EventoNotif = {
-      pedidoId: string; orderId: string; titulo: string; descripcion: string
-      fotoUrl: string; timestamp: number; accion: string | null
-    }
-
-    function generarEventos(p: PedidoONE): EventoNotif[] {
-      const foto = (p.items[0] as any)?.fotoUrl ?? ''
-      const ts = new Date(p.createdAt).getTime() || Date.now()
-      if (p.logisticaStatus === 'entregado')
-        return [{ pedidoId: p.id, orderId: p.id, titulo: '✅ Pedido entregado', descripcion: 'Tu pedido fue entregado. ¡Esperamos que disfrutes el café!', fotoUrl: foto, timestamp: ts, accion: 'Ver pedido' }]
-      if (p.logisticaStatus === 'en_agencia')
-        return [{ pedidoId: p.id, orderId: p.id, titulo: '📦 Pedido en camino', descripcion: 'El caficultor envió tu pedido. Confirma la recepción cuando llegue.', fotoUrl: foto, timestamp: ts, accion: 'Confirmar recepción' }]
-      if (['verificado', 'confirmado_auto', 'confirmado_manual'].includes(p.pagoStatus))
-        return [{ pedidoId: p.id, orderId: p.id, titulo: '✓ Pago confirmado', descripcion: 'Tu pago fue verificado. El caficultor está preparando tu pedido.', fotoUrl: foto, timestamp: ts, accion: 'Ver pedido' }]
-      if (p.pagoStatus === 'voucher_subido')
-        return [{ pedidoId: p.id, orderId: p.id, titulo: '⏳ Verificando pago', descripcion: 'Recibimos tu voucher. Estamos verificando el pago.', fotoUrl: foto, timestamp: ts, accion: null }]
-      return [{ pedidoId: p.id, orderId: p.id, titulo: '🆕 Pedido creado', descripcion: 'Tu pedido fue registrado. Sube el voucher de pago para continuar.', fotoUrl: foto, timestamp: ts, accion: 'Subir voucher' }]
-    }
-
-    const eventos = pedidos.flatMap(generarEventos).sort((a, b) => b.timestamp - a.timestamp)
-    const chipActive: React.CSSProperties = { padding: '6px 16px', borderRadius: 20, border: 'none', background: C.terra, color: '#fff', fontSize: 13, fontWeight: 700, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', whiteSpace: 'nowrap' }
-    const chipInactive: React.CSSProperties = { ...chipActive, background: 'transparent', border: `1px solid ${C.border}`, color: C.textSub, fontWeight: 500 }
-
-    return (
-      <div>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 16, overflowX: 'auto', paddingBottom: 4 }}>
-          {(['pedidos', 'promos'] as const).map(s => (
-            <button key={s} onClick={() => setCatMensajes(s)} style={catMensajes === s ? chipActive : chipInactive}>
-              {s === 'pedidos' ? 'Pedidos y envíos' : 'Promociones'}
-            </button>
-          ))}
-        </div>
-        <div style={{ padding: '10px 14px', borderRadius: 10, background: `${C.sage}11`, border: `1px solid ${C.sage}22`, marginBottom: 16, fontSize: 12, color: C.sage }}>
-          🛡️ Nunca pagues fuera de la app. Ignora mensajes que soliciten pagos extra.
-        </div>
-        {catMensajes === 'promos' ? (
-          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
-            <p style={{ fontSize: 32, marginBottom: 12 }}>🎁</p>
-            <p style={{ fontSize: 15, color: C.textSub }}>No hay promociones disponibles</p>
-          </div>
-        ) : eventos.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '48px 20px' }}>
-            <p style={{ fontSize: 32, marginBottom: 12 }}>💬</p>
-            <p style={{ fontSize: 15, color: C.textSub }}>Sin notificaciones por ahora</p>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {eventos.map((ev, idx) => (
-              <div key={idx} style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, overflow: 'hidden' }}>
-                <div style={{ padding: '10px 14px 0', fontSize: 11, color: C.textSub }}>
-                  {new Date(ev.timestamp).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
-                </div>
-                <div style={{ padding: '8px 14px 14px', display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream }}>{ev.titulo}</p>
-                  <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                    {ev.fotoUrl
-                      ? <img src={ev.fotoUrl} alt="" style={{ width: 64, height: 64, borderRadius: 8, objectFit: 'cover', flexShrink: 0 }} />
-                      : <div style={{ width: 64, height: 64, borderRadius: 8, background: C.border, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>☕</div>
-                    }
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ margin: '0 0 4px', fontSize: 12, color: C.textSub, lineHeight: 1.4 }}>{ev.descripcion}</p>
-                      <p style={{ margin: 0, fontSize: 11, color: C.muted, fontFamily: 'monospace' }}>#{ev.orderId}</p>
-                      {ev.accion && (
-                        <button onClick={() => setPedidoDetalle(pedidos.find(p => p.id === ev.pedidoId) ?? null)}
-                          style={{ marginTop: 8, padding: '5px 14px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.cream, fontSize: 12, cursor: 'pointer' }}>
-                          {ev.accion}
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                  <button onClick={() => setPedidoDetalle(pedidos.find(p => p.id === ev.pedidoId) ?? null)}
-                    style={{ background: 'none', border: 'none', color: C.textSub, fontSize: 12, cursor: 'pointer', textAlign: 'left', padding: '6px 0 0', borderTop: `1px solid ${C.border}` }}>
-                    Ver detalles del pedido  ›
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    )
-  }
-
   function renderResenias() {
     const entregados = pedidos.filter(p => p.logisticaStatus === 'entregado')
     const pendientes = entregados.filter(p => !p.calificado && p.recepcionConfirmada)
@@ -998,9 +1167,15 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
               })}
             </div>
             <div style={{ position: 'sticky', bottom: 0, background: C.bg, padding: '16px 0 8px', borderTop: `1px solid ${C.border}` }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
                 <span style={{ fontSize: 13, color: C.textSub }}>Subtotal ({carritoItems.reduce((s, i) => s + i.qty, 0)} productos)</span>
                 <span style={{ fontSize: 20, fontWeight: 700, color: C.terra, fontFamily: 'Cormorant Garamond, serif' }}>{formatCents(subtotalCents)}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+                <span style={{ fontSize: 11 }}>🚚</span>
+                <span style={{ fontSize: 11, color: C.textSub, fontFamily: 'Montserrat, sans-serif' }}>
+                  Entrega estimada: 3–7 días hábiles desde confirmación de pago
+                </span>
               </div>
               <a href="#/checkout" style={{ display: 'block', textAlign: 'center', padding: '14px', borderRadius: 12, background: C.terra, color: '#fff', textDecoration: 'none', fontSize: 15, fontWeight: 700 }}>
                 Confirmar pedido →
@@ -1053,7 +1228,7 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
           ))}
         </div>
         {subTab === 'pedidos'  && renderPedidos()}
-        {subTab === 'mensajes' && renderMensajes()}
+        {subTab === 'mensajes' && <MensajesTab pedidos={pedidos} C={C} setPedidoDetalle={setPedidoDetalle} />}
         {subTab === 'resenias' && renderResenias()}
       </div>
     )
@@ -1070,29 +1245,35 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
     const etapaColor = emp.etapa === 'abierto' ? C.sage : C.yellow
     const etapaLabel = emp.etapa === 'abierto' ? '● Abierto' : emp.etapa === 'proxima_apertura' ? '◐ Próxima apertura' : '○ Planificando'
 
+    const menuItemStyle: React.CSSProperties = {
+      width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      padding: '14px 18px', background: 'none', border: 'none', borderBottom: `1px solid ${C.border}`,
+      color: C.cream, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', fontSize: 14,
+      textAlign: 'left',
+    }
+
     return (
       <div>
-        {emp.fotoLocal && (
-          <div style={{ width: '100%', height: 180, borderRadius: 14, overflow: 'hidden', marginBottom: 20, border: `1px solid ${C.border}` }}>
-            <img src={emp.fotoLocal} alt={emp.nombreLocal} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </div>
-        )}
-        <div style={{ background: C.card, borderRadius: 16, padding: '20px', marginBottom: 14, border: `1px solid ${C.border}` }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
-            <div>
-              <h2 style={{ margin: '0 0 4px', fontSize: 24, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif' }}>{emp.nombreLocal}</h2>
-              {emp.distritoLocal && <p style={{ margin: 0, fontSize: 13, color: C.textSub }}>{emp.distritoLocal} · Lima</p>}
+        {/* Foto banner + info */}
+        <div style={{ background: C.card, borderRadius: 16, overflow: 'hidden', marginBottom: 14, border: `1px solid ${C.border}` }}>
+          {emp.fotoLocal ? (
+            <div style={{ width: '100%', height: 160, overflow: 'hidden' }}>
+              <img src={emp.fotoLocal} alt={emp.nombreLocal} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <button onClick={() => setEditandoPerfil(true)} style={{ fontSize: 12, color: C.terra, background: 'none', border: `1px solid ${C.terra}44`, borderRadius: 6, padding: '6px 14px', cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', flexShrink: 0 }}>Editar</button>
-          </div>
-          {emp.descripcion && <p style={{ margin: '0 0 14px', fontSize: 13, color: C.creamMuted, lineHeight: 1.6 }}>{emp.descripcion}</p>}
-          <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+          ) : (
+            <div style={{ width: '100%', height: 100, background: `linear-gradient(135deg, ${C.terra}22, ${C.sage}22)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40 }}>
+              ☕
+            </div>
+          )}
+          <div style={{ padding: '16px 18px' }}>
+            <h2 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif' }}>{emp.nombreLocal}</h2>
+            {emp.distritoLocal && <p style={{ margin: '0 0 6px', fontSize: 12, color: C.textSub }}>{emp.distritoLocal} · Lima</p>}
+            {emp.descripcion && <p style={{ margin: '0 0 10px', fontSize: 12, color: C.creamMuted, lineHeight: 1.5 }}>{emp.descripcion}</p>}
             <span style={{ fontSize: 11, padding: '4px 12px', borderRadius: 20, background: etapaColor + '22', color: etapaColor, fontWeight: 700, border: `1px solid ${etapaColor}44` }}>{etapaLabel}</span>
-            {emp.etapa === 'abierto' && (
-              <a href={`#/cafeteria/${usuarioId === 'demo-user' ? 'user-emprendedor-001' : usuarioId}`} style={{ fontSize: 12, color: C.terra, textDecoration: 'none', fontWeight: 600 }}>Ver perfil público →</a>
-            )}
           </div>
         </div>
+
+        {/* KPIs */}
         <div className="grid-kpis-3" style={{ marginBottom: 14 }}>
           {[
             { label: 'Pedidos totales', value: String(pedidos.length) },
@@ -1105,7 +1286,9 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
             </div>
           ))}
         </div>
-        {historial.length > 0 && historial.filter(p => !p.calificado && p.recepcionConfirmada).length > 0 && (
+
+        {/* Alerta reseñas pendientes */}
+        {historial.filter(p => !p.calificado && p.recepcionConfirmada).length > 0 && (
           <div style={{ padding: '12px 14px', background: C.yellow + '11', borderRadius: 10, border: `1px solid ${C.yellow}33`, marginBottom: 14 }}>
             <p style={{ margin: 0, fontSize: 12, color: C.yellow }}>
               Tienes {historial.filter(p => !p.calificado && p.recepcionConfirmada).length} entrega(s) sin calificar —{' '}
@@ -1115,6 +1298,26 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
             </p>
           </div>
         )}
+
+        {/* Menú estilo Android */}
+        <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, marginBottom: 14, overflow: 'hidden' }}>
+          <button style={menuItemStyle} onClick={() => setEditandoPerfil(true)}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ fontSize: 18 }}>🏪</span>
+              <span>Editar mi local</span>
+            </span>
+            <span style={{ color: C.textSub, fontSize: 16 }}>›</span>
+          </button>
+          <button style={{ ...menuItemStyle, borderBottom: 'none' }} onClick={() => setEditandoPerfil(true)}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ fontSize: 18 }}>📍</span>
+              <span>Mis direcciones</span>
+            </span>
+            <span style={{ color: C.textSub, fontSize: 16 }}>›</span>
+          </button>
+        </div>
+
+        {/* Soporte */}
         <div style={{ background: C.card, borderRadius: 14, padding: '16px 18px', border: `1px solid ${C.border}` }}>
           <p style={{ margin: '0 0 12px', fontSize: 11, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>¿Necesitas ayuda?</p>
           <a href={`https://wa.me/${ONE_CONFIG.ADMIN_WHATSAPP.replace(/\s/g, '')}?text=Hola, soy ${emp.nombreLocal} y necesito ayuda`}
@@ -1169,6 +1372,12 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
         @media (min-width: 701px) and (max-width: 999px) { .grid-pedidos-emp { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 700px)  { .grid-pedidos-emp { grid-template-columns: 1fr; } }
 
+        /* Detalle pedido: en mobile ocupa pantalla completa */
+        @media (max-width: 700px) {
+          .detalle-overlay { display: none !important; }
+          .detalle-panel { border-left: none !important; }
+        }
+
         /* Calculadora: 2 col desktop, 1 col mobile */
         .grid-calc { display: grid; gap: 20px; align-items: start; }
         @media (min-width: 800px) { .grid-calc { grid-template-columns: 1fr minmax(240px,360px); } }
@@ -1182,7 +1391,7 @@ const PortalEmprendedor: React.FC<Props> = ({ usuarioId, nombreUsuario, isDemo =
 
       {/* Sidebar desktop */}
       <div className="sidebar-desktop" style={{ display: 'none' }}>
-        <Sidebar tab={tab} onChange={setTab} nombreLocal={nombreLocal} onLogout={logout} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} />
+        <Sidebar tab={tab} onChange={setTab} nombreLocal={nombreLocal} onLogout={logout} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(c => !c)} pedidosPendientes={pedidos.filter(p => p.pagoStatus === 'pendiente' && p.logisticaStatus !== 'entregado').length} carritoCount={carritoItems.length} />
       </div>
 
       {/* Mobile header */}

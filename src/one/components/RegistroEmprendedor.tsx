@@ -385,11 +385,13 @@ const RegistroEmprendedor: React.FC<{ isDemo: boolean }> = ({ isDemo }) => {
           {/* CSS para ocultar panel en mobile */}
           <style>{`
             @media (max-width: 700px) {
+              .reg-emp-grid { grid-template-columns: 1fr !important; }
               .panel-propuesta-emprendedor { display: none !important; }
+              .reg-emp-pass-grid { grid-template-columns: 1fr !important; }
             }
           `}</style>
 
-          <div style={{
+          <div className="reg-emp-grid" style={{
             maxWidth: 1100,
             margin: '0 auto',
             padding: '40px 24px 80px',
@@ -422,7 +424,7 @@ const RegistroEmprendedor: React.FC<{ isDemo: boolean }> = ({ isDemo }) => {
                       <label style={labelStyle}>WhatsApp</label>
                       <input type="tel" placeholder="+51 987 654 321" value={telefono} onChange={e => setTelefono(e.target.value)} style={inputStyle} />
                     </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <div className="reg-emp-pass-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                       <div>
                         <label style={labelStyle}>Contraseña <span style={{ color: C.terra }}>*</span></label>
                         <input type="password" placeholder="Mínimo 6 caracteres" value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />

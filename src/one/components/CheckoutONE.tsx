@@ -590,7 +590,7 @@ const Paso1Form: React.FC<Paso1Props> = ({
           />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+        <div className="checkout-local-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
           <div>
             <Label>Distrito</Label>
             <Select value={distritoLocal} onChange={e => onDistritoLocalChange(e.target.value)}>
@@ -719,6 +719,29 @@ const Paso2Form: React.FC<Paso2FormProps> = ({
 
   return (
     <div>
+      {/* Datos de pago — preview rápido antes de elegir método */}
+      <div style={{
+        marginBottom: 20, padding: '12px 16px', borderRadius: 10,
+        background: '#0d1020', border: `1px solid ${C.border}`,
+        display: 'flex', gap: 24, flexWrap: 'wrap',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 18 }}>📱</span>
+          <div>
+            <p style={{ margin: 0, fontSize: 10, color: C.muted, fontFamily: 'Montserrat, sans-serif', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Yape</p>
+            <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream, fontFamily: 'Montserrat, sans-serif', letterSpacing: '0.04em' }}>{ONE_CONFIG.YAPE_NUMERO}</p>
+          </div>
+        </div>
+        <div style={{ width: 1, background: C.border, flexShrink: 0, alignSelf: 'stretch' }} />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 18 }}>🏦</span>
+          <div>
+            <p style={{ margin: 0, fontSize: 10, color: C.muted, fontFamily: 'Montserrat, sans-serif', textTransform: 'uppercase', letterSpacing: '0.07em' }}>BCP · {ONE_CONFIG.BCP_TITULAR}</p>
+            <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: C.cream, fontFamily: 'Montserrat, sans-serif', letterSpacing: '0.04em' }}>{ONE_CONFIG.BCP_CUENTA}</p>
+          </div>
+        </div>
+      </div>
+
       {/* Método de pago */}
       <div style={{ marginBottom: 28 }}>
         <h3 style={{ margin: '0 0 14px', fontSize: 13, fontWeight: 700, color: C.muted, fontFamily: 'Montserrat, sans-serif', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
@@ -1345,6 +1368,7 @@ const CheckoutONE: React.FC<Props> = ({
         @media (max-width: 700px) {
           .checkout-grid { grid-template-columns: 1fr !important; }
           .checkout-summary { position: static !important; }
+          .checkout-local-grid { grid-template-columns: 1fr !important; }
         }
         @keyframes checkBounce {
           0%   { transform: scale(0) rotate(-10deg); opacity: 0; }

@@ -2,7 +2,9 @@
  * PortalCaficultor.tsx — Dashboard del caficultor
  * Dark mode Netflix-style con sidebar navigation, CRUD de productos, toast
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
+import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { storage } from '../../shared/firebase'
 import {
   fetchPedidosByCaficultor, fetchProductos, fetchCaficultor,
   fetchCalificacionesByCaficultor, updateStock,
@@ -42,6 +44,102 @@ const C = {
 
 const PROCESO_COLORS: Record<string, string> = {
   lavado: C.blue, natural: C.terra, honey: C.yellow, anaerobico: '#9b59b6',
+}
+
+// ─── Cosecha: lista de mes/año (año actual + año anterior) ────────────────────
+const MESES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+function generarOpcionesCosecha(): string[] {
+  const anio = new Date().getFullYear()
+  const opciones: string[] = ['']
+  for (let m = 11; m >= 0; m--) opciones.push(`${MESES_ES[m]} ${anio}`)
+  for (let m = 11; m >= 0; m--) opciones.push(`${MESES_ES[m]} ${anio - 1}`)
+  return opciones
+}
+const OPCIONES_COSECHA = generarOpcionesCosecha()
+
+// ─── Helper: subir foto a Firebase Storage ────────────────────────────────────
+async function subirFotoStorage(file: File, ruta: string): Promise<string> {
+  const r = storageRef(storage, ruta)
+  await uploadBytes(r, file)
+  return getDownloadURL(r)
+}
+
+// ─── Componente reutilizable: botón upload foto ───────────────────────────────
+const UploadFoto: React.FC<{
+  url: string
+  onUrl: (url: string) => void
+  label: string
+  ruta: string
+  placeholder?: string
+  aspectRatio?: string
+}> = ({ url, onUrl, label, ruta, placeholder = 'Subir foto', aspectRatio = '4/3' }) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const [subiendo, setSubiendo] = useState(false)
+  const [hover, setHover] = useState(false)
+
+  async function handleFile(file: File) {
+    if (!file.type.startsWith('image/')) return
+    setSubiendo(true)
+    try {
+      const nombre = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, '_')}`
+      const downloadUrl = await subirFotoStorage(file, `${ruta}/${nombre}`)
+      onUrl(downloadUrl)
+    } catch (e) {
+      console.error('Error subiendo foto', e)
+    } finally {
+      setSubiendo(false)
+    }
+  }
+
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <label style={{ fontSize: 11, color: C.textSub, display: 'block', marginBottom: 6 }}>{label}</label>
+      <div
+        onClick={() => !subiendo && inputRef.current?.click()}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={{
+          position: 'relative', borderRadius: 10, border: `2px dashed ${url ? C.terra : (hover ? C.creamMuted : C.border)}`,
+          background: '#0a0a0a', cursor: subiendo ? 'wait' : 'pointer',
+          overflow: 'hidden', aspectRatio, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          minHeight: 80, transition: 'border-color 0.2s',
+        }}
+      >
+        {url ? (
+          <>
+            <img src={url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
+            <div style={{
+              position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.55)',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              opacity: hover ? 1 : 0, transition: 'opacity 0.2s',
+            }}>
+              <span style={{ fontSize: 20 }}>📷</span>
+              <span style={{ fontSize: 11, color: '#fff', marginTop: 4 }}>Cambiar foto</span>
+            </div>
+          </>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, padding: 16 }}>
+            <span style={{ fontSize: 28 }}>📷</span>
+            <span style={{ fontSize: 12, color: C.textSub }}>{placeholder}</span>
+            <span style={{ fontSize: 10, color: C.muted }}>JPG · PNG · WEBP</span>
+          </div>
+        )}
+        {subiendo && (
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+            <span style={{ fontSize: 22 }}>⏳</span>
+            <span style={{ fontSize: 12, color: C.cream }}>Subiendo...</span>
+          </div>
+        )}
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: 'none' }}
+        onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f); e.target.value = '' }}
+      />
+    </div>
+  )
 }
 
 type Tab = 'productos' | 'pedidos' | 'historial' | 'perfil'
@@ -222,7 +320,19 @@ const ModalProducto: React.FC<{
 
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: C.bg, overflowY: 'auto', fontFamily: 'Montserrat, sans-serif' }}>
-      <style>{`@media (max-width: 720px) { .modal-producto-preview { display: none !important; } }`}</style>
+      <style>{`
+        @media (max-width: 720px) { .modal-producto-preview { display: none !important; } }
+        @media (max-width: 640px) {
+          .modal-producto-layout {
+            grid-template-columns: 1fr !important;
+            padding: 20px 16px 60px !important;
+            gap: 0 !important;
+          }
+          .modal-prod-grid-2 { grid-template-columns: 1fr !important; }
+          .modal-prod-grid-3 { grid-template-columns: 1fr 1fr !important; }
+          .modal-prod-grid-4 { grid-template-columns: repeat(2,1fr) !important; }
+        }
+      `}</style>
 
       {/* Header sticky */}
       <header style={{ position: 'sticky', top: 0, zIndex: 10, background: C.bg, borderBottom: `1px solid ${C.border}`, padding: '14px 24px', display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -234,7 +344,7 @@ const ModalProducto: React.FC<{
       </header>
 
       {/* Layout dos columnas */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '36px 24px 80px', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 48, alignItems: 'start' }}>
+      <div className="modal-producto-layout" style={{ maxWidth: 1100, margin: '0 auto', padding: '36px 24px 80px', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 48, alignItems: 'start' }}>
 
         {/* ── Columna izquierda: formulario ── */}
         <div>
@@ -248,7 +358,7 @@ const ModalProducto: React.FC<{
           <label style={labelStyle}>Nombre del café *</label>
           <input value={form.nombre} onChange={e => set('nombre', e.target.value)} style={inputStyle} placeholder="Bourbon Lavado — Finca La Coipa" maxLength={80} />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+          <div className="modal-prod-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
             <div>
               <label style={labelStyle}>Variedad *</label>
               <input value={form.variedad} onChange={e => set('variedad', e.target.value)} style={{ ...inputStyle, marginBottom: 0 }} placeholder="Bourbon" />
@@ -261,14 +371,16 @@ const ModalProducto: React.FC<{
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+          <div className="modal-prod-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
             <div>
               <label style={labelStyle}>Altitud (msnm)</label>
               <input type="number" value={form.altitudMsnm} onChange={e => set('altitudMsnm', e.target.value)} style={{ ...inputStyle, marginBottom: 0 }} placeholder="1800" />
             </div>
             <div>
               <label style={labelStyle}>Cosecha</label>
-              <input value={form.cosecha} onChange={e => set('cosecha', e.target.value)} style={{ ...inputStyle, marginBottom: 0 }} placeholder="Junio 2026" />
+              <select value={form.cosecha} onChange={e => set('cosecha', e.target.value)} style={{ ...inputStyle, marginBottom: 0, cursor: 'pointer' }}>
+                {OPCIONES_COSECHA.map(op => <option key={op} value={op}>{op || 'Seleccionar...'}</option>)}
+              </select>
             </div>
           </div>
 
@@ -281,7 +393,7 @@ const ModalProducto: React.FC<{
           {/* Precio */}
           <div style={{ background: '#0d0d0d', border: `1px solid ${C.border}`, borderRadius: 12, padding: '18px 20px', marginBottom: 16 }}>
             <p style={{ margin: '0 0 14px', fontSize: 11, color: C.textSub, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 700 }}>Precio de venta</p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+            <div className="modal-prod-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
               <div>
                 <label style={labelStyle}>Precio /kg (S/) *</label>
                 <div style={{ position: 'relative' }}>
@@ -301,7 +413,7 @@ const ModalProducto: React.FC<{
             {precioBaseSoles > 0 && (
               <div style={{ marginTop: 14 }}>
                 <p style={{ margin: '0 0 8px', fontSize: 11, color: C.textSub }}>Lo que recibe la cafetería:</p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
+                <div className="modal-prod-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 8 }}>
                   {([['1 kg', precioBaseCentsPreview], ['5 kg', precioBaseCentsPreview * 5], ['10 kg', precioBaseCentsPreview * 10], ['25 kg', precioBaseCentsPreview * 25]] as [string, number][]).map(([fmt, val]) => (
                     <div key={fmt} style={{ background: C.card, borderRadius: 8, padding: '8px', textAlign: 'center' }}>
                       <p style={{ margin: 0, fontSize: 10, color: C.textSub }}>{fmt}</p>
@@ -313,36 +425,36 @@ const ModalProducto: React.FC<{
             )}
           </div>
 
-          <label style={labelStyle}>Fotos del lote (URLs, hasta 5)</label>
-          {form.fotos.map((url, idx) => (
-            <div key={idx} style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
-              <input
-                value={url}
-                onChange={e => setForm(prev => {
-                  const fotos = [...prev.fotos]
-                  fotos[idx] = e.target.value
-                  return { ...prev, fotos }
-                })}
-                style={{ ...inputStyle, marginBottom: 0, flex: 1 }}
-                placeholder={idx === 0 ? 'https://... (foto principal)' : `https://... (foto ${idx + 1})`}
-                maxLength={300}
-              />
-              {form.fotos.length > 1 && (
-                <button
-                  onClick={() => setForm(prev => ({ ...prev, fotos: prev.fotos.filter((_, i) => i !== idx) }))}
-                  style={{ padding: '0 10px', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.red, fontSize: 16, cursor: 'pointer', flexShrink: 0 }}
-                >×</button>
-              )}
-            </div>
-          ))}
-          {form.fotos.length < 5 && (
-            <button
-              onClick={() => setForm(prev => ({ ...prev, fotos: [...prev.fotos, ''] }))}
-              style={{ padding: '6px 14px', borderRadius: 8, border: `1px dashed ${C.border}`, background: 'none', color: C.textSub, fontSize: 12, cursor: 'pointer', marginBottom: 12, fontFamily: 'Montserrat, sans-serif' }}
-            >
-              + Agregar foto
-            </button>
-          )}
+          <label style={labelStyle}>Fotos del lote (hasta 5)</label>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 8, marginBottom: 12 }}>
+            {form.fotos.map((url, idx) => (
+              <div key={idx} style={{ position: 'relative' }}>
+                <UploadFoto
+                  url={url}
+                  onUrl={newUrl => setForm(prev => { const fotos = [...prev.fotos]; fotos[idx] = newUrl; return { ...prev, fotos } })}
+                  label={idx === 0 ? 'Foto principal' : `Foto ${idx + 1}`}
+                  ruta={`productos/${caficultorId}`}
+                  placeholder={idx === 0 ? 'Principal' : `Foto ${idx + 1}`}
+                  aspectRatio="1/1"
+                />
+                {form.fotos.length > 1 && (
+                  <button
+                    onClick={() => setForm(prev => ({ ...prev, fotos: prev.fotos.filter((_, i) => i !== idx) }))}
+                    style={{ position: 'absolute', top: 22, right: 4, width: 20, height: 20, borderRadius: '50%', border: 'none', background: C.red, color: '#fff', fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0, lineHeight: 1 }}
+                  >×</button>
+                )}
+              </div>
+            ))}
+            {form.fotos.length < 5 && (
+              <div
+                onClick={() => setForm(prev => ({ ...prev, fotos: [...prev.fotos, ''] }))}
+                style={{ aspectRatio: '1/1', border: `2px dashed ${C.border}`, borderRadius: 10, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', gap: 4, marginTop: 18 }}
+              >
+                <span style={{ fontSize: 22, color: C.textSub }}>+</span>
+                <span style={{ fontSize: 10, color: C.textSub }}>Agregar</span>
+              </div>
+            )}
+          </div>
 
           <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
             <button onClick={onClose} style={{ flex: 1, padding: '14px 0', borderRadius: 10, border: `1px solid ${C.border}`, background: 'none', fontSize: 14, fontWeight: 600, color: C.textSub, cursor: 'pointer' }}>Cancelar</button>
@@ -484,7 +596,7 @@ const FormEditarPerfil: React.FC<{
       <label style={{ fontSize: 11, color: C_local.textSub, display: 'block', marginBottom: 4 }}>Nombre completo *</label>
       <input value={nombre} onChange={e => setNombre(e.target.value)} style={{ ...inputStyle, marginBottom: 12 }} placeholder="Segundo Rojas Herrera" maxLength={80} />
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+      <div className="perfil-caf-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
         <div>
           <label style={{ fontSize: 11, color: C_local.textSub, display: 'block', marginBottom: 4 }}>Región</label>
           <select value={region} onChange={e => setRegion(e.target.value)} style={{ ...inputStyle, cursor: 'pointer', appearance: 'none' as const }}>
@@ -510,8 +622,14 @@ const FormEditarPerfil: React.FC<{
         style={{ ...inputStyle, minHeight: 100, resize: 'vertical', marginBottom: 12 }}
       />
 
-      <label style={{ fontSize: 11, color: C_local.textSub, display: 'block', marginBottom: 4 }}>URL foto de perfil</label>
-      <input value={foto} onChange={e => setFoto(e.target.value)} style={{ ...inputStyle, marginBottom: 20 }} placeholder="https://res.cloudinary.com/..." maxLength={300} />
+      <UploadFoto
+        url={foto}
+        onUrl={setFoto}
+        label="Foto de perfil"
+        ruta={`caficultores/${caficultor.id}/perfil`}
+        placeholder="Subir foto de perfil"
+        aspectRatio="1/1"
+      />
 
       <div style={{ display: 'flex', gap: 10 }}>
         <button onClick={onCancel} style={{ flex: 1, padding: '13px 0', borderRadius: 10, border: `1px solid ${C_local.border}`, background: 'none', fontSize: 14, fontWeight: 600, color: C_local.textSub, cursor: 'pointer' }}>
@@ -527,56 +645,12 @@ const FormEditarPerfil: React.FC<{
 
 // ─── Stepper pedido (perspectiva caficultor) ──────────────────────────────────
 
-const CAF_STEPS = ['Recibido', 'Pago OK', 'Despachado', 'Entregado']
-
-function stepCaficultor(p: PedidoONE): number {
-  if (p.logisticaStatus === 'entregado') return 3
-  if (p.logisticaStatus === 'en_agencia') return 2
-  if (p.pagoStatus === 'verificado') return 1
-  return 0
-}
-
-const StepperPedido: React.FC<{ pedido: PedidoONE }> = ({ pedido }) => {
-  const step = stepCaficultor(pedido)
-  return (
-    <div style={{ margin: '8px 0 4px' }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        {CAF_STEPS.map((label, i) => (
-          <React.Fragment key={i}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-              <div style={{
-                width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
-                background: step >= i ? C.terra : C.border,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                {step > i
-                  ? <span style={{ color: C.white, fontSize: 10 }}>✓</span>
-                  : <span style={{ width: 5, height: 5, borderRadius: '50%', background: step === i ? C.white : C.muted, display: 'block' }} />
-                }
-              </div>
-              <p style={{
-                margin: '3px 0 0', fontSize: 8, textAlign: 'center', lineHeight: 1.2,
-                color: step >= i ? C.terra : C.muted,
-                fontWeight: step === i ? 700 : 400,
-                fontFamily: 'Montserrat, sans-serif',
-              }}>{label}</p>
-            </div>
-            {i < CAF_STEPS.length - 1 && (
-              <div style={{ height: 2, flex: 1, background: step > i ? C.terra : C.border, marginBottom: 16 }} />
-            )}
-          </React.Fragment>
-        ))}
-      </div>
-    </div>
-  )
-}
-
 // ─── Sidebar ──────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: { id: Tab; emoji: string; label: string }[] = [
   { id: 'productos',  emoji: '🌱', label: 'Mis cafés' },
-  { id: 'pedidos',    emoji: '📦', label: 'Pedidos' },
-  { id: 'historial',  emoji: '📋', label: 'Mis ventas' },
+  { id: 'pedidos',    emoji: '📦', label: 'Mis Ventas' },
+  { id: 'historial',  emoji: '📋', label: 'Historial' },
   { id: 'perfil',     emoji: '⚙️', label: 'Perfil' },
 ]
 
@@ -859,7 +933,7 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
             <p style={{ fontSize: 13, color: C.textSub }}>Sin pedidos para estos filtros</p>
           </div>
         ) : (
-          <div className="grid-productos">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {filtrados.map(p => {
               const isPend = p.logisticaStatus === 'preparando'
               const isAgencia = p.logisticaStatus === 'en_agencia'
@@ -868,78 +942,119 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
               const statusColor = isPend && pagoOk ? C.sage
                 : isPend ? C.yellow
                 : C.blue
-              const statusLabel = isPend && pagoOk ? '✓ Pago OK · Despachar'
-                : isPend ? '⏳ Pago pendiente'
-                : '🚚 En agencia'
+              const statusLabel = isPend && pagoOk ? 'Pago OK · Listo para despachar'
+                : isPend ? 'Pago pendiente'
+                : 'En agencia'
 
               const total = misItems(p).reduce((s, i) => s + i.subtotalCents, 0)
+              const fechaPedido = new Date(p.createdAt).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })
 
               return (
                 <div key={p.id} style={{
-                  background: C.card, borderRadius: 14, overflow: 'hidden',
-                  border: `1px solid ${statusColor}33`,
-                  display: 'flex', flexDirection: 'column',
+                  background: C.card, borderRadius: 12, overflow: 'hidden',
+                  border: `1px solid ${C.border}`,
                 }}>
-                  {/* Cabecera coloreada */}
-                  <div style={{ padding: '12px 14px', background: statusColor + '11', borderBottom: `1px solid ${statusColor}22`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: statusColor, padding: '2px 8px', borderRadius: 10, background: statusColor + '22', border: `1px solid ${statusColor}44` }}>
-                      {statusLabel}
-                    </span>
-                    <span style={{ fontSize: 14, fontWeight: 700, color: C.terra }}>{formatCents(total)}</span>
+                  {/* ── Header ── */}
+                  <div style={{
+                    padding: '12px 16px', borderBottom: `1px solid ${C.border}`,
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{
+                        fontSize: 11, fontWeight: 700, color: statusColor,
+                        padding: '3px 10px', borderRadius: 20,
+                        background: statusColor + '20', border: `1px solid ${statusColor}40`,
+                        textTransform: 'uppercase', letterSpacing: '0.06em',
+                      }}>
+                        {statusLabel}
+                      </span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</span>
+                      <span style={{ fontSize: 11, color: C.textSub }}>{p.distritoLocal}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                      <span style={{ fontSize: 11, color: C.textSub, fontFamily: 'JetBrains Mono, monospace' }}>{p.id.slice(-10).toUpperCase()}</span>
+                      <span style={{ fontSize: 11, color: C.textSub }}>{fechaPedido}</span>
+                    </div>
                   </div>
 
-                  {/* Contenido */}
-                  <div style={{ padding: '12px 14px', flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                    <div>
-                      <p style={{ margin: '0 0 2px', fontSize: 14, fontWeight: 700, color: C.cream, fontFamily: 'Cormorant Garamond, serif', lineHeight: 1.2 }}>{p.nombreLocal}</p>
-                      <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{p.distritoLocal} · {formatFecha(p.createdAt)}</p>
-                      <p style={{ margin: '2px 0 0', fontSize: 10, color: C.muted, fontFamily: 'JetBrains Mono, monospace' }}>{p.id}</p>
+                  {/* ── Tracking ── */}
+                  {isAgencia && p.codigoAgencia && (
+                    <div style={{ padding: '8px 16px', background: C.blue + '10', borderBottom: `1px solid ${C.blue}25`, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 12, color: C.blue, fontWeight: 700 }}>📦 {p.agencia?.toUpperCase()}</span>
+                      <span style={{ width: 1, height: 12, background: C.border }} />
+                      <span style={{ fontSize: 11, color: C.blue, fontFamily: 'JetBrains Mono, monospace' }}>{p.codigoAgencia}</span>
                     </div>
+                  )}
 
-                    {/* Items compactos */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {/* ── Layout: productos + acciones ── */}
+                  <div style={{ display: 'flex', gap: 0 }}>
+                    {/* Lista de productos */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       {misItems(p).map((item, i) => (
-                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 8px', background: C.bg, borderRadius: 6 }}>
-                          <span style={{ fontSize: 11, color: C.text }}>{item.qty}×{item.presentacion} — {item.productoNombre}</span>
-                          <span style={{ fontSize: 11, color: C.terra, fontWeight: 600, flexShrink: 0, marginLeft: 6 }}>{formatCents(item.subtotalCents)}</span>
+                        <div key={i} style={{
+                          display: 'flex', gap: 12, padding: '14px 16px',
+                          borderBottom: i < misItems(p).length - 1 ? `1px solid ${C.border}` : 'none',
+                          alignItems: 'flex-start',
+                        }}>
+                          <div style={{
+                            width: 80, height: 80, borderRadius: 8, overflow: 'hidden', flexShrink: 0,
+                            background: '#111', border: `1px solid ${C.border}`,
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          }}>
+                            {(item as any).fotoUrl
+                              ? <img src={(item as any).fotoUrl} alt={item.productoNombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              : <span style={{ fontSize: 32 }}>☕</span>
+                            }
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: C.cream, lineHeight: 1.3 }}>{item.productoNombre}</p>
+                            <p style={{ margin: '0 0 2px', fontSize: 12, color: C.textSub }}>{item.presentacion}</p>
+                            <p style={{ margin: 0, fontSize: 12, color: C.textSub }}>Cantidad: <strong style={{ color: C.cream }}>{item.qty}</strong></p>
+                          </div>
+                          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                            <p style={{ margin: '0 0 2px', fontSize: 15, fontWeight: 700, color: C.terra }}>{formatCents(item.subtotalCents)}</p>
+                            {item.qty > 1 && <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{formatCents(item.unitCents)} c/u</p>}
+                          </div>
                         </div>
                       ))}
+                      {/* Total */}
+                      <div style={{ padding: '10px 16px', borderTop: `1px solid ${C.border}`, display: 'flex', justifyContent: 'flex-end', gap: 16, alignItems: 'center' }}>
+                        <span style={{ fontSize: 12, color: C.textSub }}>{misItems(p).reduce((s, i) => s + i.qty, 0)} unidades</span>
+                        <span style={{ fontSize: 14, color: C.textSub }}>Total:</span>
+                        <span style={{ fontSize: 18, fontWeight: 700, color: C.terra }}>{formatCents(total)}</span>
+                      </div>
                     </div>
 
-                    {isAgencia && p.codigoAgencia && (
-                      <p style={{ margin: 0, fontSize: 11, color: C.blue, fontWeight: 600 }}>
-                        📦 {p.agencia?.toUpperCase()} · <span style={{ fontFamily: 'JetBrains Mono, monospace' }}>{p.codigoAgencia}</span>
-                      </p>
-                    )}
-
-                    <StepperPedido pedido={p} />
-
-                    {/* Botones */}
-                    <div style={{ display: 'flex', gap: 6, marginTop: 'auto' }}>
-                      <button
-                        onClick={() => setPedidoDetalle(p)}
-                        style={{ flex: 1, padding: '7px', borderRadius: 6, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 11, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
-                      >
-                        Ver detalle
-                      </button>
+                    {/* ── Columna acciones ── */}
+                    <div style={{
+                      width: 160, flexShrink: 0, padding: '14px 12px',
+                      borderLeft: `1px solid ${C.border}`,
+                      display: 'flex', flexDirection: 'column', gap: 8,
+                    }}>
                       {isPend && pagoOk && (
                         <button
                           onClick={() => abrirDespacho(p)}
-                          style={{ flex: 2, padding: '7px', borderRadius: 6, border: 'none', background: C.terra, color: C.white, fontSize: 11, fontWeight: 700, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif' }}
+                          style={{ padding: '10px 0', borderRadius: 8, border: 'none', background: C.terra, color: C.white, fontSize: 12, fontWeight: 700, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', width: '100%' }}
                         >
                           🚚 Despachar →
                         </button>
                       )}
                       {isPend && !pagoOk && (
-                        <div style={{ flex: 2, padding: '7px', borderRadius: 6, background: C.yellow + '11', border: `1px solid ${C.yellow}33`, fontSize: 11, color: C.yellow, textAlign: 'center' }}>
+                        <div style={{ padding: '10px 0', borderRadius: 8, background: C.yellow + '15', border: `1px solid ${C.yellow}30`, fontSize: 11, color: C.yellow, textAlign: 'center' }}>
                           ⏳ Esperando pago
                         </div>
                       )}
                       {isAgencia && (
-                        <div style={{ flex: 2, padding: '7px', borderRadius: 6, background: C.blue + '11', border: `1px solid ${C.blue}33`, fontSize: 11, color: C.blue, textAlign: 'center' }}>
+                        <div style={{ padding: '10px 0', borderRadius: 8, background: C.blue + '15', border: `1px solid ${C.blue}30`, fontSize: 11, color: C.blue, textAlign: 'center' }}>
                           En tránsito
                         </div>
                       )}
+                      <button
+                        onClick={() => setPedidoDetalle(p)}
+                        style={{ padding: '9px 0', borderRadius: 8, border: `1px solid ${C.border}`, background: 'none', color: C.textSub, fontSize: 12, cursor: 'pointer', fontFamily: 'Montserrat, sans-serif', width: '100%' }}
+                      >
+                        Ver detalle
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -1363,29 +1478,50 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
         ) : histFiltrado.length === 0 ? (
           <p style={{ color: C.textSub, fontSize: 13, textAlign: 'center', padding: '30px 0' }}>Sin resultados para estos filtros</p>
         ) : (
-          <div style={{ background: C.card, borderRadius: 14, border: `1px solid ${C.border}`, overflow: 'hidden' }}>
-            {histFiltrado.map((p, idx) => {
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {histFiltrado.map((p) => {
               const subtotal = misItems(p).reduce((s, i) => s + i.subtotalCents, 0)
+              const fechaEntrega = new Date(p.updatedAt).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' })
               return (
-                <div key={p.id} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
-                  padding: '14px 18px',
-                  borderBottom: idx < histFiltrado.length - 1 ? `1px solid ${C.border}` : 'none',
-                }}>
-                  <div>
-                    <p style={{ margin: '0 0 2px', fontSize: 13, fontWeight: 600, color: C.cream }}>{p.nombreLocal}</p>
-                    <p style={{ margin: '0 0 4px', fontSize: 11, color: C.textSub }}>{p.id} · {formatFecha(p.updatedAt)}</p>
-                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                      {misItems(p).map((i, k) => (
-                        <span key={k} style={{ fontSize: 10, color: C.muted, padding: '2px 6px', background: C.bg, borderRadius: 4 }}>
-                          {i.qty}×{i.presentacion}
-                        </span>
-                      ))}
+                <div key={p.id} style={{ background: C.card, borderRadius: 12, overflow: 'hidden', border: `1px solid ${C.border}` }}>
+                  {/* Header */}
+                  <div style={{ padding: '12px 16px', borderBottom: `1px solid ${C.border}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <span style={{ fontSize: 11, fontWeight: 700, color: C.sage, padding: '3px 10px', borderRadius: 20, background: C.sage + '20', border: `1px solid ${C.sage}40`, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        ✓ Entregado
+                      </span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: C.cream }}>{p.nombreLocal}</span>
+                    </div>
+                    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+                      <span style={{ fontSize: 11, color: C.textSub, fontFamily: 'JetBrains Mono, monospace' }}>{p.id.slice(-10).toUpperCase()}</span>
+                      <span style={{ fontSize: 11, color: C.textSub }}>{fechaEntrega}</span>
                     </div>
                   </div>
-                  <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 12 }}>
-                    <span style={{ fontSize: 11, color: C.sage, fontWeight: 700, display: 'block', marginBottom: 2 }}>✓ Entregado</span>
-                    <span style={{ fontSize: 14, color: C.terra, fontWeight: 700 }}>{formatCents(subtotal)}</span>
+                  {/* Productos */}
+                  {misItems(p).map((item, i) => (
+                    <div key={i} style={{ display: 'flex', gap: 12, padding: '14px 16px', borderBottom: i < misItems(p).length - 1 ? `1px solid ${C.border}` : 'none', alignItems: 'flex-start' }}>
+                      <div style={{ width: 72, height: 72, borderRadius: 8, overflow: 'hidden', flexShrink: 0, background: '#111', border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {(item as any).fotoUrl
+                          ? <img src={(item as any).fotoUrl} alt={item.productoNombre} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          : <span style={{ fontSize: 28 }}>☕</span>
+                        }
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: C.cream, lineHeight: 1.3 }}>{item.productoNombre}</p>
+                        <p style={{ margin: '0 0 2px', fontSize: 12, color: C.textSub }}>{item.presentacion}</p>
+                        <p style={{ margin: 0, fontSize: 12, color: C.textSub }}>Cantidad: <strong style={{ color: C.cream }}>{item.qty}</strong></p>
+                      </div>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <p style={{ margin: '0 0 2px', fontSize: 15, fontWeight: 700, color: C.terra }}>{formatCents(item.subtotalCents)}</p>
+                        {item.qty > 1 && <p style={{ margin: 0, fontSize: 11, color: C.textSub }}>{formatCents(item.unitCents)} c/u</p>}
+                      </div>
+                    </div>
+                  ))}
+                  {/* Total */}
+                  <div style={{ padding: '10px 16px', borderTop: `1px solid ${C.border}`, display: 'flex', justifyContent: 'flex-end', gap: 16, alignItems: 'center' }}>
+                    <span style={{ fontSize: 12, color: C.textSub }}>{misItems(p).reduce((s, i) => s + i.qty, 0)} unidades</span>
+                    <span style={{ fontSize: 14, color: C.textSub }}>Total cobrado:</span>
+                    <span style={{ fontSize: 18, fontWeight: 700, color: C.terra }}>{formatCents(subtotal)}</span>
                   </div>
                 </div>
               )
@@ -1833,6 +1969,11 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
         /* Distribución calificaciones: siempre 160px + 1fr */
         .grid-score { display: grid; gap: 20px; grid-template-columns: 160px 1fr; }
         @media (max-width: 600px) { .grid-score { grid-template-columns: 1fr; } }
+
+        /* Form perfil caficultor: collapse 2-col grids en mobile */
+        @media (max-width: 500px) {
+          .perfil-caf-grid-2 { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       {/* Sidebar desktop */}
@@ -1917,12 +2058,13 @@ const PortalCaficultor: React.FC<Props> = ({ usuarioId: _usuarioId, caficultorId
               autoFocus
             />
 
-            <label style={{ fontSize: 11, color: C.textSub, display: 'block', marginBottom: 4 }}>URL foto del despacho (opcional)</label>
-            <input
-              value={despachoForm.fotoDespacho}
-              onChange={e => setDespachoForm(prev => ({ ...prev, fotoDespacho: e.target.value }))}
-              placeholder="https://res.cloudinary.com/..."
-              style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: `1px solid ${C.border}`, background: '#0f0f0f', color: C.cream, fontSize: 13, fontFamily: 'Montserrat, sans-serif', outline: 'none', boxSizing: 'border-box', marginBottom: 20 }}
+            <UploadFoto
+              url={despachoForm.fotoDespacho}
+              onUrl={url => setDespachoForm(prev => ({ ...prev, fotoDespacho: url }))}
+              label="Foto del despacho (opcional)"
+              ruta={`despachos/${caficultorId}`}
+              placeholder="Foto del tracking / paquete"
+              aspectRatio="4/3"
             />
 
             <p style={{ margin: '0 0 20px', fontSize: 11, color: C.muted, lineHeight: 1.5 }}>

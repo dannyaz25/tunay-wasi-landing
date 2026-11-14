@@ -120,6 +120,11 @@ const PerfilCaficultor: React.FC<Props> = ({ caficultorId, isDemo = false }) => 
 
   return (
     <div style={{ minHeight: '100vh', background: C.bg, fontFamily: 'Montserrat, sans-serif' }}>
+      <style>{`
+        @media (max-width: 480px) {
+          .caf-perfil-stats { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
 
       {/* Header */}
       <header style={{
@@ -212,7 +217,7 @@ const PerfilCaficultor: React.FC<Props> = ({ caficultorId, isDemo = false }) => 
 
         {/* Datos de la finca */}
         <section style={{ marginBottom: 40 }}>
-          <div style={{
+          <div className="caf-perfil-stats" style={{
             display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
           }}>
             {[

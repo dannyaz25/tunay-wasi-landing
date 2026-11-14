@@ -351,9 +351,9 @@ const NavBar: React.FC = () => (
     background: `${C.bg}f0`, backdropFilter: 'blur(12px)',
     borderBottom: `1px solid ${C.border}`,
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '0 32px', height: 56,
+    padding: '0 20px', height: 56,
   }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
       <button onClick={() => { window.location.hash = '#/' }} style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Cormorant Garamond, serif',
@@ -361,8 +361,8 @@ const NavBar: React.FC = () => (
       }}>
         TunayWasi
       </button>
-      <span style={{ color: C.border, fontSize: 20 }}>·</span>
-      <span style={{
+      <span className="docs-nav-sep" style={{ color: C.border, fontSize: 20 }}>·</span>
+      <span className="docs-nav-subtitle" style={{
         fontFamily: 'Montserrat, sans-serif',
         fontSize: 13, fontWeight: 600, color: C.terra,
         letterSpacing: '0.05em',
@@ -370,7 +370,7 @@ const NavBar: React.FC = () => (
         Documentación
       </span>
     </div>
-    <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+    <div className="docs-nav-links" style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
       <button onClick={() => { window.location.hash = '#/' }} style={{
         background: 'none', border: 'none', cursor: 'pointer',
         fontFamily: 'Montserrat, sans-serif', fontSize: 12, color: C.mutedLight,
@@ -397,7 +397,7 @@ const ArticuloView: React.FC<{ articulo: Articulo; color: string }> = ({ articul
   }
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 200px', gap: 40, alignItems: 'start' }}>
+    <div className="docs-article-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 200px', gap: 40, alignItems: 'start' }}>
       {/* Contenido principal */}
       <div>
         <h1 style={{
@@ -783,7 +783,7 @@ const DocsONE: React.FC<{ hash?: string }> = ({ hash = '#/docs' }) => {
         background: `${C.bg}f8`, backdropFilter: 'blur(8px)',
         borderBottom: `1px solid ${C.border}`,
       }}>
-        <div style={{
+        <div className="docs-toggle-bar" style={{
           maxWidth: 1140, margin: '0 auto',
           padding: '0 0 0 240px',
           display: 'flex', alignItems: 'center', gap: 0,
@@ -835,7 +835,39 @@ const DocsONE: React.FC<{ hash?: string }> = ({ hash = '#/docs' }) => {
         </div>
       </div>
 
-      <div style={{
+        {/* ── Selector mobile (sustituye al sidebar en pantallas pequeñas) ── */}
+        <div className="docs-mobile-nav" style={{ display: 'none', padding: '12px 16px', borderBottom: `1px solid ${C.border}`, maxWidth: 1140, margin: '0 auto' }}>
+          <select
+            value={articuloActivo}
+            onChange={e => {
+              const slug = e.target.value
+              setArticuloActivo(slug)
+              for (const sec of secciones) {
+                if (sec.articulos.some(a => a.slug === slug)) {
+                  setSeccionAbierta(sec.id)
+                  break
+                }
+              }
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+            style={{
+              width: '100%', padding: '10px 12px', borderRadius: 8,
+              border: `1px solid ${C.border}`, background: C.bgCard,
+              color: C.cream, fontSize: 13, fontFamily: 'Montserrat, sans-serif',
+              outline: 'none',
+            }}
+          >
+            {secciones.map(sec => (
+              <optgroup key={sec.id} label={sec.titulo}>
+                {sec.articulos.map(art => (
+                  <option key={art.slug} value={art.slug}>{art.titulo}</option>
+                ))}
+              </optgroup>
+            ))}
+          </select>
+        </div>
+
+      <div className="docs-layout" style={{
         display: 'grid',
         gridTemplateColumns: '240px 1fr',
         maxWidth: 1140,
@@ -843,7 +875,7 @@ const DocsONE: React.FC<{ hash?: string }> = ({ hash = '#/docs' }) => {
         minHeight: 'calc(100vh - 100px)',
       }}>
         {/* ── Sidebar ── */}
-        <aside style={{
+        <aside className="docs-aside" style={{
           borderRight: `1px solid ${C.border}`,
           padding: '32px 0',
           position: 'sticky', top: 100,
@@ -934,7 +966,7 @@ const DocsONE: React.FC<{ hash?: string }> = ({ hash = '#/docs' }) => {
         </aside>
 
         {/* ── Contenido ── */}
-        <main style={{ padding: '40px 48px 80px' }}>
+        <main className="docs-content" style={{ padding: '40px 48px 80px' }}>
           {articuloActualObj && seccionActiva ? (
             <ArticuloView
               articulo={articuloActualObj}
@@ -948,13 +980,21 @@ const DocsONE: React.FC<{ hash?: string }> = ({ hash = '#/docs' }) => {
         </main>
       </div>
 
-      {/* Responsive: sidebar oculto en mobile */}
+      {/* Responsive */}
       <style>{`
         @media (max-width: 780px) {
           .docs-toc { display: none !important; }
         }
         @media (max-width: 640px) {
-          aside { display: none !important; }
+          .docs-nav-sep      { display: none !important; }
+          .docs-nav-subtitle { display: none !important; }
+          .docs-nav-links    { display: none !important; }
+          .docs-aside        { display: none !important; }
+          .docs-layout       { grid-template-columns: 1fr !important; }
+          .docs-toggle-bar   { padding-left: 16px !important; }
+          .docs-content      { padding: 24px 16px 60px !important; }
+          .docs-article-grid { grid-template-columns: 1fr !important; }
+          .docs-mobile-nav   { display: block !important; }
         }
       `}</style>
     </div>
