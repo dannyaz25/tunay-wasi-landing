@@ -140,13 +140,23 @@ export const PASOS = {
     'NOMBRE_NO_COINCIDE_CON_DNI', 'SIN_VERIFICACION_FACIAL', 'ERROR_ANALISIS_FOTOS'],
 }
 
-export function armarPasos(perfil, motivos, { identidadEvaluada }) {
+/**
+ * Aprobar sin verificación facial sirve para probar el flujo. Es una lista de permitidos: solo QA
+ * y proyectos de emulador (`demo-`). Producción y cualquier proyecto desconocido quedan fuera.
+ */
+const PROYECTOS_DE_PRUEBA = new Set(['alpaso-app'])
+export const esAmbienteDePruebas = proyecto =>
+  PROYECTOS_DE_PRUEBA.has(proyecto) || String(proyecto ?? '').startsWith('demo-')
+export const permiteOmitirRostro = esAmbienteDePruebas
+
+export function armarPasos(perfil, motivos, { identidadEvaluada, identidadOmitida = false }) {
   const modalidad = perfil.caficultor?.tipoRegistroCaficultor
   return Object.entries(PASOS).map(([id, codigos]) => {
     const propios = motivos.filter(m => codigos.includes(m))
     let estado = 'CUMPLE'
     if (propios.length) estado = propios.some(provocaRechazo) ? 'NO_CUMPLE' : 'PENDIENTE'
     else if (id === 'RUC' && modalidad === 'SOLO_DNI') estado = 'NO_APLICA'
+    else if (id === 'IDENTIDAD' && identidadOmitida) estado = 'OMITIDO'
     else if ((id === 'RUC' && !modalidad) || (id === 'IDENTIDAD' && !identidadEvaluada)) estado = 'NO_EVALUADO'
     return { id, estado, motivos: propios }
   })

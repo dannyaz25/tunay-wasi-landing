@@ -1,0 +1,52 @@
+name: Crear cuentas de prueba (QA)
+
+# Solo manual. El repo es público: la contraseña viene del secreto QA_TEST_PASSWORD y no se muestra.
+on:
+  workflow_dispatch:
+    inputs:
+      tipo:
+        description: '¿Qué tipo de cuenta quieres crear?'
+        type: choice
+        required: true
+        options:
+          - caficultor
+          - cliente-DNI
+          - cliente-RUC
+      cantidad:
+        description: '¿Cuántas cuentas quieres crear? (1 a 20)'
+        required: true
+        type: string
+        default: '5'
+
+permissions:
+  contents: read
+
+jobs:
+  crear:
+    name: 'Crear ${{ inputs.cantidad }} · ${{ inputs.tipo }}'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: scripts/kyc
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa_one
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar dependencias
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: Crear cuentas
+        run: npm run cuentas
+        env:
+          CUENTAS_TIPO: ${{ inputs.tipo }}
+          CUENTAS_CANTIDAD: ${{ inputs.cantidad }}
+          QA_TEST_PASSWORD: ${{ secrets.QA_TEST_PASSWORD }}
+          # Solo QA: el script rechaza cualquier otro proyecto
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ALPASO }}
+          FIRESTORE_DATABASE: '(default)'

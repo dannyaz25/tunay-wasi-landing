@@ -15,6 +15,10 @@ on:
         description: 'Analizar fotos aunque sea simulación (AWS cobra por imagen)'
         type: boolean
         default: false
+      omitir_rostro:
+        description: 'SOLO PRUEBAS en QA: aprobar sin verificar rostro ni documento'
+        type: boolean
+        default: false
       maximo:
         description: 'Máximo de cuentas a revisar'
         type: string
@@ -54,6 +58,8 @@ jobs:
         env:
           # La ejecución nocturna aprueba solo si la variable KYC_APLICAR del repo es "true"
           KYC_APLICAR: ${{ (github.event_name == 'schedule' && vars.KYC_APLICAR == 'true') || (github.event_name == 'workflow_dispatch' && inputs.aplicar) }}
+          # El job rechaza esta opción en cualquier proyecto que no sea QA
+          KYC_OMITIR_ROSTRO: ${{ (github.event_name == 'schedule' && vars.KYC_OMITIR_ROSTRO == 'true') || (github.event_name == 'workflow_dispatch' && inputs.omitir_rostro) }}
           KYC_FOTOS_EN_SIMULACION: ${{ inputs.fotos_en_simulacion || false }}
           # La nocturna usa el valor por defecto del job (50); la manual, el indicado
           KYC_MAXIMO: ${{ inputs.maximo }}

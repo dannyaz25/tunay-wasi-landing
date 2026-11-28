@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   esRucValido, normalizarCelular, nombreCoincide, dniEnTexto,
-  motivosDeDatos, motivosDePadron, motivosDeFotos, decidir, armarPasos,
+  motivosDeDatos, motivosDePadron, motivosDeFotos, decidir, armarPasos, permiteOmitirRostro,
 } from '../reglas.mjs'
 import { urlPermitida, evaluarCaras } from '../fotos.mjs'
 
@@ -90,4 +90,11 @@ test('decisión: rechaza incumplimientos; fallos técnicos y cooperativa quedan 
 test('pasos: cada uno indica si cumple', () => {
   const estados = armarPasos(perfil(), ['DNI_REPETIDO'], { identidadEvaluada: false }).map(p => `${p.id}:${p.estado}`)
   assert.deepEqual(estados, ['DATOS:CUMPLE', 'DNI:NO_CUMPLE', 'RUC:NO_APLICA', 'COBRO:CUMPLE', 'FOTOS:CUMPLE', 'IDENTIDAD:NO_EVALUADO'])
+})
+
+test('omitir el rostro solo en QA y emuladores', () => {
+  for (const p of ['alpaso-app', 'demo-kyc']) assert.equal(permiteOmitirRostro(p), true, p)
+  for (const p of ['tunay-wasi', 'alpaso-app-prod', 'otro', '', undefined]) assert.equal(permiteOmitirRostro(p), false, String(p))
+  const paso = armarPasos(perfil(), [], { identidadEvaluada: false, identidadOmitida: true }).find(p => p.id === 'IDENTIDAD')
+  assert.equal(paso.estado, 'OMITIDO')
 })

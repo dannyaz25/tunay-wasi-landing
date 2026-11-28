@@ -7,6 +7,7 @@
   },
   "scripts": {
     "validar": "node main.mjs",
+    "cuentas": "node crear-cuentas-main.mjs",
     "test": "node --test test/reglas.test.mjs test/padron.test.mjs",
     "test:emulador": "node --test --test-concurrency=1 test/job.emulador.test.mjs test/reglas-firestore.emulador.test.mjs"
   },

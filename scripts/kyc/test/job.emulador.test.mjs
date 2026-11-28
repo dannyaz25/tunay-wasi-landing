@@ -78,6 +78,18 @@ test('simulación, aprobación, rechazo, pendientes e historial', { skip: !emula
   assert.equal((await leer('one_usuarios/foto')).estadoKyc, 'PENDING_REVIEW')
   assert.equal((await correr()).aprobados, 1)
 
+  // Modo de prueba: aprueba sin analizar fotos y deja constancia; los demás criterios siguen valiendo
+  await db.doc('one_usuarios/sinrostro').set(seller('77777777', '987000007'))
+  await reservar('77777777', 'sinrostro')
+  await db.doc('one_usuarios/sinreserva2').set(seller('88888888', '987000008'))
+  const prueba = await correr({ omitirRostro: true, analizarFotos: async () => assert.fail('no debe analizar fotos') })
+  assert.deepEqual([prueba.aprobados, prueba.rechazados, prueba.errores], [1, 1, 0])
+  const registro = (await historial('sinrostro'))[0]
+  assert.equal(registro.rostroOmitido, true)
+  assert.deepEqual(registro.criteriosPendientes, [])
+  assert.equal(registro.pasos.find(p => p.id === 'IDENTIDAD').estado, 'OMITIDO')
+  await assert.rejects(ejecutar({ db: { projectId: 'tunay-wasi' }, omitirRostro: true, aplicar: true }), /No se puede omitir/)
+
   // Si el perfil cambia mientras se analiza, no se decide
   await db.doc('one_usuarios/cambia').set(seller('44444444', '987000004'))
   await reservar('44444444', 'cambia')

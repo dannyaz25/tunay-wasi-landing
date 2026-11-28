@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto'
 import { FieldValue } from 'firebase-admin/firestore'
 import {
   VERSION, normalizarCelular, rucAConsultar, motivosDeDatos, motivosDePadron, motivosDeFotos,
-  esTransitorio, provocaRechazo, decidir, armarPasos, datosValidados,
+  esTransitorio, provocaRechazo, decidir, armarPasos, datosValidados, permiteOmitirRostro,
 } from './reglas.mjs'
 
 const USUARIOS = 'one_usuarios'
@@ -33,7 +33,10 @@ function porRevisar(perfil, previa) {
   return previa?.origen === 'JOB' && previa.huella !== huella(perfil)
 }
 
-export async function ejecutar({ db, analizarFotos, consultarPadron, aplicar = false, maximo = 50, similitudMinima }) {
+export async function ejecutar({ db, analizarFotos, consultarPadron, aplicar = false, maximo = 50, similitudMinima, omitirRostro = false }) {
+  if (omitirRostro && !permiteOmitirRostro(db.projectId)) {
+    throw new Error(`No se puede omitir la verificación facial en el proyecto "${db.projectId}"`)
+  }
   const sellers = (await db.collection(USUARIOS).where('rol', '==', 'seller').get()).docs
   const datos = sellers.map(d => d.data())
   const vecesDni = contar(datos.map(p => p.caficultor?.dni))
@@ -43,6 +46,7 @@ export async function ejecutar({ db, analizarFotos, consultarPadron, aplicar = f
 
   const resumen = {
     modo: aplicar ? 'APLICAR' : 'SIMULACIÓN',
+    verificacionFacial: omitirRostro ? 'OMITIDA (solo pruebas)' : 'ACTIVA',
     caficultores: sellers.length,
     porRevisar: 0, evaluados: 0, sinCambios: 0, aplazados: 0,
     aprobados: 0, rechazados: 0, pendientes: 0, errores: 0,
@@ -91,7 +95,7 @@ export async function ejecutar({ db, analizarFotos, consultarPadron, aplicar = f
       let similitud = null
       let identidadEvaluada = false
       // Las fotos (de pago) no se analizan si la cuenta ya incumple otro criterio
-      if (!motivos.some(provocaRechazo)) {
+      if (!omitirRostro && !motivos.some(provocaRechazo)) {
         if (!analizarFotos) motivos.push('SIN_VERIFICACION_FACIAL')
         else {
           try {
@@ -119,7 +123,7 @@ export async function ejecutar({ db, analizarFotos, consultarPadron, aplicar = f
       for (const m of motivos) resumen.motivos[m] = (resumen.motivos[m] ?? 0) + 1
       if (!aplicar) { resumen.evaluados++; resumen[contador]++; continue }
 
-      const pasos = armarPasos(perfil, motivos, { identidadEvaluada })
+      const pasos = armarPasos(perfil, motivos, { identidadEvaluada, identidadOmitida: omitirRostro })
       const refRevision = db.collection(REVISIONES).doc()
       const lote = db.batch()
       // La precondición evita decidir sobre un perfil que cambió mientras se revisaba
@@ -129,7 +133,8 @@ export async function ejecutar({ db, analizarFotos, consultarPadron, aplicar = f
       }, { lastUpdateTime: d.updateTime })
       lote.create(refRevision, {
         uid, nombre: perfil.nombre ?? '', origen: 'JOB', resultado, pasos,
-        criteriosPendientes: pasos.filter(p => !['CUMPLE', 'NO_APLICA'].includes(p.estado)).map(p => p.id),
+        criteriosPendientes: pasos.filter(p => !['CUMPLE', 'NO_APLICA', 'OMITIDO'].includes(p.estado)).map(p => p.id),
+        rostroOmitido: omitirRostro,
         similitud, version: VERSION, huella: huella(perfil),
         reintentar: resultado === 'PENDIENTE' && motivos.some(esTransitorio),
         fecha: FieldValue.serverTimestamp(),

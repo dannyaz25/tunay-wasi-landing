@@ -6,11 +6,22 @@ import { getFirestore } from 'firebase-admin/firestore'
 import { ejecutar } from './job.mjs'
 import { consultarPadron } from './padron.mjs'
 import { crearAnalizadorDeFotos } from './fotos.mjs'
+import { permiteOmitirRostro } from './reglas.mjs'
 
 const env = process.env
 const emulador = !!env.FIRESTORE_EMULATOR_HOST
 if (!emulador && !env.FIREBASE_SERVICE_ACCOUNT) {
   console.error('Falta FIREBASE_SERVICE_ACCOUNT')
+  process.exit(1)
+}
+// El proyecto sale de la credencial con la que se va a escribir, no de una variable aparte
+function proyectoDestino() {
+  if (emulador) return env.GCLOUD_PROJECT || 'demo-kyc'
+  try { return JSON.parse(env.FIREBASE_SERVICE_ACCOUNT).project_id } catch { return undefined }
+}
+const omitirRostro = env.KYC_OMITIR_ROSTRO === 'true'
+if (omitirRostro && !permiteOmitirRostro(proyectoDestino())) {
+  console.error('KYC_OMITIR_ROSTRO solo está permitido en QA y emuladores: no se ejecuta nada')
   process.exit(1)
 }
 function cuentaDeServicio() {
@@ -27,8 +38,9 @@ const app = initializeApp(emulador
 const hayRostro = !!(env.AWS_ACCESS_KEY_ID && env.AWS_SECRET_ACCESS_KEY && env.CLOUDINARY_CLOUD_NAME)
 const aplicar = env.KYC_APLICAR === 'true'
 // Rekognition se paga por imagen y la simulación no guarda nada: allí solo se usa si se pide
-const analizar = hayRostro && (aplicar || env.KYC_FOTOS_EN_SIMULACION === 'true')
-if (!hayRostro) console.warn('Sin credenciales de AWS o sin CLOUDINARY_CLOUD_NAME: no se aprobará a nadie.')
+const analizar = !omitirRostro && hayRostro && (aplicar || env.KYC_FOTOS_EN_SIMULACION === 'true')
+if (omitirRostro) console.warn('PRUEBA: se aprueba SIN verificar el rostro ni el documento.')
+else if (!hayRostro) console.warn('Sin credenciales de AWS o sin CLOUDINARY_CLOUD_NAME: no se aprobará a nadie.')
 else if (!analizar) console.warn('Simulación sin análisis de fotos (sin costo): quienes lleguen a ese paso salen como pendientes.')
 
 const resumen = await ejecutar({
@@ -38,6 +50,7 @@ const resumen = await ejecutar({
     : null,
   consultarPadron,
   aplicar,
+  omitirRostro,
   maximo: Number(env.KYC_MAXIMO) || 50,
   similitudMinima: Number(env.KYC_SIMILITUD_MINIMA) || undefined,
 })
