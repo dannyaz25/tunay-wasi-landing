@@ -1,0 +1,21 @@
+{
+  "name": "tunay-wasi-kyc",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "validar": "node main.mjs",
+    "test": "node --test test/reglas.test.mjs test/padron.test.mjs",
+    "test:emulador": "node --test --test-concurrency=1 test/job.emulador.test.mjs test/reglas-firestore.emulador.test.mjs"
+  },
+  "dependencies": {
+    "@aws-sdk/client-rekognition": "3.1161.0",
+    "firebase-admin": "13.10.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "5.0.0",
+    "firebase": "12.8.0"
+  }
+}

@@ -1,0 +1,65 @@
+name: Validación de caficultores (KYC)
+
+# El horario solo se activa cuando este archivo está en la rama por defecto (main).
+# El repo es público: la salida muestra únicamente totales y códigos de motivo.
+on:
+  schedule:
+    - cron: '0 7 * * *'   # 02:00 Lima (UTC-5)
+  workflow_dispatch:
+    inputs:
+      aplicar:
+        description: 'Aprobar de verdad (desmarcado = simulación)'
+        type: boolean
+        default: false
+      fotos_en_simulacion:
+        description: 'Analizar fotos aunque sea simulación (AWS cobra por imagen)'
+        type: boolean
+        default: false
+      maximo:
+        description: 'Máximo de cuentas a revisar'
+        type: string
+        default: '5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kyc-validacion
+  cancel-in-progress: false
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: scripts/kyc
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: qa_one
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar dependencias
+        run: npm install --omit=dev --no-audit --no-fund
+
+      - name: Probar criterios
+        run: npm test
+
+      - name: Validar
+        run: npm run validar
+        env:
+          # La ejecución nocturna aprueba solo si la variable KYC_APLICAR del repo es "true"
+          KYC_APLICAR: ${{ (github.event_name == 'schedule' && vars.KYC_APLICAR == 'true') || (github.event_name == 'workflow_dispatch' && inputs.aplicar) }}
+          KYC_FOTOS_EN_SIMULACION: ${{ inputs.fotos_en_simulacion || false }}
+          # La nocturna usa el valor por defecto del job (50); la manual, el indicado
+          KYC_MAXIMO: ${{ inputs.maximo }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_ALPASO }}
+          FIRESTORE_DATABASE: '(default)'
+          CLOUDINARY_CLOUD_NAME: ${{ vars.CLOUDINARY_CLOUD_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KYC_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_KYC_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
